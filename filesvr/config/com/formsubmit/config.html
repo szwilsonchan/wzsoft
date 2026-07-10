@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Language</div>
+            <div class="right" style="line-height:40px">
+                
+                
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Style</div>
+            <div class="right" style="line-height:40px">
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="1" v-model="dataitem.config.apptype" ><label>PC</label>
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="2" v-model="dataitem.config.apptype" ><label>Mobile</label><Br/>
+                <div style="float:left">
+                    Line Height：<input type="text" v-model="dataitem.config.itemheight" style="width:60px" />
+                    Font Size：<input type="text" v-model="dataitem.config.itemfontsize" style="width:60px" />
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">SaveButton</div>
+            <div class="right">
+                Button Text：<input type="text" v-model="dataitem.config.titlesave"  style="width:20%" />
+                ButtonDisplay：<input type="checkbox" v-model="dataitem.config.showsave" style="width:5%"/>
+                Required Check：<input type="checkbox" v-model="dataitem.config.savechk" style="width:5%"/>
+                Debug Log：<input type="checkbox" v-model="dataitem.config.isdebug" style="width:30px" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">PDFButton</div>
+            <div class="right">
+                Button Text：<input type="text" v-model="dataitem.config.titlepdf" style="width:20%" />
+                ButtonDisplay：<input type="checkbox" v-model="dataitem.config.showpdf" style="width:5%"/>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">SubmitButton</div>
+            <div class="right" style="line-height:40px">
+                Button Text：<input type="text" v-model="dataitem.config.titlesubmit" style="width:20%" />
+                ButtonDisplay：<input type="checkbox" v-model="dataitem.config.showsubmit" style="width:5%"/>
+                GeneratePDF：<input type="checkbox" v-model="dataitem.config.submitgenpdf" style="width:5%"/>
+                <br/>
+                SubmitFlow：
+                        <select  v-model="dataitem.config.submitwfm" >
+                            <option></option>
+                            <option v-for="v in viewdatas"  name="viewcode" :value="v['GUID']" >{{v['NAME']}}</option>
+                        </select>
+
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" style="display:none">
+            <div class="left">ReturnedButton</div>
+            <div class="right">
+                Text: <input type="text" v-model="dataitem.config.titlereject" style="width:30%" />
+                Display：<input type="checkbox" v-model="dataitem.config.showreject" style="width:5%"/>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Event</div>
+            <div class="right">
+                <span>SubmitPrev：</span>
+                <input type="button" class="btnOK"  value="Dsign Code" onclick="parent.openCodeValWin('onsubmit');" style="width:88px"/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>SaveNext：</span>
+                <input type="button" class="btnOK"  value="Design Code" onclick="parent.openCodeValWin('saved');" style="width:88px" />
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./../../../js/funcconfig.js"></script>
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            comdatas:null,
+            viewdatas:null,
+            dataitem:{"comid":"1001", "comname":"SaveButton","comtitle":"","code":{"onsubmit":{},"saved":{}},"attrget":{"SubmitForm":"submitform"},"attrset":{"SubmitForm":"submitform"},"config":{"showsave":true,"fieldtitle":"SubmitButton","submitfunc":"","savedfunc":"","isdebug":false,"apptype":"1","lan":"e","titlesave":"Save","titlepdf":"GeneratePDF","titlesubmit":"Submit","submitwfm":"","showpdf":true,"titlereject":"Returned To","showreject":false,"showsubmit":true,"savechk":true,"submitgenpdf":false}}
+        }
+    },
+    methods: 
+    {
+        getDataItem() 
+        {
+            let viewhtml = "";
+
+            if(this.dataitem.config.apptype=="1")
+            {
+                viewhtml = viewhtml + "<div >";
+                viewhtml = viewhtml + "<input type=\"button\" style=\"border-style: none;border-radius: 2em;background-color: rgb(205, 209, 212);color:#fff;font-size:"+ this.dataitem.config.itemfontsize +";height:"+ this.dataitem.config.itemheight +";width:128px;cursor: pointer;outline:none;box-sizing: border-box; margin-left:5px;float:right;\" value=\"Back\" />";
+                viewhtml = viewhtml + "<input type=\"button\" style=\"border-style: none;border-radius: 2em;background-color: rgb(247, 164, 71);color:#fff;font-size:"+ this.dataitem.config.itemfontsize +";height:"+ this.dataitem.config.itemheight +";width:128px;cursor: pointer;outline:none;box-sizing: border-box; margin-left:5px;float:right;\" value=\"Save\"  />";
+                viewhtml = viewhtml + "</div>";
+            }
+            else
+            {
+                viewhtml = viewhtml + "<div >";
+                viewhtml = viewhtml + "<input type=\"button\" style=\"border-style: none;border-radius: 2em;background-color: rgb(205, 209, 212);color:#fff;font-size:"+ this.dataitem.config.itemfontsize +";height:"+ this.dataitem.config.itemheight +";width:100%;cursor: pointer;outline:none;box-sizing: border-box; margin-bottom:10px;float:right;\" value=\"Back\" />";
+                viewhtml = viewhtml + "<input type=\"button\" style=\"border-style: none;border-radius: 2em;background-color: rgb(247, 164, 71);color:#fff;font-size:"+ this.dataitem.config.itemfontsize +";height:"+ this.dataitem.config.itemheight +";width:100%;cursor: pointer;outline:none;box-sizing: border-box; margin-bottom:10px;float:right;\" value=\"Save\"  />";
+                viewhtml = viewhtml + "</div>";
+            }
+
+            if(this.dataitem.config.lan=="c")
+            {
+                this.dataitem.config.titlereturn = "Back";
+                this.dataitem.config.titlepdfsub = "DownloadPDF";
+                this.dataitem.config.submitpsn = "Submitter";
+            }
+            else
+            {
+                this.dataitem.config.titlereturn = "Back";
+                this.dataitem.config.titlepdfsub = "Download PDF";
+                this.dataitem.config.submitpsn = "Submitter";
+            }
+
+            this.dataitem.config.viewhtml=viewhtml;
+
+            if(this.dataitem.code)
+            {
+                let csubmit = this.dataitem.code.onsubmit;
+                let csaveed = this.dataitem.code.saved;
+
+                if(csubmit==null)
+                    this.dataitem.code.onsubmit = {};
+
+                if(csaveed==null)
+                    this.dataitem.code.saved = {};
+
+                if(JSON.stringify(csubmit)=="{}")
+                    this.dataitem.config.submitfunc="";
+                else
+                    this.dataitem.config.submitfunc="1";
+
+                if(JSON.stringify(csaveed)=="{}")
+                    this.dataitem.config.savedfunc="";
+                else
+                    this.dataitem.config.savedfunc="1";
+            }
+            else
+            {
+                this.dataitem.code={"saved":{},"onsubmit":{}};
+                this.dataitem.config.submitfunc="";
+                this.dataitem.config.savedfunc="";
+            }
+
+            if(this.dataitem.config['savechk']==null)
+            {
+                this.dataitem.config['savechk']=true;
+            }
+
+            if(this.dataitem.config['submitgenpdf']==null)
+            {
+                this.dataitem.config['submitgenpdf']=false;
+            }
+
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            if(dataitem.config['showsave']==null)
+                dataitem.config['showsave']=true;
+            this.dataitem=dataitem;
+        },
+        getDatas() 
+        {
+            let paras = {};
+            paras['viewCode']="wfm";
+            paras['curPage']=1;
+            paras['pageItmes']=100;
+            var that = this;
+            axios.post("./../../../../api/datalist",paras).then(function(res){
+            that.viewdatas=Object.values(res.data)[0];     
+            }).catch(function (err) {
+            });
+        },
+        getDataItemSub() 
+        {
+            return this.dataitem;
+        },
+        setFormValue(fValue,codename) 
+        {
+            let c = this.dataitem['code'];
+            c[codename] = fValue;
+        },
+        getFormValue(codename) 
+        {
+            let c = this.dataitem['code'];
+            return c[codename];
+        }
+    },
+    mounted() 
+    {
+        this.getDatas();
+        window.getDataItem = this.getDataItem;
+        window.getDataItemSub = this.getDataItemSub;
+        window.setDataItem = this.setDataItem;
+        window.setFormValue = this.setFormValue;
+        window.getFormValue = this.getFormValue;
+
+        gInitConfig();
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+</script>
+
+</body>
+</html>

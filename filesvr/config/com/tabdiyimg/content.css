@@ -1,0 +1,14 @@
+.updWin-content-item[@configid@]
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.updWin-content-item[@configid@] .right
+{
+    width:[@namewidth@];
+    box-sizing: border-box;
+    text-align:[@namealign@];
+    float:left;
+}

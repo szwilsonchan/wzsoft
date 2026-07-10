@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/main.css" type="text/css"  />
+<script src="./../js/vue.global.js"></script>
+<script src="./../js/axios.min.js"></script>
+<script src="./js/funcadmin.js"></script>
+<style>
+
+.updWinConfig 
+{ 
+    width:90%;
+    height:fit-content;
+    background-color:#fff;
+    cursor:pointer;
+    text-align: center;
+    padding:20px; 
+
+}
+
+.updWinConfig .btnOK
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(46, 162, 240);
+    color:#fff;
+    height:40px;
+    width:100px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.updWinConfig .btnOK:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+.updWinConfig .btnCancle
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(205, 209, 212);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.updWinConfig .btnCancle:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+
+.updWin  .updWin-content-item .pwd
+{
+    border: 1px solid rgb(234, 237, 241);
+    margin-right:2px;
+    border-radius: 0.8em;
+    height:40px;
+    width:80%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+</style>
+</head>
+<body>
+<div class="main-wrapper">
+    <div class="header">
+        <div class="logDiv">
+            <img src="./../upload/logo.png" height="36px" onclick="showmenuleftpc()" />
+        </div>
+        <div class="logoutDiv">
+            <input type="button" class="btnLogout"  value="Logout" onclick="document.location.href='./../logout'" />
+        </div>
+    </div>  
+    <div class="menu-left" >
+        <ul class="menu-content" id="menu-content">
+            <li v-for="data in datas" >
+                    <a href="javascript:void(0)" v-show="data.PID==null&&((showpid['S'+data.MENUID])||(data.LOCATION==this.curLocation))"  @click="setMenuSession(data.MENUID,data.LOCATION)" class="active">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID==null&&((!showpid['S'+data.MENUID])&&(data.LOCATION!=this.curLocation))"  @click="setMenuSession(data.MENUID,data.LOCATION)" class="menu">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID!=null&&showpid['S'+data.PID]&&data.LOCATION==this.curLocation&&this.curLocation!=null" @click="setMenuSession(null,data.LOCATION)" class="activesub">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID!=null&&showpid['S'+data.PID]&&data.LOCATION!=this.curLocation" @click="setMenuSession(null,data.LOCATION)" class="menusub">{{data.NAME}}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="content" id="content">
+        <div class="content-title">
+            <span>Basic Settings</span>
+        </div>
+        <div class="content-tab" id="datalist">
+            <div class="content-tab-filter" >
+                <div class="actionbtns">
+                    <input type="button" value="Export" @click="goExport()" />&nbsp;
+                    <input type="button" value="Import" onclick="openUpdImportWin()" />&nbsp;
+                    <span id="spnExport"></span>
+                </div>
+            </div>
+            <div id="updWinImport" class="updWin">
+                <div class="updWin-info" id="updWinImport-info" style="display:none">
+                    <div class="left" id="updWinImport-info-msg"></div>
+                    <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+                </div>
+                <div class="updWin-content" >
+                    <div class="updWin-content-item">
+                        <div class="left" >Page File</div>
+                        <div class="right" > 
+                            <div class="selDiv" style="line-height: 40px;" >
+                                <div v-show="!blnUpdedZip" >
+                                    <label class="fileContainer">Select file to upload:<input id="filezip" ref="clearFileZip" type="file" @change="fileUploadZip()"></label>
+                                </div>
+                                <div v-show="blnUpdedZip">
+                                    <img height="20" src="./imgs/file.png"><a href="javascript:void(0)" @click="fileDownloadZip()"  style="text-decoration-line: none;">{{fileContentZip['fileName']}}</a>&nbsp;&nbsp;
+                                    <a href="javascript:void(0)" @click="fileDeleteZip()" >Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="updWinBtn">
+                    <input type="button" class="btnOK"  value="Import" @click="goImport()" />
+                    <input type="button" class="btnCancle"  value="Close" onclick="closeWin()" />&nbsp;
+                    <span id="spnImport"></span>
+                </div>
+            </div>
+            <div id="reqPwdWin" class="updWin">
+                <div class="updWin-info" id="updWin-info-pwd" style="display:none">
+                    <div class="left" id="updWin-info-pwd-msg"></div>
+                    <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+                </div>
+                <div class="updWin-content" >
+                    <div class="updWin-content-item" >
+                        <div class="left">Current Password</div>
+                        <div class="right"><input class="pwd" type="password" id="oldpassword" /></div>
+                    </div>
+                    <div class="updWin-content-item">
+                        <div class="left">New Password</div>
+                        <div class="right"><input class="pwd" type="password" id="password" /></div>
+                    </div>
+                    <div class="updWin-content-item">
+                        <div class="left">Confirm Password</div>
+                        <div class="right"><input class="pwd" type="password" id="passwordconfirm" /></div>
+                    </div>
+                    <div class="updWin-content-item">
+                        <div class="left">&nbsp;</div>
+                        <div class="right">
+                            <input type="button" class="btnOK"  value="Save" onclick="reqPwdSave()" />
+                            <input type="button" class="btnCancle"  value="Close" onclick="closeReqPwdWin()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="updWin" class="updWinConfig" style="display:block">
+                <div class="updWin-info" id="updWin-info" style="display:none;margin-bottom:10px">
+                    <div class="left" id="updWin-info-msg"></div>
+                    <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+                </div>
+                <div class="updWin-content" >
+                    <div class="updWin-content-item" style="line-height: 40px">
+                        <div class="left" style="width:19%">System Icon</div>
+                        <div class="right" > 
+                            <input class="btnAddObj" type="button"  onclick="varSelShowFile(event)" value="+Upload File" >
+                            <div class="selDiv" style="display:none;line-height: 40px;" >
+                                <div v-show="!blnUpded" >
+                                    <label class="fileContainer">Select file to upload:<input id="file" ref="clearFile" type="file" @change="fileUpload()"></label>
+                                </div>
+                                <div v-show="blnUpded">
+                                    <img height="20" src="./imgs/file.png"><a href="javascript:void(0)" @click="fileDownload()"  style="text-decoration-line: none;">{{fileContent['fileName']}}</a>&nbsp;&nbsp;
+                                    <a href="javascript:void(0)" @click="fileDelete()" >Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="updWin-content-item">
+                            <div class="left"  style="width:19%">Admin Password</div>
+                            <div class="right">
+                                <input type="button" class="btnDesign"  value="Change Password" onclick="openPwdWin()" /></div>
+                        </div>
+                        <div class="updWin-content-item" style="line-height: 40px">
+                            <div class="left" style="width:19%">Activation Method</div>
+                            <div class="right">
+                                <input type="radio" name="radiosact" value="1" v-model="dataitem.ACTIVEMODE" ><label>Email</label>
+                                <input type="radio" name="radiosact" value="2" v-model="dataitem.ACTIVEMODE" ><label>Mobile</label>
+                            </div>
+                        </div>
+                        <div class="updWin-content-item" style="line-height: 40px">
+                            <div class="left" style="width:19%">Registration Method</div>
+                            <div class="right">
+                                <input type="radio" name="radiosreg" value="1" v-model="dataitem.REGMODE" ><label>Org and Person</label>
+                                <input type="radio" name="radiosreg" value="2" v-model="dataitem.REGMODE" ><label>Org Only</label>
+                                <input type="radio" name="radiosreg" value="3" v-model="dataitem.REGMODE" ><label>Person Only</label>
+                                <input type="radio" name="radiosreg" value="4" v-model="dataitem.REGMODE" ><label>Closed</label>
+                            </div>
+                        </div>
+                        <div class="updWin-content-item" v-show="dataitem.REGMODE=='1'||dataitem.REGMODE=='2'">
+                            <div class="left" style="width:19%">After Org Registration</div>
+                            <div class="right" >
+                                <input type="hidden" id="codeidRegOrg" >
+                                <input type="button" class="btnDesign" value="Design Code" onclick="openCodeValWin('RegOrg')">
+                            </div>
+                        </div>
+                        <div class="updWin-content-item" v-show="dataitem.REGMODE=='1'||dataitem.REGMODE=='3'">
+                            <div class="left" style="width:19%">After Person Registration</div>
+                            <div class="right" >
+                                <input type="hidden" id="codeidRegPsn" >
+                                <input type="button" class="btnDesign" value="Design Code" onclick="openCodeValWin('RegPsn')">
+                            </div>
+                        </div>
+                        <div class="updWin-content-item">
+                            <div class="left" style="width:19%">After Person Save</div>
+                            <div class="right" >
+                                <input type="hidden" id="codeidUpdPsn" >
+                                <input type="button" class="btnDesign" value="Design Code" onclick="openCodeValWin('UpdPsn')">
+                            </div>
+                        </div>
+                        <div class="updWin-content-item" v-show="dataitem.REGMODE=='1'||dataitem.REGMODE=='3'">
+                            <div class="left" style="width:19%">Default Role ID for Person Reg.</div>
+                            <div class="right" >
+                                <input type="text" v-model="dataitem.REGPSNROLE" style="width: 80px;" >
+                            </div>
+                        </div>
+                        <div class="updWin-content-item" v-show="dataitem.REGMODE=='1'||dataitem.REGMODE=='2'">
+                            <div class="left" style="width:19%">Default Role ID for Org Reg.</div>
+                            <div class="right" >
+                                <input type="text" v-model="dataitem.REGORGROLE" style="width: 80px;" >
+                            </div>
+                        </div>
+                        <div class="updWin-content-item" style="display: none;">
+                            <div class="left" style="width:19%">Org Role</div>
+                            <div class="right" >
+                                <input type="hidden" id="codeidOrgRoles" >
+                                <input type="button" class="btnDesign" value="Design Code" onclick="openCodeValWin('OrgRoles')">
+                            </div>
+                        </div>
+                        <div class="updWin-content-item">
+                            <div class="left" style="width:19%">Third-Party Login</div>
+                            <div class="right" >
+                                <input type="hidden" id="codeidLoginThird" >
+                                <input type="button" class="btnDesign" value="Design Code" onclick="openCodeValWin('LoginThird')">
+                            </div>
+                        </div>
+                        <div class="updWin-content-item">
+                            <div class="left" style="width:19%">Third-Party Link</div>
+                            <div class="right" >
+                                <input type="hidden" id="codeidLoginThirdRef" >
+                                <input type="button" class="btnDesign" value="Design Code" onclick="openCodeValWin('LoginThirdRef')">
+                            </div>
+                        </div>
+                        <div class="updWin-content-item">
+                            <div class="left" style="width:19%">&nbsp;</div>
+                            <div class="right">
+                                <input type="button" class="btnOK"  value="Save Settings" style="width:160px" @click="updDatas()" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <div class="footer">
+        Copyright by WSoft
+    </div> 
+    <div id="coverWin" class="coverWin"></div>
+    <div id="modalWin" class="modalWin">
+        <div class="modalWinMsg"><span id="modalWinMsg"></span></div>
+        <div class="modalWinBtn">
+            <input type="button" class="btnOK"  value="OK" onclick="openWinOK()" />
+            <input type="button" class="btnCancle"  value="Cancel" onclick="closeWin()" />
+        </div>
+    </div>
+    <div class="codeVal" id="codeVal" style="display:none">
+        <iframe id="codeValiframe" frameborder="no" marginwidth="0" marginheight="0" src="./code_design.html" ></iframe>
+    </div>
+</div>
+
+<script>
+
+function openPwdWin()
+{
+    document.getElementById("coverWin").style.display="block";
+    document.getElementById("reqPwdWin").style.display="block";
+}
+
+function closeReqPwdWin()
+{
+    document.getElementById("coverWin").style.display="none";
+    document.getElementById("reqPwdWin").style.display="none";
+}
+
+function reqPwdSave()
+{
+    let paras = {};
+    paras['oldpassword']=document.getElementById("oldpassword").value;
+    paras['password']=document.getElementById("password").value;
+    paras['passwordconfirm']=document.getElementById("passwordconfirm").value;
+
+    let msg="";
+    if(paras['oldpassword']=="")
+    {
+        msg = msg + "Please enter current password.<br>";
+    }
+    if(paras['password']=="")
+    {
+        msg = msg + "Please enter new password.<br>";
+    }
+    if(paras['password']!=paras['passwordconfirm'])
+    {
+        msg = msg + "New password and confirm password do not match.";
+    }
+
+    if(msg!="")
+    {
+        document.getElementById("updWin-info-pwd-msg").innerHTML=msg;
+        document.getElementById("updWin-info-pwd").style.display="block";
+        return;
+    }
+
+    axios.post("./../api/datapsnpwd",paras).then(function(res){
+        let mreturn = res.data;
+        let msg = mreturn['msg'];
+        if(msg!="")
+        {
+            document.getElementById("updWin-info-pwd-msg").innerHTML=msg;
+            document.getElementById("updWin-info-pwd").style.display="block";
+        }
+        else
+        {
+            document.getElementById("updWin-info-pwd-msg").innerHTML="Saved successfully.";
+            document.getElementById("updWin-info-pwd").style.display="block";
+        }
+    }).catch(function (err) {
+    });
+}
+
+function openUpdImportWin() 
+{
+    document.getElementById("coverWin").style.display="block";
+    document.getElementById("updWinImport").style.display="block";
+    document.getElementById("updWinImport-info-msg").innerHTML="";
+    document.getElementById("updWinImport-info").style.display="none";
+    fileDeleteZip();
+}
+
+function closeWin() 
+{
+    document.getElementById("coverWin").style.display="none";
+    document.getElementById("modalWin").style.display="none";
+    document.getElementById("updWinImport").style.display="none";
+}
+
+function closeInfoMsg(e) 
+{
+    e.srcElement.parentElement.style.display="none";
+}
+
+function varSelShowFile(e)
+{
+    let p = e.target.parentElement;
+    for (let dNode of p.childNodes) 
+    {
+        if(dNode.className=="selDiv")
+        {
+            dNode.style.display="block";
+            break;
+        }
+    }
+}
+
+function openCodeValWin(codeId) 
+{
+    window.codeId = codeId;
+    window.codeIdValue = document.getElementById("codeid" + codeId).value;
+
+    document.getElementById("codeVal").style.display="block";
+    let iframe = document.getElementById("codeValiframe");
+    iframe.src="./code_design.html";
+    if (iframe.attachEvent)
+    {
+        iframe.attachEvent("onload", openCodeWin1);
+        } else {
+        iframe.onload = openCodeWin2;
+    }
+    
+}
+function openCodeWin1()
+{
+    let iw = document.getElementById('codeValiframe').contentWindow;
+    var varLists = [
+        {"name":"visitorId","key":"visitorId","type":"str","ptype":"sys"},
+        {"name":"visitorRoles","key":"visitorRoles","type":"str","ptype":"sys"},
+        {"name":"visitorDeptId","key":"visitorDeptId","type":"str","ptype":"sys"},
+        {"name":"visitorOrgId","key":"visitorOrgId","type":"str","ptype":"sys"}];
+       
+    iw.initTemplate(window.codeId,"",[],[],varLists,window.codeIdValue);
+    document.getElementById("compiframe").detachEvent("onload", openCodeWin1);
+}
+function openCodeWin2()
+{
+    let iw = document.getElementById('codeValiframe').contentWindow;
+    var varLists = [
+        {"name":"visitorId","key":"visitorId","type":"str","ptype":"sys"},
+        {"name":"visitorRoles","key":"visitorRoles","type":"str","ptype":"sys"},
+        {"name":"visitorDeptId","key":"visitorDeptId","type":"str","ptype":"sys"},
+        {"name":"visitorOrgId","key":"visitorOrgId","type":"str","ptype":"sys"}];
+    
+    iw.initTemplate(window.codeId,"",[],[],varLists,window.codeIdValue);
+    document.getElementById("codeValiframe").onload=null;
+}
+function setCodeValValue(fValue) 
+{
+    document.getElementById("codeid" + window.codeId).value = fValue["codeid"];
+}
+
+function closeCodeValWin() 
+{
+    document.getElementById("codeVal").style.display="none";
+}
+
+const DataListVue = 
+{
+    data() 
+    {
+        return {
+            dataitem:{},
+            isupd:true,
+            returnmsg:'',
+            comType:[],
+            arrShowTitles:[],
+            fileContent:{},
+			blnUpded:false,
+            fileContentZip:{},
+            blnUpdedZip:false
+        }
+    },
+    methods: 
+    {
+        goExport() 
+        {
+            document.getElementById("spnExport").innerText="Exporting...";
+
+            let paras = {};
+            var that = this;
+            axios({
+                url: './../api/configexport',
+                method: 'POST',
+                data:paras,
+                responseType: 'blob', 
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'config.zip');
+                document.body.appendChild(link);
+                link.click();
+                document.getElementById("spnExport").innerText="Export successful";
+            });
+        },
+        goImport() 
+        {
+            let paras = {};
+            if(this.blnUpdedZip)
+                paras['datafile']=this.fileContentZip['filePath'];
+            else
+            {
+                alert("Please upload the file to import.");
+                return;
+            }
+
+            document.getElementById("spnImport").innerText="Importing...";
+
+            var that = this;
+            axios.post("./../api/configimport",paras).then(function(res)
+            {
+                let m = res.data;
+                document.getElementById("spnImport").innerText="";
+                if(m['msg']!="")
+                {
+                    document.getElementById("updWinImport-info-msg").innerHTML=m['msg'];
+                    document.getElementById("updWinImport-info").style.display="block";
+                }
+                else
+                {
+                    document.getElementById("updWinImport-info-msg").innerHTML="Records imported successfully!";
+                    document.getElementById("updWinImport-info").style.display="block";
+                    that.getDatasByFilters(that.curpage);
+                }
+                closeWin();
+
+            }).catch(function (err) {
+            });
+        },
+        fileDeleteZip()
+        {
+            this.fileContentZip={};
+            this.blnUpdedZip=false;
+            this.$refs.clearFileZip.value = '';
+        },
+        fileDownloadZip()
+        {
+            that=this;
+            axios({
+                url: './../api/downloadFile',
+                method: 'POST',
+                data:{"fileGuid":that.fileContentZip['fileGUID']},
+                responseType: 'blob', // important
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', that.fileContentZip['fileName']);
+                document.body.appendChild(link);
+                link.click();
+            });
+        },
+        fileUploadZip()
+        {
+            let file = document.getElementById("filezip").files[0];
+            let fv = document.getElementById("filezip").value;
+            fv = fv.substring(fv.indexOf(".")+1);
+
+            if(fv.toUpperCase()!="ZIP")
+            {
+                alert("Only ZIP format files can be uploaded.");
+                return;
+            }
+
+            let params = new FormData();
+            params.append('file', file)
+            that=this;
+            axios({
+                url: "./../api/uploadFile",
+                method: "post",
+                data: params,
+                headers: { 'Content-Type': 'multipart/form-data' }
+            }).then(function(res){
+                that.fileContentZip=res.data;    
+                that.blnUpdedZip=true; 
+
+            }).catch(function (err) {
+            });
+        },
+        fileDelete()
+        {
+            this.fileContent={};
+            this.blnUpded=false;
+            this.$refs.clearFile.value = '';
+        },
+        fileDownload()
+        {
+            that=this;
+            axios({
+                url: './../api/downloadFile',
+                method: 'POST',
+                data:{"fileGuid":that.fileContent['fileGUID']},
+                responseType: 'blob', // important
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', that.fileContent['fileName']);
+                document.body.appendChild(link);
+                link.click();
+            });
+        },
+        getfileContent()
+        {
+            if(this.blnUpded)
+                return this.fileContent;
+        },
+        fileUpload()
+        {
+            let file = document.getElementById("file").files[0];
+            let fv = document.getElementById("file").value;
+            fv = fv.substring(fv.indexOf(".")+1);
+
+            if(fv.toUpperCase()!="PNG")
+            {
+                alert("Only PNG format files can be uploaded.");
+                return;
+            }
+
+            let params = new FormData();
+            params.append('file', file)
+            that=this;
+            axios({
+                url: "./../api/uploadFile",
+                method: "post",
+                data: params,
+                headers: { 'Content-Type': 'multipart/form-data' }
+            }).then(function(res){
+                that.fileContent=res.data;    
+                that.blnUpded=true; 
+
+                }).catch(function (err) {
+                });
+        },
+        getDataItem() 
+        {
+            let paras = {};
+            paras['viewCode']="config";
+            paras['itemIDs']="1";
+            var that = this;
+            axios.post("./../api/dataget",paras).then(function(res){
+            that.dataitem=Object.values(Object.values(res.data)[0])[0];   
+            document.getElementById("codeidOrgRoles").value=that.dataitem['ORGROLECODE'];
+            document.getElementById("codeidRegOrg").value=that.dataitem['REGORGCODE'];
+            document.getElementById("codeidRegPsn").value=that.dataitem['REGPSNCODE'];
+            document.getElementById("codeidUpdPsn").value=that.dataitem['UPDPSNCODE'];
+            document.getElementById("codeidLoginThird").value=that.dataitem['LOGINTHIRDCODE'];
+            document.getElementById("codeidLoginThirdRef").value=that.dataitem['LOGINTHIRDREFCODE'];
+            }).catch(function (err) {
+            });
+        },
+        updDatas() 
+        {
+            let paras = {};
+            paras['viewCode']="config";
+            paras['itemIDs']="1";
+            for (let v in this.dataitem) 
+            {
+                if(v!=this.pkey)
+                {
+                    paras['field_'+v] = this.dataitem[v];
+                }
+            }
+
+            let msg="";
+            if(this.dataitem['REGMODE']=='1'||this.dataitem['REGMODE']=='3')
+            {
+                if(!gCheckValueNull(this.dataitem['REGPSNROLE']))
+                {
+                    msg=msg+"Person registration default role ID cannot be empty.<br/>";
+                }
+                else
+                {
+                    if(!gCheckValueNum(this.dataitem['REGPSNROLE'],0,100000))
+                    {
+                        msg=msg+"Role ID must be an integer greater than 0.<br/>";
+                    }
+                }
+            }
+            
+            if(msg!="")
+            {
+                document.getElementById("updWin-info-msg").innerHTML=msg;
+                document.getElementById("updWin-info").style.display="block";
+                return;
+            }
+
+            if(this.blnUpded)
+                paras['field_LOGO']=this.fileContent['filePath'];
+            else
+                paras['field_LOGO']="";
+
+            paras['field_ORGROLECODE']=document.getElementById("codeidOrgRoles").value;
+            paras['field_REGORGCODE']=document.getElementById("codeidRegOrg").value
+            paras['field_REGPSNCODE']=document.getElementById("codeidRegPsn").value
+            paras['field_UPDPSNCODE']=document.getElementById("codeidUpdPsn").value
+            paras['field_LOGINTHIRDCODE']=document.getElementById("codeidLoginThird").value
+            paras['field_LOGINTHIRDREFCODE']=document.getElementById("codeidLoginThirdRef").value
+
+            var that = this;
+            axios.post("./../api/configsave",paras).then(function(res)
+            {
+                that.returnmsg=Object.values(Object.values(res.data)[0])[0];
+                if(that.returnmsg!="")
+                {
+                    document.getElementById("updWin-info-msg").innerHTML=that.returnmsg;
+                    document.getElementById("updWin-info").style.display="block";
+                }
+                else
+                {
+                    document.getElementById("updWin-info-msg").innerHTML="Settings saved successfully!";
+                    document.getElementById("updWin-info").style.display="block";
+                }
+            }).catch(function (err) {
+            });
+
+        }
+    },
+    mounted() 
+    {
+        this.getDataItem();
+        window.fileDeleteZip = this.fileDeleteZip;
+    }
+}
+
+Vue.createApp(DataListVue).mount('#datalist');
+
+</script>
+<script src="./js/menu.js"></script>
+</body>
+</html>

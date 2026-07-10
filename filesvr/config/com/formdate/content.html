@@ -1,0 +1,12 @@
+        <div class="updWin-content-item[@configid@]" id="input[@configid@]" style="display:none">
+            <div class="left" v-show="titleshow">[@fieldtitle@]：<span v-show="!this.isView">[@fieldnoemptylbl@]</span></div>
+            <div class="right" v-show="!this.isView">
+                <input placeholder="Format: yyyy-MM-dd" style="width:40%" type="text" id="data[@configid@]" v-model="dataitem.date"  onchange="onchange[@configid@]()" onblur="onblur[@configid@]()" />&nbsp;&nbsp;
+                <input placeholder="Format: HH:mm:ss" style="width:40%" type="text" v-show="fieldtypedb=='2'" v-model="dataitem.time"  onchange="onchange[@configid@]()" onblur="onblur[@configid@]()" />
+                <span style="color:red;display:none" id="valmsg[@configid@]"></span>
+            </div>
+            <div class="right" v-show="this.isView">
+                <span v-html="dataitem.date"></span>&nbsp;&nbsp;
+                <span v-show="fieldtypedb=='2'" v-html="dataitem.time"></span>
+            </div>
+        </div>

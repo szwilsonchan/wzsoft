@@ -1,0 +1,5 @@
+;if(Object.prototype.toString.call(vChar)!="[object String]")
+{
+return vChar;
+}
+return JSON.parse(vChar);;;;

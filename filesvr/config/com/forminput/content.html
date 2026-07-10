@@ -1,0 +1,10 @@
+        <div class="updWin-content-item[@configid@]" id="input[@configid@]" style="display:none">
+            <div class="left"  v-show="titleshow">[@fieldtitle@]：<span v-show="!this.isView">[@fieldnoemptylbl@]</span></div>
+            <div class="right" v-show="!this.isView">
+                <input type="text" v-model="dataitem.[@fieldname@]"  onchange="onchange[@configid@]()" onblur="onblur[@configid@]()" />
+                <span style="color:red;display:none" id="valmsg[@configid@]"></span>
+            </div>
+            <div class="right" v-show="this.isView">
+                {{this.dealValue(dataitem.[@fieldname@])}}
+            </div>
+        </div>

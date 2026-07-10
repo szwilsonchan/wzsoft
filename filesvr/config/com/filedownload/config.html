@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Title</div>
+            <div class="right"><input type="text" v-model="dataitem.config.fieldtitle" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Style</div>
+            <div class="right">
+                Title Visible：<input type="checkbox" v-model="dataitem.config.titleshow" style="width: 6%"/>
+                <div v-show="dataitem.config.titleshow">
+                    Title Align：
+                    <input type="radio" name="radioalign" value="right" v-model="dataitem.config.titlealign" ><label>Right</label>
+                    <input type="radio" name="titlealign" value="center" v-model="dataitem.config.titlealign" ><label>Center</label>
+                    <input type="radio" name="radioalign" value="left" v-model="dataitem.config.titlealign" ><label>Left</label>
+                    &nbsp;&nbsp;Title Width：
+                    <input type="text" v-model="dataitem.config.titlewidth" style="width:15%" /><br/>
+                </div>
+                <div>
+                    Content Align：
+                    <input type="radio" name="radioalignname" value="left" v-model="dataitem.config.namealign" ><label>Left</label>
+                    <input type="radio" name="radioalignname" value="center" v-model="dataitem.config.namealign" ><label>Center</label>
+                    <input type="radio" name="radioalignname" value="right" v-model="dataitem.config.namealign" ><label>Right</label>
+                    &nbsp;&nbsp;Content Width：
+                    <input type="text" v-model="dataitem.config.namewidth" style="width:15%" />
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">File Source</div>
+            <div class="right">
+                <div class="selDiv" style="line-height: 40px;" >
+                    <div v-show="!blnUpded" >
+                        <label class="fileContainer">Select file to upload：<input id="file" ref="clearFile" type="file" @change="fileUpload()"></label>
+                    </div>
+                    <div v-show="blnUpded">
+                        <img height="20" src="./imgs/file.png"><a href="javascript:void(0)" @click="fileDownload()"  style="text-decoration-line: none;">{{fileContent['fileName']}}</a>&nbsp;&nbsp;
+                        <a href="javascript:void(0)" @click="fileDelete()" >Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Call Mode</div>
+            <div class="right">
+                <input type="radio" name="radiostype"  value="" v-model="dataitem.config.pubtype" ><label>Internal</label>
+                <input type="radio" name="radiostype"  value="portal/" v-model="dataitem.config.pubtype" ><label>Public</label>&nbsp;&nbsp;
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Display</div>
+            <div class="right">
+                Page：<input type="checkbox" v-model="dataitem.config.formshow" style="width:30px" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="./../../../js/funcconfig.js"></script>
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            dataitem:{
+                "comid":"11",
+                "comname":"FileDownload",
+                "comtitle":"",
+                "code":{"onchange":{}},
+                "config":{"pubtype":"","namealign":"left","titlewidth":"15%","namewidth":"85%","fieldtitle":"","titleshow":true,"titlealign":"right","formshow":true,"filecontent":"","fileName":"","fileGUID":"","filePath":""},
+                "attrget":{"File":"filecontent"},
+                "attrset":{"File":"filecontent"}
+            },            
+            fileContent:{},
+			blnUpded:false
+        }
+    },
+    methods: 
+    {
+        fileDelete()
+        {
+            this.fileContent={};
+            this.blnUpded=false;
+            this.dataitem.config.filecontent="";
+            this.dataitem.config.fileName="";
+            this.dataitem.config.fileGUID="";
+            this.$refs.clearFile.value = '';
+        },
+        fileDownload()
+        {
+            that=this;
+            axios({
+                url: './../../../../api/downloadFile',
+                method: 'POST',
+                data:{"fileGuid":that.fileContent['fileGUID']},
+                responseType: 'blob', // important
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', that.fileContent['fileName']);
+                document.body.appendChild(link);
+                link.click();
+            });
+        },
+        getfileContent()
+        {
+            if(this.blnUpded)
+                return this.fileContent;
+        },
+        fileUpload()
+        {
+            let file = document.getElementById("file").files[0];
+            let fv = document.getElementById("file").value;
+            fv = fv.substring(fv.indexOf(".")+1);
+
+            let params = new FormData();
+            params.append('file', file)
+            that=this;
+            axios({
+                url: "./../../../../api/uploadFile",
+                method: "post",
+                data: params,
+                headers: { 'Content-Type': 'multipart/form-data' }
+            }).then(function(res){
+                that.fileContent=res.data;    
+                that.blnUpded=true; 
+                that.dataitem.config.filecontent=JSON.stringify(that.fileContent);
+                that.dataitem.config.fileName=that.fileContent['fileName'];
+                that.dataitem.config.fileGUID=that.fileContent['fileGUID'];
+                that.dataitem.config.filePath=that.fileContent['filePath'];
+
+                }).catch(function (err) {
+                });
+        },
+        getDataItem() 
+        {
+            this.dataitem.comtitle=this.dataitem.config.fieldtitle;
+
+            let viewhtml = "";
+            let tshow = "display:none"
+            if(this.dataitem.config.titleshow)
+            {
+                tshow = "display:blcok";
+            }
+
+            viewhtml = viewhtml + "<div style=\"width:100%;float:left;margin-bottom:5px\">";
+            viewhtml = viewhtml + "<div style=\""+ tshow +";width:"+ this.dataitem.config.titlewidth +";font-size:16px;line-height:40px;padding-right:15px;text-align:"+ this.dataitem.config.titlealign +";font-weight: bold;float:left;box-sizing: border-box;\">"+ this.dataitem.config.fieldtitle +"</div>";
+            viewhtml = viewhtml + "<div style=\"text-align:"+ this.dataitem.config.namealign +";width:"+ this.dataitem.config.namewidth +";box-sizing: border-box;white-space: pre;line-height:40px; float:left;\">";
+            viewhtml = viewhtml + "<a href='javascript:void(0)' style=\"text-decoration-line: none;\">File1.pdf</a></div>";
+            viewhtml = viewhtml + "</div>";
+
+            this.dataitem.config.viewhtml=viewhtml;
+
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+            if(this.dataitem.config.filecontent!="")
+            {
+                this.fileContent=JSON.parse(this.dataitem.config.filecontent);    
+                this.blnUpded=true; 
+            }
+        },
+        setFormValue(fValue,codename) 
+        {
+            let c = this.dataitem['code'];
+            c[codename] = fValue;
+        },
+        getFormValue(codename) 
+        {
+            let c = this.dataitem['code'];
+            return c[codename];
+        },
+        setDataItemByK(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        }, 
+        getDataItemSub() 
+        {
+            return this.dataitem;
+        }
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.getDataItemSub = this.getDataItemSub;
+        window.setDataItem = this.setDataItem;
+        window.setFormValue = this.setFormValue;
+        window.getFormValue = this.getFormValue;
+        window.setDataItemByK = this.setDataItemByK;
+
+        gInitConfig();
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+</script>
+
+</body>
+</html>

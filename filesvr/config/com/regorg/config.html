@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+<script src="selColor.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Style</div>
+            <div class="right" style="line-height:40px">
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="1" v-model="dataitem.config.apptype" ><label>PC</label>
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="2" v-model="dataitem.config.apptype" ><label>Mobile</label>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">ActivatePage</div>
+            <div class="right" style="line-height: 40px;">
+                <input type="text" v-model="dataitem.config.actpage" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="./../../../js/funcconfig.js"></script>
+
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            comdatas:null,
+            dataitem:{"comid":"4006","comname":"Org Register","comtitle":"Org Register","config":{"actpage":"reg_psnact.html","apptype":"1","lan":"e","conbg":"#fff","conradius":"2em"}}
+        }
+    },
+    methods: 
+    {
+        changeLan()
+        {
+
+        },
+        getDataItem() 
+        {
+            if(this.dataitem.config.lan=="c")
+            {
+                this.dataitem.config.caporgname = "OrgName";
+                this.dataitem.config.cappsn = "Admin Name";
+                this.dataitem.config.capemail = "Admin Email";
+                this.dataitem.config.capmobile = "Admin Mobile";
+
+                this.dataitem.config.capcode = "CAPTCHA";
+                this.dataitem.config.capcodedo = "Click to switch CAPTCHA";
+                this.dataitem.config.btnsend = "Register";
+
+                this.dataitem.config.msgorg1 = "Enter OrgName。";
+                this.dataitem.config.msgorg2 = "OrgNamelength cannot exceed 200 characters。";
+                this.dataitem.config.msgpsn1 = "Enter Admin Name。";
+                this.dataitem.config.msgpsn2 = "Admin Namelength cannot exceed 50 characters。";
+
+                this.dataitem.config.msgemail1 = "Enter Admin Email。";
+                this.dataitem.config.msgemail2 = "EmailURLFormat is incorrect。";
+                this.dataitem.config.msgemail3 = "Emaillength cannot exceed 100 characters。";
+                this.dataitem.config.msgmobile1 = "Mobilecannot be empty。";
+                this.dataitem.config.msgmobile2 = "Mobile format is incorrect.";
+                this.dataitem.config.msgmobile3 = "Mobile length cannot exceed 20 characters.";
+                this.dataitem.config.msgsend = "RegisterSuccess，Please checkActivateLink。";
+
+            }
+            else
+            {
+
+                this.dataitem.config.caporgname = "Org name";
+                this.dataitem.config.cappsn = "Admin name";
+                this.dataitem.config.capemail = "Admin email";
+                this.dataitem.config.capmobile = "Admin mobile";
+                this.dataitem.config.capcode = "Captcha";
+                this.dataitem.config.capcodedo = "Switch the captcha";
+                this.dataitem.config.btnsend = "Register";
+
+                this.dataitem.config.msgorg1 = "Org name cannot be empty";
+                this.dataitem.config.msgorg2 = "The length of the org name cannot exceed 100";
+                this.dataitem.config.msgpsn1 = "Admin name cannot be empty";
+                this.dataitem.config.msgpsn2 = "The length of the admin name cannot exceed 50";
+
+                this.dataitem.config.msgemail1 = "Email cannot be empty";
+                this.dataitem.config.msgemail2 = "Incorrect email format";
+                this.dataitem.config.msgemail3 = "The length of the email cannot exceed 100";
+                this.dataitem.config.msgmobile1 = "Mobile cannot be empty";
+                this.dataitem.config.msgmobile2 = "Incorrect mobile format";
+                this.dataitem.config.msgmobile3 = "The length of the mobile cannot exceed 20";
+                this.dataitem.config.msgsend = "Registration successful, system will send the activation link to you";
+            }
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+        },
+        setDataItemByK(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        }, 
+        getDataItemSub() 
+        {
+            return this.dataitem;
+        }
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.getDataItemSub = this.getDataItemSub;
+        window.setDataItem = this.setDataItem;
+        window.setDataItemByK = this.setDataItemByK;
+
+        gInitConfig();
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+Colorpicker.create({
+el: "color-picker-conbg", 
+color: "", 
+change: function (elem, hex) {
+    elem.style.borderColor = hex;
+    window.setDataItemByK('conbg',hex);
+}
+});
+
+</script>
+
+</body>
+</html>

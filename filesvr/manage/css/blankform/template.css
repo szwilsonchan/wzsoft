@@ -1,0 +1,784 @@
+body
+{
+    margin: 0px;
+    padding: 0px;
+}
+.main-wrapper 
+{
+    width:100%;
+    border: 1px solid rgb(46, 162, 240);
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    height: fit-content;
+    overflow: auto;
+    clear:both;
+}
+.comlist
+{
+    width:99%;
+    margin-bottom:8px;
+    min-height: 60px;
+    height:fit-content;
+    background: rgb(252, 253, 253);
+    border-top: 0px solid rgb(46, 162, 240);
+    overflow:auto;
+    padding-left:10px;
+}
+.comitem
+{
+    margin:3px;
+    width:150px;
+    height:30px;
+    line-height: 30px;
+    float:left;
+    font-size: 0.6em;
+    text-align: center;
+    border: 1px solid rgb(154, 181, 238);
+}
+.comitem:hover
+{
+    border: 1px solid rgb(78, 130, 241);
+}
+.tmp-action 
+{
+    padding:5px;
+    height:40px;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.tmp-action-save 
+{
+    box-sizing: border-box;
+    text-align: right;
+    float:right;
+}
+
+.tmp-action-add 
+{
+    position: relative;
+    height:fit-content;
+    box-sizing: border-box;
+    text-align: left;
+    float:left;
+}
+
+.tmp-action-save .btnOK
+{
+    border-style: none;
+    border-radius: 0.5em;
+    background-color: rgb(247, 164, 71);
+    color:#fff;
+    height:30px;
+    width:80px;
+    cursor: pointer;
+    outline:none;
+    box-sizing: border-box;
+}
+.tmp-action-save .btnOK:hover
+{
+    background-color: rgb(240, 182, 116);
+}
+.tmp-action-save .btnCancle
+{
+    border-style: none;
+    border-radius: 0.5em;
+    background-color: rgb(205, 209, 212);
+    color:#fff;
+    height:30px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.tmp-action-save .btnCancle:hover
+{
+    background-color: rgb(247, 164, 71);
+}
+.tmp-action-add .dropcontent
+{
+    display:none;
+    position: absolute;
+    min-height:50px;
+    z-index: 2100;
+    width:200px;
+    background-color:white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    text-align: left;
+}
+.dropitem:hover .dropcontent 
+{
+    display:block;
+}
+.tmp-action-add .menu-content
+{
+    padding: 5px;
+}
+.tmp-action-add .menu-content li
+{
+    list-style: none;
+}
+.tmp-action-add .menu-content a:link
+{
+    margin-bottom: 5px;
+    display: block;
+    color: rgb(80, 79, 79);
+    background-color:rgb(234, 237, 241);
+    border-radius: 3em;
+    height:30px;
+    line-height: 35px;
+    text-align: center;
+    text-decoration: none;
+}
+.tmp-action-add .menu-content a:visited
+{
+    color: rgb(80, 79, 79);
+}
+.tmp-action-add .menu-content a:hover
+{
+    background-color:rgb(104, 187, 241);
+}
+
+.tmp-action-add input[type=button]
+{
+    border-style: none;
+    border-radius: 0.5em;
+    background-color: rgb(46, 162, 240);
+    color:#fff;
+    height:30px;
+    width:110px;
+    cursor: pointer;
+    outline:none;
+    box-sizing: border-box;
+}
+.tmp-action-add input[type=button]:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+.main-wrapper-info
+{
+    color: black;
+    font-size:0.8em;
+    background-color:rgb(241, 215, 180);
+    border: none;
+    border-radius: 0.5em;
+    padding: 5px;
+    width:200px;
+    box-sizing: border-box;
+    overflow: auto;
+    position:absolute;
+    top:5px;
+    right:260px;
+}
+.main-wrapper-info .left
+{
+    float:left;
+    width:90%;
+    text-align: center;
+    box-sizing: border-box;
+    border: none;
+}
+
+.header 
+{
+    background-color: rgb(246, 246, 246);
+    margin: 0px;
+    padding:5px;
+    width:100%;
+    height:40px;
+    clear: both;
+    box-sizing: border-box;
+    z-index: 998;
+    float:left;
+}
+.menu-left 
+{
+    width:10%;
+    margin: 0px;
+    background-color: #fff;
+    box-sizing: border-box;
+    padding:0px;
+    min-height: 200px;
+    overflow: hidden;
+    float:left;
+}
+
+.content 
+{
+    width:90%;
+    margin: 0px;
+    min-height: 500px;
+    box-sizing: border-box;
+    background-color: rgb(234, 237, 241);
+    float:left;
+    
+}
+.com-wrapper
+{
+    border: 1px dotted rgb(73, 78, 78)
+}
+.comconfigTitle
+{
+    padding: 5px;
+    color: rgb(38, 41, 41);
+    font-size: 1.2em;
+}
+.contentformin 
+{
+    width:700px;
+    left:50%;
+    margin-left: -350px;
+    min-height: 500px;
+    height: fit-content;
+    position:relative;
+    box-sizing: border-box;
+    background-color: rgb(234, 237, 241);
+    overflow: auto;
+    float:left;
+}
+.contentcodeval 
+{
+    width:100%;
+    height: fit-content;
+    min-height: 700px;
+    position:relative;
+    box-sizing: border-box;
+    background-color: rgb(234, 237, 241);
+    overflow: auto;
+    float:left;
+}
+.codeval-action 
+{
+    position:absolute;
+    top: 5px;
+    right: 180px;
+    overflow:visible;
+    padding-right: 2px;
+    box-sizing: border-box;
+    text-align: left;
+    z-index: 999;
+}
+
+.codeval-action .btnOK
+{
+    border-style: none;
+    border-radius: 0.5em;
+    background-color: rgb(199, 144, 42);
+    color:#fff;
+    height:30px;
+    width:60px;
+    cursor: pointer;
+    outline:none;
+    box-sizing: border-box;
+}
+.codeval-action .btnOK:hover
+{
+    background-color: rgb(247, 164, 71);
+}
+.codeval-action .btnCancle
+{
+    border-style: none;
+    border-radius: 0.5em;
+    background-color: rgb(205, 209, 212);
+    color:#fff;
+    height:30px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.codeval-action .btnCancle:hover
+{
+    background-color: rgb(247, 164, 71);
+}
+.template-action .dropcontent
+{
+    display:none;
+    position: absolute;
+    height:200px;
+    z-index: 2100;
+    width:200px;
+    background-color:white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+.dropitem:hover .dropcontent 
+{
+    display:block;
+}
+.template-action .menu-content li
+{
+    list-style: none;
+}
+.template-action .menu-content a:link
+{
+    margin-bottom: 15px;
+    display: block;
+    color: rgb(80, 79, 79);
+    background-color:rgb(234, 237, 241);
+    border-radius: 3em;
+    height:50px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+}
+.template-action .menu-content a:visited
+{
+    color: rgb(80, 79, 79);
+}
+.template-action .menu-content a:hover
+{
+    margin-bottom: 15px;
+    display: block;
+    color: rgb(80, 79, 79);
+    border-radius: 3em;
+    height:50px;
+    line-height: 50px;
+    background-color:rgb(104, 187, 241);
+    text-align: center;
+    text-decoration: none;
+}
+
+.template-action 
+{
+    position:absolute;
+    top: 1px;
+    right: 1px;
+    height:fit-content;
+    padding-right: 2px;
+    box-sizing: border-box;
+    text-align: right;
+}
+
+.template-action input[type=button]
+{
+    border-style: none;
+    border-radius: 0.5em;
+    background-color: rgb(46, 162, 240);
+    color:#fff;
+    height:20px;
+    cursor: pointer;
+    outline:none;
+    box-sizing: border-box;
+}
+.template-action input[type=button]:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+
+.coverWin 
+{ 
+    position:absolute;left:0px;top:0px;
+    background:rgba(0, 0, 0, 0.4);
+    width:100%;  
+    height:100%;
+    filter:alpha(opacity=60);  
+    opacity:0.6;  
+    display:none; 
+    z-Index:999;  
+}
+
+.tempForm 
+{ 
+    position:fixed;
+    background:#fff;
+    left:0px;
+    top:0px;
+    width:100%;  
+    height:100%; 
+    z-Index:1002;  
+    display: none;
+}
+.tempForm iframe
+{ 
+    width:100%;   
+    height:100%;  
+}
+.codeVal 
+{ 
+    position:fixed;
+    background:#fff;
+    left:0px;
+    top:0px;
+    width:100%;  
+    height:100%; 
+    z-Index:1002;  
+    display: none;
+}
+.codeVal iframe
+{ 
+    width:100%;   
+    height:100%;  
+}
+.modalWin 
+{ 
+    position:absolute;
+    width:500px;
+    height:300px;
+    top:20%;
+    left:39%;
+    background-color:#fff;
+    display:none;
+    cursor:pointer;
+    text-align: center;
+    z-Index:9999;  
+}
+.modalWin .modalWinMsg 
+{
+    color: black;
+    font-size:1em;
+    font-weight: bold;
+    width:100%;
+    margin-top: 18%;
+    box-sizing: border-box;
+    height:30px;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+.modalWinBtn .btnOK
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(46, 162, 240);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.modalWinBtn .btnOK:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+.modalWinBtn .btnCancle
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(205, 209, 212);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.modalWinBtn .btnCancle:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+
+.updWin 
+{ 
+    position:absolute;
+    width:900px;
+    height:838px;
+    top:10px;
+    left:50%;
+    margin-left: -350px;
+    background-color:#fff;
+    display:none;
+    cursor:pointer;
+    text-align: center;
+    padding:20px;
+    z-Index:1001;
+    overflow:auto;
+}
+
+.updWin .updWin-content
+{ 
+    width:100%;
+    box-sizing: border-box;
+    padding:20px;
+    overflow: visible; 
+    margin-bottom: 10px;
+}
+.updWin-content .updWin-content-item
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.updWin-content-item .left
+{ 
+    width:15%;
+    box-sizing: border-box;
+    font-size:1em;
+    line-height:40px;
+    padding-right:15px;
+    text-align:right;
+    font-weight: bold;
+    float:left;
+}
+.updWin-content-item .right
+{
+    width:85%;
+    box-sizing: border-box;
+    text-align:left;
+    float:left;
+}
+.updWin-content-item .compiframe
+{
+    width:100%;
+    height:650px;
+    border: 0px solid rgb(46, 162, 240);
+    box-sizing: border-box;
+    text-align:left;
+}
+
+.updWin-content-item input[type=text]:not(.readonly)
+{
+    border: 1px solid rgb(234, 237, 241);
+    border-radius: 0.8em;
+    height:40px;
+    width:90%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+.updWin-content-item .readonly
+{
+    border:none;
+    height:40px;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+.updWin-content-item input[type=text]:focus:not(.readonly)
+{
+    border: 1px solid rgb(46, 162, 240);
+}
+.updWin-content-item select
+{
+    border: none;
+    border-radius: 0.8em;
+    background-color: rgb(234, 237, 241);
+    padding: 5px;
+    width:90%;
+    height:40px;
+}
+.updWin .btnOK
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(46, 162, 240);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.updWin .btnOK:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+.updWin .btnCancle
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(205, 209, 212);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.updWin .btnCancle:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+.updWin-info
+{
+    color: black;
+    font-size:0.8em;
+    background-color:rgb(241, 215, 180);
+    border: 1px solid rgb(206, 133, 37);
+    border-radius: 0.5em;
+    padding: 10px;
+    width:100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.updWin-info .left
+{
+    float:left;
+    width:90%;
+    box-sizing: border-box;
+}
+.updWin-info .right
+{
+    float:right;
+    color:grey;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.select-tab li
+{
+    list-style: none;
+    border-bottom: 1px solid rgb(225, 231, 231);
+    padding: 5px;
+    text-align: center;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    display: block;
+    cursor: pointer;
+    float:left;
+}
+
+.select-tab ul
+{
+    padding: 0px;
+    margin: 0px;
+}
+
+.select-tab .selected
+{
+    color: rgb(51, 128, 243);
+    font-weight: bold;
+    border-bottom: 1px solid rgb(51, 128, 243);
+}
+
+.footer 
+{
+    padding: 1em;
+    background-color: rgb(246, 246, 246);
+    width:100%;
+    color: rgb(173, 170, 170);
+    clear: both;
+    box-sizing: border-box;
+    position:relative;
+}
+.conParent
+{
+    border: 2px dotted rgb(40, 206, 81)
+}
+.conParentHidden
+{
+    display: none;
+    border: 2px dotted rgb(40, 206, 81);
+    z-Index:1000;
+}
+.dropcontent div
+{
+  padding:5px;
+  margin:3px;
+  float:left;
+  height:fit-content;
+  min-width:160px;
+  width:fit-content;
+  border-radius: 0.8em;
+  border: 1px solid rgb(102, 183, 238);
+}
+
+.action-content a:link
+{
+    margin-left: 5px;
+    width:24px;
+    display: block;
+    color: rgb(252, 249, 249);
+    background-color:rgb(30, 108, 211);
+    border-radius: 0.4em;
+    height:24px;
+    text-align: center;
+    padding-top:2px;
+    padding-right:1px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    float:left;
+}
+.action-content a:visited
+{
+    color: rgb(252, 249, 249);
+}
+
+.action-content a.active
+{
+    background-color:rgb(104, 187, 241);
+}
+.action-content a:hover:not(.active)
+{
+    background-color:rgb(104, 187, 241);
+}
+
+.btnAddVar
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(247, 164, 71);
+    color:#fff;
+    height:26px;
+    min-width:90px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    outline:none;
+    box-sizing: border-box;
+}
+.btnAddVar:hover
+{
+    background-color: rgb(240, 182, 116);
+}
+.btnCancleVar
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(205, 209, 212);
+    color:#fff;
+    height:26px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.btnCancleVar:hover
+{
+    background-color: rgb(240, 182, 116);
+}
+
+.fileContainer {
+    overflow: hidden;
+    position: relative;
+    background-color: rgb(102, 183, 238);
+    border-radius: .5em;
+    float: left;
+    padding-left: 10px;
+    width:200px;
+    height:26px;
+    line-height:26px;
+    margin-top: 8px;
+    margin-left: 3px;
+    text-align:center;
+}
+
+.fileContainer [type=file] {
+    display: block;
+    font-size: 999px;
+    filter: alpha(opacity=0);
+    min-height: 100%;
+    min-width: 100%;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+    cursor: pointer;
+}
+
+.fileContainer:hover
+{
+    background-color: rgb(46, 162, 240);
+}

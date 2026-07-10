@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/blankform/template.css" type="text/css"  />	
+<script src="./../../js/vue.global.js"></script>
+<script src="./../../js/axios.min.js"></script>
+<script src="./js/selColor.js"></script>
+<style>
+
+</style>
+</head>
+<body scroll="no">
+<div class="tmp-action" id="tmp-action" >
+    <div class="tmp-action-add  dropitem" style="margin-right:5px">
+        <input type="button" value="+Add/Edit Container" onclick="addConParentWin()" style="margin-right:30px" />
+        <div class="dropcontent" id="divContainersUpd" style="padding-top:10px"></div>
+    </div>
+    <div class="tmp-action-add" >
+        <input type="button" value="+AddComponent" onclick="showComList()" />
+        <div class="dropcontent" >
+            <ul class="menu-content" id="divContainers" ></ul>
+        </div>&nbsp;&nbsp;<input type="button" style="width:80px;background-color: #ccc;" value="Paste" onclick="pasteCom()" />
+    </div>
+    <div class="tmp-action-save">
+        <input type="button" class="btnOK" value="Submit" onclick="saveTemplate('submit')" />
+        <input type="button" class="btnOK" value="Initial Code" onclick="openCodeValWin('initformdatas')" />
+        <input type="button" class="btnCancle" value="Back" onclick="goBack()" />
+        <div class="main-wrapper-info" id="main-wrapper-info" style="display:none">
+            <div class="left" id="main-wrapper-info-msg"></div>
+            <div class="right" ></div>
+        </div>
+    </div>
+</div>
+<div id="comlist" class="comlist" style="display:none">
+    <div class="select-tab" >
+        <ul>
+            <li id="selpage" style="width:20%" class="selected" onclick="selComTab(event)" >Page</li>
+            <li id="selform" style="width:20%" onclick="selComTab(event)" >Form</li>
+            <li style="width:58%" >&nbsp;</li>
+        </ul>
+    </div>
+    <div id="comlist-selpage" >
+    </div>
+    <div id="comlist-selform" style="padding:0px;display:none" >
+    </div>
+</div>
+<div class="main-wrapper" id="main-wrapper">
+    [@filecontent@]
+</div>
+<div id="coverWin" class="coverWin"></div>
+<div id="modalWin" class="modalWin">
+    <div class="modalWinMsg"><span id="modalWinMsg"></span></div>
+    <div class="modalWinBtn">
+        <input type="button" class="btnOK"  value="OK" onclick="openWinOK()" />
+        <input type="button" class="btnCancle"  value="Cancel" onclick="closeWin()" />
+    </div>
+</div>
+<div id="updWin" class="updWin"></div> 
+<div id="template-action" class="template-action" style="display:none" >
+    <input type="button" value="Before" onclick="moveUp(event)" />
+    <input type="button" value="After" onclick="moveDown(event)" />
+    <input type="button" value="Copy" onclick="copyCom(event)" />
+    <input type="button" value="Edit" onclick="openUpdWin('',updContainer,event)" />
+    <input type="button" value="Delete" onclick="openWin('Are you sure you want to delete this component?',delContainer,event)" />
+</div>
+<div id="template-action-con" class="template-action-con" style="display:none" >
+    <input type="button" value="Before" onclick="moveUp(event)" />
+    <input type="button" value="After" onclick="moveDown(event)" />
+    <input type="button" value="Copy" onclick="copyCom(event)" />
+    <input type="button" value="Paste" onclick="pasteComSub(event)" />
+    <input type="button" value="Edit" onclick="openUpdWin('',updContainer,event)" />
+    <input type="button" value="Delete" onclick="openWin('OKDeleteContainer？',delContainer,event)" />
+</div>
+<div id="hiddendiv-action" class="template-action" style="display:none" >
+    <input type="button" value="Edit" onclick="openUpdWin('',updContainer,event)" />
+    <input type="button" value="Hide" onclick="hiddenContainer(event)" />
+</div>
+<div class="tempForm" id="tempForm" style="display:none">
+    <iframe id="tempformiframe" frameborder="no" marginwidth="0" marginheight="0" ></iframe>
+</div>
+<div class="codeVal" id="codeVal" style="display:none">
+    <iframe id="codeValiframe" frameborder="no" marginwidth="0" marginheight="0" ></iframe>
+</div>
+<script src="./js/template.js"></script>
+
+</body>
+</html>
+    

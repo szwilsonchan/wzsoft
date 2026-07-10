@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MyTree</title>
+    <style>
+        .treeItem {
+            padding-left: 12px;
+            margin: 2px;
+        }
+
+        .itemIcon {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            line-height: 16px;
+            color: white;
+            font-weight: bolder;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 50%;
+            background: rgb(85, 141, 213);
+            margin-right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="border:0.1px;margin:1%;display: inline-block;position: absolute;left: 0px;">
+        <div id="my-tree-root0" class="treeItem"></div>
+    </div>
+    <script>
+        var list = [{
+                "ID": "1",
+                "NAME": "一级目录",
+                "PID": "0",
+            },
+            {
+                "ID": "2",
+                "NAME": "二级目录",
+                "PID": "1"
+            }
+        ];
+
+        function MyTree(list, rootId) {
+            // 简单的深拷贝
+            this.list = JSON.parse(JSON.stringify(list));
+            this.rootId = rootId;
+            this.nodesMap = {};
+            this.treeData = [];
+        }
+
+        MyTree.prototype = {
+            init: function () {
+                this.treeData = this.initTreeData(this.list);
+                for (let i = 0; i < this.treeData.length; i++) {
+                    this.createDom(this.treeData[i]);
+                }
+            },
+
+            // 将数组初始化为树结构
+            initTreeData: function (arr) {
+                for (let i = 0; i < arr.length; i++) this.nodesMap[arr[i].ID] = arr[i];
+                let reArr = [];
+                for (let i = 0; i < arr.length; i++) {
+                    arr[i]['showChilds'] = true;
+                    if (!this.nodesMap[arr[i].PID]) reArr.push(arr[i]);
+                    else {
+                        let fatherNode = this.nodesMap[arr[i].PID];
+                        fatherNode.childs = fatherNode.childs || [];
+                        fatherNode.childs.push(arr[i]);
+                    }
+                }
+                return reArr;
+            },
+
+            // 根据数组渲染树
+            createDom: function (data) {
+                let self = this;
+                let fatherDom = document.getElementById(`${this.rootId}-my-tree-${data.PID}`);
+                // 虚拟根节点
+                if (!fatherDom) fatherDom = document.getElementById(this.rootId);
+                let dom = document.createElement("div");
+                dom.id = `${this.rootId}-my-tree-${data.ID}`;
+                dom.className = 'treeItem';
+                let iconDom = document.createElement("div");
+                iconDom.id = `${this.rootId}-my-tree-icon-${data.ID}`;
+                iconDom.className = "itemIcon";
+                iconDom.innerHTML = "-";
+                // if (data.showChilds) iconDom.innerHTML = "-";
+                // else iconDom.innerHTML = "+";
+                dom.appendChild(iconDom);
+                dom.innerHTML += data.NAME;
+                fatherDom.appendChild(dom);
+                iconDom = document.getElementById(`${this.rootId}-my-tree-icon-${data.ID}`);
+                iconDom.onclick = function () {
+                    self.iconClickHandler(iconDom);
+                };
+                // 递归渲染子树
+                if (data.childs && data.childs.length > 0) {
+                    for (let i = 0; i < data.childs.length; i++) this.createDom(data.childs[i]);
+                }
+            },
+
+            iconClickHandler(dom) {
+                if (!dom || !dom.id) return;
+                let id = dom.id;
+                if (id.indexOf("my-tree-icon-") == -1) return;
+                id = id.substring(id.indexOf("my-tree-icon-") + 13);
+                let node = this.nodesMap[id];
+                if (!node) return;
+                if (node.showChilds) {
+                    this.hideHandler(dom);
+                    dom.innerHTML = "+";
+                } else {
+                    this.showHandler(dom);
+                    dom.innerHTML = "-";
+                }
+            },
+
+            // 隐藏子树
+            hideHandler: function (dom) {
+                if (!dom || !dom.id) return;
+                let id = dom.id;
+                if (id.indexOf("my-tree-icon-") == -1) return;
+                id = id.substring(id.indexOf("my-tree-icon-") + 13);
+                let node = this.nodesMap[id];
+                if (!node) return;
+                let childs = node.childs;
+                if (!childs) return;
+                node.showChilds = false;
+                for (let i = 0; i < childs.length; i++) {
+                    let childDom = document.getElementById(`${this.rootId}-my-tree-${childs[i].ID}`);
+                    if (!childDom) continue;
+                    childDom.style.display = 'none';
+                    let childIconDom = document.getElementById(`${this.rootId}-my-tree-icon-${childs[i].ID}`);
+                    this.hideHandler(childIconDom);
+                }
+            },
+
+            // 渲染子树
+            showHandler: function (dom) {
+                if (!dom || !dom.id) return;
+                let id = dom.id;
+                if (id.indexOf("my-tree-icon-") == -1) return;
+                id = id.substring(id.indexOf("my-tree-icon-") + 13);
+                let node = this.nodesMap[id];
+                if (!node) return;
+                let childs = node.childs;
+                if (!childs) return;
+                node.showChilds = true;
+                for (let i = 0; i < childs.length; i++) {
+                    let childDom = document.getElementById(`${this.rootId}-my-tree-${childs[i].ID}`);
+                    if (!childDom) continue;
+                    childDom.style.display = 'block';
+                    let childIconDom = document.getElementById(`${this.rootId}-my-tree-icon-${childs[i].ID}`);
+                    let childNode = this.nodesMap[childs[i].ID];
+                    childIconDom.innerHTML = "+";
+                    // 递归渲染子树
+                    this.hideHandler(childIconDom);
+                }
+            }
+        }
+
+        var myTree0 = new MyTree(list, "my-tree-root0");
+        myTree0.init();
+        var myTree1 = new MyTree(list, "my-tree-root1");
+        //myTree1.init();
+        var myTree2 = new MyTree(list, "my-tree-root2");
+        //myTree2.init();
+    </script>
+</body>
+
+</html>

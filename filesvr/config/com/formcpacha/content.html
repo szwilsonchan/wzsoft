@@ -1,0 +1,8 @@
+        <div v-show="!this.isView" class="updWin-content-item[@configid@]" id="input[@configid@]">
+            <div class="left"  v-show="!this.isView&&titleshow">[@caption@]：<span v-show="!this.isView">[@fieldnoemptylbl@]</span></div>
+            <div class="right" v-show="!this.isView">
+                <input type="text" class="cpachaInput[@configid@]" v-model="dataitem.form_cpacha" onchange="onchange[@configid@]()" onblur="onblur[@configid@]()" />
+                <img id="cpacha-img[@configid@]" class="cpachaImg[@configid@]" title="Click to refresh CAPTCHA"  src="./../user/getcpacha?vl=4&w=150&h=40&type=formCpacha" @click="changeCpacha">
+                <div style="float:left;width:100%;color:red;display:none" id="valmsg[@configid@]"></div>
+            </div>
+        </div>

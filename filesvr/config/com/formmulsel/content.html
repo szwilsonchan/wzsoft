@@ -1,0 +1,12 @@
+<div class="updWin-content-item[@configid@]" id="input[@configid@]" style="display:none">
+    <div class="left"  v-show="titleshow">[@fieldtitle@]：<span v-show="!this.isView">[@fieldnoemptylbl@]</span></div>
+    <div class="right" v-show="!this.isView">
+        <template v-for="item in this.viewdatas">
+            <input type='checkbox' class="rd" :checked="selIds.indexOf(item['[@big_valuefield@]'])>=0" name='checkboxinput' @click="checkedOneApp(item['[@big_valuefield@]'])" ><label onclick="changeLable[@configid@](event)">{{item['[@big_showfield@]']}}&nbsp;</label>
+        </template>
+        <span style="color:red;display:none" id="valmsg[@configid@]"></span>
+    </div>
+    <div class="right" v-show="this.isView">
+        {{dataitem.[@fieldname@]STXT}}
+    </div>
+</div>

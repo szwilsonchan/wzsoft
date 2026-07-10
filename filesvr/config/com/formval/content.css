@@ -1,0 +1,25 @@
+.val-info[@configid@]
+{
+    color: black;
+    font-size:0.8em;
+    background-color:rgb(241, 215, 180);
+    border: 1px solid rgb(206, 133, 37);
+    border-radius: 0.5em;
+    padding: 10px;
+    width:100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.val-info[@configid@] .left
+{
+    float:left;
+    width:90%;
+    box-sizing: border-box;
+}
+.val-info[@configid@] .right
+{
+    float:right;
+    color:grey;
+    cursor: pointer;
+    box-sizing: border-box;
+}

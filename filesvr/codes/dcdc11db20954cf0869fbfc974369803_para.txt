@@ -1,0 +1,1 @@
+{"para":[{"name":"visitorId","ptype":"sys","type":"str","key":"visitorId"},{"name":"visitorRoles","ptype":"sys","type":"str","key":"visitorRoles"},{"name":"visitorDeptId","ptype":"sys","type":"str","key":"visitorDeptId"},{"ref":0,"name":"KeyKEY","ptype":"def","type":"str","key":"KeyKEY"},{"ref":0,"name":"KeyValue","ptype":"def","type":"str","key":"KeyValue"}],"type":"def"}

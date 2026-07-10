@@ -1,0 +1,82 @@
+.updWin-content-item[@configid@]
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.updWin-content-item[@configid@] .left
+{ 
+    width:[@titlewidth@];
+    box-sizing: border-box;
+    font-size:[@itemfontsize@];
+    line-height:[@itemheight@];
+    padding-right:15px;
+    text-align:[@titlealign@];
+    font-weight: bold;
+    float:left;
+}
+.updWin-content-item[@configid@] .right
+{
+    width:[@namewidth@];
+    font-size:[@itemfontsize@];
+    box-sizing: border-box;
+    text-align:left;
+    float:left;
+}
+
+.updWin-content-item[@configid@] input[type=text]:not(.readonly)
+{
+    border: 1px solid rgb(234, 237, 241);
+    border-radius: 0.8em;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    width:90%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.updWin-content-item[@configid@] input[type=text]:focus:not(.readonly)
+{
+    border: 1px solid rgb(46, 162, 240);
+}
+
+.fileContainer[@configid@] {
+    overflow: hidden;
+    position: relative;
+    background-color: rgb(206, 203, 200);
+    border-radius: 0.3em;
+    float: left;
+    padding-left: 10px;
+    min-width:[@selbtnwidth@];
+    line-height:[@itemheight@];
+    border: 1px solid rgb(107, 106, 106);
+    text-align:center
+}
+
+.fileContainer[@configid@] [type=file] {
+    display: block;
+    font-size: 999px;
+    filter: alpha(opacity=0);
+    min-height: 100%;
+    min-width: 100%;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+    cursor: pointer;
+}
+
+.fileContainer[@configid@]:hover
+{
+    background-color: rgb(230, 192, 157);
+}
+.fileType[@configid@]
+{
+	width:100%;
+	float:left;
+	font-size:0.8em;
+}

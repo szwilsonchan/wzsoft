@@ -1,0 +1,20 @@
+<ul class="menu-content[@configid@]" id="menu-content[@configid@]" style="display:none">
+    <li v-for="data in datas" >
+        <div v-show="data.PID==null&&((showpid['S'+data.APPID])||(data.LOCATION==this.curLocation))"  @click="setMenuSession(data.APPID,data.LOCATION)">
+            <img style="cursor:pointer;" v-if="data.IMGSEL" :src="'./../upload/'+data.IMGSEL" />
+            <a href="javascript:void(0)" class="active" v-if="!data.IMGSEL" >{{data.NAME}}</a>
+        </div>
+        <div v-show="data.PID==null&&((!showpid['S'+data.APPID])&&(data.LOCATION!=this.curLocation))"  @click="setMenuSession(data.APPID,data.LOCATION)" >
+            <img style="cursor:pointer;" v-if="data.IMG" :src="'./../upload/'+data.IMG" @mouseover="onImgOver(data.IMGSEL,$event)" @mouseout="onImgOut(data.IMG,$event)" />
+            <a href="javascript:void(0)" class="menu" v-if="!data.IMG" >{{data.NAME}}</a>
+        </div>
+        <div v-show="data.PID!=null&&showpid['S'+data.PID]&&data.LOCATION==this.curLocation&&this.curLocation!=null" @click="setMenuSession(null,data.LOCATION)" >
+            <img style="cursor:pointer;" v-if="data.IMGSEL" :src="'./../upload/'+data.IMGSEL" />
+            <a href="javascript:void(0)" class="activesub" v-if="!data.IMGSEL" >{{data.NAME}}</a>
+        </div>
+        <div v-show="data.PID!=null&&showpid['S'+data.PID]&&data.LOCATION!=this.curLocation" @click="setMenuSession(null,data.LOCATION)" >
+            <img style="cursor:pointer;" v-if="data.IMG" :src="'./../upload/'+data.IMG" @mouseover="onImgOver(data.IMGSEL,$event)" @mouseout="onImgOut(data.IMG,$event)" />
+            <a href="javascript:void(0)" class="menusub" v-if="!data.IMG" >{{data.NAME}}</a>
+        </div>
+    </li>
+</ul>

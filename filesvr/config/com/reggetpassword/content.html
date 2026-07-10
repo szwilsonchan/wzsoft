@@ -1,0 +1,60 @@
+<div id="sendRequest[@configid@]" class="loginWin[@configid@]" style="display:none">
+    <div class="loginWin-info" id="loginWin-info-sendrequest[@configid@]" style="display:none">
+        <div class="left" id="loginWin-info-sendrequest-msg[@configid@]"></div>
+    </div>
+    <div class="loginWin-content" >
+        <div class="loginWin-content-item" id="divemail[@configid@]" >
+            <div class="left">[@capemail@]</div>
+            <div class="right"><input type="text" id="email[@configid@]" /></div>
+        </div>
+        <div class="loginWin-content-item" id="divmobile[@configid@]">
+            <div class="left">[@capmobile@]</div>
+            <div class="right">
+                <input type="text" id="mobile[@configid@]" /><br/>
+            </div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">[@capcode@]</div>
+            <div class="right">
+                <input type="text" class="cpachaInput" id="cpachacode1[@configid@]"  />
+	            <img id="cpacha-img1[@configid@]" class="cpachaImg" title="[@capcodedo@]"  onclick="changeCpacha1[@configid@]()">
+            </div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">&nbsp;</div>
+            <div class="right" style="line-height:50px"><input type="button" class="btnOK"  value="[@btnsend@]" onclick="getpassword[@configid@]()" /></div>
+        </div>
+        <div class="content-info" id="content-info-sendrequest[@configid@]" style="display:none">
+            <div id="content-info-sendrequest-msg[@configid@]"></div>
+        </div>
+    </div>
+</div>
+<div id="setPass[@configid@]" class="loginWin[@configid@]" style="display: none;">
+    <div class="loginWin-info" id="loginWin-info-setpass[@configid@]" style="display:none">
+        <div class="left" id="loginWin-info-setpass-msg[@configid@]"></div>
+    </div>
+    <div class="loginWin-content" >
+        <div class="loginWin-content-item">
+            <div class="left">[@cappass1@]</div>
+            <div class="right"><input type="password" id="password[@configid@]" /></div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">[@cappass2@]</div>
+            <div class="right"><input type="password" id="passwordconfirm[@configid@]" /></div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">[@capcode@]</div>
+            <div class="right">
+                <input type="text" class="cpachaInput" id="cpachacode2[@configid@]"  />
+	            <img id="cpacha-img2[@configid@]" class="cpachaImg" title="[@capcodedo@]"  onclick="changeCpacha2[@configid@]()">
+            </div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">&nbsp;</div>
+            <div class="right"><input type="button" class="btnOK"  value="[@btnsend1@]" onclick="setpassword[@configid@]()" /></div>
+        </div>
+        <div class="content-info" id="content-info-setpass[@configid@]" style="display:none">
+            <div id="content-info-setpass-msg[@configid@]"></div>
+        </div>
+    </div>
+</div>

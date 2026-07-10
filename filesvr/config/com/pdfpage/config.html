@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Page Break Marker</div>
+            <div class="right"><input type="text" v-model="dataitem.config.content" readonly /></div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            comdatas:null,
+            dataitem:{"comid":"3001","comname":"Page Break","comtitle":"Page Break","config":{"content":"[@nextpage@]"}}
+        }
+    },
+    methods: 
+    {
+        getDataItem() 
+        {
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+        }
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.setDataItem = this.setDataItem;
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+</script>
+
+</body>
+</html>

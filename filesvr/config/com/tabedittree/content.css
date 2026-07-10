@@ -1,0 +1,395 @@
+.content-tab[@configid@] 
+{
+    background-color:[@conbg@];
+    border-radius: [@conradius@];
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin: 0px;
+    width:100%;
+    box-sizing: border-box;
+    height: fit-content;
+    overflow:auto;
+}
+.content-tab[@configid@] .content-tab-title 
+{
+    color: black;
+    font-size:1em;
+    font-weight: bold;
+    width:100%;
+    box-sizing: border-box;
+    height:30px;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+.content-tab[@configid@] .content-tab-filter 
+{
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    float: left;
+}
+.content-tab[@configid@] .content-tab-con 
+{
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+.content-tab[@configid@] .actionbtns 
+{
+    box-sizing: border-box;
+    margin-left:10px;
+    overflow:auto;
+    float: right;
+}
+.content-tab[@configid@] .actionbtns input[type=button]
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgba(247, 191, 87, 0.685);
+    color:#000;
+    height:40px;
+    width:90px;
+    cursor: pointer;
+    outline:none;
+    margin-right:2px;
+    box-sizing: border-box;
+}
+.content-tab[@configid@] .actionbtns input[type=button]:hover
+{
+    background-color: rgba(223, 164, 55, 0.685);
+}
+.content-tab[@configid@] .action-content
+{
+    margin-top: 0px;
+}
+.content-tab[@configid@] .action-content li
+{
+    list-style: none;
+}
+.content-tab[@configid@] .action-content a:link
+{
+    margin-left: 10px;
+    width:25px;
+    display: block;
+    color: rgb(252, 249, 249);
+    background-color:rgb(30, 108, 211);
+    border-radius: 0.4em;
+    height:25px;
+    text-align: center;
+    padding-top:2px;
+    padding-right:2px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    float:left;
+}
+.content-tab[@configid@] .action-content a.active
+{
+    background-color:rgb(104, 187, 241);
+}
+.content-tab[@configid@] .action-content a:hover:not(.active)
+{
+    background-color:rgb(104, 187, 241);
+}
+.content-tab[@configid@] .action-content a:visited
+{
+    color: rgb(252, 249, 249);
+}
+.content-info[@configid@]
+{
+    color: rgb(15, 124, 6);
+    font-size:0.8em;
+    background-color:rgb(201, 226, 197);
+    border: 1px solid rgb(112, 189, 116);
+    border-radius: 0.5em;
+    padding: 10px;
+    margin-bottom: 20px;
+    width:100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.content-info[@configid@] .left
+{
+    float:left;
+    width:90%;
+    box-sizing: border-box;
+}
+.content-info[@configid@] .right
+{
+    float:right;
+    color:grey;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+.content-info[@configid@] .right:hover
+{
+    color:black;
+}
+.coverWin[@configid@] 
+{ 
+    position:fixed;left:0px;top:0px;
+    background:rgba(0, 0, 0, 0.4);
+    width:100%;  
+    height:100%;
+    filter:alpha(opacity=60);  
+    opacity:0.6;  
+    display:none; 
+    z-Index:999;  
+}
+
+.modalWin[@configid@] 
+{ 
+    position:fixed;
+    width:500px;
+    height:300px;
+    top:20%;
+    left:39%;
+    background-color:#fff;
+    display:none;
+    cursor:pointer;
+    text-align: center;
+    z-Index:9999;  
+}
+.modalWin[@configid@] .modalWinMsg 
+{
+    color: black;
+    font-size:1em;
+    font-weight: bold;
+    width:100%;
+    margin-top: 18%;
+    box-sizing: border-box;
+    height:30px;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+.modalWin[@configid@] .modalWinBtn .btnOK
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(46, 162, 240);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.modalWin[@configid@] .modalWinBtn .btnOK:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+.modalWin[@configid@] .modalWinBtn .btnCancle
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(205, 209, 212);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.modalWin[@configid@] .modalWinBtn .btnCancle:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+
+.updWin[@configid@] 
+{ 
+    position:fixed;
+    width:800px;
+    height:600px;
+    top:10%;
+    left:30%;
+    background-color:#fff;
+    display:none;
+    cursor:pointer;
+    text-align: center;
+    padding:20px;
+    z-Index:9999;  
+}
+.updWin[@configid@]  .updWin-content
+{ 
+    width:100%;
+    box-sizing: border-box;
+    padding:20px;
+    float:left;
+}
+.updWin[@configid@]  .updWin-content .updWin-content-item
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.updWin[@configid@]  .updWin-content-item .left
+{ 
+    width:20%;
+    box-sizing: border-box;
+    font-size:1em;
+    line-height:40px;
+    padding-right:15px;
+    text-align:right;
+    font-weight: bold;
+    float:left;
+}
+.updWin[@configid@]  .updWin-content-item .right
+{
+    width:80%;
+    box-sizing: border-box;
+    text-align:left;
+    float:left;
+}
+.updWin[@configid@]  .updWin-content-item input[type=text]:not(.readonly)
+{
+    border: 1px solid rgb(234, 237, 241);
+    margin-right:2px;
+    border-radius: 0.8em;
+    height:40px;
+    width:80%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+.updWin[@configid@]  .updWin-content-item .readonly
+{
+    border:none;
+    height:40px;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+.updWin[@configid@]  .updWin-content-item input[type=text]:focus:not(.readonly)
+{
+    border: 1px solid rgb(46, 162, 240);
+}
+.updWin[@configid@]  .btnOK
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(46, 162, 240);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.updWin[@configid@]  .btnOK:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+.updWin[@configid@]  .btnCancle
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(205, 209, 212);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.updWin[@configid@]  .btnCancle:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+.updWin[@configid@]  .updWin-info
+{
+    color: black;
+    font-size:0.8em;
+    background-color:rgb(241, 215, 180);
+    border: 1px solid rgb(206, 133, 37);
+    border-radius: 0.5em;
+    padding: 10px;
+    width:100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.updWin[@configid@]  .updWin-info .left
+{
+    float:left;
+    width:90%;
+    box-sizing: border-box;
+}
+.updWin[@configid@]  .updWin-info .right
+{
+    float:right;
+    color:grey;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.updWin[@configid@] .updWin-content-item select
+{
+    border: none;
+    margin-right:2px;
+    width: 96px;
+    border-radius: 0.8em;
+    height:40px;
+    background-color: rgb(234, 237, 241);
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.treeItem[@configid@] {
+    padding-left: 15px;
+    margin: 15px;
+}
+
+.treeItemdiv[@configid@] {
+    height: fit-content;
+    width: fit-content;
+    min-width: 300px;
+    float:left;
+}
+
+.treeItemdiv[@configid@] .notsel {
+    background-color:;
+}
+
+.treeItemdiv[@configid@] .sel {
+    background-color: rgb(237, 242, 245);
+}
+
+.treeItemdiv[@configid@]:hover {
+    background-color: rgb(237, 242, 245);
+}
+
+.itemIcon[@configid@] {
+    float:left;
+    width: 25px;
+    height: 25px;
+    color: white;
+    font-weight: bolder;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 50%;
+    background: rgba(223, 164, 55, 0.685);
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.itemIconSub[@configid@] {
+    float:left;
+    width: 25px;
+    height: 25px;
+    color: white;
+    font-weight: bolder;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 50%;
+    background: rgb(205, 209, 212);
+    margin-right: 10px;
+    cursor: pointer;
+}

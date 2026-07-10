@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/codedesign.css" type="text/css"  />	
+<script src="./../js/vue.global.js"></script>
+<script src="./../js/axios.min.js"></script>
+<style>
+
+</style>
+</head>
+<body scroll="no">
+<div class="codeval-action" id="codeval-action">
+    <div class="codeval-action-add dropitem" >
+        <input type="button" value="+Add Code" onmouseover="getCodeListContent(event)" />
+        <div class="dropcontent" >
+        </div>
+    </div>
+    <div class="codeval-action-save">
+        <input type="button" id="btnCopyCodeAll" class="btnOK" value="Copy" onclick="copyCodeAll()" />
+        <input type="button" id="btnPasteCodeAll" class="btnOK" value="Paste" onclick="pasteCodeAll()" />&nbsp;&nbsp;&nbsp;&nbsp;
+        <span id="codeMsg" style="color:rgb(110, 108, 108)" ></span>
+        <input type="button" id="btnCopyCodeAll" class="btnOK" value="Save" onclick="saveTemplate('save')" />
+        <input type="button" class="btnCancle" value="Back" onclick="parent.closeCodeValWin()" />
+        <div class="main-wrapper-info" id="main-wrapper-info" style="display:none"></div>
+    </div>
+</div>
+<div class="main-wrapper" id="main-wrapper" >
+    <div class="contentcodeval" id="CodeVal">
+        <input type="hidden" id="varGListValue" value=""  />
+        <div id="varParaTemp" class="varParaDiv" >
+            <div>
+                <input class="btnAddVar" type="button" onclick="openAddVarWin('',addParaWin,'')" value="+Add Parameter">
+            </div>
+        </div>
+        <div id="varDivTemp" class="varDiv" >
+            <div >
+                <input class="btnAddVar" type="button" onclick="openAddVarWin('',addVarWin,'')" value="+Add Internal Variable">
+            </div>
+        </div>
+        <div style="clear: both;"></div> 
+        <div class="item-action" style="padding-right:15px;padding-top: 10px;">
+            <input class="btnOK" type="button" value="Note" onclick="showCodeNote(event);return false;" />
+            <div class="divCodeNote" style="display:none"></div>
+        </div>
+    </div>
+    <div id="insObjlistDivTemp" class="insObjlistDiv" onclick="selDiv(event)">
+        <div class="assignLeftDiv" >
+            <div class="assignLeftDivSel" >
+                <input class="btnAddVar" type="button" onclick="varForSelShow(event)" value="+Select L-Value" >
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,'','assignExpLeftDiv')">
+                        <option></option>
+                    </select><input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="assignExpLeftDiv"></div>
+        </div>
+        <div class="assignDivEqual">
+            Add
+        </div>
+        <div class="assignRightDiv" >
+            <div class="assignRightDivSel" >
+                <input class="btnAddVar" type="button"  onclick="varObjSelShow(event)" value="+Add Variable" >
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,'','assignExpDiv')">
+                        <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="assignExpDiv"></div>
+        </div>
+    </div>
+    <div id="assignDivTemp" class="assignDiv" onclick="selDiv(event)" >
+        <div class="assignLeftDiv" >
+            <div class="assignLeftDivSel" >
+                <input class="btnAddVar" type="button" onclick="varSelShow('l',event)" value="+Select L-Value" >
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,'','assignExpLeftDiv')">
+                    <option></option>
+                </select><input class="btnSaveVar" type="button" value="Save"/><input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" /></div>
+            </div>
+            <div class="assignExpLeftDiv"></div>
+            <div class="debugDiv" style="float:left;padding-top: 5px;box-sizing: border-box;width:51%"><input class="btnCancleVar" type="button" onclick="varDegbugUpd(event)" value="Log" ></div>
+            <div class="jsFdDiv" style="float:left;padding-top: 5px;box-sizing: border-box;width:51%"><input class="btnCancleVar" type="button" onclick="varJsFdUpd(event)" value="Float" ></div>
+        </div>
+        <div class="assignDivEqual">
+            =
+        </div>
+        <div class="assignRightDiv" >
+            <div class="assignRightDivSel" >
+                <input class="btnAddVar" type="button"  onclick="varSelShow('r',event)" value="+Add Variable" >
+                <input class="btnAddVar" type="button"  onclick="varOpAddShow(event)" value="+Add Operator" >
+                <input class="btnAddVar" type="button"  onclick="varConAddShow(event)" value="+Add Constant" >
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,'','assignExpDiv')">
+                        <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="varConAdddiv" style="display:none" ><input type="text" class="varConAddValue" value="" /><input class="btnSaveVar" type="button" value="Save" onclick="varConAdd(event,'assignExpDiv')" /><input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" /><div class="conDefault">
+                        <a href="javascript:void(0)" onclick="selConDefault(event,'true')">True</a> 
+                        <a href="javascript:void(0)" onclick="selConDefault(event,'false')">False</a>  
+                        <a href="javascript:void(0)" onclick="selConDefault(event,'null')">Empty</a>  
+                        <a href="javascript:void(0)" onclick="selConDefault(event,'{}')">Empty Object</a>  
+                        <a href="javascript:void(0)" onclick="selConDefault(event,'[]')">Empty Object List</a>
+                    </div>
+                </div>
+                <div class="varOpAdddiv" style="display:none" >
+                    <select class="varOpAddValue" onchange="varOpAdd(event,'assignExpDiv')">
+                        <option></option>
+                        <option>+</option>
+                        <option>-</option>
+                        <option>*</option>
+                        <option>/</option>
+                        <option>(</option>
+                        <option>)</option>
+                    </select>
+                    <input class="btnCancleVar" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="assignExpDiv"></div>
+        </div>
+    </div>
+    <div id="subcodeJSDivTemp" class="subcodeJSDiv" onclick="selDiv(event)">
+        <div class="assignLeftDiv" >
+            <div class="assignLeftDivSel" >
+                <input class="btnAddVar" type="button" onclick="varSelShow('l',event)" value="+Select L-Value" >
+                <div class="selDiv" style="display:none" ><select class="varSelValue" >
+                    <option></option>
+                </select><select class="varSelValue">
+                    <option value="manage">Internal Call</option><option value="portal">External Public Call</option>
+                    </select><input class="btnSaveVar" type="button" value="Save" onclick="varSelAddSubcodeJs(event,'assignExpLeftDiv')" />
+                <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="assignExpLeftDiv"></div>
+            <div class="debugDiv" style="float:left;padding-top: 20px;box-sizing: border-box;"><input class="btnCancleVar" type="button" onclick="varDegbugUpd(event)" value="Log" ></div>
+        </div>
+        <div class="assignDivEqual">
+            =
+        </div>
+        <div class="assignRightDiv" >
+            <div class="assignRightDivSel" >
+                <input class="btnAddVar" type="button"  onclick="varSelCodeShow(event,'s')" value="+Select Sub-Code" >
+                <input class="btnAddVarDb" type="button"  onclick="varSelCodeParaShow(event)" value="+Set Parameters" style="margin-left:20px;">
+                <div class="selCodeDiv" style="display:none" ><select class="varSelValue" onchange="varSelCodeAddDo(event,'codeSelDiv')">
+                        <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selCodeParaDiv" style="display:none" ><select class="varSelValue" >
+                    <option></option>
+                    </select><span>&nbsp;=</span><select class="varSelValueSmall"  style="width:80px" onchange="varSelFieldDataModeSub(event)">
+                        <option>Variable</option>
+                        <option>Constant</option>
+                        </select><select class="varSelValue" >
+                            <option></option>
+                            </select><input type="text" class="varConAddValue" value="" style="display:none" />
+                        <input class="btnSaveVar" type="button" value="Save" onclick="varSelCodeParaAdd(event,'codeParaSelDiv')" />
+                        <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="codeSelDiv"></div>
+            <div class="codeParaSelDiv"></div>
+        </div>
+        <div class="forConSucTitle"  >
+            <b>Statement after sub-code execution:</b>
+        </div> 
+        <div class="forConSucTitle"  >
+            <div class="codeval-action-add dropitem" >
+                <input type="button" value="+Add Execution Statement" style="width:180px" onmouseover="getSubCodeListContent('subcodejs',event)" />
+                <div class="dropcontent" >
+                    <ul class="menu-content" >
+                    </ul>
+                </div>
+            </div>
+        </div> 
+        <div class="forConSucdiv" style="padding-left:20px">
+            
+        </div>
+    </div>
+    <div id="msgDivTemp" class="msgDiv" onclick="selDiv(event)">
+        <div class="assignLeftDiv" >
+            <div class="assignLeftDivSel" >
+                <input class="btnAddVar" type="button" onclick="varSelShow('l',event)" value="+Select L-Value" >
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,'','assignExpLeftDiv')">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+            <div class="assignExpLeftDiv"></div>
+        </div>
+        <div class="assignDivEqual">
+            =
+        </div>
+        <div class="assignRightDiv" >
+            <div class="assignRightDivSel" >
+                <input class="btnAddVar" type="button"  onclick="varSelMsgShow(event)" value="+Select Template" >
+                <input class="btnAddVarDb" type="button"  onclick="varSelMsgParaShow(event)" value="+Set Parameters" style="margin-left:20px;">
+                <div class="selMsgDiv" style="display:none" ><select class="varSelValue" onchange="varSelMsgAddDo(event,'msgSelDiv')">
+                        <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selMsgParaDiv" style="display:none" ><select class="varSelValue" >
+                    <option></option>
+                    </select><span>&nbsp;=</span><select class="varSelValueSmall"  style="width:80px" onchange="varSelFieldDataModeSub(event)">
+                        <option>Variable</option>
+                        <option>Constant</option>
+                        </select><select class="varSelValue" >
+                            <option></option>
+                            </select><input type="text" class="varConAddValue" value="" style="display:none" />
+                        <input class="btnSaveVar" type="button" value="Save" onclick="varSelMsgParaAdd(event,'msgParaSelDiv')" />
+                        <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="msgSelDiv"></div>
+            <div class="msgParaSelDiv"></div>
+        </div>
+    </div>
+    <div id="subcodeDivTemp" class="subcodeDiv" onclick="selDiv(event)">
+        <div class="assignLeftDiv" >
+            <div class="assignLeftDivSel" >
+                <input class="btnAddVar" type="button" onclick="varSelShow('l',event)" value="+Select L-Value" >
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,'','assignExpLeftDiv')">
+                    <option></option></select><input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="assignExpLeftDiv"></div>
+            <div class="debugDiv" style="float:left;padding-top: 20px;box-sizing: border-box;"><input class="btnCancleVar" type="button" onclick="varDegbugUpd(event)" value="Log" ></div>
+        </div>
+        <div class="assignDivEqual">
+            =
+        </div>
+        <div class="assignRightDiv" >
+            <div class="assignRightDivSel" >
+                <input class="btnAddVar" type="button"  onclick="varSelCodeShow(event,'')" value="+Select Sub-Code" >
+                <input class="btnAddVarDb" type="button"  onclick="varSelCodeParaShow(event)" value="+Set Parameters" style="margin-left:20px;">
+                <div class="selCodeDiv" style="display:none" ><select class="varSelValue" onchange="varSelCodeAddDo(event,'codeSelDiv')">
+                        <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selCodeParaDiv" style="display:none" ><select class="varSelValue" >
+                    <option></option>
+                    </select><span>&nbsp;=</span><select class="varSelValueSmall"  style="width:80px" onchange="varSelFieldDataModeSub(event)">
+                        <option>Variable</option>
+                        <option>Constant</option>
+                        </select><select class="varSelValue" >
+                            <option></option>
+                            </select><input type="text" class="varConAddValue" value="" style="display:none" />
+                        <input class="btnSaveVar" type="button" value="Save" onclick="varSelCodeParaAdd(event,'codeParaSelDiv')" />
+                        <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="codeSelDiv"></div>
+            <div class="codeParaSelDiv"></div>
+        </div>
+    </div>
+    <div id="assignSqlFilterDivTemp" class="assignSqlFilterDiv" onclick="selDiv(event)">
+        <div class="assignLeftDiv" >
+            <div class="assignLeftDivSel" >
+                <input class="btnAddVar" type="button" onclick="varObjSqlSelShow(event)" value="+Select L-Value" >
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,'','assignSqlFilterExpLeftDiv')">
+                        <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="assignSqlFilterExpLeftDiv"></div>
+        </div>
+        <div class="assignDivEqual">
+            =
+        </div>
+        <div class="assignRightDiv" >
+            <div class="assignRightDivSel" >
+                <input class="btnAddVarDb" type="button"  onclick="varSelSqlFilterShow(event)" value="+Select Filter Field" style="margin-left:20px;">
+                <input class="btnAddVar" type="button"  onclick="varSelShow('r',event)" value="+Add Variable" >
+                <input class="btnAddVar" type="button"  onclick="varOpAddShow(event)" value="+Add Operator" >
+                <input class="btnAddVar" type="button"  onclick="varConAddShow(event)" value="+Add Constant" >
+                <div class="selDbFilterDiv" style="display:none" ><select class="varSelValue" onchange="varSelSqlFilterField(event)">
+                    <option></option>
+                    </select><select class="varSelValue" onchange="varSelSqlFilterAdd(event,'dbFilterSelDiv')">
+                    <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,'','dbFilterSelDiv')">
+                        <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="varConAdddiv" style="display:none" >
+                    <input type="text" class="varConAddValue" value="" />
+                    <input class="btnSaveVar" type="button" value="Save" onclick="varConAdd(event,'dbFilterSelDiv')" />
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="varOpAdddiv" style="display:none" >
+                    <select class="varOpAddValue" onchange="varOpAdd(event,'dbFilterSelDiv')">
+                        <option></option>
+                        <option value="=" >=</option>
+                        <option value="!=" >!=</option>
+                        <option value=">" >></option>
+                        <option value="&lt;" ><</option>
+                        <option value=">=" >>=</option>
+                        <option value="&lt;=" ><=</option>
+                        <option value="and" >AND</option>
+                        <option value="or" >OR</option>
+                        <option value="(">(</option>
+                        <option value=")" >)</option>
+                        <option value="in" >in</option>
+                        <option value="not in" >not in</option>
+                        <option value="like" >LIKE</option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="dbFilterSelDiv"></div>
+        </div>
+    </div>
+    <div id="insDbDivTemp" class="insDbDiv" onclick="selDiv(event)">
+        <div class="assignLeftDiv" >
+            <div class="assignLeftDivSel" >
+                <input class="btnAddVar" type="button" onclick="varSelShow('l',event)" value="+Select L-Value (return ID)" >
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,'','assignExpLeftDiv')">
+                        <option></option>
+                    </select><input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="assignExpLeftDiv"></div>
+        </div>
+        <div class="assignDivEqual">
+            =
+        </div>
+        <div class="assignRightDiv" >
+            <div class="assignRightDivSel" >
+                <input class="btnAddVarDb" type="button"  onclick="varSelDbShow(event)" value="+Select Dataset" >
+                <input class="btnAddVar" type="button"  onclick="varSelDbFieldUpdShow(event,'')" value="+Select Insert Field" >
+                <div class="selDbDiv" style="display:none" ><select class="varSelValue" onchange="varSelDbAdd(event,'dbSelDiv')">
+                        <option></option>
+                    </select><input type="hidden" class="varConAddValue" value="" placeholder="Alias" /><input class="btnSaveVar" type="button" value="Save" onclick="varSelDbAddDo(event,'dbSelDiv')" />
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selDbFieldDiv" style="display:none" ><select class="varSelValue" onchange="varSelDbShowField(event,'')">
+                    <option></option>
+                    </select><select class="varSelValue" >
+                    <option></option>
+                    </select><span>&nbsp;=</span><select class="varSelValueSmall"  style="width:80px" onchange="varSelFieldDataMode(event)">
+                        <option>Variable</option>
+                        <option>Constant</option>
+                        </select><select class="varSelValue" >
+                            <option></option>
+                            </select><input type="text" class="varConAddValue" value="" style="display:none" />
+                        <input class="btnSaveVar" type="button" value="Save" onclick="varSelUpdDbFieldAdd(event,'dbFieldSelDiv')" />
+                        <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="dbSelDiv"></div>
+            <div class="dbFieldSelDiv"></div>
+            <div class="debugDiv" style="float:left;padding-top: 20px;box-sizing: border-box;"><input class="btnCancleVar" type="button" onclick="varDegbugUpd(event)" value="Log" ></div>
+        </div>
+    </div>
+    <div id="updDbDivTemp" class="updDbDiv" onclick="selDiv(event)">
+        <div class="assignRightDiv" >
+            <div class="assignRightDivSel" >
+                <input class="btnAddVarDb" type="button"  onclick="varSelDbShow(event)" value="+Select Dataset" >
+                <input class="btnAddVar" type="button"  onclick="varSelDbFieldUpdShow(event,'')" value="+Select Update Field" >
+                <input class="btnAddVarDb" type="button"  onclick="varSelDbFilterShow(event,'selDbFilterDiv')" value="+Select Filter Field" style="margin-left:20px;">
+                <input class="btnAddVar" type="button"  onclick="varSelShow('r',event)" value="+Add Variable" >
+                <input class="btnAddVar" type="button"  onclick="varOpAddShow(event)" value="+Add Operator" >
+                <input class="btnAddVar" type="button"  onclick="varConAddShow(event)" value="+Add Constant" >
+                <div class="selDbDiv" style="display:none" ><select class="varSelValue" onchange="varSelDbAdd(event,'dbSelDiv')">
+                        <option></option>
+                    </select><input type="hidden" class="varConAddValue" value="" placeholder="Alias" /><input class="btnSaveVar" type="button" value="Save" onclick="varSelDbAddDo(event,'dbSelDiv')" />
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selDbFieldDiv" style="display:none" ><select class="varSelValue" onchange="varSelDbShowField(event,'')">
+                    <option></option>
+                    </select><select class="varSelValue" >
+                    <option></option>
+                    </select><span>&nbsp;=</span><select class="varSelValueSmall" style="width:80px" onchange="varSelFieldDataMode(event)">
+                        <option>Variable</option>
+                        <option>Constant</option>
+                        </select><select class="varSelValue" >
+                            <option></option>
+                            </select><input type="text" class="varConAddValue" value="" style="display:none" />
+                        <input class="btnSaveVar" type="button" value="Save" onclick="varSelUpdDbFieldAdd(event,'dbFieldSelDiv')" />
+                        <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selDbFilterDiv" style="display:none" ><select class="varSelValue" onchange="varSelDbShowField(event)">
+                    <option></option>
+                    </select><select class="varSelValue" onchange="varSelDbFilterAdd(event,'dbFilterSelDiv')">
+                    <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,'','dbFilterSelDiv')">
+                        <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="varConAdddiv" style="display:none" >
+                    <input type="text" class="varConAddValue" value="" />
+                    <input class="btnSaveVar" type="button" value="Save" onclick="varConAdd(event,'dbFilterSelDiv')" />
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="varOpAdddiv" style="display:none" >
+                    <select class="varOpAddValue" onchange="varOpAdd(event,'dbFilterSelDiv')">
+                        <option></option>
+                        <option value="=" >=</option>
+                        <option value="<>" >!=</option>
+                        <option value=">" >></option>
+                        <option value="<" ><</option>
+                        <option value=">=" >>=</option>
+                        <option value="<=" ><=</option>
+                        <option value="and" >AND</option>
+                        <option value="or" >OR</option>
+                        <option value="(">(</option>
+                        <option value=")" >)</option>
+                        <option value="in" >in</option>
+                        <option value="not in" >not in</option>
+                        <option value="like" >LIKE</option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="dbSelDiv"></div>
+            <div class="dbFieldSelDiv"></div>
+            <div class="dbFilterSelDiv"></div>
+            <div class="debugDiv" style="float:left;padding-top: 20px;box-sizing: border-box;"><input class="btnCancleVar" type="button" onclick="varDegbugUpd(event)" value="Log" ></div>
+        </div>
+    </div>
+    <div id="delDbDivTemp" class="delDbDiv" onclick="selDiv(event)">
+        <div class="assignRightDiv" >
+            <div class="assignRightDivSel" >
+                <input class="btnAddVarDb" type="button"  onclick="varSelDbShow(event)" value="+Select Dataset" >
+                <input class="btnAddVarDb" type="button"  onclick="varSelDbFilterShow(event,'selDbFilterDiv')" value="+Select Filter Field" style="margin-left:20px;">
+                <input class="btnAddVar" type="button"  onclick="varSelShow('r',event)" value="+Add Variable" >
+                <input class="btnAddVar" type="button"  onclick="varOpAddShow(event)" value="+Add Operator" >
+                <input class="btnAddVar" type="button"  onclick="varConAddShow(event)" value="+Add Constant" >
+                <div class="selDbDiv" style="display:none" ><select class="varSelValue" onchange="varSelDbAdd(event,'dbSelDiv')">
+                        <option></option>
+                    </select><input type="hidden" class="varConAddValue" value="" placeholder="Alias" /><input class="btnSaveVar" type="button" value="Save" onclick="varSelDbAddDo(event,'dbSelDiv')" />
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selDbFilterDiv" style="display:none" ><select class="varSelValue" onchange="varSelDbShowField(event)">
+                    <option></option>
+                    </select><select class="varSelValue" onchange="varSelDbFilterAdd(event,'dbFilterSelDiv')">
+                    <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,'','dbFilterSelDiv')">
+                        <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="varConAdddiv" style="display:none" >
+                    <input type="text" class="varConAddValue" value="" />
+                    <input class="btnSaveVar" type="button" value="Save" onclick="varConAdd(event,'dbFilterSelDiv')" />
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="varOpAdddiv" style="display:none" >
+                    <select class="varOpAddValue" onchange="varOpAdd(event,'dbFilterSelDiv')">
+                        <option></option>
+                        <option value="=" >=</option>
+                        <option value="<>" >!=</option>
+                        <option value=">" >></option>
+                        <option value="<" ><</option>
+                        <option value=">=" >>=</option>
+                        <option value="<=" ><=</option>
+                        <option value="and" >AND</option>
+                        <option value="or" >OR</option>
+                        <option value="(">(</option>
+                        <option value=")" >)</option>
+                        <option value="in" >in</option>
+                        <option value="not in" >not in</option>
+                        <option value="like" >LIKE</option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="dbSelDiv"></div>
+            <div class="dbFilterSelDiv"></div>
+            <div class="debugDiv" style="float:left;padding-top: 20px;box-sizing: border-box;"><input class="btnCancleVar" type="button" onclick="varDegbugUpd(event)" value="Log" ></div>
+        </div>
+    </div>
+    <div id="assignDbDivTemp" class="assignDbDiv" onclick="selDiv(event)">
+        <div class="assignLeftDiv" >
+            <div class="assignLeftDivSel" >
+                <input class="btnAddVar" type="button" onclick="varObjListSelShow(event)" value="+Select L-Value/Setting" >
+                <div class="selDiv" style="display:none" ><select class="varSelValue" >
+                        <option></option>
+                    </select><select class="varSelValue" style="display:none">
+                        <option></option></select><select class="varSelValue">
+                            <option></option><option value="sqlpara">Include Queried SQL and Params</option>
+                            </select><input type="text" class="varConAddValue" value="" placeholder="Record count, empty for all" />
+                    <input class="btnSaveVar" type="button" value="Save" onclick="varSelAddDb(event,'delsub','assignDbExpLeftDiv')" />
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="assignDbExpLeftDiv"></div>
+            <div class="debugDiv" style="float:left;padding-top: 20px;box-sizing: border-box;"><input class="btnCancleVar" type="button" onclick="varDegbugUpd(event)" value="Log" ></div>
+        </div>
+        <div class="assignDivEqual">
+            =
+        </div>
+        <div class="assignRightDiv" >
+            <div class="assignRightDivSel" >
+                <input class="btnAddVarDb" type="button"  onclick="varSelDbShow(event)" value="+Select Dataset" >
+                <input class="btnAddVarDb" type="button"  onclick="varOpJoinAddShow(event)" value="+Operator" >
+                <input class="btnAddVarDb" type="button"  onclick="varSelDbFilterShow(event,'selDbJoinFieldDiv')" value="+Join Field" >
+                <input class="btnAddVar" type="button"  onclick="varSelDbFieldShow(event,'dt')" value="+Return Field" >
+                <input class="btnAddVarDb" type="button"  onclick="varSelDbFilterShow(event,'selDbFilterDiv')" value="+Filter Field" style="margin-left:20px;">
+                <input class="btnAddVarDb" type="button"  onclick="varSelShow('r',event)" value="+Variable" >
+                <input class="btnAddVarDb" type="button"  onclick="varOpAddShow(event)" value="+Operator" >
+                <input class="btnAddVarDb" type="button"  onclick="varConAddShow(event)" value="+Constant" >
+                <input class="btnAddVar" type="button"  onclick="varSelDbGroupShow(event,'selDbGroupDiv')" value="+Group Field" >
+                <input class="btnAddVarDb" type="button"  onclick="varSelDbGroupShow(event,'selDbGroupFilterDiv')" value="+Group Filter Field" >
+                <input class="btnAddVarDb" type="button"  onclick="varSelShowSub('r',event)" value="+Variable" >
+                <input class="btnAddVarDb" type="button"  onclick="varOpAddShowSub(event)" value="+Operator" >
+                <input class="btnAddVarDb" type="button"  onclick="varConAddShowSub(event)" value="+Constant" >
+                <input class="btnAddVar" type="button"  onclick="varSelDbGroupShow(event,'selDbOrderDiv')" value="+Sort Field" >
+                <div class="selDbDiv" style="display:none" ><select class="varSelValue" onchange="varSelDbAdd(event,'dbSelDiv')">
+                        <option></option>
+                    </select><input type="text" class="varConAddValue" value="" placeholder="Alias" /><input class="btnSaveVar" type="button" value="Save" onclick="varSelDbAddDo(event,'dbSelDiv')" />
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selDbFieldDiv" style="display:none" ><select class="varSelValue" onchange="varSelDbShowField(event,'dt')">
+                    <option></option>
+                    </select><select class="varSelValue" onchange="varSelDbFieldChange(event)" >
+                    <option></option>
+                    </select><select class="varSelValueSmall">
+                        <option></option><option value="count">Total Count</option><option value="sum">Sum</option><option value="avg">Average</option><option value="max">Maximum</option><option value="min">Minimum</option>
+                        </select><input type="text" class="varConAddValue" value="" placeholder="DB Field Alias" /><input type="text" class="varConAddValue" value="" placeholder="Display Text" /><select class="varSelValueSmall">
+                            <option></option><option value="pkey">Is Primary Key</option>
+                            </select><select class="varSelValueSmall">
+                                <option></option><option value="searchkey">Full-Text Search</option>
+                                </select>
+                        <input class="btnSaveVar" type="button" value="Save" onclick="varSelDbFieldAdd(event,'dbFieldSelDiv')" />
+                        <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selDbFilterDiv" style="display:none" ><select class="varSelValue" onchange="varSelDbShowField(event)">
+                    <option></option>
+                    </select><select class="varSelValue" onchange="varSelDbFilterAdd(event,'dbFilterSelDiv')">
+                    <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selDbJoinFieldDiv" style="display:none" ><select class="varSelValue" onchange="varSelDbShowField(event)">
+                    <option></option>
+                    </select><select class="varSelValue" onchange="varSelDbFilterAdd(event,'dbSelDiv')">
+                    <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selDbGroupDiv" style="display:none" ><select class="varSelValue" onchange="varSelDbShowField(event)">
+                    <option></option>
+                    </select><select class="varSelValue" onchange="varSelDbGroupAdd(event,'dbGroupSelDiv')">
+                    <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selDbGroupFilterDiv" style="display:none" ><select class="varSelValue" onchange="varSelDbShowField(event)">
+                    <option></option>
+                    </select><select class="varSelValue">
+                    <option></option>
+                    </select><select class="varSelValueSmall"><option></option><option value="count">Total Count</option><option value="sum">Sum</option><option value="avg">Average</option><option value="max">Maximum</option><option value="min">Minimum</option>
+                        </select>
+                    <input class="btnSaveVar" type="button" value="Save" onclick="varSelDbGroupAdd(event,'dbGroupFilterSelDiv')" />
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selDbOrderDiv" style="display:none" ><select class="varSelValue" onchange="varSelDbShowField(event)">
+                    <option></option>
+                    </select><select class="varSelValue" >
+                    <option></option>
+                    </select><select class="varSelValueSmall"><option></option><option value="asc">ASC</option><option value="desc">DESC</option></select>
+                    <input class="btnSaveVar" type="button" value="Save" onclick="varSelDbOrderAdd(event,'dbOrderSelDiv')" />
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,'','dbFilterSelDiv')">
+                        <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="varConAdddiv" style="display:none" >
+                    <input type="text" class="varConAddValue" value="" />
+                    <input class="btnSaveVar" type="button" value="Save" onclick="varConAdd(event,'dbFilterSelDiv')" />
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="varOpAdddiv" style="display:none" >
+                    <select class="varOpAddValue" onchange="varOpAdd(event,'dbFilterSelDiv')">
+                        <option></option>
+                        <option value="=" >=</option>
+                        <option value="<>" >!=</option>
+                        <option value=">" >></option>
+                        <option value="<" ><</option>
+                        <option value=">=" >>=</option>
+                        <option value="<=" ><=</option>
+                        <option value="and" >AND</option>
+                        <option value="or" >OR</option>
+                        <option value="(">(</option>
+                        <option value=")" >)</option>
+                        <option value="in" >in</option>
+                        <option value="not in" >not in</option>
+                        <option value="like" >LIKE</option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="varOpJoinAdddiv" style="display:none" >
+                    <select class="varOpAddValue" onchange="varOpJoinAdd(event,'dbSelDiv')">
+                        <option></option>
+                        <option value="left join" >LEFT JOIN</option>
+                        <option value="right join" >RIGHT JOIN</option>
+                        <option value="inner join" >INNER JOIN</option>
+                        <option value="on" >on</option>
+                        <option value="=" >=</option>
+                        <option value="and" >AND</option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selDivSub" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,'','dbGroupFilterSelDiv')">
+                    <option></option>
+                </select>
+                <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="varConAdddivSub" style="display:none" >
+                    <input type="text" class="varConAddValue" value="" />
+                    <input class="btnSaveVar" type="button" value="Save" onclick="varConAdd(event,'dbGroupFilterSelDiv')" />
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="varOpAdddivSub" style="display:none" >
+                    <select class="varOpAddValue" onchange="varOpAdd(event,'dbGroupFilterSelDiv')">
+                        <option></option>
+                        <option value="=" >=</option>
+                        <option value="<>" >!=</option>
+                        <option value=">" >></option>
+                        <option value="<" ><</option>
+                        <option value=">=" >>=</option>
+                        <option value="<=" ><=</option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="dbSelDiv"></div>
+            <div class="dbFieldSelDiv"></div>
+            <div class="dbFilterSelDiv"></div>
+            <div class="dbGroupSelDiv"></div>
+            <div class="dbGroupFilterSelDiv"></div>
+            <div class="dbOrderSelDiv"></div>
+        </div>
+
+    </div>
+
+    <div id="forDivTemp" class="forDiv" onclick="selDiv(event)">
+        <div class="forDivTitle" >
+            Select object to iterate:
+        </div> 
+        <div class="forConDiv"  >
+            <div class="forConDivSel" >
+                <input class="btnAddVar" type="button"  onclick="varForSelShow(event)" value="+Add Variable" >
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,'','forConExpDiv')" >
+                        <option></option>
+                    </select><input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="forConExpDiv"></div>
+        </div>
+        <div class="forConSucTitle"  >
+            <b>Statement to execute per iteration:</b>
+        </div> 
+        <div class="forConSucTitle"  >
+            <div class="codeval-action-add dropitem" >
+                <input type="button" value="+Add Execution Statement" style="width:180px" onmouseover="getSubCodeListContent('for',event)" />
+                <div class="dropcontent" >
+                    <ul class="menu-content" >
+                    </ul>
+                </div>
+            </div>
+        </div> 
+        <div class="forConSucdiv" style="padding-left:20px">
+            
+        </div>
+    </div>
+    <div id="jsHrefDivTemp" class="jsHrefDiv" onclick="selDiv(event)">
+        <div class="jsHrefTitle" >
+            Jump URL:
+        </div> 
+        <div class="jsHrefConDiv"  >
+            <div class="ifConDivSel" >
+                <input class="btnAddVar" type="button"  onclick="varSelShow('r',event)" value="+Add Variable" >
+                <input class="btnAddVar" type="button"  onclick="varOpAddShow(event)" value="+Add Operator" >
+                <input class="btnAddVar" type="button"  onclick="varConAddShow(event)" value="+Add Constant" >
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,'','jsHrefExpDiv')">
+                        <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="varConAdddiv" style="display:none" >
+                    <input type="text" class="varConAddValue" value="" />
+                    <input class="btnSaveVar" type="button" value="Save" onclick="varConAdd(event,'jsHrefExpDiv')" />
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="varOpAdddiv" style="display:none" >
+                    <select class="varOpAddValue" onchange="varOpAdd(event,'jsHrefExpDiv')">
+                        <option></option>
+                        <option value="+" >+</option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="jsHrefExpDiv" ></div>
+        </div>
+    </div> 
+    <div id="jsSrcDivTemp" class="jsSrcDiv" onclick="selDiv(event)">
+        <div class="jsSrcTitle" >
+            Native Code (return value):
+        </div> 
+        <div class="jsSrcConDiv"  >
+            <div class="ifConDivSel" >
+                <input class="btnAddVar" type="button"  onclick="varConAddShow(event)" value="+AddCustomCode" >
+                <input class="btnAddVar" type="button"  onclick="varSelShow('r',event)" value="+BackValue" >
+                <div class="varConAdddiv" style="display:none" >
+                    <input type="text" class="varConAddValue" value=""  style="width:300px" />
+                    <input class="btnSaveVar" type="button" value="Save" onclick="varConJsAdd(event,'jsSrcExpDiv')" />
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varReturnAdd(event,'jsSrcExpDiv')">
+                        <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="jsSrcExpDiv" ></div>
+        </div>
+    </div> 
+    <div id="outSvrDivTemp" class="outSvrDiv" onclick="selDiv(event)">
+        <div class="outSvrTitle" >
+            Remote API Call
+        </div> 
+        <div class="assignLeftDiv" >
+            <div class="assignLeftDivSel" >
+                <input class="btnAddVar" type="button" onclick="varSelShow('l',event)" value="+Select L-Value (return object)" >
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,'','assignExpLeftDiv')">
+                        <option></option>
+                    </select><input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="assignExpLeftDiv"></div>
+        </div>
+        <div class="assignDivEqual">
+            =
+        </div>
+        <div class="outSvrConDiv"  >
+            <div class="ifConDivSel" >
+                <input class="btnAddVar" type="button"  onclick="varSelShowSvr('r',event)" value="+Interface URL Variable" >
+                <input class="btnAddVar" type="button"  onclick="varConAddShow(event)" value="+Interface URL Constant" >
+                <input class="btnAddVar" type="button"  onclick="varSelShow('r',event)" value="+Interface Param" >
+                <div class="varConAdddiv" style="display:none" >
+                    <input type="text" class="varConAddValue" value="" />
+                    <input class="btnSaveVar" type="button" value="Save" onclick="varOutSvrUrlAdd(event,'outSvr1ExpDiv')" />
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selDivSvr" style="display:none" ><select class="varSelValue" onchange="varOutSvrParaAdd(event,'outSvr1ExpDiv')">
+                        <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varOutSvrParaAdd(event,'outSvr2ExpDiv')">
+                        <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="outSvr1ExpDiv" ></div>
+            <div class="outSvr2ExpDiv" ></div>
+        </div>
+    </div> 
+    <div id="ifDivTemp" class="ifDiv" onclick="selDiv(event)">
+        <div class="ifDivTitle" >
+            Condition Rules:
+        </div> 
+        <div class="ifConDiv"  >
+            <div class="ifConDivSel" >
+                <input class="btnAddVar" type="button"  onclick="varSelShow('r',event)" value="+Add Variable" >
+                <input class="btnAddVar" type="button"  onclick="varOpAddShow(event)" value="+Add Operator" >
+                <input class="btnAddVar" type="button"  onclick="varConAddShow(event)" value="+Add Constant" >
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,'','ifConExpDiv')">
+                        <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="varConAdddiv" style="display:none" ><input type="text" class="varConAddValue" value=""  /><input class="btnSaveVar" type="button" value="Save" onclick="varConAdd(event,'ifConExpDiv')" /><input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" /><div class="conDefault">
+                        <a href="javascript:void(0)" onclick="selConDefault(event,'true')">True</a> 
+                        <a href="javascript:void(0)" onclick="selConDefault(event,'false')">False</a>  
+                        <a href="javascript:void(0)" onclick="selConDefault(event,'null')">Empty</a>  
+                        <a href="javascript:void(0)" onclick="selConDefault(event,'{}')">Empty Object</a>  
+                        <a href="javascript:void(0)" onclick="selConDefault(event,'[]')">Empty Object List</a>
+                    </div>
+                </div>
+                <div class="varOpAdddiv" style="display:none" >
+                    <select class="varOpAddValue" onchange="varOpAdd(event,'ifConExpDiv')">
+                        <option></option>
+                        <option value="==" >=</option>
+                        <option value="!=" >!=</option>
+                        <option value=">" >></option>
+                        <option value="&lt;" ><</option>
+                        <option value=">=" >>=</option>
+                        <option value="&lt;=" ><=</option>
+                        <option value="&&" >AND</option>
+                        <option value="||" >OR</option>
+                        <option value="(">(</option>
+                        <option value=")" >)</option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="ifConExpDiv" ></div>
+        </div>
+        <div class="ifConSucTitle"  >
+            <b>Execute When Met:</b>
+        </div> 
+        <div class="ifConSucTitle"  >
+            <div class="codeval-action-add dropitem" >
+                <input type="button" value="+Add Execution Statement" style="width:180px" onmouseover="getSubCodeListContent('if',event)" />
+                <div class="dropcontent" >
+                    <ul class="menu-content" >
+                    </ul>
+                </div>
+            </div>
+        </div> 
+        <div class="ifConSucdiv" style="padding-left:20px">
+            
+        </div>
+        <div class="ifConFaiTitle"  >
+            <b>Execute When Not Met:</b>
+        </div> 
+        <div class="ifConSucTitle"  >
+            <div class="codeval-action-add dropitem" >
+                <input type="button" value="+Add Execution Statement" style="width:180px" onmouseover="getSubCodeListContent('iffail',event)" />
+                <div class="dropcontent" >
+                    <ul class="menu-content" >
+                    </ul>
+                </div>
+            </div>
+        </div> 
+        <div class="ifConFaidiv" style="padding-left:20px">
+            
+        </div>
+    </div>
+    <div id="whileDivTemp" class="whileDiv" onclick="selDiv(event)">
+        <div class="ifDivTitle" >
+            Loop Condition:
+        </div> 
+        <div class="ifConDiv"  >
+            <div class="ifConDivSel" >
+                <input class="btnAddVar" type="button"  onclick="varSelShow('r',event)" value="+Add Variable" >
+                <input class="btnAddVar" type="button"  onclick="varOpAddShow(event)" value="+Add Operator" >
+                <input class="btnAddVar" type="button"  onclick="varConAddShow(event)" value="+Add Constant" >
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,'','ifConExpDiv')">
+                        <option></option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="varConAdddiv" style="display:none" ><input type="text" class="varConAddValue" value=""  /><input class="btnSaveVar" type="button" value="Save" onclick="varConAdd(event,'ifConExpDiv')" /><input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" /><div class="conDefault">
+                        <a href="javascript:void(0)" onclick="selConDefault(event,'true')">True</a> 
+                        <a href="javascript:void(0)" onclick="selConDefault(event,'false')">False</a>  
+                        <a href="javascript:void(0)" onclick="selConDefault(event,'null')">Empty</a>  
+                        <a href="javascript:void(0)" onclick="selConDefault(event,'{}')">Empty Object</a>  
+                        <a href="javascript:void(0)" onclick="selConDefault(event,'[]')">Empty Object List</a>
+                    </div>
+                </div>
+                <div class="varOpAdddiv" style="display:none" >
+                    <select class="varOpAddValue" onchange="varOpAdd(event,'ifConExpDiv')">
+                        <option></option>
+                        <option value="==" >=</option>
+                        <option value="!=" >!=</option>
+                        <option value=">" >></option>
+                        <option value="&lt;" ><</option>
+                        <option value=">=" >>=</option>
+                        <option value="&lt;=" ><=</option>
+                        <option value="&&" >AND</option>
+                        <option value="||" >OR</option>
+                        <option value="(">(</option>
+                        <option value=")" >)</option>
+                    </select>
+                    <input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+            <div class="ifConExpDiv" ></div>
+        </div>
+        <div class="ifConSucTitle"  >
+            <div class="codeval-action-add dropitem" >
+                <input type="button" value="+Add Execution Statement" style="width:180px" onmouseover="getSubCodeListContent('while',event)" />
+                <div class="dropcontent" >
+                    <ul class="menu-content" >
+                    </ul>
+                </div>
+            </div>
+        </div> 
+        <div class="forConSucdiv" style="padding-left:20px">
+            
+        </div>
+    </div>
+    <div id="updVarWin" class="updWin">
+        <div class="updWin-info" id="updVarWin-info" style="display:none">
+            <div class="left" id="updVarWin-info-msg"></div>
+            <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+        </div>
+        <div class="updWin-content" >
+            <div class="updWin-content-item">
+                <div class="left">Variable Name</div>
+                <div class="right"><input id="addVarName" type="text" value="" /></div>
+            </div>
+            <div class="updWin-content-item" id="paraTypeDiv" style="display:none" >
+                <div class="left">Param Type</div>
+                <div class="right" >
+                    <select class="varSelValue" id="addParaType" >
+                        <option value="">Select Type</option>
+                        <option value="def">Normal Param</option>
+                        <option value="global">Global Param</option>
+                        <option value="page">Page Param</option>
+                    </select>
+                </div>
+            </div>
+            <div class="updWin-content-item" >
+                <div class="left">Variable Type</div>
+                <div class="right" >
+                    <select class="varSelValue" id="addVarType" >
+                        <option value="">Select Variable Type</option>
+                        <option value="str">Normal Type</option>
+                        <option value="sql">SQL Type</option>
+                        <option value="obj">Object Type</option>
+                        <option value="objlist">Object List Type</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="updWinBtn">
+            <input type="button" class="btnOK"  value="Save" onclick="openWinOK()" />
+            <input type="button" class="btnCancle"  value="Cancel" onclick="closeWin()" />
+        </div>
+    </div>
+</div>
+<div id="coverWin" class="coverWin"></div>
+<div id="modalWin" class="modalWin">
+    <div class="modalWinMsg"><span id="modalWinMsg"></span></div>
+    <div class="modalWinBtn">
+        <input type="button" class="btnOK"  value="OK" onclick="openWinOK()" />
+        <input type="button" class="btnCancle"  value="Cancel" onclick="closeWin()" />
+    </div>
+</div>
+<div id="noteWin" class="noteWin">
+    <textarea id="txtCodeNote" class="txtCodeNote" ></textarea>
+    <input class="btnAddVar" type="button" value="Save" onclick="saveCodeNote(event);return false;" />
+    <input class="btnCancleVar" type="button" value="Cancel" onclick="exitCodeNote(event);return false;" />
+</div>
+<div id="conJScodeWin" class="noteWin">
+    <textarea id="conJScode" class="txtCodeNote" ></textarea>
+    <input class="btnAddVar" type="button" value="Save" onclick="saveConJScode(event);return false;" />
+    <input class="btnCancleVar" type="button" value="Cancel" onclick="exitConJScode(event);return false;" />
+</div>
+<div id="item-action" class="item-action" style="display:none" >
+    <input class="btnOK" type="button" value="Up" onclick="moveUp(event);return false;" />
+    <input class="btnOK" type="button" value="Down" onclick="moveDown(event);return false;" />
+    <input class="btnOK" type="button" value="Copy" onclick="copyCode(event);return false;" />
+    <input class="btnOK" type="button" value="Paste" onclick="pasteCode(event);return false;" />
+    <input class="btnOK" type="button" value="Del" onclick="openWin('Delete this statement?',delContainer,event);return false;" />
+    <input class="btnOK" type="button" value="Note" onclick="showCodeNote(event);return false;" />
+    <div class="divCodeNote" style="display:none"></div>
+</div>
+<script src="./js/codedesign.js"></script>
+</body>
+</html>

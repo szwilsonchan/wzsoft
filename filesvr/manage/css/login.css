@@ -1,0 +1,410 @@
+.logImg 
+{ 
+    color: black;
+    font-size:0.8em;
+    border-radius: 0.5em;
+    padding: 10px;
+    width:100%;
+    box-sizing: border-box;
+    overflow: auto;
+    text-align: left;
+}
+.loginWin
+{ 
+    position:absolute;
+    width:500px;
+    height:300px;
+    min-height: 00px;
+    top:80px;
+    left:50%;
+    margin-left: -250px;
+    background-color:#fff;
+    cursor:pointer;
+    text-align: center;
+    padding:20px;
+    border: 1px solid rgb(234, 237, 241);
+    border-radius: 2em;
+}
+.loginWin .loginWin-content
+{ 
+    width:100%;
+    box-sizing: border-box;
+    padding:20px;
+}
+.loginWin .loginWin-content-item
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.loginWin .loginWin-content-item .left
+{ 
+    width:30%;
+    box-sizing: border-box;
+    font-size:1em;
+    line-height:40px;
+    padding-right:15px;
+    text-align:right;
+    font-weight: bold;
+    float:left;
+}
+.loginWin .loginWin-content-item .right
+{
+    width:70%;
+    box-sizing: border-box;
+    text-align:left;
+    float:left;
+}
+.loginWin .loginWin-content-item input
+{
+    border: 1px solid rgb(234, 237, 241);
+    border-radius: 0.8em;
+    height:40px;
+    width:80%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.loginWin .loginWin-content-item input:focus
+{
+    border: 1px solid rgb(46, 162, 240);
+}
+
+.loginWin .btnOK
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(46, 162, 240);
+    color:#fff;
+    height:40px;
+    width:80%;
+    font-size: 1em;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+}
+.loginWin .btnOK:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+
+.loginWin .loginWin-content-item a:link
+{ 
+    color:rgb(46, 162, 240);
+    text-decoration: none;
+}
+.loginWin .loginWin-content-item a:visited
+{ 
+    color:rgb(46, 162, 240);
+    text-decoration: none;
+}
+
+.loginWin .loginWin-content-item .cpachaInput
+{
+    border: 1px solid rgb(234, 237, 241);
+    border-radius: 0.8em;
+    height:40px;
+    width:36%;
+    font-size:1em;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    float: left;
+    box-sizing: border-box;
+}
+.loginWin .loginWin-content-item .cpachaImg
+{
+    cursor:pointer;
+    float:left;
+    margin-left: 10px;
+    height:40px;
+    width:40%;
+}
+.loginWin .loginWin-content-item .divpsn
+{
+    float:left;
+    font-size:1em;
+    width: 85px;
+    display:none;
+}
+.loginWin .loginWin-content-item .divorg
+{
+    float:left;
+    font-size:1em;
+    width: 85px;
+    display:none;
+}
+.loginWin .loginWin-content-item .divpass
+{
+    float:left;
+    font-size:1em;
+    width: 85px;
+}
+.loginWin .loginWin-info
+{
+    color: black;
+    font-size:0.8em;
+    background-color:rgb(241, 215, 180);
+    border: 1px solid rgb(206, 133, 37);
+    border-radius: 0.5em;
+    padding: 10px;
+    width:100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.loginWin .loginWin-info .left
+{
+    float:left;
+    width:90%;
+    box-sizing: border-box;
+}
+.loginWin .loginWin-info .right
+{
+    float:right;
+    color:grey;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.loginWin .content-info
+{
+    color: rgb(15, 124, 6);
+    font-size:0.8em;
+    background-color:rgb(201, 226, 197);
+    border: 1px solid rgb(112, 189, 116);
+    border-radius: 0.5em;
+    padding: 10px;
+    margin-bottom: 20px;
+    width:100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.loginWin .content-info .left
+{
+    float:left;
+    width:90%;
+    box-sizing: border-box;
+}
+.content-info .right
+{
+    float:right;
+    color:grey;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.loginWinMobile 
+{ 
+    width:100%;
+    height: fit-content;
+    min-height: 500px;
+    background-color:#fff;
+    cursor:pointer;
+    text-align: center;
+    padding:20px;
+    float: left;
+}
+.loginWinMobile .loginWin-content
+{ 
+    width:100%;
+    box-sizing: border-box;
+    float:left;
+    height: fit-content;
+    padding:20px;
+}
+.loginWinMobile .loginWin-content-item
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.loginWinMobile .loginWin-content-item .left
+{ 
+    width:90%;
+    box-sizing: border-box;
+    font-size:2em;
+    line-height:80px;
+    text-align:left;
+    font-weight: bold;
+    float:left;
+}
+.loginWinMobile .loginWin-content-item .right
+{
+    width:100%;
+    box-sizing: border-box;
+    text-align:left;
+    font-size:1.5em;
+    line-height:80px;
+    float:left;
+}
+.loginWinMobile .loginWin-content-item .cpachaInput
+{
+    border: 1px solid rgb(234, 237, 241);
+    border-radius: 0.8em;
+    height:80px;
+    width:40%;
+    font-size:1.5em;
+    padding: 5px;
+    padding-left: 25px;
+    outline: none;
+    float: left;
+    box-sizing: border-box;
+}
+.loginWinMobile .loginWin-content-item .cpachaImg
+{
+    cursor:pointer;
+    float:left;
+    margin-left: 10px;
+    height:80px;
+    width:40%;
+}
+.loginWinMobile .loginWin-content-item .divpsn
+{
+    border: 1px solid rgb(46, 162, 240);
+    float:left;
+    border-radius: 0.5em;
+    font-size:1em;
+    width: 90%;
+    text-align: center;
+    margin-bottom: 10px;
+    display:none;
+}
+.loginWinMobile .loginWin-content-item .divorg
+{
+    border: 1px solid rgb(46, 162, 240);
+    float:left;
+    border-radius: 0.5em;
+    font-size:1em;
+    width: 90%;
+    text-align: center;
+    margin-bottom: 10px;
+    display:none;
+}
+.loginWinMobile .loginWin-content-item .divpass
+{
+    border: 1px solid rgb(46, 162, 240);
+    float:left;
+    border-radius: 0.5em;
+    font-size:1em;
+    width: 90%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.loginWinMobile .loginWin-content-item input
+{
+    border: 1px solid rgb(234, 237, 241);
+    border-radius: 0.8em;
+    height:80px;
+    width:90%;
+    font-size:1.5em;
+    padding: 5px;
+    padding-left: 25px;
+    outline: none;
+    box-sizing: border-box;
+}
+.loginWinMobile .loginWin-content-item input:focus
+{
+    border: 1px solid rgb(46, 162, 240);
+}
+
+.loginWinMobile .cpachaInput:focus
+{
+    border: 1px solid rgb(46, 162, 240);
+}
+.loginWinMobile .btnOK
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(46, 162, 240);
+    color:#fff;
+    height:80px;
+    width:100%;
+    font-size: 2em;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+}
+.loginWinMobile .btnOK:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+
+.loginWinMobile .loginWin-content-item a:link
+{ 
+    color:rgb(46, 162, 240);
+    text-decoration: none;
+}
+.loginWinMobile .loginWin-content-item a:visited
+{ 
+    color:rgb(46, 162, 240);
+    text-decoration: none;
+}
+.loginWinMobile .loginWin-info
+{
+    color: black;
+    font-size:1.5em;
+    background-color:rgb(241, 215, 180);
+    border: 1px solid rgb(206, 133, 37);
+    border-radius: 0.5em;
+    padding: 10px;
+    width:90%;
+    height: fit-content;
+    line-height: 40px;
+    min-height: 80px;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.loginWinMobile .loginWin-info .left
+{
+    float:left;
+    width:90%;
+    box-sizing: border-box;
+}
+.loginWinMobile .loginWin-info .right
+{
+    font-size:1.5em;
+    display:none;
+    float:right;
+    color:grey;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+.loginWinMobile .content-info
+{
+    color: rgb(15, 124, 6);
+    font-size:1.5em;
+    background-color:rgb(201, 226, 197);
+    border: 1px solid rgb(112, 189, 116);
+    border-radius: 0.5em;
+    padding: 10px;
+    margin-bottom: 20px;
+    width:90%;
+    height: fit-content;
+    min-height: 80px;
+    box-sizing: border-box;
+    float: left;
+}
+.loginWinMobile .content-info .left
+{
+    float:left;
+    width:90%;
+    box-sizing: border-box;
+}
+.divPsnRoles
+{
+    border: 1px solid rgb(114, 145, 231);
+    border-radius: 0.8em;
+    padding: 5px;
+    padding-left: 15px;
+    margin-top: 10px;
+    height:40px;
+    line-height:40px;
+}
+.divPsnRoles:hover
+{
+    background-color: rgb(145, 185, 241);
+}

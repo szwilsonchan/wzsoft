@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<title>CKEditor 5 ClassicEditor build</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="./css/com.css">
+		<script src="./../../../../js/vue.global.js"></script>
+		<script src="./../../../../js/axios.min.js"></script>
+	</head>
+	<body>
+        <div class="divTag" id="divTag" style="display:none;margin-left:15px">
+                <input class="btnAddVar" type="button"  onclick="varSelShow(event)" value="+AddLabel" >
+                <div class="selDiv" style="display:none" ><select class="varSelValue" style="width:26%;margin-right:5px" onchange="varSelAdd(event,0)">
+                    <option></option>
+                </select><select class="varSelValue" style="width:26%;margin-right:5px" onchange="varSelAdd(event,1)">
+                <option></option>
+            </select><select class="varSelValue" style="width:26%">
+            <option></option>
+        </select><br/><input class="btnAddVar" type="button" value="Add" onclick="varSelAdd(event,2)" /><input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+            </div>
+        </div>
+		<div class="divTag" id="divFile" style="margin-left:15px">
+			<input class="btnAddVar" type="button"  onclick="varSelShowFile(event)" value="+UploadFile" >
+			<div class="selDiv" style="display:none;line-height: 40px;" >
+				<div v-show="!blnUpded" >
+                    <label class="fileContainer">Select file to upload：<input id="file" ref="clearFile" type="file" @change="fileUpload()"></label>
+                </div>
+                <div v-show="blnUpded">
+                    <img height="20" src="./imgs/file.png"><a href="javascript:void(0)" @click="fileDownload()"  style="text-decoration-line: none;">{{fileContent['fileName']}}</a>&nbsp;&nbsp;
+                    <a href="javascript:void(0)" @click="fileDelete()" >Delete</a>
+                </div>
+				<input class="btnAddVar"  type="button" value="Insert File" onclick="fileAdd(event)" />
+				<input class="btnAddVar"  type="button" value="Insert Image" onclick="imgAdd(event)" />
+				<input class="btnCancleVar"  type="button" value="Cancel" onclick="closeAdd(event)" />
+			</div>
+		</div>
+
+		<iframe id="editorIframe" frameborder="no" width="100%" height="580px" style="margin-left:15px"  marginwidth="0" marginheight="0" src="editor.html" ></iframe>
+		
+		<script>
+
+			String.prototype.replaceAll=function(str,replace,ingore){
+				ingore = ingore || false;
+				var reg;
+				if(!ingore){
+					reg = new RegExp(str,"g");
+				}else{
+					reg = new RegExp(str,"gi");
+				}
+				return this.replace(reg,replace);
+			}
+
+			const ComConfigVue = 
+			{
+				data() 
+				{
+					return {
+						comdatas:null,
+						dataitem:{"comid":"6","comname":"Rich Text Box","comtitle":"","config":{"content":""}},
+						fileContent:{},
+						blnUpded:false
+					}
+				},
+				methods: 
+				{
+					getDataItem() 
+					{
+						let iw = document.getElementById('editorIframe').contentWindow;
+    					let v = iw.getEditerValue();
+						let v1=v;
+						v1=v1.replaceAll("src=\"\./\.\./\.\./\.\./\.\./upload/","src=\"\./\.\./upload/",true);
+						v1=v1.replaceAll("href=\"\./\.\./\.\./\.\./\.\./upload/","href=\"\./\.\./upload/",true);
+
+						this.dataitem.config.content = v1;
+
+						let v2=v;
+						if(parent.gPageName=="temp_tabdiy"||parent.gPageName=="temp_formin")
+            			{
+							v2=v2.replaceAll("src=\"\./\.\./\.\./\.\./\.\./upload/","src=\"\./\.\./\.\./\.\./\.\./upload/",true);
+							v2=v2.replaceAll("href=\"\./\.\./\.\./\.\./\.\./upload/","href=\"\./\.\./\.\./\.\./\.\./upload/",true);
+						}
+						else
+						{
+							v2=v2.replaceAll("src=\"\./\.\./\.\./\.\./\.\./upload/","src=\"\./\.\./\.\./upload/",true);
+							v2=v2.replaceAll("href=\"\./\.\./\.\./\.\./\.\./upload/","href=\"\./\.\./\.\./upload/",true);
+						}
+
+						this.dataitem.config.viewhtml = v2;
+
+						return this.dataitem;
+					},
+					setDataItem(dataitem) 
+					{
+						this.dataitem = dataitem;
+						let v = this.dataitem.config.content;
+						v=v.replaceAll("src=\"\./\.\./upload/","src=\"\./\.\./\.\./\.\./\.\./upload/",true);
+						v=v.replaceAll("href=\"\./\.\./upload/","href=\"\./\.\./\.\./\.\./\.\./upload/",true);
+						this.dataitem.config.content=v;
+						let iframe = document.getElementById("editorIframe");
+						iframe.src="editor.html";
+						if (iframe.attachEvent)
+						{
+							iframe.attachEvent("onload", setWin1);
+							} else {
+							iframe.onload = setWin2;
+						}
+					},
+					setWin1()
+					{
+						let iw = document.getElementById('editorIframe').contentWindow;
+						iw.setEditerValue(this.dataitem.config.content);
+						document.getElementById("editorIframe").detachEvent("onload", setWin1);
+					},
+					setWin2()
+					{
+						let iw = document.getElementById('editorIframe').contentWindow;
+						iw.setEditerValue(this.dataitem.config.content);
+						document.getElementById("editorIframe").onload=null;
+					},
+					fileDelete()
+					{
+						this.fileContent={};
+						this.blnUpded=false;
+						this.$refs.clearFile.value = '';
+					},
+					fileDownload()
+					{
+						that=this;
+						axios({
+							url: './../../../../api/downloadFile',
+							method: 'POST',
+							data:{"fileGuid":that.fileContent['fileGUID']},
+							responseType: 'blob', // important
+						}).then((response) => {
+							const url = window.URL.createObjectURL(new Blob([response.data]));
+							const link = document.createElement('a');
+							link.href = url;
+							link.setAttribute('download', that.fileContent['fileName']);
+							document.body.appendChild(link);
+							link.click();
+						});
+					},
+					getfileContent()
+					{
+						if(this.blnUpded)
+							return this.fileContent;
+					},
+					fileUpload()
+					{
+						let file = document.getElementById("file").files[0];
+						let fv = document.getElementById("file").value;
+						fv = fv.substring(fv.indexOf(".")+1);
+
+						let params = new FormData();
+						params.append('file', file)
+						that=this;
+						axios({
+							url: "./../../../../api/uploadFile",
+							method: "post",
+							data: params,
+							headers: { 'Content-Type': 'multipart/form-data' }
+						}).then(function(res){
+							that.fileContent=res.data;    
+							that.blnUpded=true; 
+
+							}).catch(function (err) {
+							});
+					}
+				},
+				mounted() 
+				{
+					if(parent.gPageName.indexOf("pdf_")==0)
+            		{
+						document.getElementById('divTag').style.display="block";
+						document.getElementById('divFile').style.display="none";
+					}
+					window.getDataItem = this.getDataItem;
+					window.setDataItem = this.setDataItem;
+					window.setWin1 = this.setWin1;
+					window.setWin2 = this.setWin2;
+					window.getfileContent = this.getfileContent;
+				}
+			}
+			
+			Vue.createApp(ComConfigVue).mount('#divFile');
+			
+			function varSelShowFile(e)
+			{
+				let p = e.target.parentElement;
+				for (let dNode of p.childNodes) 
+				{
+					if(dNode.className=="selDiv")
+					{
+						dNode.style.display="block";
+						break;
+					}
+				}
+			}
+
+			function closeAdd(e)
+			{
+				let p = e.target;
+				p.parentElement.style.display="none"
+			}
+
+			function fileAdd(e)
+			{
+				let f = window.getfileContent();
+				let s = "<a href=\"./../../../../upload/"+ f['filePath'] +"\">"+ f['fileName']  +"</a>";
+				let iw = document.getElementById('editorIframe').contentWindow;
+				iw.setDataTag(s);
+			}
+
+			function imgAdd(e)
+			{
+				let f = window.getfileContent();
+				let s = "<img src=\"./../../../../upload/"+ f['filePath'] +"\">";
+				let iw = document.getElementById('editorIframe').contentWindow;
+				iw.setDataTag(s);
+			}
+
+			function varSelShow(e)
+			{
+				let p = e.target.parentElement;
+				for (let dNode of p.childNodes) 
+				{
+					if(dNode.className=="selDiv")
+					{
+						dNode.style.display="block";
+						let s = dNode.firstChild;
+						s.options.length=0
+						s.add(new Option("",""));
+						for( let item of parent.varGDataFileds)
+						{
+							s.add(new Option(item['FIELD_TITLE'],item['FIELD']+"|"+item['FIELD_FIELDS']));
+						}
+
+						break;
+					}
+				}
+			}
+
+			function varSelAdd(e,n)
+			{
+				let p = e.target.parentElement;
+				let pp = e.target.parentElement.parentElement.parentElement;
+				let dNode = p.childNodes[n];
+				let v=dNode.options[dNode.selectedIndex].text;
+				let k=dNode.options[dNode.selectedIndex].value;
+				let k1 = k.substring(0,k.indexOf("|"));
+				let k2 = k.substring(k.indexOf("|")+1);
+				if(k2!=="null"&&n<2)
+				{
+					let fs = [];
+					fs=JSON.parse(k2);
+					let s = p.childNodes[n+1];
+					s.options.length=0
+					s.add(new Option("",""));
+					for( let item of fs)
+					{
+						if(item['fields'])
+							s.add(new Option(item['title'],item['name']+"|"+JSON.stringify(item['fields'])));
+						else
+							s.add(new Option(item['title'],item['name']+"|"));
+					}
+				}
+
+				if(n==2)
+				{
+					let dNode = p.childNodes[2];
+					let v=dNode.options[dNode.selectedIndex].text;
+					let k=dNode.options[dNode.selectedIndex].value;
+					let k1 = k.substring(0,k.indexOf("|"));
+
+					let dNode1 = p.childNodes[0];
+					let pv1=dNode1.options[dNode1.selectedIndex].text;
+					let pk1=dNode1.options[dNode1.selectedIndex].value;
+					pk1 = pk1.substring(0,pk1.indexOf("|"));
+
+					let dNode2 = p.childNodes[1];
+					let pv2=dNode2.options[dNode2.selectedIndex].text;
+					let pk2=dNode2.options[dNode2.selectedIndex].value;
+					pk2 = pk2.substring(0,pk2.indexOf("|"));
+
+					if(k1!="")
+						k1 = pk1 + "-" +  pk2 + "-" +  k1; 
+					else if(pk2!="")
+						k1 = pk1 + "-" +  pk2;    
+					else if (pk1!="")
+						k1 = pk1;
+
+					k1=k1.toUpperCase();
+					let iw = document.getElementById('editorIframe').contentWindow;
+					iw.setDataTag('[@'+k1+'@]');
+				}
+			}
+
+			</script>
+	</body>
+</html>

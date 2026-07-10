@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css?5465" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+<script src="selColor.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Title</div>
+            <div class="right"><input type="text" v-model="dataitem.config.fieldtitle" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Template</div>
+            <div class="right" style="line-height: 40px;">
+                <input type="radio" name="radiostemp" value="0" v-model="dataitem.temptype" ><label>Default</label>
+                <input type="radio" name="radiotemp" value="1" v-model="dataitem.temptype" ><label>Custom</label>
+                <textarea v-show="dataitem.temptype=='1'" v-model="dataitem.tempcontent"  style="width:90%;height:300px"></textarea>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Style</div>
+            <div class="right" style="line-height: 45px;">
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="1" v-model="dataitem.config.apptype" ><label>PC</label>
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="2" v-model="dataitem.config.apptype" ><label>Mobile</label><Br/>
+                <div style="float:left">
+                    Line Height：<input type="text" v-model="dataitem.config.itemheight" style="width:60px" />
+                    Font Size：<input type="text" v-model="dataitem.config.itemfontsize" style="width:60px" />
+                </div><Br/>
+                Background Color: <input type="text" v-model="dataitem.config.conbg"  style="width:20%" id="color-picker-conbg" />
+                Border Radius: <input type="text" v-model="dataitem.config.conradius" style="width:10%" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Data</div>
+            <div class="right">
+                <select  v-model="dataitem.config.viewcode" @change="selDataItem" style="width:60%">
+                    <option></option>
+                    <option v-for="v in viewdatas"  name="viewcode" :value="v['TABLENAME']" >{{v['NAME']}}</option>
+                </select>
+                <input type="radio" name="radiostype"  value="" v-model="dataitem.config.pubtype" ><label>Internal</label>
+                <input type="radio" name="radiostype"  value="portal/" v-model="dataitem.config.pubtype" ><label>Public</label>&nbsp;&nbsp;
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Sort</div>
+            <div class="right">
+                <input type="radio" name="radios" value="1" v-model="dataitem.config.seltype" ><label>Select</label>
+                <input type="radio" name="radios" value="2" v-model="dataitem.config.seltype" ><label>Input</label>
+                <div v-show="dataitem.config.seltype=='1'"> 
+                    <select  style="width:15%" v-model="dataitem.config.orderone" >
+                        <option></option>
+                        <option v-for="v in datafields"  name="viewcode" :value="v['FIELD']" >{{v['FIELD_TITLE']}}</option>
+                    </select>&nbsp;
+                    <select  style="width:10%" v-model="dataitem.config.ordertwo" >
+                        <option value="asc">Asc</option>
+                        <option value="desc">Desc</option>
+                    </select>
+                </div>
+                <div v-show="dataitem.config.seltype=='2'"> 
+                    <input type="text" style="width:20%" v-model="dataitem.config.orderfield" placeholder="e.g.:  name_asc">
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Count</div>
+            <div class="right">
+            Per Page：<input type="text" style="width:50px" v-model="dataitem.config.pageitems" style="width:20px"/>
+            Total：<input type="text" style="width:50px" v-model="dataitem.config.topitems" style="width:20px" placeholder="0 = Unlimited" />
+            Debug Log：<input type="checkbox" v-model="dataitem.config.isdebug" style="width:30px" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Display</div>
+            <div class="right">
+            Page：<input type="checkbox" v-model="dataitem.config.formshow" style="width:20px" />
+            Search：<select  v-model="dataitem.config.filtershow" style="width:60px"><option v-for="v in showitems" :value="v['code']" >{{v['name']}}</option></select>
+            Pagination：<select  v-model="dataitem.config.pageshow" style="width:60px"><option v-for="v in showitems" :value="v['code']" >{{v['name']}}</option></select>
+            &nbsp;Cache Status：<input type="checkbox" v-model="dataitem.config.searchcache" style="width:30px" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Top Buttons</div>
+            <div class="right">
+                <div class="divBtnTopsAdd" >
+                    <input class="btnAddBtn" type="button"  onclick="addBtnShow(event)" value="+AddNewButton" >
+                    <div class="addBtnDiv" style="display:none" ><input style="width:35%" type="text" value="" placeholder="Button Name" /><input style="width:35%" type="text" value="1==1" placeholder="Button Display Rule" /><input style="width:25%" type="text" value="" placeholder="Confirm Message" /><input class="btnSave" type="button" value="Save" onclick="addBtnDo(event,'divBtnTops','a','top')" />
+                        <input class="btnCancle" type="button" value="Cancel" onclick="closeAdd(event)" />
+                    </div>
+                </div>
+                <div class="divBtnTops" id="divBtnTops"></div>
+                <div class="divItemUpd" id="divItemUpdtop">
+                    <div class="configItemUpdDiv" id="divItemUpdNodetop"><input style="width:25%" type="text" value="" placeholder="Button Name" /><input style="width:25%" type="text" value="1==1" placeholder="Button Display Rule" /><input type="hidden"  /><input style="width:25%" type="text" value="" placeholder="Confirm Message" /><input class="btnSave" type="button" value="Save" onclick="configItemUpdDo(event,'divBtnTops','u','top')" />
+                        <input class="btnCancle" type="button" value="Cancel" onclick="gConfigItemClose(event)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">List Definition</div>
+            <div class="right"><input type="button" class="btnOK"  value="Design List" onclick="openFormWin()" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Search Conditions</div>
+            <div class="right">
+                <div class="divBtnTopsAdd" >
+                    <input class="btnAddBtn" type="button"  onclick="varSelDbShow(event)" value="+Add New Condition" >
+                    <div class="addBtnDiv" style="display:none"><select class="varSelValue" onchange="varSelDbFieldShow(event,'')" style="width:20%">
+                            <option></option>
+                            </select><select class="varSelValue" style="width:20%;margin-left: 10px;" onchange="varSelDbFieldName(event,'')" >
+                            <option></option></select><input type="text" style="width:20%" value="" placeholder="Display Name" /><input type="hidden" /><input type="hidden" /><input type="hidden" />
+                            <input class="btnSave" type="button" value="Save" onclick="varSelDbFieldAdd(event,'divSearchs')" />
+                            <input class="btnCancle" type="button" value="Cancel" onclick="closeAdd(event)" />
+                    </div>
+                </div>
+                <div class="divSearchs" id="divSearchs"></div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Event</div>
+            <div class="right">
+                <span>On Value Change: </span>
+                <input type="button" class="btnOK"  value="Design Code" onclick="parent.openCodeValWin('onchange');" />&nbsp;&nbsp;
+                <span>On Data Load: </span>
+                <input type="button" class="btnOK"  value="Design Code" onclick="parent.openCodeValWin('onload');" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="./../../../js/funcconfig.js"></script>
+<script src="./../../../js/functab.js"></script>
+<script>
+
+function openFormWin()
+{
+    parent.openTempFormWin("./../config/com/tabdiy/temp_tabdiy.html");
+}
+
+window.gDatalist=[];
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            viewdatas:null,
+            datafields:null,
+            showitems:[{"name":"Display","code":"block"},{"name":"Hidden","code":"none"}],
+            dataitem:{"comid":"22","comname":"Data ListCustom","comtitle":"","temptype":"0","tempcontent":"","form":"","fields":[],"code":{"onchange":{},"onload":{}},"attrset":{"refresh":"s#refresh","Display":"s#display","listData":"listdata"},"attrget":{"selectedIds":"s#selids","listData":"listdata"},"config":{"searchcache":false,"isdebug":false,"apptype":"1","lan":"e","conbg":"#fff","conradius":"2em","seltype":"1","searchdatas":[],"searchcontent":"","viewcode":"","orderfield":"","pageitems":10,"topitems":0,"pubtype":"","filtershow":"block","pageshow":"block","checkboxshow":true,"formshow":true,"fieldtitle":"","btntophtml":"","btnmidhtml":"","btnmidhtmlth":"","btnfunc":"","btnfuncmid":"","btnfunctop":"","btntopcontent":"","btnmidcontent":"","orderone":"","ordertwo":"","itemheight":"36px","itemfontsize":"16px"}}
+        }
+    },
+    methods: 
+    {
+        selDataItem() 
+        {
+            let paras = {};
+            paras['viewCode']="data_fields";
+            paras['curPage']=1;
+            paras['pageItmes']=100;
+            paras['filter_isinfile_equal']="0";
+            paras['filter_tablename_equal']=this.dataitem.config.viewcode;
+            var that = this;
+            axios.post("./../../../../api/datalist",paras).then(function(res){
+            that.datafields=Object.values(res.data)[0];
+            parent.listdatafields = that.datafields;
+            parent.selviewcode=that.dataitem.config.viewcode;
+            }).catch(function (err) {
+            });
+        },
+        genBtnContent(pp,dNode,f,m,tf)
+        {
+            gGenBtnContent(this.dataitem,pp,dNode,f,m,tf);
+            this.getBtnContentDo(pp,tf);
+        },
+        getBtnContentDo(pp,tf)
+        {
+            gGetBtnContentDo(this.dataitem,pp,tf);
+        },
+        getDataItem() 
+        {
+            if(this.dataitem.config.lan=="c")
+            {
+                this.dataitem.config.cappegenum1 = "Per PageDisplay";
+                this.dataitem.config.cappegenum2 = "records";
+                this.dataitem.config.cappegenum3 = "records";
+                this.dataitem.config.btnsearch = "Search";
+                this.dataitem.config.btnsearchsub = "HeightLevel";
+                this.dataitem.config.btnsave = "Save";
+                this.dataitem.config.btnok = "OK";
+                this.dataitem.config.btncancle = "Cancel";
+                this.dataitem.config.pageup = "Previous";
+                this.dataitem.config.pagedown = "Next";
+                this.dataitem.config.infonoexceed = "InputContentlength cannot exceed ";
+                this.dataitem.config.infonumber = "Enter DecimalFormat:";
+                this.dataitem.config.infodate = "Enter DateFormat:";
+                this.dataitem.config.seloptiondt = "<option value='dtequal'>equals</option><option value='dtgt'>greater than</option><option value='dtgte'>greater thanequals</option><option value='dtlt'>less than</option><option value='dtlte'>less thanequals</option>";
+                this.dataitem.config.seloptiond = "<option value='dequal'>equals</option><option value='dgt'>greater than</option><option value='dgte'>greater thanequals</option><option value='dlt'>less than</option><option value='dlte'>less thanequals</option>";
+                this.dataitem.config.seloption = "<option value='equal'>equals</option><option value='gt'>greater than</option><option value='gte'>greater thanequals</option><option value='lt'>less than</option><option value='lte'>less thanequals</option>";
+                this.dataitem.config.infodelsuc = "SuccessDeleterecords";
+                this.dataitem.config.noright = "No dataset permission";
+            }
+            else
+            {
+                this.dataitem.config.cappegenum1 = "Display ";
+                this.dataitem.config.cappegenum2 = "records per page";
+                this.dataitem.config.cappegenum3 = "records ";
+                this.dataitem.config.btnsearch = "Search";
+                this.dataitem.config.btnsearchsub = "More";
+                this.dataitem.config.btnsave = "Save";
+                this.dataitem.config.btnok = "Confirm";
+                this.dataitem.config.btncancle = "Cancle";
+                this.dataitem.config.pageup = "Prev";
+                this.dataitem.config.pagedown = "Next";
+                this.dataitem.config.infonoexceed = "The length of input content cannot exceed ";
+                this.dataitem.config.infonumber = "Please enter the number format:";
+                this.dataitem.config.infodate = "Please enter date format:";
+                this.dataitem.config.seloptiondt = "<option value='dtequal'>==</option><option value='dtgt'>&gt;</option><option value='dtgte'>&gt;=</option><option value='dtlt'>&lt;</option><option value='dtlte'>&lt;=</option>";
+                this.dataitem.config.seloptiond = "<option value='dequal'>==</option><option value='dgt'>&gt;</option><option value='dgte'>&gt;=</option><option value='dlt'>&lt;</option><option value='dlte'>&lt;=</option>";
+                this.dataitem.config.seloption = "<option value='equal'>==</option><option value='gt'>&gt;</option><option value='gte'>&gt;=</option><option value='lt'>&lt;</option><option value='lte'>&lt;=</option>";
+                this.dataitem.config.infodelsuc = "Successfully deleted record";
+                this.dataitem.config.noright = "No data rights";
+            }
+
+            this.dataitem.comtitle = this.dataitem.config.fieldtitle;
+            if(this.dataitem.config.seltype=="1")
+            {
+                if(this.dataitem.config.orderone!="")
+                    this.dataitem.config.orderfield = this.dataitem.config.orderone + "_" + this.dataitem.config.ordertwo;
+                else
+                    this.dataitem.config.orderfield="";
+            }
+            this.dataitem['config']['btnfunc']="";
+            if(this.dataitem['config']['btnfunctop']!="")
+            {
+                this.dataitem['config']['btnfunc'] =  this.dataitem['config']['btnfunctop'];
+                if(this.dataitem['config']['btnfuncmid']!="")
+                {
+                    this.dataitem['config']['btnfunc'] = this.dataitem['config']['btnfunc'] + this.dataitem['config']['btnfuncmid'];
+                }
+            }
+            else
+            {
+                this.dataitem['config']['btnfunc'] =  this.dataitem['config']['btnfuncmid'];
+            }
+
+            if(this.dataitem.config.apptype=="1")
+            {
+                this.dataitem.config.uwinwidth="800px";
+                this.dataitem.config.uwinmleft="-400px";
+
+                this.dataitem.config.mwinwidth="600px";
+                this.dataitem.config.mwinmleft="-300px";
+                this.dataitem.config.mwintop="10%";
+                this.dataitem.config.searchwidth="168px";
+
+            }
+            else
+            {
+                this.dataitem.config.uwinwidth="90%";
+                this.dataitem.config.uwinmleft="-45%";
+
+                this.dataitem.config.mwinwidth="90%";
+                this.dataitem.config.mwinmleft="-45%";
+                this.dataitem.config.mwintop="10%";
+                this.dataitem.config.searchwidth="250px";
+            }
+
+            let pt=document.getElementById("divBtnTops");
+            this.getBtnContentDo(pt,'top');
+
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+            document.getElementById("divBtnTops").innerHTML = this.dataitem['config']['btntopcontent'];
+            document.getElementById("divSearchs").innerHTML = this.dataitem['config']['searchcontent'];
+            this.setDivDrag("divBtnTops");
+            this.setDivDrag("divSearchs");
+            this.selDataItem();
+
+            this.getBtnContentDo(document.getElementById("divBtnTops"),'top');
+        },
+        setDivDrag(divid) 
+        {
+            let dmr = document.getElementById(divid);
+            for (let dNodeSub of dmr.childNodes) 
+            {
+                if(gdivClassCode.indexOf("," +dNodeSub.className+ ",")>=0)
+                {
+                    dealDivDrag(dNodeSub);
+                }
+            }
+        },
+        getDatas() 
+        {
+            let paras = {};
+            paras['viewCode']="data";
+            paras['curPage']=1;
+            paras['pageItmes']=100;
+            paras['filter_open_equal']="1";
+            var that = this;
+            axios.post("./../../../../api/datalist",paras).then(function(res){
+            that.viewdatas=Object.values(res.data)[0];    
+            window.gDatalist=that.viewdatas; 
+            }).catch(function (err) {
+            });
+        },
+        getDataItemByKey(k) 
+        {
+            return this.dataitem.config[k];
+        },
+        setDataItemByKey(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        },
+        setFormValue(fValue,codename) 
+        {
+            let c = this.dataitem['code'];
+            c[codename] = fValue;
+        },
+        getFormValue(codename) 
+        {
+            let c = this.dataitem['code'];
+            return c[codename];
+        },
+        setFormConValue(fValue) 
+        {
+            this.dataitem['form']=fValue;
+        },
+        getFormConValue() 
+        {
+            return this.dataitem['form'];
+        },
+        setFieldsValue(fValue) 
+        {
+            this.dataitem['fields']=fValue;
+        },
+        getFieldsValue() 
+        {
+            return this.dataitem['fields'];
+        },
+        setDataItemByK(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        }, 
+        getDataItemSub() 
+        {
+            return this.dataitem;
+        }
+    },
+    mounted() 
+    {
+        this.getDatas();
+        window.getDataItemByKey = this.getDataItemByKey;
+        window.setDataItemByKey = this.setDataItemByKey;
+        window.getDataItem = this.getDataItem;
+        window.getDataItemSub = this.getDataItemSub;
+        window.setDataItem = this.setDataItem;
+        window.genBtnContent = this.genBtnContent;
+        window.setFormValue = this.setFormValue;
+        window.getFormValue = this.getFormValue;
+        window.setFormConValue = this.setFormConValue;
+        window.getFormConValue = this.getFormConValue;
+        window.setFieldsValue = this.setFieldsValue;
+        window.getFieldsValue = this.getFieldsValue;
+        window.setDataItemByK = this.setDataItemByK;
+
+        gInitConfig();
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+Colorpicker.create({
+el: "color-picker-conbg", 
+color: "", 
+change: function (elem, hex) {
+    elem.style.borderColor = hex;
+    window.setDataItemByK('conbg',hex);
+}
+});
+
+</script>
+
+</body>
+</html>

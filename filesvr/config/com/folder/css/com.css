@@ -1,0 +1,282 @@
+html
+{
+    overflow-x:hidden;
+}
+:root {
+    --color-primary: #06b6d4;
+    --color-primary-hover: #0891b2;
+    --color-primary-light: #cffafe;
+    --color-success: #34d399;
+    --color-success-hover: #10b981;
+    --color-warning: #fbbf24;
+    --color-danger: #fb7185;
+    --color-border: #e2e8f0;
+    --color-border-hover: #94a3b8;
+    --color-text: #1e293b;
+    --color-text-secondary: #64748b;
+    --color-text-light: #94a3b8;
+    --color-bg: #f8fafc;
+    --color-canvas: #ffffff;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.1);
+    --radius-sm: 8px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --transition: 0.2s ease;
+}
+body
+{
+    margin: 0px;
+    padding: 0px;
+}
+
+.updWin 
+{ 
+    width:100%;
+    padding:20px;
+}
+.updWin .updWin-content
+{ 
+    width:100%;
+    box-sizing: border-box;
+    padding:20px;
+}
+.updWin-content .updWin-content-item
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    overflow: visible;
+    float:left;
+}
+.updWin-content-item .left
+{ 
+    width:15%;
+    box-sizing: border-box;
+    font-size:1em;
+    line-height:40px;
+    padding-right:15px;
+    text-align:right;
+    font-weight: bold;
+    float:left;
+}
+.updWin-content-item .right
+{
+    width:85%;
+    box-sizing: border-box;
+    text-align:left;
+    overflow: visible;
+    float:left;
+}
+.updWin-content-item input[type=text]:not(.readonly)
+{
+    border: 1px solid var(--color-bg);
+    border-radius: var(--radius-md);
+    height:40px;
+    width:80%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+.updWin-content-item .readonly
+{
+    border:none;
+    height:40px;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+.updWin-content-item input[type=text]:focus:not(.readonly)
+{
+    border: 1px solid var(--color-primary);
+}
+.updWin-content-item select
+{
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg);
+    width:80%;
+    box-sizing: border-box;
+    height:40px;
+    overflow: visible;
+}
+.updWin .btnOK
+{
+    border-style: none;
+    border-radius: var(--radius-md);
+    border:1px solid var(--color-primary);
+    background-color: #fff;
+    color:#000;
+    height:40px;
+    width:80px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.updWin .btnOK:hover
+{
+    background-color: var(--color-primary-hover);
+}
+
+.updWin-info
+{
+    color: black;
+    font-size:var(--radius-md);
+    background-color:var(--color-primary-light);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    padding: 10px;
+    width:100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.updWin-info .left
+{
+    float:left;
+    width:90%;
+    box-sizing: border-box;
+}
+.updWin-info .right
+{
+    float:right;
+    color:grey;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.btnAddBtn
+{
+    border-style: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-primary);
+    color:#fff;
+    height:26px;
+    min-width:90px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    outline:none;
+    box-sizing: border-box;
+}
+.btnAddBtn:hover
+{
+    background-color: var(--color-primary-hover);
+}
+
+.divBtnTopsAdd
+{
+  border:none;
+  padding:3px;
+  float:left;
+  width:100%;
+  height:fit-content;
+}
+.divBtnMids
+{
+  padding:5px;
+  margin:3px;
+  float:left;
+  height:fit-content;
+  min-height: 60px;
+  min-width:160px;
+  width:fit-content;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-primary-hover);
+}
+.divBtnTops,.divShowTitle
+{
+  padding:5px;
+  margin:3px;
+  float:left;
+  height:fit-content;
+  min-height: 60px;
+  min-width:160px;
+  width:fit-content;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-primary-hover);
+}
+.btnSave
+{
+    border-style: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-primary);
+    color:#fff;
+    height:26px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.btnSave:hover
+{
+  background-color: var(--color-primary-hover);
+}
+.btnCancle
+{
+    border-style: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-border);
+    color:#fff;
+    height:26px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.btnCancle:hover
+{
+    background-color: var(--color-primary-hover);
+}
+.selBtnDiv,.selTitleDiv
+{
+  padding:5px;
+  margin:3px;
+  float:left;
+  height:fit-content;
+  min-width:100px;
+  width:fit-content;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-primary-hover);
+}
+.action-content a:link
+{
+    margin-left: 5px;
+    width:24px;
+    display: block;
+    color: #fff;
+    background-color:var(--color-primary-hover);
+    border-radius: var(--radius-sm);
+    height:24px;
+    text-align: center;
+    padding-top:2px;
+    padding-right:1px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    float:left;
+}
+.action-content a:visited
+{
+    color: #fff;
+}
+
+.action-content a.active
+{
+    background-color:var(--color-primary);
+}
+.action-content a:hover:not(.active)
+{
+    background-color:var(--color-primary);
+}
+.showInfo
+{
+  border: none;
+  color: grey;
+  font-size: 0.6em;
+}

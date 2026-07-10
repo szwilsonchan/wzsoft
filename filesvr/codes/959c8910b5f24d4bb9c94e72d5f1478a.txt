@@ -1,0 +1,14 @@
+;if(Object.prototype.toString.call(vJSONObject)=="[object java.util.ArrayList]")
+{
+return datalistService.codePubListToStr(vJSONObject);
+}
+else if(Object.prototype.toString.call(vJSONObject)=="[object java.util.HashMap]")
+{
+return datalistService.codePubMapToStr(vJSONObject);
+}
+else if(Object.prototype.toString.call(vJSONObject)=="[object com.alibaba.fastjson.JSONArray]")
+{
+return datalistService.codePubMapToStr(vJSONObject);
+}
+else
+{return JSON.stringify(vJSONObject);};;;

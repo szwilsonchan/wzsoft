@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css?5465" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+<script src="selColor.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Title</div>
+            <div class="right"><input type="text" v-model="dataitem.config.fieldtitle" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Template</div>
+            <div class="right" style="line-height: 40px;">
+                <input type="radio" name="radiostemp" value="0" v-model="dataitem.temptype" ><label>Default</label>
+                <input type="radio" name="radiotemp" value="1" v-model="dataitem.temptype" ><label>Custom</label>
+                <textarea v-show="dataitem.temptype=='1'" v-model="dataitem.tempcontent"  style="width:90%;height:300px"></textarea>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Style</div>
+            <div class="right" style="line-height: 40px;">
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="1" v-model="dataitem.config.apptype" ><label>PC</label>
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="2" v-model="dataitem.config.apptype" ><label>Mobile</label><Br/>
+                Background Color: <input type="text" v-model="dataitem.config.conbg"  style="width:20%" id="color-picker-conbg" />
+                Border Radius: <input type="text" v-model="dataitem.config.conradius" style="width:10%" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Count</div>
+            <div class="right">
+            Per Page：<input type="text" style="width:50px" v-model="dataitem.config.pageitems" />
+            Total：<input type="text" style="width:50px" v-model="dataitem.config.topitems" placeholder="0 = Unlimited" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Top Buttons</div>
+            <div class="right">
+                <div class="divBtnTopsAdd" >
+                    <input class="btnAddBtn" type="button"  onclick="addBtnShow(event)" value="+AddNewButton" >
+                    <div class="addBtnDiv" style="display:none" ><input style="width:35%" type="text" value="" placeholder="Button Name" /><input style="width:35%" type="text" value="1==1" placeholder="Button Display Rule" /><input style="width:25%" type="text" value="" placeholder="Confirm Message" /><input class="btnSave" type="button" value="Save" onclick="addBtnDo(event,'divBtnTops','a','top')" />
+                        <input class="btnCancle" type="button" value="Cancel" onclick="closeAdd(event)" />
+                    </div>
+                </div>
+                <div class="divBtnTops" id="divBtnTops"></div>
+                <div class="divItemUpd" id="divItemUpdtop">
+                    <div class="configItemUpdDiv" id="divItemUpdNodetop"><input style="width:25%" type="text" value="" placeholder="Button Name" /><input style="width:25%" type="text" value="1==1" placeholder="Button Display Rule" /><input type="hidden"  /><input style="width:25%" type="text" value="" placeholder="Confirm Message" /><input class="btnSave" type="button" value="Save" onclick="configItemUpdDo(event,'divBtnTops','u','top')" />
+                        <input class="btnCancle" type="button" value="Cancel" onclick="gConfigItemClose(event)" />
+                    </div>
+                </div>
+            </div>
+            <div class="left">Inline Buttons</div>
+            <div class="right">
+                <div class="divBtnTopsAdd" >
+                    <input class="btnAddBtn" type="button"  onclick="addBtnShow(event)" value="+AddNewButton" >
+                    <div class="addBtnDiv" style="display:none" ><input style="width:35%" type="text" value="" placeholder="Button Name" /><input style="width:35%" type="text" value="1==1" placeholder="Button Display Rule" /><input style="width:25%" type="text" value="" placeholder="Confirm Message" /><input class="btnSave" type="button" value="Save" onclick="addBtnDo(event,'divBtnMids','a','mid')" />
+                        <input class="btnCancle" type="button" value="Cancel" onclick="closeAdd(event)" />
+                    </div>
+                </div>
+                <div class="divBtnMids" id="divBtnMids"></div>
+                <div class="divItemUpd" id="divItemUpdmid">
+                    <div class="configItemUpdDiv" id="divItemUpdNodemid"><input style="width:25%" type="text" value="" placeholder="Button Name" /><input style="width:25%" type="text" value="1==1" placeholder="Button Display Rule" /><input type="hidden"  /><input style="width:25%" type="text" value="" placeholder="Confirm Message" /><input class="btnSave" type="button" value="Save" onclick="configItemUpdDo(event,'divBtnMids','u','mid')" />
+                        <input class="btnCancle" type="button" value="Cancel" onclick="gConfigItemClose(event)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="./../../../js/funcconfig.js"></script>
+<script src="./../../../js/functab.js"></script>
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            viewdatas:null,
+            datafields:null,
+            dataitem:
+            {
+                "comid":"4020",
+                "comname":"PersonReview",
+                "comtitle":"","temptype":"0","tempcontent":"",
+                "attrset":{"refresh":"s#refresh","Display":"s#display"},"attrget":{"selectedIds":"s#selids"},"code":{},
+                "config":{"apptype":"1","lan":"e","conbg":"#fff","conradius":"2em","pageitems":10,"topitems":0,"checkboxshow":true,"fieldtitle":"","btntophtml":"","btnmidhtml":"","btnmidhtmlth":"","btnfunc":"","btnfuncmid":"","btnfunctop":"","btntopcontent":"","btnmidcontent":""}
+            }
+        }
+    },
+    methods: 
+    {
+        selDataItem() 
+        {
+            let paras = {};
+            paras['viewCode']="data_fields";
+            paras['curPage']=1;
+            paras['pageItmes']=100;
+            paras['filter_isinfile_equal']="0";
+            paras['filter_tablename_equal']="psn";
+            var that = this;
+            axios.post("./../../../../api/datalist",paras).then(function(res){
+            that.datafields=Object.values(res.data)[0];
+            parent.listdatafields = that.datafields;
+            }).catch(function (err) {
+            });
+        },
+        genBtnContent(pp,dNode,f,m,tf)
+        {
+            gGenBtnContent(this.dataitem,pp,dNode,f,m,tf);
+            this.getBtnContentDo(pp,tf);
+        },
+        getBtnContentDo(pp,tf)
+        {
+            gGetBtnContentDo(this.dataitem,pp,tf);
+        },
+        getDataItem() 
+        {
+            if(this.dataitem.config.lan=="c")
+            {
+                this.dataitem.config.cappegenum1 = "Per PageDisplay";
+                this.dataitem.config.cappegenum2 = "records";
+                this.dataitem.config.cappegenum3 = "records";
+                this.dataitem.config.capaddbtn = "Add";
+                this.dataitem.config.capdelbtn = "Delete";
+                this.dataitem.config.btnsearch = "Search";
+                this.dataitem.config.btnsearchsub = "HeightLevel";
+                this.dataitem.config.capaction = "Actions";
+                this.dataitem.config.capview = "View";
+                this.dataitem.config.infodel = "Are you sure you want to delete this record?";
+                this.dataitem.config.btnsave = "Save";
+                this.dataitem.config.btnok = "OK";
+                this.dataitem.config.btncancle = "Cancel";
+                this.dataitem.config.pageup = "Previous";
+                this.dataitem.config.pagedown = "Next";
+                this.dataitem.config.infoappsuc = "SuccessReview";
+                this.dataitem.config.frmname = "Name";
+                this.dataitem.config.frmno = "Employee ID";
+                this.dataitem.config.frmsex = "Gender";
+                this.dataitem.config.frmdob = "Birth Date";
+                this.dataitem.config.frmdept = "Department";
+                this.dataitem.config.frmorg = "Org";
+                this.dataitem.config.frmrole = "Role";
+                this.dataitem.config.frmemail = "Email";
+                this.dataitem.config.frmtel = "Landline";
+                this.dataitem.config.frmmobile = "Mobile";
+                this.dataitem.config.frmdobmsg = "Birth DateFormat is incorrect";
+                this.dataitem.config.frmemailmsg = "Email format is incorrect";
+                this.dataitem.config.frmsex1 = "Male";
+                this.dataitem.config.frmsex2 = "Female";
+                this.dataitem.config.frmsex3 = "Other";
+                this.dataitem.config.apptime = "Application Time";
+                this.dataitem.config.appnote = "Application Reason";
+                this.dataitem.config.appmode = "ApproveMode";
+                this.dataitem.config.apptype1 = "Approve";
+                this.dataitem.config.apptype2 = "Reject";
+                this.dataitem.config.appreject = "Reject Reason";
+                this.dataitem.config.btnapp = "Approve";
+            }
+            else
+            {
+                this.dataitem.config.cappegenum1 = "Display ";
+                this.dataitem.config.cappegenum2 = "records per page";
+                this.dataitem.config.cappegenum3 = "records ";
+                this.dataitem.config.capaddbtn = "Add";
+                this.dataitem.config.capdelbtn = "Del";
+                this.dataitem.config.btnsearch = "Search";
+                this.dataitem.config.capaction = "Action";
+                this.dataitem.config.capview = "View";
+                this.dataitem.config.pageup = "Prev";
+                this.dataitem.config.pagedown = "Next";
+                this.dataitem.config.infodel = "Are you sure you want to delete the record?";
+                this.dataitem.config.btnsave = "Save";
+                this.dataitem.config.btnok = "Confirm";
+                this.dataitem.config.btncancle = "Cancle";
+                this.dataitem.config.infoappsuc = "Approve successfully";
+                this.dataitem.config.frmname = "Name";
+                this.dataitem.config.frmno = "Job ID";
+                this.dataitem.config.frmsex = "Gender";
+                this.dataitem.config.frmdob = "Date of Birth";
+                this.dataitem.config.frmorg = "Org";
+                this.dataitem.config.frmdept = "Dept";
+                this.dataitem.config.frmrole = "Roles";
+                this.dataitem.config.frmemail = "Email";
+                this.dataitem.config.frmtel = "Tel";
+                this.dataitem.config.frmmobile = "Mpbile";
+                this.dataitem.config.frmdobmsg = "Birth date format is incorrect";
+                this.dataitem.config.frmemailmsg = "Incorrect email format";
+                this.dataitem.config.frmsex1 = "Male";
+                this.dataitem.config.frmsex2 = "Female";
+                this.dataitem.config.frmsex3 = "Other";
+                this.dataitem.config.apptime = "App time";
+                this.dataitem.config.appnote = "Reason";
+                this.dataitem.config.appmode = "Action";
+                this.dataitem.config.apptype1 = "Approve";
+                this.dataitem.config.apptype2 = "Reject";
+                this.dataitem.config.appreject = "Comments";
+                this.dataitem.config.btnapp = "Approve";
+            }
+
+            this.dataitem.comtitle = this.dataitem.config.fieldtitle;
+            this.dataitem['config']['btnfunc']="";
+            if(this.dataitem['config']['btnfunctop']!="")
+            {
+                this.dataitem['config']['btnfunc'] =  this.dataitem['config']['btnfunctop'];
+                if(this.dataitem['config']['btnfuncmid']!="")
+                {
+                    this.dataitem['config']['btnfunc'] = this.dataitem['config']['btnfunc'] + this.dataitem['config']['btnfuncmid'];
+                }
+            }
+            else
+            {
+                this.dataitem['config']['btnfunc'] =  this.dataitem['config']['btnfuncmid'];
+            }
+
+            if(this.dataitem.config.apptype=="1")
+            {
+                this.dataitem.config.uwinwidth="800px";
+                this.dataitem.config.uwinmleft="-400px";
+
+                this.dataitem.config.mwinwidth="600px";
+                this.dataitem.config.mwinmleft="-300px";
+                this.dataitem.config.mwintop="10%";
+                this.dataitem.config.selwidth="200px";
+            }
+            else
+            {
+                this.dataitem.config.uwinwidth="90%";
+                this.dataitem.config.uwinmleft="-45%";
+
+                this.dataitem.config.mwinwidth="90%";
+                this.dataitem.config.mwinmleft="-45%";
+                this.dataitem.config.mwintop="10%";
+                this.dataitem.config.selwidth="100%";
+            }
+
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+            this.selDataItem();
+
+            document.getElementById("divBtnTops").innerHTML = this.dataitem['config']['btntopcontent'];
+            document.getElementById("divBtnMids").innerHTML = this.dataitem['config']['btnmidcontent'];
+
+            dealDivDrag(document.getElementById("divBtnTops"));
+            dealDivDrag(document.getElementById("divBtnMids"));
+        },
+        setFormValue(fValue,codename) 
+        {
+            let c = this.dataitem['code'];
+            c[codename] = fValue;
+        },
+        getFormValue(codename) 
+        {
+            let c = this.dataitem['code'];
+            return c[codename];
+        },
+        setDataItemByK(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        },
+        getDataItemSub() 
+        {
+            return this.dataitem;
+        }
+    },
+    mounted() 
+    {
+        this.selDataItem();
+        window.getDataItem = this.getDataItem;
+        window.getDataItemSub = this.getDataItemSub;
+        window.setDataItem = this.setDataItem;
+        window.genBtnContent = this.genBtnContent;
+        window.setFormValue = this.setFormValue;
+        window.getFormValue = this.getFormValue;
+        window.setDataItemByK = this.setDataItemByK;
+        gInitConfig();
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+Colorpicker.create({
+el: "color-picker-conbg", 
+color: "", 
+change: function (elem, hex) {
+    elem.style.borderColor = hex;
+    window.setDataItemByK('conbg',hex);
+}
+});
+
+</script>
+
+</body>
+</html>

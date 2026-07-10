@@ -1,0 +1,1185 @@
+/* ========================================
+   Code Designer - Modernized Styles
+   ======================================== */
+
+:root {
+    --color-primary: #06b6d4;
+    --color-primary-hover: #0891b2;
+    --color-primary-light: #cffafe;
+    --color-primary-100: #ecfeff;
+    --color-success: #34d399;
+    --color-warning: #fbbf24;
+    --color-warning-hover: #f59e0b;
+    --color-danger: #fb7185;
+    --color-bg: #f8fafb;
+    --color-surface: #ffffff;
+    --color-border: #e8eeef;
+    --color-border-focus: #a8d5d8;
+    --color-text: #334155;
+    --color-text-secondary: #788b9a;
+    --color-text-light: #a8b5c0;
+    --shadow-sm: 0 1px 3px rgba(6, 182, 212, 0.04);
+    --shadow-md: 0 4px 8px rgba(6, 182, 212, 0.06);
+    --shadow-lg: 0 10px 20px rgba(6, 182, 212, 0.06);
+    --radius-sm: 8px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --transition: 0.2s ease;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    background: var(--color-bg);
+}
+
+.main-wrapper {
+    width: 100%;
+    padding: 0px;
+    padding-top: 40px;
+    margin: 0px;
+    box-sizing: border-box;
+    height: fit-content;
+    overflow: auto;
+    clear: both;
+}
+
+.main-wrapper-info {
+    color: var(--color-text);
+    font-size: 0.8em;
+    background-color: #fefce8;
+    border: 1px solid #fde68a;
+    border-radius: 0.5em;
+    margin: 5px;
+    padding: 5px;
+    min-width: 200px;
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.contentcodeval {
+    width: 100%;
+    height: fit-content;
+    min-height: 700px;
+    position: relative;
+    box-sizing: border-box;
+    background-color: var(--color-bg);
+    overflow: auto;
+    float: left;
+}
+
+.codeval-action {
+    position: fixed;
+    background-color: var(--color-surface);
+    padding: 5px;
+    height: 40px;
+    width: 99%;
+    box-sizing: border-box;
+    text-align: left;
+    z-index: 2999;
+    box-shadow: var(--shadow-sm);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.codeval-action-save {
+    box-sizing: border-box;
+    text-align: right;
+    width: fit-content;
+    float: right;
+}
+
+.codeval-action-add {
+    position: relative;
+    height: fit-content;
+    box-sizing: border-box;
+    text-align: left;
+    float: left;
+}
+
+.codeval-action-save .btnOK {
+    border: none;
+    border-radius: 0.5em;
+    background-color: var(--color-warning);
+    color: #fff;
+    height: 30px;
+    width: 60px;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.codeval-action-save .btnOK:hover {
+    background-color: var(--color-warning-hover);
+    box-shadow: var(--shadow-sm);
+}
+
+.codeval-action-save .btnCancle {
+    border: none;
+    border-radius: 0.5em;
+    background-color: var(--color-text-light);
+    color: #fff;
+    height: 30px;
+    width: 60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.codeval-action-save .btnCancle:hover {
+    background-color: var(--color-warning-hover);
+}
+
+.item-action {
+    width: 500px;
+    position: absolute;
+    text-align: right;
+    right: 5px;
+    top: 5px;
+}
+
+.item-action .btnOK {
+    border: none;
+    border-radius: 0.5em;
+    background-color: var(--color-primary);
+    color: #fff;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.item-action .btnOK:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.divCodeNote {
+    width: 100%;
+    height: 380px;
+}
+
+.txtCodeNote {
+    width: 98%;
+    height: 360px;
+}
+
+.btnCodeNote {
+    border: none;
+    border-radius: 0.5em;
+    background-color: var(--color-primary);
+    color: #fff;
+    height: 30px;
+    width: 60px;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.btnCodeNote:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.codeval-action-add .dropcontent {
+    display: none;
+    position: absolute;
+    min-height: 50px;
+    z-index: 2100;
+    width: 220px;
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-lg);
+    text-align: left;
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+.dropitem:hover .dropcontent {
+    display: block;
+}
+
+.codeval-action-add .menu-content {
+    padding: 5px;
+}
+
+.codeval-action-add .menu-content li {
+    list-style: none;
+}
+
+.codeval-action-add .menu-content a:link {
+    margin-bottom: 5px;
+    display: block;
+    color: var(--color-text-secondary);
+    background-color: var(--color-bg);
+    border-radius: 3em;
+    height: 30px;
+    line-height: 35px;
+    text-align: center;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.codeval-action-add .menu-content a:visited {
+    color: var(--color-text-secondary);
+}
+
+.codeval-action-add .menu-content a:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+}
+
+.codeval-action-add input[type=button] {
+    border: none;
+    border-radius: 0.5em;
+    background-color: var(--color-primary);
+    color: #fff;
+    height: 30px;
+    width: 90px;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.codeval-action-add input[type=button]:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.coverWin {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    height: 100%;
+    filter: alpha(opacity=60);
+    opacity: 0.6;
+    display: none;
+    z-Index: 999;
+}
+
+.noteWin {
+    position: fixed;
+    width: 660px;
+    height: 500px;
+    top: 20%;
+    left: 39%;
+    background-color: var(--color-surface);
+    display: none;
+    cursor: pointer;
+    text-align: center;
+    z-Index: 9999;
+    padding: 10px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+
+.modalWin {
+    position: fixed;
+    width: 500px;
+    height: 300px;
+    top: 20%;
+    left: 39%;
+    background-color: var(--color-surface);
+    display: none;
+    cursor: pointer;
+    text-align: center;
+    z-Index: 9999;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+
+.modalWin .modalWinMsg {
+    color: var(--color-text);
+    font-size: 1em;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 18%;
+    box-sizing: border-box;
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+
+.modalWinBtn .btnOK {
+    border: none;
+    border-radius: 0.8em;
+    background-color: var(--color-primary);
+    color: #fff;
+    height: 40px;
+    width: 60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.modalWinBtn .btnOK:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.modalWinBtn .btnCancle {
+    border: none;
+    border-radius: 0.8em;
+    background-color: var(--color-text-light);
+    color: #fff;
+    height: 40px;
+    width: 60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.modalWinBtn .btnCancle:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.varDiv {
+    margin: 10px;
+    width: 98%;
+    min-height: 88px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    padding: 5px;
+    height: fit-content;
+    overflow: auto;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.varParaDiv {
+    margin: 10px;
+    width: 98%;
+    min-height: 88px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    padding: 5px;
+    height: fit-content;
+    overflow: auto;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.varAdddiv {
+    margin: 5px;
+    height: fit-content;
+    width: fit-content;
+    padding: 5px;
+    border: 1px solid var(--color-warning);
+    border-radius: var(--radius-sm);
+}
+
+.varValueDiv {
+    padding: 5px;
+    margin: 3px;
+    float: left;
+    height: fit-content;
+    min-width: 100px;
+    width: fit-content;
+    border-radius: 0.8em;
+    border: 1px solid var(--color-border);
+    transition: var(--transition);
+}
+
+.varValueDiv:hover {
+    border-color: var(--color-primary);
+}
+
+.varSelDiv,
+.varSelDivSub,
+.varSelDivPara,
+.varSelFieldDiv,
+.varSelDivGroup,
+.varSelDivOrder {
+    padding: 5px;
+    margin: 3px;
+    float: left;
+    height: fit-content;
+    min-width: 100px;
+    width: fit-content;
+    border-radius: 0.8em;
+    border: 1px solid var(--color-border);
+    transition: var(--transition);
+}
+
+.varSelDiv:hover,
+.varSelDivSub:hover,
+.varSelDivPara:hover,
+.varSelFieldDiv:hover,
+.varSelDivGroup:hover,
+.varSelDivOrder:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.varSelDivFilter {
+    padding: 5px;
+    margin: 3px;
+    float: left;
+    height: fit-content;
+    min-width: 100px;
+    width: fit-content;
+    border-radius: 0.8em;
+    border: 1px solid var(--color-border);
+    transition: var(--transition);
+}
+
+.varSelDivFilter:hover {
+    border-color: var(--color-primary);
+}
+
+.dbSelDiv,
+.codeSelDiv,
+.msgSelDiv,
+.dbGroupFilterSelDiv {
+    padding: 5px;
+    margin: 3px;
+    float: left;
+    height: fit-content;
+    min-height: 60px;
+    min-width: 160px;
+    width: fit-content;
+    max-width: 480px;
+    border-radius: 0.8em;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    transition: var(--transition);
+}
+
+.dbSelDiv:hover,
+.codeSelDiv:hover,
+.msgSelDiv:hover,
+.dbGroupFilterSelDiv:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.jsSrcExpDiv {
+    padding: 5px;
+    margin: 3px;
+    float: left;
+    height: fit-content;
+    min-height: 60px;
+    min-width: 160px;
+    width: fit-content;
+    border-radius: 0.8em;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    transition: var(--transition);
+}
+
+.jsSrcExpDiv:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.dbFieldSelDiv,
+.codeParaSelDiv,
+.msgParaSelDiv,
+.dbGroupSelDiv,
+.dbOrderSelDiv {
+    padding: 5px;
+    margin: 3px;
+    float: left;
+    height: fit-content;
+    min-height: 60px;
+    min-width: 160px;
+    width: fit-content;
+    max-width: 480px;
+    border-radius: 0.8em;
+    border: 1px solid #f0b866;
+    background: var(--color-surface);
+    transition: var(--transition);
+}
+
+.dbFieldSelDiv:hover,
+.codeParaSelDiv:hover,
+.msgParaSelDiv:hover,
+.dbGroupSelDiv:hover,
+.dbOrderSelDiv:hover {
+    border-color: var(--color-warning);
+    box-shadow: var(--shadow-sm);
+}
+
+.dbFilterSelDiv {
+    padding: 5px;
+    margin: 3px;
+    float: left;
+    height: fit-content;
+    min-height: 60px;
+    min-width: 200px;
+    width: fit-content;
+    max-width: 480px;
+    border-radius: 0.8em;
+    border: 1px solid var(--color-primary);
+    background: var(--color-primary-100);
+    transition: var(--transition);
+}
+
+.dbFilterSelDiv:hover {
+    box-shadow: var(--shadow-sm);
+}
+
+.varConDiv {
+    padding: 5px;
+    margin: 3px;
+    float: left;
+    height: fit-content;
+    min-width: 100px;
+    width: fit-content;
+    border-radius: 0.8em;
+    border: 1px solid var(--color-border);
+    transition: var(--transition);
+}
+
+.varConDiv:hover {
+    border-color: var(--color-primary);
+}
+
+.varOpDiv {
+    padding: 5px;
+    margin: 3px;
+    float: left;
+    height: fit-content;
+    min-width: 50px;
+    width: fit-content;
+    color: var(--color-primary);
+    border-radius: 0.8em;
+    border: 1px solid var(--color-border);
+    transition: var(--transition);
+}
+
+.varOpDiv:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-100);
+}
+
+.assignDiv {
+    display: none;
+    margin: 10px;
+    width: 98%;
+    min-height: 125px;
+    height: fit-content;
+    box-sizing: border-box;
+    border: 1px solid var(--color-warning);
+    padding: 10px;
+    overflow: auto;
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+}
+
+.assignDbDiv,
+.assignSqlFilterDiv,
+.updDbDiv,
+.jsHrefDiv,
+.delDbDiv,
+.subcodeDiv,
+.jsSrcDiv,
+.insDbDiv,
+.insObjlistDiv,
+.msgDiv {
+    display: none;
+    margin: 10px;
+    width: 98%;
+    min-height: 190px;
+    height: fit-content;
+    border: 1px solid var(--color-warning);
+    box-sizing: border-box;
+    padding: 10px;
+    overflow: auto;
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+}
+
+.assignLeftDiv {
+    border: none;
+    padding: 3px;
+    float: left;
+    width: 10%;
+    min-height: 88px;
+    height: fit-content;
+}
+
+.assignLeftDivSel {
+    border: none;
+    padding: 3px;
+    float: left;
+    width: 100%;
+    height: fit-content;
+}
+
+.assignDivEqual {
+    padding: 3px;
+    float: left;
+    width: 90px;
+    height: 88px;
+}
+
+.assignRightDiv {
+    border: none;
+    padding: 3px;
+    float: left;
+    width: 80%;
+    height: fit-content;
+}
+
+.assignRightDivSel {
+    border: none;
+    padding: 3px;
+    float: left;
+    width: 100%;
+    height: fit-content;
+}
+
+.ifDiv,
+.forDiv,
+.subcodeJSDiv,
+.whileDiv,
+.outSvrDiv {
+    display: none;
+    margin: 10px;
+    box-sizing: border-box;
+    width: 98%;
+    min-height: 98px;
+    height: fit-content;
+    border: 2px solid var(--color-success);
+    padding: 10px;
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+}
+
+.ifDivTitle {
+    margin: 10px;
+    width: 98%;
+    min-height: 30px;
+    height: fit-content;
+    border: none;
+    padding: 5px;
+    font-weight: bolder;
+    overflow: auto;
+    color: var(--color-primary);
+}
+
+.jsHrefTitle,
+.jsSrcTitle,
+.outSvrTitle {
+    margin: 10px;
+    width: 98%;
+    min-height: 30px;
+    height: fit-content;
+    border: none;
+    padding: 5px;
+    font-weight: bolder;
+    overflow: auto;
+    color: var(--color-primary);
+}
+
+.ifConDiv {
+    margin: 10px;
+    width: 98%;
+    height: 120px;
+    border: none;
+    border-radius: 1em;
+    padding: 5px;
+    background: var(--color-bg);
+}
+
+.jsHrefConDiv,
+.jsSrcConDiv,
+.outSvrConDiv {
+    margin: 10px;
+    width: 98%;
+    height: 120px;
+    border: none;
+    border-radius: 1em;
+    padding: 5px;
+    background: var(--color-bg);
+}
+
+.ifConDivSel {
+    border: none;
+    padding: 3px;
+    width: 100%;
+    height: fit-content;
+}
+
+.ifConSucTitle {
+    position: relative;
+    margin: 10px;
+    width: 98%;
+    min-height: 30px;
+    height: fit-content;
+    border: none;
+    border-radius: 1em;
+    padding: 5px;
+    color: var(--color-success);
+    font-weight: 600;
+}
+
+.ifConSucdiv {
+    margin: 0px;
+    width: 100%;
+    height: fit-content;
+    min-height: 100px;
+    border: none;
+    padding: 0px;
+}
+
+.ifConFaiTitle {
+    margin: 10px;
+    width: 98%;
+    min-height: 30px;
+    height: fit-content;
+    color: var(--color-danger);
+    padding: 5px;
+    overflow: auto;
+    font-weight: 600;
+}
+
+.ifConFaidiv {
+    margin: 0px;
+    width: 100%;
+    height: fit-content;
+    min-height: 100px;
+    border: none;
+    padding: 0px;
+}
+
+.forDivTitle {
+    margin: 10px;
+    width: 98%;
+    min-height: 30px;
+    height: fit-content;
+    border: none;
+    padding: 5px;
+    font-weight: bolder;
+    overflow: auto;
+    color: var(--color-primary);
+}
+
+.forConDiv {
+    margin: 10px;
+    width: 98%;
+    height: 120px;
+    border: none;
+    border-radius: 1em;
+    padding: 5px;
+    background: var(--color-bg);
+}
+
+.forConDivSel {
+    border: none;
+    padding: 3px;
+    width: 100%;
+    height: fit-content;
+}
+
+.forConSucTitle {
+    position: relative;
+    margin: 10px;
+    width: 98%;
+    min-height: 30px;
+    height: fit-content;
+    border: none;
+    border-radius: 1em;
+    padding: 5px;
+    clear: both;
+    color: var(--color-success);
+    font-weight: 600;
+}
+
+.forConSucdiv {
+    margin: 0px;
+    width: 100%;
+    height: fit-content;
+    min-height: 100px;
+    border: none;
+    padding: 0px;
+}
+
+.btnAddVar {
+    border: none;
+    border-radius: 0.8em;
+    background-color: var(--color-primary);
+    color: #fff;
+    height: 26px;
+    min-width: 90px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.btnAddVar:hover {
+    background-color: var(--color-primary-hover);
+    box-shadow: var(--shadow-sm);
+}
+
+.btnAddVarDb {
+    border: none;
+    border-radius: 0.8em;
+    background-color: var(--color-primary);
+    color: #fff;
+    height: 26px;
+    min-width: 90px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.btnAddVarDb:hover {
+    background-color: var(--color-primary-hover);
+    box-shadow: var(--shadow-sm);
+}
+
+.varAddValue {
+    border: 1px solid var(--color-border);
+    border-radius: 0.8em;
+    height: 30px;
+    width: 160px;
+    padding: 5px;
+    padding-left: 15px;
+    margin-bottom: 5px;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.varAddValue:focus:not(.readonly) {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+}
+
+.varOpAddValue {
+    border: 1px solid var(--color-border);
+    border-radius: 0.8em;
+    height: 30px;
+    width: 160px;
+    padding: 5px;
+    padding-left: 15px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.varOpAddValue:focus:not(.readonly) {
+    border-color: var(--color-primary);
+}
+
+.varConAddValue {
+    border: 1px solid var(--color-border);
+    border-radius: 0.8em;
+    height: 30px;
+    width: 160px;
+    padding: 5px;
+    padding-left: 15px;
+    margin-bottom: 5px;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.varConAddValue:focus:not(.readonly) {
+    border-color: var(--color-primary);
+}
+
+.varSelValue {
+    border: 1px solid var(--color-border);
+    border-radius: 0.8em;
+    height: 30px;
+    width: 160px;
+    padding: 5px;
+    padding-left: 15px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.varSelValue:focus {
+    border-color: var(--color-primary);
+}
+
+.varSelValueSmall {
+    border: 1px solid var(--color-border);
+    border-radius: 0.8em;
+    height: 30px;
+    width: 60px;
+    padding: 5px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+    outline: none;
+    text-align: left;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.varSelValueSmall:focus {
+    border-color: var(--color-primary);
+}
+
+.btnSaveVar {
+    border: none;
+    border-radius: 0.8em;
+    background-color: var(--color-primary);
+    color: #fff;
+    height: 26px;
+    width: 60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.btnSaveVar:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.btnCancleVar {
+    border: none;
+    border-radius: 0.8em;
+    background-color: var(--color-text-light);
+    color: #fff;
+    height: 26px;
+    width: 60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline: none;
+    text-align: center;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.btnCancleVar:hover {
+    background-color: var(--color-warning-hover);
+}
+
+.action-content a:link,
+.action-content a:visited {
+    margin-left: 5px;
+    width: 24px;
+    display: block;
+    color: #fff;
+    background-color: var(--color-primary);
+    border-radius: 0.4em;
+    height: 24px;
+    text-align: center;
+    padding-top: 2px;
+    padding-right: 1px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    float: left;
+    transition: var(--transition);
+}
+
+.action-content a:hover:not(.active) {
+    background-color: var(--color-primary-hover);
+}
+
+.action-content a.active {
+    background-color: var(--color-primary-hover);
+}
+
+.updWin {
+    position: absolute;
+    width: 500px;
+    height: fit-content;
+    min-height: 100px;
+    top: 10%;
+    left: 30%;
+    background-color: var(--color-surface);
+    display: none;
+    cursor: pointer;
+    text-align: center;
+    padding: 20px;
+    z-Index: 9999;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+
+.updWin .updWin-content {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.updWin-content .updWin-content-item {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    float: left;
+}
+
+.updWin-content-item .left {
+    width: 25%;
+    box-sizing: border-box;
+    font-size: 1em;
+    line-height: 40px;
+    padding-right: 15px;
+    text-align: right;
+    font-weight: bold;
+    float: left;
+}
+
+.updWin-content-item .right {
+    width: 75%;
+    box-sizing: border-box;
+    text-align: left;
+    float: left;
+}
+
+.updWin-content-item input[type=text]:not(.readonly) {
+    border: 1px solid var(--color-border);
+    border-radius: 0.8em;
+    height: 40px;
+    width: 80%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.updWin-content-item input[type=text]:focus:not(.readonly) {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+}
+
+.updWin-content-item .readonly {
+    border: none;
+    height: 40px;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.updWin-content-item .sel {
+    border: 1px solid var(--color-border);
+    border-radius: 0.8em;
+    height: 40px;
+    background-color: var(--color-bg);
+    padding: 5px;
+    box-sizing: border-box;
+    outline: none;
+    transition: var(--transition);
+}
+
+.updWin-content-item .sel:focus {
+    border-color: var(--color-primary);
+}
+
+.updWin .btnOK {
+    border: none;
+    border-radius: 0.8em;
+    background-color: var(--color-primary);
+    color: #fff;
+    height: 40px;
+    width: 60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.updWin .btnOK:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.updWin .btnCancle {
+    border: none;
+    border-radius: 0.8em;
+    background-color: var(--color-text-light);
+    color: #fff;
+    height: 40px;
+    width: 60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.updWin .btnCancle:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.updWin-info {
+    color: var(--color-text);
+    font-size: 0.8em;
+    background-color: #fefce8;
+    border: 1px solid #fde68a;
+    border-radius: 0.5em;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+.updWin-info .left {
+    float: left;
+    width: 90%;
+    box-sizing: border-box;
+}
+
+.updWin-info .right {
+    float: right;
+    color: grey;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.showInfo {
+    border: none;
+    color: var(--color-text-light);
+    font-size: 0.6em;
+    width: fit-content;
+    white-space: nowrap;
+}
+
+.conDefault a:link {
+    border: none;
+    color: grey;
+    font-size: 0.6em;
+    text-decoration: none;
+}
+
+.redBorder {
+    border: 1px solid var(--color-danger);
+}
+
+.blueBorder {
+    border: 1px solid var(--color-primary);
+}
+
+.varSelDebug
+{
+    float:right;
+    width:30px;
+}
+
+.varSelJsFd
+{
+    float:right;
+    width:30px;
+}

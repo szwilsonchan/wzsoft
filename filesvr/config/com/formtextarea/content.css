@@ -1,0 +1,43 @@
+.updWin-content-item[@configid@]
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.updWin-content-item[@configid@] .left
+{ 
+    width:[@titlewidth@];
+    box-sizing: border-box;
+    font-size:[@itemfontsize@];
+    line-height:[@itemheight@];
+    padding-right:15px;
+    text-align:[@titlealign@];
+    font-weight: bold;
+    float:left;
+}
+.updWin-content-item[@configid@] .right
+{
+    width:[@namewidth@];
+    box-sizing: border-box;
+    text-align:left;
+    line-height:40px;
+    float:left;
+}
+
+.updWin-content-item[@configid@] textarea
+{
+    border: 1px solid rgb(234, 237, 241);
+    border-radius: 0.8em;
+    font-size:[@itemfontsize@];
+    width:[@stylewidth@];
+    height:[@styleheight@];
+    outline: none;
+    padding:10px;
+    box-sizing: border-box;
+}
+
+.updWin-content-item[@configid@] textarea:focus
+{
+    border: 1px solid rgb(46, 162, 240);
+}

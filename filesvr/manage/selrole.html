@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Role</title>
+    <link rel="stylesheet" href="./css/login.css" type="text/css"  />
+    <script src="./js/axios.min.js"></script>
+</head>
+<body>
+<div id="loginWin" class="loginWin" style="display: none;height:fit-content;padding-bottom: 50px;">
+    <div class="logImg">
+            <img src="./../upload/logo.png" height="36px" />
+    </div>
+    <div id="loginWin-info" class="loginWin-info" style="display:none">
+        <div class="left" id="loginWin-info-msg"></div>
+    </div>
+    <div class="loginWin-content" >
+        <div class="loginWin-content-item">
+            <div class="left" style="width:100%;text-align: left;">
+                <b></b>
+            </div>
+            <div class="right" id="psnroles" style="width:100%">
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+
+    var regmode="";
+    init();
+
+    function ismobilefunc()
+    {
+        var ua=navigator.userAgent.toLowerCase();
+        var ismobile = false;
+
+        if(contains(ua,"ipad")||(contains(ua,"rv:1.2.3.4"))||(contains(ua,"0.0.0.0"))||(contains(ua,"8.0.552.237"))){return false}
+        if((contains(ua,"android") && contains(ua,"mobile"))||(contains(ua,"android") && contains(ua,"mozilla")) ||(contains(ua,"android") && contains(ua,"opera"))
+        ||contains(ua,"ucweb7")||contains(ua,"iphone")){ismobile=true;}
+
+        return ismobile;
+    }
+
+    function contains(a, b)
+    {
+        if(a.indexOf(b)!=-1)
+            return true;
+        else
+            return false;
+    }
+
+    function init()
+    {
+
+        if(ismobilefunc())
+        {
+            document.getElementById("loginWin").className = "loginWinMobile";
+            document.getElementById("loginWin").style.display="block";
+        }
+        else
+        {
+            document.getElementById("loginWin").className = "loginWin";
+            document.getElementById("loginWin").style.display="block";
+        }
+
+        let paras = {};
+        axios.post("./../api/datapsngetroles",paras).then(function(res){
+            roles = res.data;
+            let shtml="";
+            for(let item of roles)
+            {
+                let orgid=item['ORGID'];
+                let orgname=item['ORGNAME'];
+                if(orgid==null)
+                {
+                    orgid="";
+                    orgname="";
+                }
+
+                if(orgname!="")
+                    shtml = shtml + "<div class='divPsnRoles' onclick=\"javascript:selrole('"+ orgid +"',"+ item['ROLEID'] +")\">"+ item['ROLENAME'] +":"+ orgname +"</div>"
+                else
+                    shtml = shtml + "<div class='divPsnRoles' onclick=\"javascript:selrole('"+ orgid +"',"+ item['ROLEID'] +")\">"+ item['ROLENAME'] +"</div>"
+            }
+
+            document.getElementById("psnroles").innerHTML=shtml;
+         
+        }).catch(function (err) {
+        });
+    }
+
+    function selrole(orgid,roleid)
+    {
+
+        let paras = {};
+        paras['orgid']=orgid;
+        paras['roleid']=roleid;
+        if(ismobilefunc())
+            paras['apptype']="2";
+        else
+            paras['apptype']="1";
+
+        axios.post("./../api/datapsnselrole",paras).then(function(res){
+            reurl = res.data;
+            if(reurl!=null&&reurl!="")
+            {
+                document.location.href=reurl;
+            }
+
+        }).catch(function (err) {
+        });
+    }
+
+    </script>
+</body>
+</html>

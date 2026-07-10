@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+<script src="selColor.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Title</div>
+            <div class="right"><input type="text" v-model="dataitem.config.fieldtitle" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Style</div>
+            <div class="right">
+                Title Visible：<input type="checkbox" v-model="dataitem.config.titleshow" style="width: 6%"/>
+                <div v-show="dataitem.config.titleshow">
+                    Title Align：
+                    <input type="radio" name="radioalign" value="right" v-model="dataitem.config.titlealign" ><label>Right</label>
+                    <input type="radio" name="titlealign" value="center" v-model="dataitem.config.titlealign" ><label>Center</label>
+                    <input type="radio" name="radioalign" value="left" v-model="dataitem.config.titlealign" ><label>Left</label>
+                    &nbsp;&nbsp;Title Width：
+                    <input type="text" v-model="dataitem.config.titlewidth" style="width:15%" /><br/>
+                </div>
+                <div>
+                    Content Align：
+                    <input type="radio" name="radioalignname" value="left" v-model="dataitem.config.namealign" ><label>Left</label>
+                    <input type="radio" name="radioalignname" value="center" v-model="dataitem.config.namealign" ><label>Center</label>
+                    <input type="radio" name="radioalignname" value="right" v-model="dataitem.config.namealign" ><label>Right</label>
+                    &nbsp;&nbsp;Content Width：
+                    <input type="text" v-model="dataitem.config.namewidth" style="width:15%" />
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">LinkURL</div>
+            <div class="right" >
+                <input type="text" v-model="dataitem.config.href" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">LinkContent</div>
+            <div class="right" >
+                <input type="text" v-model="dataitem.config.hrefcontent" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Text Font</div>
+            <div class="right" style="line-height: 60px;">Size: <input type="text" v-model="dataitem.config.fontsize" style="width:15%" />
+                Color: <input type="text" v-model="dataitem.config.fontcolor"  style="width:15%" id="color-picker" />
+                Font: <input type="text" v-model="dataitem.config.fontfamily" style="width:25%" /><br/>
+                Underline: <select v-model="dataitem.config.underline" style="width:30%">
+                    <option></option>
+                    <option>none</option>
+                    <option>underline</option>
+                </select>
+                OpenMode: <select v-model="dataitem.config.target" style="width:30%">
+                    <option></option>
+                    <option>_blank</option>
+                </select>
+                <br/>
+                Weight: <select v-model="dataitem.config.fontweight" style="width:30%">
+                    <option></option>
+                    <option>normal</option>
+                    <option>bold</option>
+                </select> 
+                FontStyle: <select v-model="dataitem.config.fontstyle" style="width:30%">
+                    <option></option>
+                    <option>normal</option>
+                    <option>italic</option>
+                    <option>oblique</option>
+                </select>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Display</div>
+            <div class="right" style="line-height:40px">
+                Page：<input type="checkbox" v-model="dataitem.config.formshow" style="width:5%" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            dataitem:{
+                "comid":"10",
+                "comname":"Link",
+                "comtitle":"",
+                "code":{"onchange":{}},
+                "config":{"namealign":"left","titlewidth":"15%","namewidth":"85%","fieldtitle":"","titleshow":true,"titlealign":"right","formshow":true,"hrefcontent":"","target":"","href":"","fontsize":"","underline":"none","fontfamily":"","fontcolor":"","fontweight":"","fontstyle":""},
+                "attrget":{"LinkURL":"href","LinkContent":"hrefcontent"},
+                "attrset":{"LinkURL":"href","LinkContent":"hrefcontent","Display":"s#display"}
+            }
+        }
+    },
+    methods: 
+    {
+        getDataItem() 
+        {
+            this.dataitem.comtitle=this.dataitem.config.fieldtitle;
+
+            let viewhtml = "";
+            let tshow = "display:none"
+            if(this.dataitem.config.titleshow)
+            {
+                tshow = "display:blcok";
+            }
+
+            viewhtml = viewhtml + "<div style=\"width:100%;float:left;margin-bottom:5px\">";
+            viewhtml = viewhtml + "<div style=\""+ tshow +";width:"+ this.dataitem.config.titlewidth +";font-size:1em;line-height:40px;padding-right:15px;text-align:"+ this.dataitem.config.titlealign +";font-weight: bold;float:left;box-sizing: border-box;\">"+ this.dataitem.config.fieldtitle +"</div>";
+            viewhtml = viewhtml + "<div style=\"text-align:"+ this.dataitem.config.namealign +";width:"+ this.dataitem.config.namewidth +";box-sizing: border-box;white-space: pre;line-height:40px; float:left;\">";
+            viewhtml = viewhtml + "<a href='javascript:void(0)' style=\"text-decoration:"+ this.dataitem.config.underline +";line-height:"+ this.dataitem.config.lineheight +"; font-size:"+ this.dataitem.config.fontsize +";color:"+ this.dataitem.config.fontcolor +";font-family:"+this.dataitem.config.fontfamily+";font-weight:"+ this.dataitem.config.fontweight +";font-style:"+ this.dataitem.config.fontstyle +";\">"+ this.dataitem.config.hrefcontent +"</a></div>";
+            viewhtml = viewhtml + "</div>";
+
+            this.dataitem.config.viewhtml=viewhtml;
+
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+        },
+        setFormValue(fValue,codename) 
+        {
+            let c = this.dataitem['code'];
+            c[codename] = fValue;
+        },
+        getFormValue(codename) 
+        {
+            let c = this.dataitem['code'];
+            return c[codename];
+        },
+        setDataItemByK(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        },
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.setDataItem = this.setDataItem;
+        window.setFormValue = this.setFormValue;
+        window.getFormValue = this.getFormValue;
+        window.setDataItemByK = this.setDataItemByK;
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+Colorpicker.create({
+                el: "color-picker", 
+                color: "", 
+                change: function (elem, hex) {
+                    elem.style.borderColor = hex;
+                    window.setDataItemByK('fontcolor',hex);
+                }
+              });
+
+</script>
+
+</body>
+</html>

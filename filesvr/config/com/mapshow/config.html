@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Title</div>
+            <div class="right"><input type="text" v-model="dataitem.config.fieldtitle" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Marker Coordinate</div>
+            <div class="right">
+                Longitude: <input type="text" v-model="dataitem.config.posj" style="width:100px" />
+                Latitude: <input type="text" v-model="dataitem.config.posw"  style="width:100px"/>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Marker Title</div>
+            <div class="right"><input type="text" v-model="dataitem.config.titlename" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Marker Content</div>
+            <div class="right"><input type="text" v-model="dataitem.config.titlecontent" /></div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            comdatas:null,
+            dataitem:{"comid":"16",
+            "comname":"MapDisplay",
+            "comtitle":"","config":{"titlecontent":"","titlename":"","posj":"116.404","posw":"39.925","fieldtitle":"","formshow":true},
+            "attrget":{"Marker Title":"title","Marker Content":"content","markerLng":"posj","markerLat":"posw"},
+            "attrset":{"Marker Title":"title","Marker Content":"content","markerLng":"posj","markerLat":"posw","Display":"s#display","refresh":"s#refresh"},
+            "attrtitle":{}
+            }
+        }
+    },
+    methods: 
+    {
+        getDataItem() 
+        {
+            this.dataitem.comtitle=this.dataitem.config.fieldtitle;
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+        },
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.setDataItem = this.setDataItem;
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+</script>
+
+</body>
+</html>

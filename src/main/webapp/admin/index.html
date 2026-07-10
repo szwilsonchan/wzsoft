@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/main.css" type="text/css"  />	
+<script src="./../js/vue.global.js"></script>
+<script src="./../js/axios.min.js"></script>
+</head>
+<body>
+<div class="main-wrapper">
+    <div class="header">
+        <div class="logDiv">
+            <img src="./../upload/logo.png" height="36px" onclick="showmenuleftpc()" />
+        </div>
+        <div class="logoutDiv">
+            <input type="button" class="btnLogout"  value="Logout" onclick="document.location.href='./../logout'" />
+        </div>
+    </div>     
+    <div class="menu-left" >
+        <ul class="menu-content" id="menu-content">
+            <li v-for="data in datas" >
+                    <a href="javascript:void(0)" v-show="data.PID==null&&((showpid['S'+data.MENUID])||(data.LOCATION==this.curLocation))"  @click="setMenuSession(data.MENUID,data.LOCATION)" class="active">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID==null&&((!showpid['S'+data.MENUID])&&(data.LOCATION!=this.curLocation))"  @click="setMenuSession(data.MENUID,data.LOCATION)" class="menu">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID!=null&&showpid['S'+data.PID]&&data.LOCATION==this.curLocation&&this.curLocation!=null" @click="setMenuSession(null,data.LOCATION)" class="activesub">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID!=null&&showpid['S'+data.PID]&&data.LOCATION!=this.curLocation" @click="setMenuSession(null,data.LOCATION)" class="menusub">{{data.NAME}}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="content" id="content">
+    </div> 
+    <div class="footer">
+        Copyright by WSoft
+    </div> 
+</div>
+<script src="./js/menu.js"></script>
+</body>
+</html>

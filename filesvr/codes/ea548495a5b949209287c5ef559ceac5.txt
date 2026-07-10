@@ -1,0 +1,10 @@
+;CharString=CharString+'';
+var t = CharString.split(",");
+var r = [];
+for(i=0;i<t.length;i++)
+{
+var o = {};
+o[SKEY] = t[i];
+r.push(o);
+}
+return r;;;;

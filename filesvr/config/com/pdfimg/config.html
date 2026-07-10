@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Image URL</div>
+            <div class="right" style="line-height: 40px;"><input type="text" v-model="dataitem.config.imgsrc" /><input class="btnAddVar" type="button"  onclick="varSelShow(event)" value="+AddLabel" >
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,0)">
+                    <option></option>
+                </select><select class="varSelValue" onchange="varSelAdd(event,1)">
+                <option></option>
+            </select><select class="varSelValue" >
+            <option></option>
+        </select><br/><input class="btnAddVar" type="button" value="Add" onclick="varSelAdd(event,2)" /><input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+            </div>
+            
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Image Height</div>
+            <div class="right"><input type="text" v-model="dataitem.config.imgheight" /></div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            dataitem:{
+                "comid":"3005",
+                "comname":"Image",
+                "comtitle":"",
+                "config":{"imgheight":"80px","imgsrc":"","content":""}
+            }
+        }
+    },
+    methods: 
+    {
+        getDataItem() 
+        {
+            this.dataitem.comtitle="Image";
+            this.dataitem.config.content=this.dataitem.config.imgsrc;
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+        },
+        setLabelKey(v)
+        {
+            this.dataitem.config.imgsrc = this.dataitem.config.imgsrc + v;
+        }
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.setDataItem = this.setDataItem;
+        window.setLabelKey = this.setLabelKey;
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+function varSelShow(e)
+{
+    let p = e.target.parentElement;
+    for (let dNode of p.childNodes) 
+    {
+        if(dNode.className=="selDiv")
+        {
+            dNode.style.display="block";
+            let s = dNode.firstChild;
+            s.options.length=0
+            s.add(new Option("",""));
+            for( let item of parent.varGDataFileds)
+            {
+                s.add(new Option(item['FIELD_TITLE'],item['FIELD']+"|"+item['FIELD_FIELDS']));
+            }
+
+            break;
+        }
+    }
+}
+function closeAdd(e)
+{
+    let p = e.target;
+    p.parentElement.style.display="none"
+}
+function varSelAdd(e,n)
+{
+    let p = e.target.parentElement;
+    let pp = e.target.parentElement.parentElement.parentElement;
+    let dNode = p.childNodes[n];
+    let v=dNode.options[dNode.selectedIndex].text;
+    let k=dNode.options[dNode.selectedIndex].value;
+    let k1 = k.substring(0,k.indexOf("|"));
+    let k2 = k.substring(k.indexOf("|")+1);
+    if(k2!=="null"&&n<2)
+    {
+        let fs = [];
+        fs=JSON.parse(k2);
+        let s = p.childNodes[n+1];
+        s.options.length=0
+        s.add(new Option("",""));
+        for( let item of fs)
+        {
+            if(item['fields'])
+                s.add(new Option(item['title'],item['name']+"|"+JSON.stringify(item['fields'])));
+            else
+                s.add(new Option(item['title'],item['name']+"|"));
+        }
+    }
+
+    if(n==2)
+    {
+        let dNode = p.childNodes[2];
+        let v=dNode.options[dNode.selectedIndex].text;
+        let k=dNode.options[dNode.selectedIndex].value;
+        let k1 = k.substring(0,k.indexOf("|"));
+        
+        let dNode1 = p.childNodes[0];
+        let pv1=dNode1.options[dNode1.selectedIndex].text;
+        let pk1=dNode1.options[dNode1.selectedIndex].value;
+        pk1 = pk1.substring(0,pk1.indexOf("|"));
+
+        let dNode2 = p.childNodes[1];
+        let pv2=dNode2.options[dNode2.selectedIndex].text;
+        let pk2=dNode2.options[dNode2.selectedIndex].value;
+        pk2 = pk2.substring(0,pk2.indexOf("|"));
+
+        if(k1!="")
+            k1 = pk1 + "-" +  pk2 + "-" +  k1; 
+        else if(pk2!="")
+            k1 = pk1 + "-" +  pk2;    
+        else if (pk1!="")
+            k1 = pk1;
+
+        k1=k1.toUpperCase();
+        window.setLabelKey('[@'+k1+'@]');
+    }
+}
+
+</script>
+
+</body>
+</html>

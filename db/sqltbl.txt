@@ -1,0 +1,1368 @@
+create table APP
+(
+  id   INTEGER NOT NULL ,
+  appid    VARCHAR(50),
+  name     NVARCHAR(50),
+  location VARCHAR(200),
+  snum    INTEGER default 100,
+  pid      VARCHAR(50),
+  snumsub  INTEGER,
+  [open]     VARCHAR(2) default 1,
+  apptype     VARCHAR(2) default 1,
+  img     VARCHAR(50),
+  imgsel     VARCHAR(50),
+  PRIMARY KEY (id));
+
+CREATE SEQUENCE seq_app START WITH 1000;
+
+create table APPPORTAL
+(
+  id   INTEGER NOT NULL ,
+  appid    VARCHAR(50),
+  name     NVARCHAR(100),
+  location VARCHAR(200),
+  snum     INTEGER,
+  pid      VARCHAR(50),
+  snumsub  INTEGER,
+  [open]     VARCHAR(1) default 1,
+  apptype     VARCHAR(2) default 1,
+  img     VARCHAR(50),
+  imgsel     VARCHAR(50),
+  PRIMARY KEY (id));
+
+CREATE SEQUENCE seq_appportal START WITH 1000;
+
+create table APP_PAGE
+(
+  appid   VARCHAR(50),
+  location NVARCHAR(200)
+)
+;
+
+create table CODE
+(
+  codeid      INTEGER NOT NULL ,
+  guid varchar(50),
+  codefile     VARCHAR(200),
+  source       VARCHAR(2000),
+  para         VARCHAR(2000),
+  name         NVARCHAR(50),
+  [open]         VARCHAR(1) default 0,
+  codemode     VARCHAR(1),
+  taskmode     VARCHAR(1),
+  taskinterval VARCHAR(1),
+  taskdaytime  VARCHAR(10),
+  taskweek     INTEGER,
+  taskmonth    INTEGER,
+  taskyear     INTEGER,
+  taskstart    VARCHAR(1),
+  tasklastrun  DATETIME, 
+  ispub        VARCHAR(1) default 0,
+  isfront        VARCHAR(1) default 0,
+  iscache        VARCHAR(1) default 0,
+  PRIMARY KEY (codeid));
+
+CREATE SEQUENCE seq_code START WITH 1000;
+
+create table CODE_FUNCS
+(
+  guid varchar(50),
+  funcguid varchar(50)
+);
+
+create table CODE_LOGS
+(
+  id     INTEGER NOT NULL ,
+  codeid  VARCHAR(100),
+  logfile NVARCHAR(200),
+  logtime DATETIME default getdate(), 
+  PRIMARY KEY (id));
+
+CREATE SEQUENCE seq_code_logs START WITH 1000;
+
+create table COM
+(
+  comid  INTEGER,
+  name   NVARCHAR(200),
+  type   VARCHAR(50),
+  pic    VARCHAR(200),
+  config VARCHAR(200),
+  para   VARCHAR(500),
+  [open]   VARCHAR(2),
+  snum   INTEGER,
+  id    INTEGER NOT NULL ,
+  PRIMARY KEY (id));
+
+CREATE SEQUENCE seq_com START WITH 1000;
+
+create table DATA
+(
+  dataid            INTEGER NOT NULL ,
+  tablename          VARCHAR(200),
+  rules_notduplicate VARCHAR(200),
+  [open]               VARCHAR(1),
+  location           VARCHAR(100),
+  tableexist         VARCHAR(1),
+  name               NVARCHAR(100),
+  codes              VARCHAR(1000),
+  filters            VARCHAR(500) default 'where 1=1',
+  pkey               VARCHAR(50),
+  searchkey          VARCHAR(500),
+  pkey_type          VARCHAR(2),
+  datatype           VARCHAR(10),
+  templocation       VARCHAR(100),
+  pubrights          VARCHAR(1) default '0',
+  opencode           VARCHAR(1) default '1',
+  ispub        VARCHAR(1) default 0,
+  updtime        VARCHAR(30),
+  PRIMARY KEY (dataid));
+
+CREATE SEQUENCE seq_data START WITH 1000;
+
+create table DATA_FIELDS
+(
+  tablename      VARCHAR(100),
+  field          VARCHAR(100),
+  field_type     VARCHAR(2),
+  field_title    VARCHAR(200),
+  dataid         INTEGER,
+  isshow         VARCHAR(1) default 0,
+  showsort       INTEGER,
+  field_fields   VARCHAR(2000),
+  id            INTEGER NOT NULL ,
+  db_type        VARCHAR(20),
+  db_length      VARCHAR(20),
+  field_selvalue VARCHAR(2000),
+  isinfile     VARCHAR(1)  default 0,
+  fieldindb    VARCHAR(1)  default 1,
+  isindex     VARCHAR(1)  default 0,
+  PRIMARY KEY (id));
+
+CREATE SEQUENCE seq_data_fields START WITH 1000;
+
+create table DATA_FIELDS_COM
+(
+  id    INTEGER NOT NULL,
+  comid  VARCHAR(50),
+  dataid INTEGER,
+  form   VARCHAR(100)
+);
+
+create table DATA_FORM
+(
+  tablename    VARCHAR(100),
+  name         NVARCHAR(50),
+  location     VARCHAR(200),
+  formid      INTEGER NOT NULL ,
+  templocation VARCHAR(200),
+  formname     VARCHAR(50),
+  apptype     VARCHAR(2) default 1,
+  ispub     VARCHAR(2) default 0,
+  needcpacha     VARCHAR(2) default 0,
+  needmobilecheck     VARCHAR(500),
+  PRIMARY KEY (formid)
+);
+
+CREATE SEQUENCE seq_data_form START WITH 1000;
+
+create table DEPT
+(
+  deptid  INTEGER NOT NULL ,
+  name     NVARCHAR(200),
+  orgid    INTEGER,
+  orgname  NVARCHAR(200),
+  pid      INTEGER,
+  snum     INTEGER,
+  snumsub  INTEGER,
+  syspsnid INTEGER,
+  ename    NVARCHAR(500),
+  ispub        VARCHAR(1) default 0,
+  PRIMARY KEY (deptid));
+
+CREATE SEQUENCE seq_dept START WITH 1000;
+
+create table FILECONTENT
+(
+  filepath VARCHAR(200),
+  filename NVARCHAR(100),
+  filetype VARCHAR(100),
+  filesize INTEGER,
+  fileguid VARCHAR(50),
+  contype  VARCHAR(10)
+);
+
+create table MENU
+(
+  menuid   INTEGER,
+  name     NVARCHAR(50),
+  location VARCHAR(50),
+  snum     INTEGER,
+  pid      INTEGER,
+  snumsub  INT
+);
+
+create table MSG_MAIL
+(
+  id        INTEGER NOT NULL ,
+  title      NVARCHAR(500),
+  content   NVARCHAR(2000),
+  status     VARCHAR(2) default '0',
+  toaddr     NVARCHAR(500),
+  createtime DATETIME default getdate(), 
+  psnid      INTEGER,
+  sendedtime DATETIME, 
+  errormsg   NVARCHAR(2000),
+  PRIMARY KEY (id));
+
+CREATE SEQUENCE seq_msg_mail START WITH 1000;
+
+create table MSG_MSG
+(
+  id        INTEGER NOT NULL ,
+  title      NVARCHAR(500),
+  content    NVARCHAR(2000),
+  status     VARCHAR(2) default '0',
+  toaddr     NVARCHAR(500),
+  createtime DATETIME default getdate(), 
+  sendedtime DATETIME, 
+  psnid      INTEGER,
+  PRIMARY KEY (id));
+
+CREATE SEQUENCE seq_msg_msg START WITH 1000;
+
+create table MSG_TEMPLATE
+(
+  tempid    INTEGER NOT NULL ,
+  name       NVARCHAR(100),
+  msgtitle   NVARCHAR(300),
+  msgcontent NVARCHAR(2000),
+  msgkeys    NVARCHAR(500),
+  msgtype    VARCHAR(2),
+  guid       VARCHAR(38),
+  isnow       VARCHAR(2) default '0',
+  PRIMARY KEY (tempid));
+
+CREATE SEQUENCE seq_msg_template START WITH 1000;
+
+create table ORG
+(
+  orgid  INTEGER NOT NULL ,
+  name    NVARCHAR(200),
+  ename   NVARCHAR(500),
+  orgcode VARCHAR(50),
+  PRIMARY KEY (orgid));
+
+CREATE SEQUENCE seq_org START WITH 1000;
+
+create table PAGE
+(
+  pageid      INTEGER NOT NULL ,
+  name         NVARCHAR(50),
+  location     VARCHAR(200),
+  codes        VARCHAR(2000),
+  pagetype     VARCHAR(10),
+  templocation VARCHAR(200),
+  [open]         VARCHAR(2) default 1,
+  apptype     VARCHAR(2) default 1,
+  PRIMARY KEY (pageid));
+
+CREATE SEQUENCE seq_page START WITH 1000;
+
+create table PSN
+(
+  psnid      INTEGER NOT NULL ,
+  name        NVARCHAR(50),
+  deptid      INTEGER,
+  empid       VARCHAR(50),
+  gender      VARCHAR(10),
+  birthday    DATETIME, 
+  email       NVARCHAR(200),
+  tel         VARCHAR(100),
+  mobile      VARCHAR(20),
+  deptname    NVARCHAR(200),
+  username    VARCHAR(20),
+  password    VARCHAR(200),
+  [open]       INTEGER default 1,
+  orgid       INTEGER,
+  orgname     NVARCHAR(200),
+  syspsnid    INTEGER,
+  passkey     VARCHAR(40),
+  passkeytime DATETIME, 
+  activekey   VARCHAR(40),
+  activetime  DATETIME, 
+  isactive    VARCHAR(1) default 0,
+  reqemail       NVARCHAR(200),
+  reqemailkey      VARCHAR(10),
+  reqmobile      VARCHAR(20),
+  reqmobilekey      VARCHAR(10),
+  reqorgid INTEGER,
+  reqorgname NVARCHAR(200),
+  reqorgtime DATETIME, 
+  reqorgnote varchar(200),
+  reqorgstatus      VARCHAR(1),
+  reqorgcomment NVARCHAR(200),
+  reqdeptid INTEGER,
+  PRIMARY KEY (psnid));
+
+CREATE SEQUENCE seq_psn START WITH 1000;
+
+create table PSN_ROLE
+(
+  psnid  INTEGER,
+  roleid INT,
+  orgid INT
+)
+;
+
+create table ROLE
+(
+  id INT NOT NULL ,
+  roleid INT ,
+  name   NVARCHAR(50),
+  [open]  INTEGER default 1,
+  isorg INTEGER default 0,
+  PRIMARY KEY (id));
+
+CREATE SEQUENCE seq_role START WITH 1000;
+
+create table ROLE_APP
+(
+  roleid INTEGER,
+  appid  VARCHAR(50)
+)
+;
+
+create table ROLE_DATAVIEW
+(
+  roleid   INTEGER,
+  viewcode VARCHAR(50)
+)
+;
+
+create table TEMPLATE
+(
+  tmpid   INTEGER NOT NULL ,
+  name     NVARCHAR(50),
+  location VARCHAR(100),
+  tmptype  VARCHAR(1),
+  pagetype VARCHAR(1),
+  PRIMARY KEY (tmpid));
+
+CREATE SEQUENCE seq_template START WITH 1000;
+
+create table WFM
+(
+  wfmid        INTEGER NOT NULL ,
+  name          NVARCHAR(200),
+  wfmdata       VARCHAR(2000),
+  wfmrule       VARCHAR(2000),
+  tblname        VARCHAR(50),
+  datanamefield VARCHAR(50),
+  guid VARCHAR(50),
+  upddata       VARCHAR(2) default '1',
+  msgmode       VARCHAR(2) default '0',
+  PRIMARY KEY (wfmid));
+
+CREATE SEQUENCE seq_wfm START WITH 1000;
+
+create table WFM_RUN_NODE
+(
+  wfmid      INTEGER,
+  tblname   VARCHAR(200),
+  dataitemid INTEGER,
+  completed  VARCHAR(1) default 0,
+  isold  VARCHAR(1) default 0,
+  isnew  VARCHAR(1) default 1,
+  createtime DATETIME default getdate(), 
+  wfmnodeid  VARCHAR(50)
+);
+
+create table WFM_ENTRUST
+(
+  id     INTEGER NOT NULL ,
+  psnid   VARCHAR(30),
+  psnidstxt   VARCHAR(200),
+  psnidlist   VARCHAR(1000),
+  psnidliststxt   VARCHAR(2000),
+  wfmid  VARCHAR(30),PRIMARY KEY (id));
+
+CREATE SEQUENCE seq_wfm_entrust START WITH 1000;
+
+create table WFM_RUN_WORKLIST
+(
+  wfmid          INTEGER,
+  dataitemid     INTEGER,
+  dataitemname   NVARCHAR(200),
+  wfmnodeid      VARCHAR(50),
+  psnid          INTEGER,
+  completed      VARCHAR(1) default 0,
+  disable        VARCHAR(1) default 0,
+  actpsnid       INTEGER,
+  wfmworkid     INTEGER NOT NULL ,
+  approvecomment VARCHAR(500),
+  approve        VARCHAR(1),
+  approvetime DATETIME, 
+  tblname VARCHAR(50),
+  appname VARCHAR(50),
+  formname VARCHAR(50),
+  isold  VARCHAR(1) default 0,
+  isnew  VARCHAR(1) default 1,
+  createtime DATETIME default getdate(), 
+  PRIMARY KEY (wfmworkid));
+
+CREATE SEQUENCE seq_wfm_run_worklist START WITH 1000;
+
+create table CONFIG
+(
+  id     INTEGER NOT NULL ,
+  logo VARCHAR(500),
+  activemode        VARCHAR(1),
+  regmode        VARCHAR(1),
+  regpsnrole        INTEGER,
+  regorgrole        INTEGER,
+  regorgcode        VARCHAR(50),
+  regpsncode        VARCHAR(50),
+  orgrolecode VARCHAR(50),
+  updpsncode VARCHAR(50),
+  loginthirdcode VARCHAR(50),
+  loginthirdrefcode VARCHAR(50),
+  PRIMARY KEY (id));
+
+create table DEPT_ROLE
+(
+  deptid      INTEGER,
+  roleid int);
+
+create table ORG_ROLE
+(
+  orgid      INTEGER,
+  roleid int);
+
+insert into CONFIG(id,activemode,regmode) values (1,'1','4');
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (21,N'Container', 'PAGE,PDF,TABDIY', './updfiles/menu.png', './config/com/div/', null, '1', 1, 57);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (22, N'Custom Data List', 'PAGE', './updfiles/menu.png', './config/com/tabdiy/', null, '1', 203, 58);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (7000, N'Text Box', 'TABDIY', './updfiles/menu.png', './config/com/tabdiylabel/', null, '1', 700, 59);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (7001,N'Image Box', 'TABDIY', './updfiles/menu.png', './config/com/tabdiyimg/', null, '1', 701, 60);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (7002, N'Button', 'TABDIY', './updfiles/menu.png', './config/com/tabdiybtn/', null, '1', 702, 61);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (7003, N'File Download', 'TABDIY', './updfiles/menu.png', './config/com/tabdiyfile/', null, '1', 703, 62);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (4, N'Vertical Menu', 'PAGE', './updfiles/menu.png', './config/com/menu/', null, '1', 102, 2);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (5, N'Page Title', 'PAGE', './updfiles/contitle.png', './config/com/contitle/', null, '1', 201, 6);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (1003, N'Radio Button', 'PAGE,FORM', './updfiles/formselect.png', './config/com/formradio/', null, '1', 306, 28);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (1004, N'Multi-Select', 'PAGE,FORM', './updfiles/formselect.png', './config/com/formmulsel/', null, '1', 307, 29);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (12, N'Button', 'PAGE', './updfiles', './config/com/btn/', null, '1', 209, 13);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (6, N'Rich Text', 'PAGE,PDF', './updfiles/richtxt.png', './config/com/richtxt/', null, '1', 206, 9);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (20, N'HTML', 'PAGE', './updfiles/html.png', './config/com/html/', null, '1', 206, 56);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (1000, N'Input Box', 'PAGE,FORM', './updfiles/forminput.png', './config/com/forminput/', null, '1', 301, 23);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (7, N'Editable Data List', 'PAGE', './updfiles/tabedit.png', './config/com/tabedit/', null, '1', 202, 7);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (1101, N'Data List', 'PAGE,FORM', './updfiles/formdatalist.png', './config/com/formdatalist/', null, '1', 302, 24);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (1201, N'Data Validation', 'PAGE,FORM', './updfiles/formval.png', './config/com/formval/', null, '1', 303, 25);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (8, N'Logout', 'PAGE', './updfiles/logout.png', './config/com/logout/', null, '1', 103, 3);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (3004, N'[PDF] Text Box', 'PDF', './updfiles/label.png', './config/com/label/', null, '1', 404, 41);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (3001, N'[PDF] Page Break', 'PDF', './updfiles', './config/com/pdfpage/', null, '1', 401, 38);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (3002, N'[PDF] Loop Start', 'PDF', './updfiles', './config/com/pdfforstart/', null, '1', 402, 39);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (3003, N'[PDF] Loop End', 'PDF', './updfiles', './config/com/pdfforend/', null, '1', 403, 40);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (5001, N'Horizontal Menu', 'PAGE', './updfiles/menu.png', './config/com/menuportal/', null, '1', 102, 5);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (1009, N'Date Time', 'PAGE,FORM', './updfiles', './config/com/formdate/', null, '1', 312, 35);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (1011,N'Search Select', 'PAGE,FORM', './updfiles', './config/com/formsearchsel/', null, '1', 307, 30);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (1012, N'Tree Select', 'PAGE,FORM', './updfiles', './config/com/formselecttree/', null, '1', 307, 52);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (3006, N'[PDF] PDF File', 'PDF', './updfiles', './config/com/pdffile/', null, '1', 405, 43);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (1,N'Data List', 'PAGE', './updfiles/tab.png', './config/com/tab/', null, '1', 203, 8);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (3, N'Footer', 'PAGE', './updfiles/foot.png', './config/com/foot/', '{"footcontent":"Copyright by WSoft"}', '1', 104, 4);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (9, N'Plain List', 'PAGE', './updfiles/tab.png', './config/com/list/', null, '1', 204, 10);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (1005, N'File Upload', 'PAGE,FORM', './updfiles/forminput.png', './config/com/formfile/', null, '1', 308, 31);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (6001, N'Email/SMS Template', 'PAGE,FORM', './updfiles', './config/com/msg/', null, '1', 314, 37);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (14, N'Text Box', 'PAGE', './updfiles', './config/com/pagelabel/', null, '1', 212, 15);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (4002, N'Personal Info', 'PAGE', './updfiles', './config/com/psninfo/', null, '1', 224, 21);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (4003,N'Org Management', 'PAGE', './updfiles', './config/com/orgadmin/', null, '1', 221, 18);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (4004, N'Login', 'PAGE', './updfiles', './config/com/login/', null, '1', 225, 22);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (15,N'Statistics Chart', 'PAGE', './updfiles', './config/com/datastat/', null, '1', 213, 16);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (16,N'Map Display', 'PAGE', './updfiles', './config/com/mapshow/', null, '1', 214, 51);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (17, N'Editable Tree List', 'PAGE', './updfiles', './config/com/tabedittree/', null, '1', 202, 53);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (18,N'Browse Dir', 'PAGE', './updfiles', './config/com/folder/', null, '1', 202, 54);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (19,N'Tree Browse Dir', 'PAGE', './updfiles', './config/com/foldertree/', null, '1', 202, 55);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (1001, N'Save Button', 'PAGE,FORM', './updfiles/formsubmit.png', './config/com/formsubmit/', null, '1', 304, 26);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (1002, N'Select Box', 'PAGE,FORM', './updfiles/formselect.png', './config/com/formselect/', null, '1', 305, 27);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (1006, N'Text Box', 'PAGE,FORM', './updfiles/label.png', './config/com/formlabel/', null, '1', 309, 32);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (1010,N'Image Upload', 'PAGE,FORM', './updfiles', './config/com/formimg/', null, '1', 313, 36);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (13,N'Image Display', 'PAGE', './updfiles', './config/com/img/', null, '1', 211, 14);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (2000, N'Workflow List', 'PAGE', './updfiles/tabedit.png', './config/com/wsmwork/', null, '1', 220, 17);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (2, N'LOGO', 'PAGE', './updfiles/logo.png', './config/com/logo/', '{"logopic":"./../upload/logo.png"}', '1', 101, 1);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (10, N'Link', 'PAGE', './updfiles', './config/com/href/', null, '1', 207, 11);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (11, N'File Download', 'PAGE', './updfiles', './config/com/filedownload/', null, '1', 208, 12);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (1007, N'Multi-Line Input', 'PAGE,FORM', './updfiles', './config/com/formtextarea/', null, '1', 310, 33);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (1008,N'Rich Text', 'PAGE,FORM', './updfiles', './config/com/formrichtxt/', null, '1', 311, 34);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (3005, N'Image', 'PDF', './updfiles', './config/com/pdfimg/', null, '1', 404, 42);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (4000,N'Dept Management', 'PAGE', './updfiles', './config/com/deptadmin/', null, '1', 222, 19);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (4001, N'Person Management', 'PAGE', './updfiles', './config/com/psnadmin/', null, '1', 223, 20);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (4005,N'Forgot Password', 'PAGE', './updfiles', './config/com/reggetpassword/', null, '1', 226, 44);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (4006, N'Org Registration', 'PAGE', './updfiles', './config/com/regorg/', null, '1', 227, 45);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (4007,N'Person Registration', 'PAGE', './updfiles', './config/com/regpsn/', null, '1', 228, 46);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (4008,N'Person Activation', 'PAGE', './updfiles', './config/com/regpsnact/', null, '1', 229, 47);
+
+insert into COM(COMID, NAME, TYPE, PIC, CONFIG, PARA, [OPEN], SNUM, ID)
+values (4020, N'Person Approval', 'PAGE', './updfiles', './config/com/psnapprove/', null, '1', 240, 50);
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (27, 'config', null, '0', null, '1', N'Config', null, 'where 1=1', 'id', 'id', 'i', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (2, 'com', 'comid', '0', null, '1', N'Component', null, 'where 1=1', 'id', 'name,type', 'i', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (3, 'page', 'location', '0', null, '1', N'Page', null, 'where [open]=1', 'pageid', 'name,location', 'i', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (4, 'data', 'tablename', '0', null, '1', N'Dataset', null, 'where 1=1', 'dataid', 'name,tablename', 'i', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (7, 'role', 'roleid', '0', null, '1', N'Role', null, 'where [open]=1', 'id', 'name', 'i', null, null, '0', '1');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (5, 'dept', null, '0', null, '1',N'Dept', null, 'where 1=1', 'deptid', 'name,orgname', 'i', null, null, '0', '1');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (6, 'psn', null, '0', null, '1',N'Person', null, 'where [open]=1', 'psnid', 'psnid,name,email,mobile,orgname,deptname,tel', 'i', null, null, '0', '1');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (20, 'appportal', 'appid', '0', null, '1', N'App Public', null, 'where [open]=1', 'id', 'name', 'i', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (24, 'wfm_run_node', null, '0', null, '1',N'Workflow Node', null, 'where 1=1', 'wfmnodeid', 'wfmnodeid', 's', null, null, '0', '1');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (17, 'menu', 'name', '0', null, '1', N'Menu', null, 'where 1=1', 'menuid', 'name', 'i', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (19, 'filecontent', 'filepath', '0', null, '1',N'File', null, 'where 1=1', 'fileguid', 'filename', 's', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (12, 'role_app', null, '0', null, '1', N'Role App', null, 'where 1=1', 'appid', 'appid', 's', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (13, 'psn_role', null, '0', null, '1', N'Person Role', null, 'where 1=1', 'roleid', 'roleid', 'i', null, null, '0', '1');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (14, 'app_page', null, '0', null, '1', N'App Page', null, 'where 1=1', 'appid', 'appid', 's', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (15, 'role_dataview', null, '0', null, '1', N'Role Dataset', null, 'where 1=1', 'viewcode', 'viewcode', 's', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (16, 'data_fields', null, '0', null, '1',N'Data Field', null, 'where 1=1', 'id', 'field,field_title', 'i', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (21, 'msg_template', null, '0', null, '1', N'Message Template', null, 'where 1=1', 'tempid', 'tempid,name', 'i', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (9, 'wfm_run_worklist', null, '0', null, '1',N'Workflow Node Todo', null, 'where 1=1', 'wfmworkid', 'dataitemname', 'i', null, null, '0', '1');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (10, 'code', null, '0', null, '1', N'Code', null, 'where 1=1', 'codeid', 'name,codeid,codefile', 'i', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (26, 'org', 'name', '0', null, '1',N'Org', null, 'where 1=1', 'orgid', 'orgid,name,ename', 'i', null, null, '0', '1');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (8, 'wfm', null, '0', null, '1', N'Workflow', null, 'where 1=1', 'wfmid', 'name', 'i', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (18, 'template', 'location', '0', null, '1',N'Template', null, 'where 1=1', 'tmpid', 'name,location', 'i', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (1, 'app', 'appid', '0', null, '1', N'App', null, 'where [open]=1', 'id', 'name', 'i', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (22, 'msg_mail', null, '0', null, '1', N'Email Log', null, 'where 1=1', 'id', 'id,title,toaddr', 'i', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (25, 'data_form', 'location', '0', null, '1', N'Form', null, 'where 1=1', 'formid', 'formid,name,location', 'i', null, null, '0', '1');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (23, 'msg_msg', null, '0', null, '1',N'SMS Log', null, 'where 1=1', 'id', 'id,toaddr', 'i', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (11, 'code_logs', null, '0', null, '1', N'Code Log', null, 'where 1=1', 'id', 'id,logfile', 'i', null, null, '0', '0');
+
+insert into DATA(DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (28, 'wfm_entrust', null, '0', null, '1', N'Workflow Entrust', null, 'where 1=1', 'id', 'id,psnid,psnidstxt,psnidlist,psnidliststxt,wfmid', 'i', null, null, '0', '0');
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn', 'tel', 's', N'Tel', 6, '1', 9, null, 98, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('role', 'roleid', 'i', 'ROLEID', 7, '1', 1, null, 102, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('role', 'id', 'i', 'ID', 7, '1', 0, null, 127, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn', 'psnid', 'i', 'ID', 6, '1', 1, null, 97, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('role', 'name', 's', N'Role Name', 7, '1', 2, null, 101, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn', 'empid', 's', N'Job ID', 6, '1', 8, null, 92, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('page', 'pageid', 'i', 'ID', 3, '1', 1, null, 86, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('page', 'location', 's', N'Page URL', 3, '1', 3, null, 84, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('page', 'name', 's', N'Page Name', 3, '1', 2, null, 85, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('dept', 'name', 's', N'Dept Name', 5, '1', 2, null, 50, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('dept', 'deptid', 'i', 'ID', 5, '1', 1, null, 48, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('com', 'pic', 's', N'Example Image', 2, '0', 5, null, 24, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('com', 'type', 's', N'Type', 2, '1', 3, null, 26, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('com', 'name', 's', N'Name', 2, '1', 2, null, 23, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('com', 'comid', 's',N'Component Code', 2, '1', 1, null, 20, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('com', 'config', 's', N'Config Dir', 2, '1', 4, null, 21, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_run_worklist', 'formname', 's', N'Form', 9, '0', 0, null, 131, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_run_worklist', 'completed', 's', N'Status', 9, '1', 3, null, 116, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_run_worklist', 'dataitemname', 's', N'Business Data Title', 9, '1', 2, null, 118, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_run_worklist', 'wfmworkid', 'i', 'ID', 9, '1', 1, null, 122, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_run_worklist', 'tblname', 's', N'Data Table', 9, '0', 0, null, 125, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_entrust', 'id', 'i', 'ID', 28, '1', 1, null, 132, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_entrust', 'psnidstxt', 's', N'Delegator', 28, '1', 2, null, 133, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_entrust', 'psnidliststxt', 's', N'Trustee', 28, '1', 3, null, 134, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_entrust', 'wfmid', 's', N'Workflow ID', 28, '0', 0, null, 135, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm', 'name', 's', N'Process Name', 8, '1', 2, null, 110, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm', 'wfmid', 'i', 'ID', 8, '1', 1, null, 111, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm', 'guid', 's', 'GUID', 8, '0', 0, null, 126, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data', 'name', 's', N'Name', 4, '1', 2, null, 30, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data', 'location', 's', N'Form URL', 4, '1', 4, null, 29, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data', 'tablename', 's', N'Data Table Name', 4, '1', 3, null, 31, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data', 'dataid', 'i', 'ID', 4, '1', 1, null, 27, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('app', 'appid', 's', N'Code', 1, '0', 1, null, 1, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('app', 'name', 's', N'App Name', 1, '1', 2, null, 3, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('app', 'location', 's', N'App Entry', 1, '1', 3, null, 2, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn', 'mobile', 's', N'Mobile', 6, '1', 10, null, 94, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn', 'deptname', 's', N'Dept', 6, '1', 4, null, 90, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn', 'gender', 's', N'Gender', 6, '1', 5, null, 93, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('role_app', 'appid', 's', 'appid', 12, '1', 1, null, 103, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn', 'email', 's', N'Email', 6, '1', 7, null, 91, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn', 'name', 's', N'Name', 6, '1', 2, null, 95, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('app_page', 'location', 's', 'location', 14, '1', 1, null, 7, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('role_dataview', 'viewcode', 's', 'viewcode', 15, '1', 1, null, 105, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_form', 'formid', 'i', 'ID', 25, '1', 1, null, 43, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_form', 'name', 's', N'Name', 25, '1', 2, null, 45, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_form', 'location', 's',N'Form URL', 25, '1', 3, null, 44, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_form', 'tablename', 's', N'Data Table Name', 25, '0', 5, null, 46, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_fields', 'db_type', 's', N'Field Type', 16, '0', 5, null, 35, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_fields', 'dataid', 'i', 'DATAID', 16, '0', 0, null, 33, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_fields', 'field', 's', N'Name', 16, '1', 2, null, 36, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_fields', 'field_title', 's', N'Title', 16, '1', 3, null, 39, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('code', 'codeid', 'i', 'ID', 10, '1', 1, null, 14, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('code', 'name', 's', N'Name', 10, '1', 2, null, 15, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('code', 'guid', 's', 'GUID', 10, '0', 0, null, 124, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('template', 'tmpid', 'i', 'ID', 18, '1', 1, null, 108, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('template', 'name', 's', N'Name', 18, '1', 2, null, 107, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('template', 'location', 's', N'Template Address', 18, '1', 3, null, 106, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('template', 'tmptype', 's', N'Template Type', 18, '1', 4, null, 109, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('template', 'pagetype', 's', N'Page Type', 18, '1', 5, null, 123, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data', 'templocation', 's', N'Template Address', 4, '1', 6, null, 32, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_fields', 'db_length', 's', N'Field Length', 16, '0', 6, null, 34, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_fields', 'field_selvalue', 's', N'Select Value', 16, '0', 7, null, 38, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('dept', 'ename', 's', N'Foreign Name', 5, '1', 4, null, 49, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('code_logs', 'codeid', 's', N'Code ID', 11, '1', 2, null, 16, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn_role', 'psnid', 'i', N'Person ID', 13, '1', 1, null, 99, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn', 'birthday', 'd', N'Birth Date', 6, '0', 6, null, 89, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_run_worklist', 'wfmnodeid', 's', N'Node ID', 9, '0', 5, null, 121, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_msg', 'psnid', 'i', N'Sender', 23, '0', 6, null, 70, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_mail', 'psnid', 'i', N'Sender', 22, '0', 6, null, 63, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('appportal', 'appid', 's', N'Code', 20, '0', 1, null, 8, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn_role', 'roleid', 'i', N'Role ID', 13, '1', 2, null, 100, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data', 'datatype', 's', N'Data Type', 4, '0', 1, null, 28, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('appportal', 'name', 's', N'Name', 20, '1', 2, null, 10, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('appportal', 'location', 's', N'App Entry', 20, '1', 3, null, 9, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('appportal', 'snum', 'i', N'Sort', 20, '1', 4, null, 12, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('dept', 'pid', 's', N'Parent Dept', 5, '0', 5, null, 53, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('dept', 'snum', 'i', N'Sort', 5, '1', 5, null, 54, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('dept', 'snumsub', 'i', N'SortSUB', 5, '0', 5, null, 55, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_template', 'guid', 's', 'GUID', 21, '0', 7, null, 73, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_run_worklist', 'psnid', 'i', N'Person ID', 9, '0', 4, null, 119, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_fields', 'field_type', 's', N'Type', 16, '1', 3, null, 40, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_mail', 'id', 'i', 'ID', 22, '1', 1, null, 62, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('page', 'pagetype', 's', N'Type', 3, '1', 4, null, 87, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_mail', 'toaddr', 's', N'Recipient', 22, '1', 2, null, 66, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_mail', 'title', 's', N'Title', 22, '1', 3, null, 65, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_mail', 'content', 's', N'Content', 22, '0', 4, null, 60, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_mail', 'status', 's', N'Status', 22, '1', 5, null, 64, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_mail', 'createtime', 'dt', N'Add Time', 22, '1', 6, null, 61, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_msg', 'id', 'i', 'ID', 23, '1', 1, null, 69, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_msg', 'toaddr', 's', N'Recipient', 23, '1', 2, null, 72, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_msg', 'content', 's', N'Content', 23, '0', 3, null, 67, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_msg', 'status', 's', N'Status', 23, '1', 4, null, 71, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_msg', 'createtime', 'dt', N'Add Time', 23, '1', 5, null, 68, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_fields', 'field_fields', 's', N'Sub Field', 16, '0', 4, null, 37, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('appportal', 'pid', 's', 'PID', 20, '0', 5, null, 11, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('appportal', 'snumsub', 'i', N'Sub Sort', 20, '0', 6, null, 13, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('app', 'snum', 'i', N'Sort', 1, '1', 4, null, 5, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('app', 'id', 'i', 'ID', 1, '1', 0, null, 128, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('appportal', 'id', 'i', 'ID', 20, '1', 0, null, 129, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('menu', 'menuid', 'i', 'ID', 17, '1', 1, null, 57, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('menu', 'name', 's', N'Name', 17, '1', 2, null, 58, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('menu', 'location', 's', N'Address', 17, '1', 3, null, 56, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('menu', 'pid', 'i', 'PID', 17, '0', 4, null, 59, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('app', 'pid', 's', 'PID', 1, '0', 4, null, 4, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('app', 'snumsub', 'i', N'Sub Sort', 1, '0', 5, null, 6, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('role_dataview', 'roleid', 'i', 'ID', 15, '1', 1, null, 104, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('page', 'templocation', 's', N'Template Address', 3, '1', 5, null, 88, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_template', 'tempid', 'i', 'ID', 21, '1', 1, null, 79, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_template', 'name', 's', N'Name', 21, '1', 2, null, 78, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_template', 'msgtitle', 's', N'Template Title', 21, '0', 3, null, 76, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_template', 'msgcontent', 's', N'Template Content', 21, '0', 4, null, 74, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_template', 'msgkeys', 's', N'Template Tag', 21, '0', 6, null, 75, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('code_logs', 'logfile', 's', N'Log File', 11, '1', 3, null, 18, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_run_worklist', 'dataitemid', 'i', N'Business Data ID', 9, '0', 6, null, 117, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_run_node', 'tblname', 's', N'Data Table', 24, '0', 0, null, 130, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_run_node', 'completed', 's', N'Status', 24, '1', 4, null, 112, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_run_node', 'wfmid', 'i', N'Workflow ID', 24, '1', 2, null, 114, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_run_node', 'wfmnodeid', 's', N'Node ID', 24, '1', 1, null, 115, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_run_node', 'dataitemid', 'i', N'Business Data ID', 24, '1', 3, null, 113, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_run_worklist', 'wfmid', 'i', N'Workflow ID', 9, '0', 7, null, 120, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('msg_template', 'msgtype', 's', N'Template Type', 21, '1', 5, null, 77, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('org', 'orgid', 'i', 'ID', 26, '1', 1, null, 83, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('org', 'name', 's', N'Name', 26, '1', 2, null, 81, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('org', 'ename', 's', N'English Name', 26, '1', 3, null, 80, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('org', 'orgcode', 's', N'Org Code', 26, '1', 4, null, 82, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('dept', 'orgid', 's', N'Org ID', 5, '0', 3, null, 51, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('dept', 'orgname', 's', N'Organization', 5, '1', 5, null, 52, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn', 'orgname', 's', N'Org', 6, '1', 3, null, 96, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_form', 'templocation', 's', N'Template Address', 25, '1', 4, null, 47, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_fields', 'id', 'i', 'ID', 16, '1', 1, null, 41, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('code_logs', 'id', 'i', 'ID', 11, '1', 1, null, 17, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('code_logs', 'logtime', 'dt', N'Log Time', 11, '1', 4, null, 19, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('com', 'id', 'i', 'ID', 2, '0', 0, null, 22, null, null, null);
+
+insert into DATA_FIELDS(TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('com', 'snum', 'i', N'Sort', 2, '1', 6, null, 25, null, null, null);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (21, N'Page Template', 'pagetemp.html', 6, 16, 6);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (22, N'Basic Settings', 'config.html', 6, 16, 7);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (19, N'Org Management', 'org.html', 5, 17, 1);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (20, N'Error Log', 'code_logs.html', 6, 16, 5);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (1, N'Home', 'index.html', 1, null, 0);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (2, N'App Management', 'app.html', 2, 14, 1);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (3, N'Component Management', 'com.html', 6, 16, 2);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (4, N'Page Management', 'page.html', 2, 14, 2);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (5, N'Dataset Management', 'data.html', 4, 18, 1);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (6, N'Dept Management', 'dept.html', 5, 17, 2);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (7, N'Role Management', 'role.html', 6, 16, 1);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (8, N'Person Management', 'psn.html', 5, 17, 3);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (9, N'Process Management', 'wfm.html', 4, 18, 2);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (10, N'Code Management', 'code.html', 6, 16, 3);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (11, N'App Management', 'appportal.html', 3, 15, 1);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (12, N'Page Management', 'pageportal.html', 3, 15, 2);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (13, N'Message Template', 'msg_template.html', 6, 16, 4);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (14, N'App Admin', null, 2, null, 0);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (15, N'App Public', null, 3, null, 0);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (16, N'SystemConfig', null, 6, null, 0);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (17, N'OrgPerson', null, 5, null, 0);
+
+insert into MENU(MENUID, NAME, LOCATION, SNUM, PID, SNUMSUB)
+values (18, N'Data & Process', null, 4, null, 0);
+
+insert into PSN(PSNID, NAME, DEPTID, EMPID, GENDER, BIRTHDAY, EMAIL, TEL, MOBILE, DEPTNAME, USERNAME, PASSWORD, [OPEN], ORGID, ORGNAME, SYSPSNID, PASSKEY, PASSKEYTIME, ACTIVEKEY, ACTIVETIME, ISACTIVE)
+values (1, 'admin', 0, null, null, null, null, null, null, null, 'admin', '$2a$10$Hx9xCOaFjV3QDmS2m6V9qeOtkZgiTWrNEOjF58h1qPC2F9j7kzNza', 0, 0, null, null, null, null, null, null, '1');
+
+insert into PSN_ROLE(PSNID, ROLEID)
+values (1, 1);
+
+insert into ROLE (ROLEID, NAME, OPEN, ISORG,ID)
+values (2, N'Org Admin', 1, 1,2);
+
+insert into ROLE (ROLEID, NAME, OPEN, ISORG,ID)
+values (3, N'Dept Admin', 1, 1,3);
+
+insert into ROLE(ROLEID, NAME, [OPEN], ISORG,ID)
+values (1, 'admin', 0, 0,1);
+
+insert into TEMPLATE (TMPID, NAME, LOCATION, TMPTYPE, PAGETYPE)
+values (1, N'Default Page Template (Internal)', 'default.html', '0', '1');
+
+insert into TEMPLATE (TMPID, NAME, LOCATION, TMPTYPE, PAGETYPE)
+values (2, N'Blank Page Template (Internal)', 'blank.html', '0', '1');
+
+insert into TEMPLATE (TMPID, NAME, LOCATION, TMPTYPE, PAGETYPE)
+values (3, N'Default Form Template (Internal)', 'form.html', '1', '1');
+
+insert into TEMPLATE (TMPID, NAME, LOCATION, TMPTYPE, PAGETYPE)
+values (4, N'Blank Form Template (Internal)', 'blankform.html', '1', '1');
+
+insert into TEMPLATE (TMPID, NAME, LOCATION, TMPTYPE, PAGETYPE)
+values (5, N'Blank Page Template (External)', 'blankpub.html', '0', '2');
+
+insert into TEMPLATE (TMPID, NAME, LOCATION, TMPTYPE, PAGETYPE)
+values (6, N'Mobile Form Template (Internal)', 'mform.html', '1', '1');
+
+insert into TEMPLATE (TMPID, NAME, LOCATION, TMPTYPE, PAGETYPE)
+values (7, N'Blank Mobile Template (Internal)', 'mdefault.html', '0', '1');
+
+insert into TEMPLATE (TMPID, NAME, LOCATION, TMPTYPE, PAGETYPE)
+values (8, N'Blank Mobile Template (External)', 'mblankpub.html', '0', '2');
+
+
+
+insert into DATA_FIELDS (TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_form', 'apptype', 's', N'Client Type', 25, '0', 6, null, 136, null, null, null);
+
+insert into DATA_FIELDS (TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('page', 'apptype', 's', N'Client Type', 3, '0', 5, null, 137, null, null, null);
+
+insert into DATA_FIELDS (TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_form', 'ispub', 's', N'Is Public', 25, '0', 7, null, 138, null, null, null);
+
+insert into COM (COMID, NAME, TYPE, PIC, CONFIG, PARA, OPEN, SNUM, ID)
+values (1020, N'CAPTCHA', 'PAGE,FORM', './updfiles', './config/com/formcpacha/', null, '1', 315, 63);
+
+insert into COM (COMID, NAME, TYPE, PIC, CONFIG, PARA, OPEN, SNUM, ID)
+values (1021, N'Mobile Number', 'PAGE,FORM', './updfiles', './config/com/formmobile/', null, '1', 316, 64);
+
+insert into MSG_TEMPLATE (TEMPID, NAME, MSGTITLE, MSGCONTENT, MSGKEYS, MSGTYPE, GUID,ISNOW) VALUES (71,N'SMS Code',N'SMS Code',N'SMS CAPTCHA: [@CAPTCHA@]',N'{"keys":["CAPTCHA"]}','p','eb66300e2abb46dea6979fa6f4fa50f2','1');
+
+insert into COM (COMID, NAME, TYPE, PIC, CONFIG, PARA, OPEN, SNUM, ID)
+values (1102, N'Table', 'PAGE,FORM', './updfiles', './config/com/formcell/', null, '1', 302, 65);
+
+insert into COM (COMID, NAME, TYPE, PIC, CONFIG, PARA, OPEN, SNUM, ID)
+values (23, N'Card Container', 'PAGE', './updfiles', './config/com/divop/', null, '1', 2, 66);
+
+
+insert into MSG_TEMPLATE (TEMPID, NAME, MSGTITLE, MSGCONTENT, MSGKEYS, MSGTYPE, GUID) VALUES (11,N'Reset Password Email ',N'Reset password',N'<div style="left:50%;margin-left:-300px;margin-bottom:5px;width:600px;position: relative;">\n<img src="[@LOGOIMG@]" height="35px">\n</div>\n<div style="background-color:aliceblue;width:100%;height:100%;position: relative;padding-top:30px">\n<div style="padding:30px;background-color:white;left:50%;margin-left:-300px;margin-bottom:30px;box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);width:600px;min-height:300px;position: relative;font-size:1em">\n<b style="font-size:1.5em">Reset password</b>\n<hr style="height:0px; border-top:1px solid #ccc; border-right:0px; border-bottom:0px; border-left:0px;">\n<br>\n<div>Please click on the following link to reset password:</div><div><br></div><div><a href="[@RESETLINK@]">[@RESETLINK@]</a></div>\n\n</div>\n<div style="left:50%;margin-left:-300px;margin-top:-20px;width:600px;position: relative;">\n<span style="color:#ccc;font-size:0.8em">This email was automatically sent by the system, please do not reply.</span>\n<br>\n<br>\n</div>\n</div>',N'{"keys":["RESETLINK"]}','m','badb4c0790ab47b48bbd0fc4c6e15011');
+insert into MSG_TEMPLATE (TEMPID, NAME, MSGTITLE, MSGCONTENT, MSGKEYS, MSGTYPE, GUID) VALUES (12,N'Reset Password SMS ',N'Reset password',N'Please click on the following link to reset password:[@RESETLINK@]',N'{"keys":["RESETLINK"]}','p','92e6916f85984f128f9f68cf3777d011');
+insert into MSG_TEMPLATE (TEMPID, NAME, MSGTITLE, MSGCONTENT, MSGKEYS, MSGTYPE, GUID) VALUES (21,N'Activate Account Email ',N'Account activation',N'<div style="left:50%;margin-left:-300px;margin-bottom:5px;width:600px;position: relative;">\n<img src="[@LOGOIMG@]" height="35px">\n</div>\n<div style="background-color:aliceblue;width:100%;height:100%;position: relative;padding-top:30px">\n<div style="padding:30px;background-color:white;left:50%;margin-left:-300px;margin-bottom:30px;box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);width:600px;min-height:300px;position: relative;font-size:1em">\n<b style="font-size:1.5em">Account activation</b>\n<hr style="height:0px; border-top:1px solid #ccc; border-right:0px; border-bottom:0px; border-left:0px;">\n<br>\n[@NAME@]:<div><br></div><div>Please click on the following link to activate your account:<a href="[@ACTIVATELINK@]">[@ACTIVATELINK@]</a></div>\n\n\n</div>\n<div style="left:50%;margin-left:-300px;margin-top:-20px;width:600px;position: relative;">\n<span style="color:#ccc;font-size:0.8em">This email was automatically sent by the system, please do not reply.</span>\n<br>\n<br>\n</div>\n</div>',N'{"keys":["NAME","ACTIVATELINK"]}','m','437433267d3b4347aad79762b2b4f011');
+insert into MSG_TEMPLATE (TEMPID, NAME, MSGTITLE, MSGCONTENT, MSGKEYS, MSGTYPE, GUID) VALUES (22,N'Activate Account SMS',N'Account activation',N'[@NAME@]:Please click on the following link to activate your account:[@ACTIVATELINK@]',N'{"keys":["NAME","ACTIVATELINK"]}','p','681d6ab75c6d42a6826ea31f48e8fd11');
+insert into MSG_TEMPLATE (TEMPID, NAME, MSGTITLE, MSGCONTENT, MSGKEYS, MSGTYPE, GUID) VALUES (23,N'Change Email CAPTCHA ',N'Modify email verification code',N'<div style="left:50%;margin-left:-300px;margin-bottom:5px;width:600px;position: relative;">\n<img src="[@LOGOIMG@]" height="35px">\n</div>\n<div style="background-color:aliceblue;width:100%;height:100%;position: relative;padding-top:30px">\n<div style="padding:30px;background-color:white;left:50%;margin-left:-300px;margin-bottom:30px;box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);width:600px;min-height:300px;position: relative;font-size:1em">\n<b style="font-size:1.5em">Verification code</b>\n<hr style="height:0px; border-top:1px solid #ccc; border-right:0px; border-bottom:0px; border-left:0px;">\n<br>\n<div>Verification code:[@CAPTCHA@]</div>\n\n\n</div>\n<div style="left:50%;margin-left:-300px;margin-top:-20px;width:600px;position: relative;">\n<span style="color:#ccc;font-size:0.8em">This email was automatically sent by the system, please do not reply.</span>\n<br>\n<br>\n</div>\n</div>',N'{"keys":["CAPTCHA"]}','m','e6d1acc3809b4a55b044479b7c27db11');
+insert into MSG_TEMPLATE (TEMPID, NAME, MSGTITLE, MSGCONTENT, MSGKEYS, MSGTYPE, GUID) VALUES (24,N'Change SMS Code ',N'Modify mobile verification code',N'Verification code:[@CAPTCHA@]',N'{"keys":["CAPTCHA"]}','p','eb66300e2abb46dea6979fa6f4fa5011');
+insert into MSG_TEMPLATE (TEMPID, NAME, MSGTITLE, MSGCONTENT, MSGKEYS, MSGTYPE, GUID) VALUES (28,N'Workflow Approval ',N'[@ITEMNAME@] waiting for your approval.',N'<div style="left:50%;margin-left:-300px;margin-bottom:5px;width:600px;position: relative;">\n<img src="[@LOGOIMG@]" height="35px">\n</div>\n<div style="background-color:aliceblue;width:100%;height:100%;position: relative;padding-top:30px">\n<div style="padding:30px;background-color:white;left:50%;margin-left:-300px;margin-bottom:30px;box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);width:600px;min-height:300px;position: relative;font-size:1em">\n<b style="font-size:1.5em">Approval Notice</b>\n<hr style="height:0px; border-top:1px solid #ccc; border-right:0px; border-bottom:0px; border-left:0px;">\n<br>\n[@APPROVER@]:<div><br></div><div>[@ITEMNAME@] is waiting for your approval.</div>\n\n\n</div>\n<div style="left:50%;margin-left:-300px;margin-top:-20px;width:600px;position: relative;">\n<span style="color:#ccc;font-size:0.8em">This email was automatically sent by the system, please do not reply.</span>\n<br>\n<br>\n</div>\n</div>',N'{"keys":["APPROVER","ITEMNAME"]}','m','938d9312aba14db78dbc080271c8eb11');
+insert into MSG_TEMPLATE (TEMPID, NAME, MSGTITLE, MSGCONTENT, MSGKEYS, MSGTYPE, GUID) VALUES (29,N'Workflow Approval ',N'',N'[@APPROVER@]:[@ITEMNAME@] is waiting for your approval.',N'{"keys":["APPROVER","ITEMNAME"]}','p','6311912759cd470093c176b671d93211');
+insert into MSG_TEMPLATE (TEMPID, NAME, MSGTITLE, MSGCONTENT, MSGKEYS, MSGTYPE, GUID) VALUES (30,N'Workflow Rejected',N'[@ITEMNAME@] has been returned',N'<div style="left:50%;margin-left:-300px;margin-bottom:5px;width:600px;position: relative;">\n<img src="[@LOGOIMG@]" height="35px">\n</div>\n<div style="background-color:aliceblue;width:100%;height:100%;position: relative;padding-top:30px">\n<div style="padding:30px;background-color:white;left:50%;margin-left:-300px;margin-bottom:30px;box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);width:600px;min-height:300px;position: relative;font-size:1em">\n<b style="font-size:1.5em">Approval Notice</b>\n<hr style="height:0px; border-top:1px solid #ccc; border-right:0px; border-bottom:0px; border-left:0px;">\n<br>\n[@SUBMITTER@]:<div><br></div><div>[@ITEMNAME@] has been returned, The feedback:</div><div><br></div><div>[@REJECTREASON@]</div>\n\n\n</div>\n<div style="left:50%;margin-left:-300px;margin-top:-20px;width:600px;position: relative;">\n<span style="color:#ccc;font-size:0.8em">This email was automatically sent by the system, please do not reply.</span>\n<br>\n<br>\n</div>\n</div>',N'{"keys":["ITEMNAME","SUBMITTER","REJECTREASON"]}','m','2416e1cb406a42f08114f93ac7454011');
+insert into MSG_TEMPLATE (TEMPID, NAME, MSGTITLE, MSGCONTENT, MSGKEYS, MSGTYPE, GUID) VALUES (31,N'Workflow Rejected ',N'',N'[@SUBMITTER@]:[@ITEMNAME@] has been returned, The feedback:[@REJECTREASON@]',N'{"keys":["ITEMNAME","SUBMITTER","REJECTREASON"]}','p','b00d25a4dc9641348451cbebaca61d11');
+insert into MSG_TEMPLATE (TEMPID, NAME, MSGTITLE, MSGCONTENT, MSGKEYS, MSGTYPE, GUID) VALUES (32,N'Workflow Completed',N'[@ITEMNAME@] has been approved',N'<div style="left:50%;margin-left:-300px;margin-bottom:5px;width:600px;position: relative;">\n<img src="[@LOGOIMG@]" height="35px">\n</div>\n<div style="background-color:aliceblue;width:100%;height:100%;position: relative;padding-top:30px">\n<div style="padding:30px;background-color:white;left:50%;margin-left:-300px;margin-bottom:30px;box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);width:600px;min-height:300px;position: relative;font-size:1em">\n<b style="font-size:1.5em">Approval Notice</b>\n<hr style="height:0px; border-top:1px solid #ccc; border-right:0px; border-bottom:0px; border-left:0px;">\n<br>\n[@SUBMITTER@]:<div><br></div><div>[@ITEMNAME@] has been approved, The feedback:</div><div><br></div><div>[@APPROVALCOMMENT@]</div><div><br></div><div><br></div>\n\n\n</div>\n<div style="left:50%;margin-left:-300px;margin-top:-20px;width:600px;position: relative;">\n<span style="color:#ccc;font-size:0.8em">This email was automatically sent by the system, please do not reply.</span>\n<br>\n<br>\n</div>\n</div>',N'{"keys":["ITEMNAME","SUBMITTER","APPROVALCOMMENT"]}','m','80eebdaa02d9452985e99babd1969611');
+insert into MSG_TEMPLATE (TEMPID, NAME, MSGTITLE, MSGCONTENT, MSGKEYS, MSGTYPE, GUID) VALUES (33,N'Workflow Completed',N'',N'[@SUBMITTER@]:[@ITEMNAME@] has been approved, The feedback:[@APPROVALCOMMENT@]',N'{"keys":["ITEMNAME","SUBMITTER","APPROVALCOMMENT"]}','p','face4cc8ddb64d2f8e6748f3916f5e11');
+insert into MSG_TEMPLATE (TEMPID, NAME, MSGTITLE, MSGCONTENT, MSGKEYS, MSGTYPE, GUID,ISNOW) VALUES (41,N'SMS Code',N'Mobile verification code',N'Verification code:[@CAPTCHA@]',N'{"keys":["CAPTCHA"]}','p','eb66300e2abb46dea6979fa6f4fa5011',N'1');
+
+insert into DATA_FIELDS (TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn', 'orgid', 's', N'OrgID', 6, '0', 0, null, 140, null, null, null);
+
+insert into DATA_FIELDS (TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn', 'deptid', 's', N'Dept ID', 6, '0', 0, null, 141, null, null, null);
+insert into DATA_FIELDS (TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn', 'activekey', 's', N'Activation Code', 6, '0', 0, null, 142, null, null, null);
+insert into DATA_FIELDS (TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn', 'activetime', 'dt', N'Activation Code Time', 6, '0', 0, null, 143, null, null, null);
+
+insert into DATA_FIELDS (TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('wfm_run_worklist', 'appname', 's', N'Approval Type', 9, '1', 2, null, 144, null, null, null);
+
+insert into DATA_FIELDS (TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('dept', 'ispub', 's', N'Searchable', 5, '0', 1, null, 145, null, null, null);
+
+insert into DATA (DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (29, 'org_role', null, '0', null, '1', N'OrgRole', null, 'where 1=1', 'orgid', 'orgid,roleid', 'i', null, null, '0', '1');
+
+insert into DATA_FIELDS (TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('org_role', 'orgid', 'i', N'OrgID', 29, '0', 1, null, 146, null, null, null);
+
+insert into DATA_FIELDS (TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('org_role', 'roleid', 'i', N'Role ID', 29, '0', 1, null, 147, null, null, null);
+
+insert into DATA_FIELDS (TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_fields', 'isindex', 's', N'Index', 16, '0', 1, null, 148, null, null, null);
+
+insert into DATA_FIELDS (TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_fields', 'fieldindb', 's', N'Index', 16, '0', 1, null, 149, null, null, null);
+
+insert into DATA_FIELDS (TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('data_fields', 'tablename', 's', 'Index', 16, '0', 1, null, 150, null, null, null);
+
+create table PSN_ORG
+(
+  psnid     INT,
+  orgid     INT,
+  deptid     INT,
+  createtime  DATETIME default getdate()
+);
+
+insert into DATA (DATAID, TABLENAME, RULES_NOTDUPLICATE, [OPEN], LOCATION, TABLEEXIST, NAME, CODES, FILTERS, PKEY, SEARCHKEY, PKEY_TYPE, DATATYPE, TEMPLOCATION, PUBRIGHTS, OPENCODE)
+values (30, 'psn_org', null, '0', null, '1', N'PersonOrg', null, 'where 1=1', 'psnid', 'psnid,orgid,deptid', 'i', null, null, '0', '1');
+
+insert into DATA_FIELDS (TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn_org', 'psnid', 'i', N'Person ID', 30, '0', 1, null, 151, null, null, null);
+
+insert into DATA_FIELDS (TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn_org', 'orgid', 'i',N'OrgID', 30, '0', 1, null, 152, null, null, null);
+
+insert into DATA_FIELDS (TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn_org', 'deptid', 'i', N'Dept ID', 30, '0', 1, null, 153, null, null, null);
+
+insert into DATA_FIELDS (TABLENAME, FIELD, FIELD_TYPE, FIELD_TITLE, DATAID, ISSHOW, SHOWSORT, FIELD_FIELDS, ID, DB_TYPE, DB_LENGTH, FIELD_SELVALUE)
+values ('psn_role', 'orgid', 'i', N'OrgID', 13, '1', 2, null, 155, null, null, null);
+
+CREATE INDEX code_guid ON code (guid);
+CREATE INDEX data_fields_tablename  ON data_fields (tablename);
+CREATE INDEX dept_orgid  ON dept (orgid);
+CREATE INDEX msg_mail_toaddr  ON msg_mail (toaddr);
+CREATE INDEX msg_msg_toaddr  ON msg_msg (toaddr);
+CREATE INDEX org_name  ON org (name);
+CREATE INDEX psn_email  ON psn (email);
+CREATE INDEX psn_mobile  ON psn (mobile);
+CREATE INDEX psn_name  ON psn (name);
+CREATE INDEX psn_orgid  ON psn (orgid);
+CREATE INDEX psn_deptid  ON psn (deptid);
+CREATE INDEX psn_username  ON psn (username);
+CREATE INDEX psn_role_roleid  ON psn_role (roleid);
+CREATE INDEX psn_role_psnid  ON psn_role (psnid);
+CREATE INDEX psn_role_orgid  ON psn_role (orgid);
+CREATE INDEX wfm_run_worklist_psnid  ON wfm_run_worklist (psnid);
+CREATE INDEX wfm_run_worklist_dataitemid  ON wfm_run_worklist (dataitemid);
+CREATE INDEX psn_org_orgid  ON psn_org (orgid);
+CREATE INDEX psn_org_psnid  ON psn_org (psnid);
+CREATE INDEX psn_org_deptid  ON psn_org (deptid);
+
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (1,'9957a5e7ebba48c7991bf293de998182','code_dataadd.html','code_dataadd.txt','code_dataadd_para.txt',N'Public|Date Add/Subtract','1','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'0','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (2,'1f0b8925dc8448f8b6e9852faa698521','code_datenow.html','code_datenow.txt','code_datenow_para.txt',N'Public|Current Time','1','1',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'1','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (3,'5ff9c0fd8814469eb10853930bb14a05','code_getclobdata.html','code_getclobdata.txt','code_getclobdata_para.txt',N'Public|CLOB Data Get','1','3','1','2','00:00:00',1,1,1,'2',NULL,'0','0','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (4,'4545d83bfa194b63a5865f5d7c56fd98','code_debuglog.html','code_debuglog.txt','code_debuglog_para.txt',N'Public|Debug Log','1','1','1','2','00:00:00',1,1,1,'2',NULL,'0','0','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (5,'dc8874dd873e498286334e9d7d7b888b','code_roleget.html','code_roleget.txt','code_roleget_para.txt',N'Public|Role Check','1','1','1','2','00:00:00',1,1,1,'2',NULL,'0','0','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (6,'105c6ae2e99b4603811e3641f3d92d33','105c6ae2e99b4603811e3641f3d92d33.html','105c6ae2e99b4603811e3641f3d92d33.txt','105c6ae2e99b4603811e3641f3d92d33_para.txt',N'Public|Date to String','1','1','1','2','00:00:00',1,1,1,'2',NULL,'1','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (7,'a639236d84714a1a97ab1238b7d7e0f4','a639236d84714a1a97ab1238b7d7e0f4.html','a639236d84714a1a97ab1238b7d7e0f4.txt','a639236d84714a1a97ab1238b7d7e0f4_para.txt',N'Public|List Length','1','1','1','2','00:00:00',1,1,1,'2',NULL,'1','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (8,'8ab373a65c514f5182fcebb030b5ff96','8ab373a65c514f5182fcebb030b5ff96.html','8ab373a65c514f5182fcebb030b5ff96.txt','8ab373a65c514f5182fcebb030b5ff96_para.txt',N'Public|List Element Remove','1','1','1','2','00:00:00',1,1,1,'2',NULL,'1','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (9,'5b2bae7f9b7c4ab1945c2e35627d8c91','5b2bae7f9b7c4ab1945c2e35627d8c91.html','5b2bae7f9b7c4ab1945c2e35627d8c91.txt','5b2bae7f9b7c4ab1945c2e35627d8c91_para.txt',N'Public|List Element Get','1','1','1','2','00:00:00',1,1,1,'2',NULL,'1','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (10,'ecaff280bb134b16972ee16ffcaa8346','ecaff280bb134b16972ee16ffcaa8346.html','ecaff280bb134b16972ee16ffcaa8346.txt','ecaff280bb134b16972ee16ffcaa8346_para.txt',N'Public|String to JSON','1','1','1','2','00:00:00',1,1,1,'2',NULL,'0','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (11,'959c8910b5f24d4bb9c94e72d5f1478a','959c8910b5f24d4bb9c94e72d5f1478a.html','959c8910b5f24d4bb9c94e72d5f1478a.txt','959c8910b5f24d4bb9c94e72d5f1478a_para.txt',N'Public|JSON to String','1','1','1','2','00:00:00',1,1,1,'2',NULL,'1','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (12,'6e207f5b70144193850bacb97cd71205','6e207f5b70144193850bacb97cd71205.html','6e207f5b70144193850bacb97cd71205.txt','6e207f5b70144193850bacb97cd71205_para.txt',N'Public|Substring','1','1','1','2','00:00:00',1,1,1,'2',NULL,'1','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (13,'ae57ce38d164429985999115eaeb6624','ae57ce38d164429985999115eaeb6624.html','ae57ce38d164429985999115eaeb6624.txt','ae57ce38d164429985999115eaeb6624_para.txt',N'Public|String Length','1','1','1','2','00:00:00',1,1,1,'2',NULL,'1','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (14,'f21c562ddf2d4dc2b4243d91d47d1b23','f21c562ddf2d4dc2b4243d91d47d1b23.html','f21c562ddf2d4dc2b4243d91d47d1b23.txt','f21c562ddf2d4dc2b4243d91d47d1b23_para.txt',N'Public|String Find','1','1','1','2','00:00:00',1,1,1,'2',NULL,'1','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (15,'27c2fedfb8a54d5da1661c3f9e69f039','27c2fedfb8a54d5da1661c3f9e69f039.html','27c2fedfb8a54d5da1661c3f9e69f039.txt','27c2fedfb8a54d5da1661c3f9e69f039_para.txt',N'Public|Number to String','1','1','1','2','00:00:00',1,1,1,'2',NULL,'1','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (16,'7460d824641f4a449ffb3c54d1eeec40','7460d824641f4a449ffb3c54d1eeec40.html','7460d824641f4a449ffb3c54d1eeec40.txt','7460d824641f4a449ffb3c54d1eeec40_para.txt',N'Public|Generate GUID','1','1','1','2','00:00:00',1,1,1,'2',NULL,'1','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (17,'ea548495a5b949209287c5ef559ceac5','ea548495a5b949209287c5ef559ceac5.html','ea548495a5b949209287c5ef559ceac5.txt','ea548495a5b949209287c5ef559ceac5_para.txt',N'Public|String to List','1','1','1','2','00:00:00',1,1,1,'2',NULL,'1','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (18,'89721ec7ffdc4ee087f0412ef430afb3','89721ec7ffdc4ee087f0412ef430afb3.html','89721ec7ffdc4ee087f0412ef430afb3.txt','89721ec7ffdc4ee087f0412ef430afb3_para.txt',N'Public|PDF Download','1','1','1','2','00:00:00',1,1,1,'2',NULL,'1','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (19,'99b18aa61bf8407783f8d051908e1f15','99b18aa61bf8407783f8d051908e1f15.html','99b18aa61bf8407783f8d051908e1f15.txt','99b18aa61bf8407783f8d051908e1f15_para.txt',N'Public|CLOB Data Insert','1','3','1','2','00:00:00',1,1,1,'2',NULL,'0','0','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (20,'a1c744417a9a49f8801c3c7352400899','a1c744417a9a49f8801c3c7352400899.html','a1c744417a9a49f8801c3c7352400899.txt','a1c744417a9a49f8801c3c7352400899_para.txt',N'Public|Delete Object Key','1','1','1','2','00:00:00',1,1,1,'2',NULL,'1','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (21,'e7b01cd2692140f0958c0d66b0c962db','e7b01cd2692140f0958c0d66b0c962db.html','e7b01cd2692140f0958c0d66b0c962db.txt','e7b01cd2692140f0958c0d66b0c962db_para.txt',N'Public|CLOB Data Copy','1','3','1','2','00:00:00',1,1,1,'2',NULL,'0','0','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (22,'cd88b8880cf74669b12cbb89efa17245','cd88b8880cf74669b12cbb89efa17245.html','cd88b8880cf74669b12cbb89efa17245.txt','cd88b8880cf74669b12cbb89efa17245_para.txt',N'Public|CLOB Data Update','1','3','1','2','00:00:00',1,1,1,'2',NULL,'0','0','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (23,'658e717a854f4d6781b8a4ec6d3157ff','658e717a854f4d6781b8a4ec6d3157ff.html','658e717a854f4d6781b8a4ec6d3157ff.txt','658e717a854f4d6781b8a4ec6d3157ff_para.txt',N'Public|File to Text File','1','3','1','2','00:00:00',1,1,1,'2',NULL,'0','0','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (24,'7356f6d021ea43638bc14be22dd79716','7356f6d021ea43638bc14be22dd79716.html','7356f6d021ea43638bc14be22dd79716.txt','7356f6d021ea43638bc14be22dd79716_para.txt',N'Public|File to PDF','1','3','1','2','00:00:00',1,1,1,'2',NULL,'0','0','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (25,'08d992f9b0d04eb5a927db49887a865e','08d992f9b0d04eb5a927db49887a865e.html','08d992f9b0d04eb5a927db49887a865e.txt','08d992f9b0d04eb5a927db49887a865e_para.txt',N'Public|File Download','1','1','1','2','00:00:00',1,1,1,'2',NULL,'0','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (26,'3ead58a900404e7e8de5ee6ec7f27539','3ead58a900404e7e8de5ee6ec7f27539.html','3ead58a900404e7e8de5ee6ec7f27539.txt','3ead58a900404e7e8de5ee6ec7f27539_para.txt',N'Public|Date String Concat','1','1','1','2','00:00:00',1,1,1,'2',NULL,'0','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (27,'f659feed943443d89fe36eab1f1129cf','f659feed943443d89fe36eab1f1129cf.html','f659feed943443d89fe36eab1f1129cf.txt','f659feed943443d89fe36eab1f1129cf_para.txt',N'Public|Remove Last Char','1','1','1','2','00:00:00',1,1,1,'2',NULL,'0','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (28,'ffecb5f5d87b43038f3994f7b14cf33f','ffecb5f5d87b43038f3994f7b14cf33f.html','ffecb5f5d87b43038f3994f7b14cf33f.txt','ffecb5f5d87b43038f3994f7b14cf33f_para.txt',N'Public|Get Month Day','1','1','1','2','00:00:00',1,1,1,'2',NULL,'0','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (29,'972150b7825841728c1d6840ba7dd770','972150b7825841728c1d6840ba7dd770.html','972150b7825841728c1d6840ba7dd770.txt','972150b7825841728c1d6840ba7dd770_para.txt',N'Public|Redis Config Set','1','1','1','2','00:00:00',1,1,1,'2',NULL,'0','0','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (30,'eae5e18479d04ba689a7edc65aee55d0','eae5e18479d04ba689a7edc65aee55d0.html','eae5e18479d04ba689a7edc65aee55d0.txt','eae5e18479d04ba689a7edc65aee55d0_para.txt',N'Public|Redis Config Get','1','1','1','2','00:00:00',1,1,1,'2',NULL,'0','0','1');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,[OPEN],CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (31,'94b1b272ad6b4af49055867fee93abe5','94b1b272ad6b4af49055867fee93abe5.html','94b1b272ad6b4af49055867fee93abe5.txt','94b1b272ad6b4af49055867fee93abe5_para.txt',N'Public|File CSV Read','1','1','1','2','00:00:00',1,1,1,'2',NULL,'0','0','0');
+
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,OPEN,CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (32,'138dacee79f240d48487a10eb686d436','138dacee79f240d48487a10eb686d436.html','138dacee79f240d48487a10eb686d436.txt','138dacee79f240d48487a10eb686d436_para.txt',N'Public|Popup Alert','1','1','1','2','00:00:00',1,1,1,'2',NULL,'1','1','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,OPEN,CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (33,'4577b1eed9444c99af8bf6fe3fa1d7ce','4577b1eed9444c99af8bf6fe3fa1d7ce.html','4577b1eed9444c99af8bf6fe3fa1d7ce.txt','4577b1eed9444c99af8bf6fe3fa1d7ce_para.txt',N'Public|NULL to Empty String','1','1','1','2','00:00:00',1,1,1,'2',NULL,'0','1','0');
+
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,OPEN,CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (34,'62fa28cbfd0b41638475ec1a09ef3a84','62fa28cbfd0b41638475ec1a09ef3a84.html','62fa28cbfd0b41638475ec1a09ef3a84.txt','62fa28cbfd0b41638475ec1a09ef3a84_para.txt',N'Public|System Config Get','1','3','1','2','00:00:00',1,1,1,'2',NULL,'0','0','0');
+INSERT INTO CODE (CODEID,GUID,CODEFILE,SOURCE,PARA,NAME,OPEN,CODEMODE,TASKMODE,TASKINTERVAL,TASKDAYTIME,TASKWEEK,TASKMONTH,TASKYEAR,TASKSTART,TASKLASTRUN,ISPUB,ISFRONT,ISCACHE) VALUES (35,'dcdc11db20954cf0869fbfc974369803','dcdc11db20954cf0869fbfc974369803.html','dcdc11db20954cf0869fbfc974369803.txt','dcdc11db20954cf0869fbfc974369803_para.txt',N'Public|System Config Temp Set','1','3','1','2','00:00:00',1,1,1,'2',NULL,'0','0','0');

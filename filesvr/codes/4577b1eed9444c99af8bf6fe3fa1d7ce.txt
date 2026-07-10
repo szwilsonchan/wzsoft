@@ -1,0 +1,8 @@
+;if(InputValue==null)
+{
+return '';
+}
+else
+{
+return InputValue;
+};;;

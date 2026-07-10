@@ -1,0 +1,259 @@
+<div class="content-tab[@configid@]" id="datalist[@configid@]" style="display:none">
+    <div class="content-tab-title">
+        <span>[@fieldtitle@]</span>
+    </div>
+    <div class="content-info[@configid@]" id="content-info1[@configid@]" style="display:none">
+        <div class="left" id="content-info-msg1[@configid@]"></div>
+        <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+    </div>
+    <div class="content-tab-filter" >
+        <div class="pageselshow">
+            [@cappegenum1@]
+            <select class="sel" v-model="pageitems" @change="getDatasByFilters(1)">
+                <option selected>2</option>
+                <option>10</option>
+                <option>20</option>
+                <option>50</option>
+            </select>
+            [@cappegenum2@]
+        </div>
+        <div class="actionbtns">
+            <input  v-show="this.showaddbtn&&!this.isSubDept" type="button" value="+[@capaddbtn@]" @click="openAddWinVue('',addDatas,'')" />
+            [@btntophtml@]
+        </div>
+        <div class="searchcombine" >
+            <input type="button" class="btn"  value="[@btnsearch@]" @click="getDatasByFilters(1)" />
+        </div>
+        <div class="searchcombine" id="view_prp_filters1[@configid@]">
+            <input type="text" class="text" name="filter_searchkey_like" value="" />
+        </div>
+    </div>
+    <div class="content-tab-con" >
+        <table class="tabdata" >
+            <tr>
+                <th v-show="this.checkboxshow"><input type="checkbox" :checked="selAll" @click="checkedAllId()"></th>
+                <template v-for="datalab in datalabs">
+                    <th v-if="(Object.values(datalab)[0]!='Sort')||(Object.values(datalab)[0]=='Sort'&&!this.isSubDept)">{{showDataLbl(Object.values(datalab)[0])}}</th>
+                </template>    
+                <th>[@capaction@]</th>
+            </tr>
+            <tr v-for="data in datas">
+                <td v-show="this.checkboxshow" style="text-align: center;"><input type="checkbox" :checked="selIds.indexOf(data[pkey])>=0" name="checkboxinput" @click="checkedOneId(data[pkey])"></td>
+                <template v-for="item in Object.keys(data)">
+                    <td v-if="arrShowTitles.indexOf(item)!=-1&&item!='SNUM'"><span v-show="item=='NAME'&&data['PID']!='0'">&nbsp;&nbsp;&nbsp;</span>{{data[item]}}</td>
+                    <td v-if="arrShowTitles.indexOf(item)!=-1&&item=='SNUM'&&data['PID']!='0'&&!this.isSubDept">{{data['SNUMSUB']}}</td>
+                    <td v-if="arrShowTitles.indexOf(item)!=-1&&item=='SNUM'&&data['PID']=='0'&&!this.isSubDept">{{data['SNUM']}}</td>
+                </template>
+                <td>
+                    <ul class="action-content">
+                        <li v-if="this.showupdbtn"><a href="javascript:void(0)" @click="openUpdWinVue('',updDatas,data[pkey])"><img width="23"  src="./imgs/update.png"></a></li>
+                        <li v-if="this.showdelbtn&&this.DeptID!=data['DEPTID']"><a href="javascript:void(0)" @click="openWinVue('[@infodel@]',delDatas,data[pkey])"><img width="23" src="./imgs/del.png"></a></li>
+                        [@btnmidhtml@]
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="content-tab-pages">
+        <div class="itemsshow">
+            <span>{{totalitems}} [@cappegenum3@]</span>
+        </div>
+        <div class="pagesshow" id="pagesshow" v-show="hasitmes">
+            <ul class="page-content">
+                <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage+1)">[@pagedown@]</a></li>
+                <li v-for="page in showpages">
+                    <a href="javascript:void(0)" v-if="page.i==this.curpage" @click="getDatasByFilters(page.i)" class="active">{{page.i}}</a>
+                    <a href="javascript:void(0)" v-if="page.i!=this.curpage" @click="getDatasByFilters(page.i)" >{{page.i}}</a>
+                </li>
+                <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage-1)">[@pageup@]</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="updWin1[@configid@]" class="updWin[@configid@]">
+        <div class="updWin-info" id="updWin-info1[@configid@]" style="display:none">
+            <div class="left" id="updWin-info-msg1[@configid@]"></div>
+            <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+        </div>
+        <div class="updWin-content" >
+            <div class="updWin-content-item" v-show="this.isupd">
+                <div class="left">ID</div>
+                <div class="right"><input type="text" readonly class="readonly" v-model="dataitem.DEPTID"  /></div>
+            </div>
+            <div class="updWin-content-item" v-show="!this.isDept">
+                <div class="left">[@frmparent@]</div>
+                <div class="right" >
+                    <select  v-model="dataitem.PID" class="sel">
+                        <option></option>
+                        <option v-for="v in depts"  :value="v['DEPTID']+'|'+v['SNUM']" >{{v['NAME']}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmname@]</div>
+                <div class="right"><input type="text" v-model="dataitem.NAME" /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmnamesub@]</div>
+                <div class="right"><input type="text" v-model="dataitem.ENAME" /></div>
+            </div>
+            <div class="updWin-content-item" v-show="this.DeptID!=dataitem.DEPTID">
+                <div class="left">[@frmsort@]</div>
+                <div class="right"><input type="text" v-model="dataitem.SNUM" /></div>
+            </div>
+            <div class="updWin-content-item" style="line-height: 40px;">
+                <div class="left">[@frmcansearch@]</div>
+                <div class="right">
+                    <input type="radio" name="radiospub" value="1" v-model="dataitem.ISPUB" ><label>[@frmcansearch1@]</label>&nbsp;&nbsp;
+                    <input type="radio" name="radiospub" value="0" v-model="dataitem.ISPUB" ><label>[@frmcansearch2@]</label>
+                </div>
+            </div>
+            <div class="updWin-content-item" v-show="this.DeptID!=dataitem.DEPTID">
+                <div class="left">[@frmrole@]</div>
+                <div class="right" id ="rolelist">
+                    <div v-for='(role, index) in roles' :key="index">
+                    <input type='checkbox' :checked="roleIds.indexOf(role.ROLEID)>=0" name='checkboxinput' class='input-checkbox' @click='checkedOne(role.ROLEID)'>&nbsp;{{role.NAME}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="updWinBtn">
+            <input type="button" class="btnOK"  value="[@btnsave@]" onclick="openWinOK[@configid@]()" />
+            <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeWin[@configid@]()" />
+        </div>
+    </div>
+</div>
+<div class="content-tabmobile[@configid@]" id="datalistmobile[@configid@]" style="display:none">
+    <div class="content-tab-title">
+        <span>[@fieldtitle@]</span>
+    </div>
+    <div class="content-info[@configid@]" id="content-info2[@configid@]" style="display:none">
+        <div class="left" id="content-info-msg2[@configid@]"></div>
+        <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+    </div>
+    <div class="content-tab-filter" >
+        <div class="pageselshow">
+            [@cappegenum1@]
+            <select class="sel" v-model="pageitems" @change="getDatasByFilters(1)">
+                <option selected>2</option>
+                <option>10</option>
+                <option>20</option>
+                <option>50</option>
+            </select>
+            [@cappegenum2@]
+        </div>
+        <div class="actionbtns">
+            <input type="button" v-show="this.showaddbtn&&!this.isSubDept" type="button" value="+[@capaddbtn@]" @click="openAddWinVue('',addDatas,'')" />
+            [@btntophtml@]
+        </div>
+        <div style="float:left;width:100%">
+            <div class="searchcombine" style="width:75%" id="view_prp_filters2[@configid@]">
+                <input type="text" class="text" name="filter_searchkey_like" value="" />
+            </div>
+            <div class="searchcombine" style="width:25%">
+                <input type="button" class="btnsub"  value="[@btnsearch@]" @click="getDatasByFilters(1)" />
+            </div>
+        </div>
+    </div>
+    <div class="content-tab-con" >
+        <table class="tabdata" >
+            <tr>
+                <th><input type="checkbox" :checked="selAll" @click="checkedAllId()"></th>
+                <th><span v-for="datalab in datalabs">{{showDataLbl(Object.values(datalab)[0])}}/</span>[@capaction@]</th>
+            </tr>
+            <tr v-for="data in datas">
+                <td v-show="this.checkboxshow" style="text-align: center;"><input type="checkbox" :checked="selIds.indexOf(data[pkey])>=0" name="checkboxinput" @click="checkedOneId(data[pkey])"></td>
+                <td>
+                    <template v-for="item in Object.keys(data)">
+                        <div v-if="arrShowTitles.indexOf(item)!=-1&&item!='SNUM'"><span v-show="item=='NAME'&&data['PID']!='0'">&nbsp;&nbsp;&nbsp;</span>{{data[item]}}</div>
+                        <div v-if="arrShowTitles.indexOf(item)!=-1&&item=='SNUM'&&data['PID']!='0'&&!this.isSubDept">{{data['SNUMSUB']}}</div>
+                        <div v-if="arrShowTitles.indexOf(item)!=-1&&item=='SNUM'&&data['PID']=='0'&&!this.isSubDept">{{data['SNUM']}}</div>
+                    </template>
+                    <br/>
+                    <ul class="action-content">
+                        [@btnmidhtml@]
+                        <li v-if="this.showupdbtn"><a href="javascript:void(0)" @click="openUpdWinVue('',updDatas,data[pkey])">[@capupd@]</a></li>
+                        <li v-if="this.showdelbtn&&this.DeptID!=data['DEPTID']"><a href="javascript:void(0)" @click="openWinVue('[@infodel@]',delDatas,data[pkey])">[@capdel@]</a></li>
+                    </ul>
+                </td>
+            </tr>
+        </table> 
+    </div>
+    <div class="content-tab-pages">
+        <div class="itemsshow">
+            <div @click="downloadExcel()" style="float:left;cursor:pointer" >
+                <div style="float:left;padding-top:2px"><img height="[@itemheight@]" @click="downloadExcel()" src="./imgs/excel.png" /></div>
+                <div style="float:left">&nbsp;{{totalitems}} [@cappegenum3@]  </div>
+            </div>
+        </div>
+        <div class="pagesshow" id="pagesshow" v-show="hasitmes">
+            <ul class="page-content">
+                <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage+1)" style="width:128px">[@pagedown@]</a></li>
+                <li v-for="page in showpages">
+                    <a href="javascript:void(0)" v-if="page.i==this.curpage" @click="getDatasByFilters(page.i)" class="active">{{page.i}}</a>
+                    <a href="javascript:void(0)" v-if="page.i!=this.curpage" @click="getDatasByFilters(page.i)" >{{page.i}}</a>
+                </li>
+                <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage-1)"  style="width:128px">[@pageup@]</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="updWin2[@configid@]" class="updWin[@configid@]">
+        <div class="updWin-info" id="updWin-info2[@configid@]" style="display:none">
+            <div class="left" id="updWin-info-msg2[@configid@]"></div>
+            <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+        </div>
+        <div class="updWin-content" >
+            <div class="updWin-content-item" v-show="this.isupd">
+                <div class="left">ID</div>
+                <div class="right"><input type="text" readonly class="readonly" v-model="dataitem.DEPTID"  /></div>
+            </div>
+            <div class="updWin-content-item" v-show="!this.isDept">
+                <div class="left">[@frmparent@]</div>
+                <div class="right" >
+                    <select  v-model="dataitem.PID" class="sel">
+                        <option></option>
+                        <option v-for="v in depts"  :value="v['DEPTID']+'|'+v['SNUM']" >{{v['NAME']}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmname@]</div>
+                <div class="right"><input type="text" v-model="dataitem.NAME" /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmnamesub@]</div>
+                <div class="right"><input type="text" v-model="dataitem.ENAME" /></div>
+            </div>
+            <div class="updWin-content-item" v-show="this.DeptID!=dataitem.DEPTID">
+                <div class="left">[@frmsort@]</div>
+                <div class="right"><input type="text" v-model="dataitem.SNUM" /></div>
+            </div>
+            <div class="updWin-content-item" style="line-height: 40px;">
+                <div class="left">[@frmcansearch@]</div>
+                <div class="right">
+                    <input type="radio" name="radiospub" value="1" v-model="dataitem.ISPUB" ><label>[@frmcansearch1@]</label>
+                    <input type="radio" name="radiospub" value="0" v-model="dataitem.ISPUB" ><label>[@frmcansearch2@]</label>
+                </div>
+            </div>
+            <div class="updWin-content-item" v-show="this.DeptID!=dataitem.DEPTID">
+                <div class="left">[@frmrole@]</div>
+                <div class="right" id ="rolelist">
+                    <div v-for='(role, index) in roles' :key="index">
+                    <input type='checkbox' :checked="roleIds.indexOf(role.ROLEID)>=0" name='checkboxinput' class='input-checkbox' @click='checkedOne(role.ROLEID)'>{{role.NAME}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="updWinBtn">
+            <input type="button" class="btnOK"  value="[@btnsave@]" onclick="openWinOK[@configid@]()" />
+            <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeWin[@configid@]()" />
+        </div>
+    </div>
+</div>
+<div id="coverWin[@configid@]" class="coverWin[@configid@]"></div>
+<div id="modalWin[@configid@]" class="modalWin[@configid@]">
+    <div class="modalWinMsg"><span id="modalWinMsg[@configid@]"></span></div>
+    <div class="modalWinBtn">
+        <input type="button" class="btnOK"  value="[@btnok@]" onclick="openWinOK[@configid@]()" />
+        <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeWin[@configid@]()" />
+    </div>
+</div>

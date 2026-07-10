@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+<script src="selColor.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content-item" >
+        <div class="left">Style</div>
+        <div class="right" style="line-height:40px">
+            <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="1" v-model="dataitem.config.apptype" ><label>PC</label>
+            <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="2" v-model="dataitem.config.apptype" ><label>Mobile</label>
+        </div>
+    </div>
+    <div class="updWin-content-item" v-show="this.dataitem.config.apptype=='1'">
+        <div class="left">Mobile redirects to:</div>
+        <div class="right" style="line-height: 40px;">
+            <input type="text" v-model="dataitem.config.repage" />
+        </div>
+    </div>
+    <div class="updWin-content-item" v-show="this.dataitem.config.apptype=='2'">
+        <div class="left">PC redirects to:</div>
+        <div class="right" style="line-height: 40px;">
+            <input type="text" v-model="dataitem.config.repage" />
+        </div>
+    </div>
+</div>
+
+<script src="./../../../js/funcconfig.js"></script>
+
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            comdatas:null,
+            dataitem:{"comid":"4005","comname":"Forgot Password","comtitle":"Forgot Password","config":{"repage":"","apptype":"1","lan":"e","conbg":"#fff","conradius":"2em"}}
+        }
+    },
+    methods: 
+    {
+        changeLan()
+        {
+
+        },
+        getDataItem() 
+        {
+            if(this.dataitem.config.lan=="c")
+            {
+                this.dataitem.config.capemail = "Email";
+                this.dataitem.config.capmobile = "Mobile";
+                this.dataitem.config.capcode = "CAPTCHA";
+                this.dataitem.config.capcodedo = "Click to switch CAPTCHA";
+                this.dataitem.config.btnsend = "Send Reset Password Request";
+                this.dataitem.config.btnsend1 = "SavePassword";
+                this.dataitem.config.cappass1 = "Enter New Password";
+                this.dataitem.config.cappass2 = "Confirm New Password";
+                this.dataitem.config.msgemail1 = "Emailcannot be empty。";
+                this.dataitem.config.msgemail2 = "EmailURLFormat is incorrect。";
+                this.dataitem.config.msgemail3 = "Emaillength cannot exceed 100 characters。";
+                this.dataitem.config.msgmobile1 = "Mobilecannot be empty。";
+                this.dataitem.config.msgmobile2 = "Mobile format is incorrect.";
+                this.dataitem.config.msgmobile3 = "Mobile length cannot exceed 20 characters.";
+                this.dataitem.config.msgsend = "System will send you a reset password link. Please check.";
+                this.dataitem.config.msgpwdnew = "Enter New Password.";
+                this.dataitem.config.msgpwdnew1 = "Passwordlength cannot exceed 20 characters。";
+                this.dataitem.config.msgpwdnew2 = "The two passwords do not match.";
+                this.dataitem.config.msgpwdnew3 = "PasswordSaveSuccess。";
+            }
+            else
+            {
+                this.dataitem.config.capemail = "Email";
+                this.dataitem.config.capmobile = "Mobile";
+                this.dataitem.config.capcode = "Captcha";
+                this.dataitem.config.capcodedo = "Switch the captcha";
+                this.dataitem.config.btnsend = "Send request";
+                this.dataitem.config.btnsend1 = "Save password";
+                this.dataitem.config.cappass1 = "New password";
+                this.dataitem.config.cappass2 = "Confirm password";
+                this.dataitem.config.msgemail1 = "Email cannot be empty";
+                this.dataitem.config.msgemail2 = "Incorrect email format";
+                this.dataitem.config.msgemail3 = "The length of the email cannot exceed 100";
+                this.dataitem.config.msgmobile1 = "Mobile cannot be empty";
+                this.dataitem.config.msgmobile2 = "Incorrect mobile format";
+                this.dataitem.config.msgmobile3 = "The length of the mobile cannot exceed 20";
+                this.dataitem.config.msgsend = "The system will send you a password reset link";
+                this.dataitem.config.msgpwdnew = "Please enter a new password";
+                this.dataitem.config.msgpwdnew1 = "The length of the password cannot exceed 20";
+                this.dataitem.config.msgpwdnew2 = "The new password and confirm password do not match";
+                this.dataitem.config.msgpwdnew3 = "Password saved successfully";
+            }
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+        },
+        setDataItemByK(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        }, 
+        getDataItemSub() 
+        {
+            return this.dataitem;
+        }
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.getDataItemSub = this.getDataItemSub;
+        window.setDataItem = this.setDataItem;
+        window.setDataItemByK = this.setDataItemByK;
+
+        gInitConfig();
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+Colorpicker.create({
+el: "color-picker-conbg", 
+color: "", 
+change: function (elem, hex) {
+    elem.style.borderColor = hex;
+    window.setDataItemByK('conbg',hex);
+}
+});
+
+</script>
+
+</body>
+</html>

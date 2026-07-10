@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/main.css" type="text/css"  />
+<script src="./../js/vue.global.js"></script>
+<script src="./../js/axios.min.js"></script>
+<script src="./js/funcadmin.js"></script>
+<style>
+.updWin-content-itemwzsoftcom6a9785a910f440619b46cac13545aaf8
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.updWin-content-itemwzsoftcom6a9785a910f440619b46cac13545aaf8 .left
+{ 
+    width:15%;
+    box-sizing: border-box;
+    font-size:1em;
+    line-height:40px;
+    padding-right:15px;
+    text-align:right;
+    font-weight: bold;
+    float:left;
+}
+.updWin-content-itemwzsoftcom6a9785a910f440619b46cac13545aaf8 .right
+{
+    width:85%;
+    box-sizing: border-box;
+    text-align:left;
+    line-height:40px;
+    float:left;
+}
+
+.updWin-content-itemwzsoftcom6a9785a910f440619b46cac13545aaf8 input[type=text]:not(.readonly)
+{
+    border: 1px solid rgb(173, 170, 170);
+    border-radius: 0.8em;
+    height:40px;
+    width:100%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.updWin-content-itemwzsoftcom6a9785a910f440619b46cac13545aaf8 input[type=text]:focus:not(.readonly)
+{
+    border: 1px solid rgb(46, 162, 240);
+}
+
+.form-action 
+{
+    overflow:visible;
+    box-sizing: border-box;
+    z-index: 999;
+}
+
+.form-action .btnBlue
+{
+    border-style: none;
+    border-radius: 2em;
+    background-color: rgb(46, 162, 240);
+    color:#fff;
+    height:40px;
+    width:78px;
+    cursor: pointer;
+    outline:none;
+    box-sizing: border-box;
+    margin-left:5px;
+    float:right;
+}
+.form-action .btnBlue:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+.form-action .btnOK
+{
+    border-style: none;
+    border-radius: 2em;
+    background-color: rgb(247, 164, 71);
+    color:#fff;
+    height:40px;
+    width:78px;
+    cursor: pointer;
+    outline:none;
+    box-sizing: border-box;
+    margin-left:5px;
+    float:right;
+}
+.form-action .btnOK:hover
+{
+    background-color: rgb(240, 182, 116);
+}
+.form-action .btnCancle
+{
+    border-style: none;
+    border-radius: 2em;
+    background-color: rgb(205, 209, 212);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+    float:right;
+}
+.form-action .btnCancle:hover
+{
+    background-color: rgb(247, 164, 71);
+}
+.form-action-info
+{
+    color: black;
+    font-size:0.8em;
+    background-color:rgb(241, 215, 180);
+    border: none;
+    border-radius: 2em;
+    width:200px;
+    height:40px;
+    line-height:37px;
+    box-sizing: border-box;
+    float:right;
+}
+.form-action-info .left
+{
+    float:left;
+    width:90%;
+    text-align: center;
+    box-sizing: border-box;
+    border: none;
+}
+
+.selReject
+{
+    border: none;
+    margin-left: 8px;
+    border-radius: 0.8em;
+    height:40px;
+    background-color: rgb(234, 237, 241);
+    padding: 5px;
+    box-sizing: border-box;
+    float:right;
+}
+.updWin-content-itemwzsoftcom7724a2596bf2433089bfa32f74f443bf
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.updWin-content-itemwzsoftcom7724a2596bf2433089bfa32f74f443bf .left
+{ 
+    width:15%;
+    box-sizing: border-box;
+    font-size:1em;
+    line-height:40px;
+    padding-right:15px;
+    text-align:right;
+    font-weight: bold;
+    float:left;
+}
+.updWin-content-itemwzsoftcom7724a2596bf2433089bfa32f74f443bf .right
+{
+    width:85%;
+    box-sizing: border-box;
+    text-align:left;
+    float:left;
+}
+.updWin-content-itemwzsoftcom7724a2596bf2433089bfa32f74f443bf input[type=text]:not(.readonly)
+{
+    border: 1px solid rgb(234, 237, 241);
+    border-radius: 0.8em;
+    height:40px;
+    width:90%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.updWin-content-itemwzsoftcom7724a2596bf2433089bfa32f74f443bf input[type=text]:focus:not(.readonly)
+{
+    border: 1px solid rgb(46, 162, 240);
+}
+.dropcontentwzsoftcom7724a2596bf2433089bfa32f74f443bf
+{
+    display:none;
+    position: absolute;
+    height:fit-content;
+    z-index: 2100;
+    width:200px;
+    background-color:white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    text-align: left;
+}
+.dropcontentwzsoftcom7724a2596bf2433089bfa32f74f443bf .selItemShow
+{
+  margin:1px;
+  padding: 5px;
+  cursor:pointer;
+  float:left;
+  height:fit-content;
+  min-width:160px;
+  width:100%;
+  font-size: 0.8em;
+  height:25px;
+  background-color: rgb(234, 237, 241);
+}
+.dropcontentwzsoftcom7724a2596bf2433089bfa32f74f443bf .selItemShow:hover
+{
+  background-color: rgb(104, 187, 241);
+}
+.divSelItemswzsoftcom7724a2596bf2433089bfa32f74f443bf
+{
+  display:none;
+}
+.divSelItemswzsoftcom7724a2596bf2433089bfa32f74f443bf .selItemDiv
+{
+  padding:5px;
+  margin:3px;
+  float:left;
+  height:fit-content;
+  min-width:160px;
+  width:fit-content;
+  border-radius: 0.8em;
+  border: 1px solid rgb(102, 183, 238);
+}
+
+.divSelItemswzsoftcom7724a2596bf2433089bfa32f74f443bf .action-content a:link
+{
+    margin-left: 5px;
+    width:24px;
+    display: block;
+    color: rgb(252, 249, 249);
+    background-color:rgb(30, 108, 211);
+    border-radius: 0.4em;
+    height:24px;
+    text-align: center;
+    padding-top:2px;
+    padding-right:1px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    float:left;
+}
+
+.divSelItemswzsoftcom7724a2596bf2433089bfa32f74f443bf .action-content a:visited
+{
+    color: rgb(252, 249, 249);
+}
+
+.divSelItemswzsoftcom7724a2596bf2433089bfa32f74f443bf .action-content a.active
+{
+    background-color:rgb(104, 187, 241);
+}
+.divSelItemswzsoftcom7724a2596bf2433089bfa32f74f443bf .action-content a:hover:not(.active)
+{
+    background-color:rgb(104, 187, 241);
+}
+.updWin-content-itemwzsoftcomde389b506564443d8c8c614bfc2b48b9
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.updWin-content-itemwzsoftcomde389b506564443d8c8c614bfc2b48b9 .left
+{ 
+    width:15%;
+    box-sizing: border-box;
+    font-size:1em;
+    line-height:40px;
+    padding-right:15px;
+    text-align:right;
+    font-weight: bold;
+    float:left;
+}
+.updWin-content-itemwzsoftcomde389b506564443d8c8c614bfc2b48b9 .right
+{
+    width:85%;
+    box-sizing: border-box;
+    text-align:left;
+    float:left;
+}
+.updWin-content-itemwzsoftcomde389b506564443d8c8c614bfc2b48b9 input[type=text]:not(.readonly)
+{
+    border: 1px solid rgb(234, 237, 241);
+    border-radius: 0.8em;
+    height:40px;
+    width:90%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.updWin-content-itemwzsoftcomde389b506564443d8c8c614bfc2b48b9 input[type=text]:focus:not(.readonly)
+{
+    border: 1px solid rgb(46, 162, 240);
+}
+.dropcontentwzsoftcomde389b506564443d8c8c614bfc2b48b9
+{
+    display:none;
+    position: absolute;
+    height:fit-content;
+    z-index: 2100;
+    width:200px;
+    background-color:white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    text-align: left;
+}
+.dropcontentwzsoftcomde389b506564443d8c8c614bfc2b48b9 .selItemShow
+{
+  margin:1px;
+  padding: 5px;
+  cursor:pointer;
+  float:left;
+  height:fit-content;
+  min-width:160px;
+  width:100%;
+  font-size: 0.8em;
+  height:25px;
+  background-color: rgb(234, 237, 241);
+}
+.dropcontentwzsoftcomde389b506564443d8c8c614bfc2b48b9 .selItemShow:hover
+{
+  background-color: rgb(104, 187, 241);
+}
+.divSelItemswzsoftcomde389b506564443d8c8c614bfc2b48b9
+{
+  display:none;
+}
+.divSelItemswzsoftcomde389b506564443d8c8c614bfc2b48b9 .selItemDiv
+{
+  padding:5px;
+  margin:3px;
+  float:left;
+  height:fit-content;
+  min-width:160px;
+  width:fit-content;
+  border-radius: 0.8em;
+  border: 1px solid rgb(102, 183, 238);
+}
+
+.divSelItemswzsoftcomde389b506564443d8c8c614bfc2b48b9 .action-content a:link
+{
+    margin-left: 5px;
+    width:24px;
+    display: block;
+    color: rgb(252, 249, 249);
+    background-color:rgb(30, 108, 211);
+    border-radius: 0.4em;
+    height:24px;
+    text-align: center;
+    padding-top:2px;
+    padding-right:1px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    float:left;
+}
+
+.divSelItemswzsoftcomde389b506564443d8c8c614bfc2b48b9 .action-content a:visited
+{
+    color: rgb(252, 249, 249);
+}
+
+.divSelItemswzsoftcomde389b506564443d8c8c614bfc2b48b9 .action-content a.active
+{
+    background-color:rgb(104, 187, 241);
+}
+.divSelItemswzsoftcomde389b506564443d8c8c614bfc2b48b9 .action-content a:hover:not(.active)
+{
+    background-color:rgb(104, 187, 241);
+}
+
+</style>
+<script>
+
+    window.viewcode="";
+    window.vDataFields=null;
+    let gpagePara = {};
+    getPageParas(gpagePara);
+
+    function getPageParas(savePara) 
+    {
+        let pagelocation = document.location.toString();
+        let paras = pagelocation.split("?");
+        if (paras.length > 1) {
+            paras = paras[1].split("&");
+            paras.forEach(item => {
+                item = item.split("=");
+                savePara[item[0]] = item[1];
+            })
+        }
+    }
+
+</script>
+
+</head>
+<body>
+<div class="main-wrapper">
+    <div class="header">
+        <div class="logDiv">
+            <img src="./../upload/logo.png" height="36px" onclick="showmenuleftpc()" />
+        </div>
+        <div class="logoutDiv">
+            <input type="button" class="btnLogout"  value="Logout" onclick="document.location.href='./../logout'" />
+        </div>
+    </div>   
+    <div class="menu-left" >
+        <ul class="menu-content" id="menu-content">
+            <li v-for="data in datas" >
+                    <a href="javascript:void(0)" v-show="data.PID==null&&((showpid['S'+data.MENUID])||(data.LOCATION==this.curLocation))"  @click="setMenuSession(data.MENUID,data.LOCATION)" class="active">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID==null&&((!showpid['S'+data.MENUID])&&(data.LOCATION!=this.curLocation))"  @click="setMenuSession(data.MENUID,data.LOCATION)" class="menu">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID!=null&&showpid['S'+data.PID]&&data.LOCATION==this.curLocation&&this.curLocation!=null" @click="setMenuSession(null,data.LOCATION)" class="activesub">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID!=null&&showpid['S'+data.PID]&&data.LOCATION!=this.curLocation" @click="setMenuSession(null,data.LOCATION)" class="menusub">{{data.NAME}}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="content" id="content">
+        <div class="content-title">
+            <span>Delegation Maintenance</span>
+        </div>
+        <div class="conParentform" id="conParentform" style="width: 100%;" name="Form" draggable="false">
+            
+            <div class="com-wrapper" draggable="false" style="position: relative; box-sizing: border-box; width: 100%; height: fit-content; float: left; background-position: left top;"><div class="comconfigDiv" draggable="false" style="box-sizing: border-box; padding: 0px; margin: 0px; width: 100%; height: 100%; display: block;"><div class="updWin-content-itemwzsoftcom7724a2596bf2433089bfa32f74f443bf" id="selectwzsoftcom7724a2596bf2433089bfa32f74f443bf">
+    <div class="left" style="width:100px" v-show="titleshow">Delegator:<span v-show="!this.isView"></span></div>
+    <div class="right">
+
+        <input type="text" style="width:500px" id="inpSelwzsoftcom7724a2596bf2433089bfa32f74f443bf" oninput="selItemSearchwzsoftcom7724a2596bf2433089bfa32f74f443bf(event)" placeholder="Enter name, email, or mobile" />
+        <div class="dropcontentwzsoftcom7724a2596bf2433089bfa32f74f443bf" id="divSelSearchswzsoftcom7724a2596bf2433089bfa32f74f443bf" ></div>
+        <div class="divSelItemswzsoftcom7724a2596bf2433089bfa32f74f443bf" id="divSelItemswzsoftcom7724a2596bf2433089bfa32f74f443bf" ></div>
+
+        <span style="color:red;display:none" id="valmsgwzsoftcom7724a2596bf2433089bfa32f74f443bf" v-show="!this.isView"></span>
+    </div>
+</div>
+
+        
+</div></div><div class="com-wrapper" draggable="false" style="position: relative; box-sizing: border-box; width: 90%; height: fit-content; float: left; background-position: left top;"><div class="comconfigDiv" draggable="false" style="box-sizing: border-box; padding: 0px; margin: 0px; width: 100%; height: 100%; display: block;"><div class="updWin-content-itemwzsoftcomde389b506564443d8c8c614bfc2b48b9" id="selectwzsoftcomde389b506564443d8c8c614bfc2b48b9">
+    <div class="left" style="width:100px"  v-show="titleshow">Delegatee:<span v-show="!this.isView"></span></div>
+    <div class="right">
+
+        <input type="text" style="width:500px" id="inpSelwzsoftcomde389b506564443d8c8c614bfc2b48b9" oninput="selItemSearchwzsoftcomde389b506564443d8c8c614bfc2b48b9(event)" placeholder="Enter name, email, or mobile" />
+        <div class="dropcontentwzsoftcomde389b506564443d8c8c614bfc2b48b9" id="divSelSearchswzsoftcomde389b506564443d8c8c614bfc2b48b9" ></div>
+        <div class="divSelItemswzsoftcomde389b506564443d8c8c614bfc2b48b9" id="divSelItemswzsoftcomde389b506564443d8c8c614bfc2b48b9" ></div>
+
+        <span style="color:red;display:none" id="valmsgwzsoftcomde389b506564443d8c8c614bfc2b48b9" v-show="!this.isView"></span>
+    </div>
+</div>
+
+        
+</div></div><div class="com-wrapper" draggable="false" style="display:none;position: relative; box-sizing: border-box; width: 90%; height: fit-content; float: left; background-position: left top;"><div class="comconfigDiv" draggable="false" style="box-sizing: border-box; padding: 0px; margin: 0px; width: 100%; height: 100%; display: block;">        <div class="updWin-content-itemwzsoftcom6a9785a910f440619b46cac13545aaf8" id="inputwzsoftcom6a9785a910f440619b46cac13545aaf8">
+            <div class="left"  v-show="titleshow">wfmId:<span v-show="!this.isView"></span></div>
+            <div class="right" v-show="!this.isView">
+                <input type="text" v-model="dataitem.wfmid"  onchange="onchangewzsoftcom6a9785a910f440619b46cac13545aaf8()" onblur="onblurwzsoftcom6a9785a910f440619b46cac13545aaf8()" />
+                <span style="color:red;display:none" id="valmsgwzsoftcom6a9785a910f440619b46cac13545aaf8"></span>
+            </div>
+            <div class="right" v-show="this.isView">
+                {{dataitem.wfmid}}
+            </div>
+        </div>
+</div></div><div class="com-wrapper" draggable="false" style="position: relative; box-sizing: border-box; width: 600px; height: fit-content; float: left; background-position: left top;"><div class="comconfigDiv" draggable="false" style="box-sizing: border-box; padding: 0px; margin: 0px; width: 100%; height: 100%; display: block;"><div class="form-action" id="form-actionwzsoftcom150cc968a94f4faf8b5f546e265d7d5f" >
+     <input type="button" class="btnCancle" value="Back" onclick="backForm()" />
+     <input type="button" class="btnBlue" value="Save" onclick="saveForm(false,'','')" />
+     <div class="form-action-info" id="form-action-info" style="display:none">
+        <div class="left" id="form-action-info-msg"></div>
+        <div class="right" ></div>
+    </div>
+ </div>
+</div></div></div>
+
+    </div> 
+    <div id="formVue" style="display:none"></div>
+</div> 
+    <div class="footer">
+        Copyright by WSoft
+    </div> 
+    <div id="coverWin" class="coverWin"></div>
+    <div id="modalWin" class="modalWin">
+        <div class="modalWinMsg"><span id="modalWinMsg"></span></div>
+        <div class="modalWinBtn">
+            <input type="button" class="btnOK"  value="OK" onclick="openWinOK()" />
+            <input type="button" class="btnCancle"  value="Cancel" onclick="closeWin()" />
+        </div>
+    </div>
+    <div class="codeVal" id="codeVal" style="display:none">
+        <iframe id="codeValiframe" frameborder="no" marginwidth="0" marginheight="0" src="./code_design.html" ></iframe>
+    </div>
+</div>
+
+<script>
+
+    function saveForm(blnsubmit,wfmid,flag)
+    {
+        var valmsgglobal="";
+        var valn=1;
+        window.setDataItem('psnid',window.getDataItemwzsoftcom7724a2596bf2433089bfa32f74f443bf('psnid'));window.setDataItem('psnidstxt',window.getDataItemwzsoftcom7724a2596bf2433089bfa32f74f443bf('psnidstxt'));window.setDataItem('psnidlist',window.getDataItemwzsoftcomde389b506564443d8c8c614bfc2b48b9('psnidlist'));window.setDataItem('psnidliststxt',window.getDataItemwzsoftcomde389b506564443d8c8c614bfc2b48b9('psnidliststxt'));window.setDataItem('wfmid',window.getDataItemwzsoftcom6a9785a910f440619b46cac13545aaf8('wfmid'));
+        if(!window.valDataItemwzsoftcom7724a2596bf2433089bfa32f74f443bf()){valn=-1};if(!window.valDataItemwzsoftcomde389b506564443d8c8c614bfc2b48b9()){valn=-1};if(!window.valDataItemwzsoftcom6a9785a910f440619b46cac13545aaf8()){valn=-1};
+        if((typeof(valmsgglobal) == "undefined"||valmsgglobal=="")&&valn==1)
+        {
+            window.saveDataItem(blnsubmit,wfmid,flag);
+        }
+    }
+
+    function getForm()
+    {
+        window.setDataItem('psnid',window.getDataItemwzsoftcom7724a2596bf2433089bfa32f74f443bf('psnid'));window.setDataItem('psnidstxt',window.getDataItemwzsoftcom7724a2596bf2433089bfa32f74f443bf('psnidstxt'));window.setDataItem('psnidlist',window.getDataItemwzsoftcomde389b506564443d8c8c614bfc2b48b9('psnidlist'));window.setDataItem('psnidliststxt',window.getDataItemwzsoftcomde389b506564443d8c8c614bfc2b48b9('psnidliststxt'));window.setDataItem('wfmid',window.getDataItemwzsoftcom6a9785a910f440619b46cac13545aaf8('wfmid'));
+    }
+    function initForm()
+    {
+        window.setDataItemwzsoftcom7724a2596bf2433089bfa32f74f443bf('psnid',window.getDataItem('psnid'));window.setDataItemwzsoftcom7724a2596bf2433089bfa32f74f443bf('psnidstxt',window.getDataItem('psnidstxt'));window.setDataItemwzsoftcomde389b506564443d8c8c614bfc2b48b9('psnidlist',window.getDataItem('psnidlist'));window.setDataItemwzsoftcomde389b506564443d8c8c614bfc2b48b9('psnidliststxt',window.getDataItem('psnidliststxt'));window.setDataItemwzsoftcom6a9785a910f440619b46cac13545aaf8('wfmid',window.getDataItem('wfmid'));window.setDataItemwzsoftcom150cc968a94f4faf8b5f546e265d7d5f('pdffile',window.getDataItem('pdffile'));
+    }
+    function initFormDatasJS()
+    {
+        
+    }
+    function closeSaveMsg() 
+    {
+        document.getElementById("form-action-info").style.display="none";
+    }
+    const FormVue = 
+    {
+        data() 
+        {
+            return {
+                viewcode:'wfm_entrust',
+                itemid:'',
+                dataitem:{},
+                pkey:"id",
+                isupd:true,
+                returnmsg:''
+            }
+        },
+        methods: 
+        {
+            getDataItem(k) 
+            {
+                k=k.toUpperCase();
+                return this.dataitem[k];
+            },
+            setDataItem(k,v)
+            {
+                k=k.toUpperCase();
+                this.dataitem[k]=v;
+            },
+            getDataItemFromDB() 
+            {
+                if(gpagePara['itemid'])
+                {
+                    this.itemid = gpagePara['itemid'];
+                }
+                else
+                {
+                    return;
+                }
+                let paras = {};
+                paras['viewCode']=this.viewcode;
+                paras['itemIDs']=this.itemid;
+                var that = this;
+                axios.post("./../api/dataget",paras).then(function(res){
+                that.dataitem=Object.values(Object.values(res.data)[0])[0];    
+                initForm();
+                }).catch(function (err) {
+                });
+            },
+            updDatas(blnsubmit,wfmid,flag) 
+            {
+                let paras = {};
+                paras['viewCode']=this.viewcode;
+                paras['itemIDs']=this.itemid;
+                for (let v in this.dataitem) 
+                {
+                    if(v!=this.pkey.toUpperCase())
+                    {
+                        paras['field_'+v] = this.dataitem[v];
+                    }
+                }
+                if(paras['field_PSNID']==""||paras['field_PSNIDLIST']=="")
+                {
+                    document.getElementById("form-action-info-msg").innerHTML="Both delegator and delegatee cannot be empty";
+                    document.getElementById("form-action-info").style.display="block";
+                    return;
+                }
+                var that = this;
+                axios.post("./../api/dataupd",paras).then(function(res)
+                {
+                    that.returnmsg=Object.values(Object.values(res.data)[0])[0];
+                    if(that.returnmsg!="")
+                    {
+                        document.getElementById("form-action-info-msg").innerHTML=that.returnmsg;
+                        document.getElementById("form-action-info").style.display="block";
+                    }
+                    else
+                    {
+                        document.getElementById("form-action-info-msg").innerHTML="Records saved!";
+                        document.getElementById("form-action-info").style.display="block"; 
+                    }
+                    setTimeout(closeSaveMsg,3000);
+                }).catch(function (err) {
+                });
+    
+            },
+            addDatas(blnsubmit,wfmid,flag) 
+            {
+                if(this.itemid!="")
+                {
+                    this.updDatas(blnsubmit,wfmid,flag);
+                    return;
+                }
+                let paras = {};
+                paras['viewCode']=this.viewcode;
+                paras['itemIDs']=this.itemid;
+                for (let v in this.dataitem) 
+                {
+                    paras['field_'+v] = this.dataitem[v];
+                }
+                paras['field_WFMID'] = gpagePara['wfmid'];
+                if(paras['field_PSNID']==""||paras['field_PSNIDLIST']=="")
+                {
+                    document.getElementById("form-action-info-msg").innerHTML="Both delegator and delegatee cannot be empty";
+                    document.getElementById("form-action-info").style.display="block";
+                    return;
+                }
+
+
+                var that = this;
+                axios.post("./../api/dataadd",paras).then(function(res){
+                    that.returnmsg=Object.values(Object.values(res.data)[0])[0];
+                    that.itemid=Object.values(Object.values(res.data)[0])[1];
+                    if(that.returnmsg!="")
+                    {
+                        document.getElementById("form-action-info-msg").innerHTML=that.returnmsg;
+                        document.getElementById("form-action-info").style.display="block";
+                    }
+                    else
+                    {
+                        document.getElementById("form-action-info-msg").innerHTML="Records saved!";
+                        document.getElementById("form-action-info").style.display="block"; 
+                    }
+                    setTimeout(closeSaveMsg,3000);
+                }).catch(function (err) {
+                });
+            }
+        },
+        mounted() 
+        {
+            this.getDataItemFromDB();
+            window.getDataItem = this.getDataItem;
+            window.setDataItem = this.setDataItem;
+            window.saveDataItem = this.addDatas;
+        }
+    }
+    
+    Vue.createApp(FormVue).mount('#formVue');
+
+function backForm()
+{
+
+    let wfmid = gpagePara['wfmid'];
+    let f = gpagePara['backlocation'];
+    document.location.href=f+"?wfmid="+wfmid;
+
+}
+
+const ComVuewzsoftcom6a9785a910f440619b46cac13545aaf8 = 
+{
+    data() 
+    {
+        return {
+            isView:false,
+            titleshow:true,
+            dataitem:{"wfmid":""}
+        }
+    },
+    methods: 
+    {
+        getDataItem(k) 
+        {
+            return this.dataitem[k];
+        },
+        setDataItem(k,v)
+        {
+            if(k=='s#display')
+            {
+                let p = document.getElementById("inputwzsoftcom6a9785a910f440619b46cac13545aaf8").parentElement.parentElement;
+                if(p&&v==true)
+                    p.style.display="block";
+                else
+                    p.style.display="none";
+            }
+            else
+                this.dataitem[k]=v;
+        },
+        valDataItem()
+        {
+            let n=0;
+            let msg="";
+            let str="";
+            if(this.dataitem.wfmid)
+                str = this.dataitem.wfmid;
+            str = str.toString().trim();
+            let fieldtypedb=1;
+            let valtype=0;
+            let fieldlen=100;
+            let fieldnoempty = false;
+
+            if(fieldnoempty&&str=="")
+            {
+                n=-1
+                msg = "WFM ID cannot be empty";
+            }
+            if(str!="")
+            {
+                if(str.length>fieldlen)
+                {
+                    n=-1;
+                    msg = "WFM ID length cannot exceed "+fieldlen;
+                }
+
+                if(fieldtypedb==2&&n!=-1)
+                {
+                    n= str.search(/^(\-)?\d+(\.\d+)?$/i);
+                    if(n==-1)
+                        msg = "Please enter a number";
+                }
+                else if(fieldtypedb==3&&n!=-1)
+                {
+                    n= str.search(/^(\-)?\d+$/i);
+                    if(n==-1)
+                        msg = "Please enter an integer";
+                }
+                
+                if(valtype==1&&n!=-1)
+                {
+                    regx = "a";
+                    if(regx!="a")
+                    {
+                        n= str.search(/a/i);
+                        if(n==-1)
+                            msg = "Please enter correct WFM ID format";
+                    }
+                }
+            }
+
+            if(n==-1)
+            {
+                document.getElementById("valmsgwzsoftcom6a9785a910f440619b46cac13545aaf8").style.display="block";
+                document.getElementById("valmsgwzsoftcom6a9785a910f440619b46cac13545aaf8").innerHTML=msg;
+                return false;
+            }
+            else
+            {
+                document.getElementById("valmsgwzsoftcom6a9785a910f440619b46cac13545aaf8").style.display="none";
+                document.getElementById("valmsgwzsoftcom6a9785a910f440619b46cac13545aaf8").innerHTML="";
+            }
+            return true;
+
+        },
+    },
+    mounted() 
+    {
+        window.getDataItemwzsoftcom6a9785a910f440619b46cac13545aaf8 = this.getDataItem;
+        window.setDataItemwzsoftcom6a9785a910f440619b46cac13545aaf8 = this.setDataItem;
+        window.valDataItemwzsoftcom6a9785a910f440619b46cac13545aaf8 = this.valDataItem;
+    }
+}
+
+Vue.createApp(ComVuewzsoftcom6a9785a910f440619b46cac13545aaf8).mount('#inputwzsoftcom6a9785a910f440619b46cac13545aaf8');
+
+function onchangewzsoftcom6a9785a910f440619b46cac13545aaf8()
+{
+    window.valDataItemwzsoftcom6a9785a910f440619b46cac13545aaf8();
+    
+}
+
+function onblurwzsoftcom6a9785a910f440619b46cac13545aaf8()
+{
+    window.valDataItemwzsoftcom6a9785a910f440619b46cac13545aaf8();
+}
+const ComVuewzsoftcom150cc968a94f4faf8b5f546e265d7d5f = 
+{
+    data() 
+    {
+        return {
+            isView:false,
+            dataitem:{"pdffile":null,"showreject":false,"showpdf":true,"showsubmit":true}
+        }
+    },
+    methods: 
+    {
+        fileDownload(fileID)
+        {
+            var that=this;
+            axios({
+                url: './../api/downloadFile',
+                method: 'POST',
+                data:{"fileGuid":fileID},
+                responseType: 'blob', // important
+              }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', fileID + '.pdf');
+                document.body.appendChild(link);
+                link.click();
+              });
+        },
+        setDataItem(k,v)
+        {
+            this.dataitem[k]=v;
+        }
+    },
+    mounted() 
+    {
+        window.setDataItemwzsoftcom150cc968a94f4faf8b5f546e265d7d5f = this.setDataItem;
+    }
+}
+
+Vue.createApp(ComVuewzsoftcom150cc968a94f4faf8b5f546e265d7d5f).mount('#form-actionwzsoftcom150cc968a94f4faf8b5f546e265d7d5f');
+var selTypewzsoftcom7724a2596bf2433089bfa32f74f443bf="1";
+
+function selItemHidewzsoftcom7724a2596bf2433089bfa32f74f443bf()
+{
+    let dnode = document.getElementById("divSelSearchswzsoftcom7724a2596bf2433089bfa32f74f443bf");
+    dnode.style.display="none";
+}
+function selItemDelwzsoftcom7724a2596bf2433089bfa32f74f443bf(e)
+{
+    let p = e.srcElement.parentElement.parentElement.parentElement;
+    if(p.parentElement.className=="divSelItemswzsoftcom7724a2596bf2433089bfa32f74f443bf")
+    {
+        p.parentElement.removeChild(p);
+        document.getElementById("inpSelwzsoftcom7724a2596bf2433089bfa32f74f443bf").style.display="block";
+        selItemValueswzsoftcom7724a2596bf2433089bfa32f74f443bf();
+    }
+
+}
+function selItemDowzsoftcom7724a2596bf2433089bfa32f74f443bf(id,title,f)
+{
+    let d = document.createElement("div");
+    d.className="selItemDiv";
+
+    let s="";
+    s = s + "<span class=\"action-content\" style=\"border:none\"></span>";
+    s = s + "<input type='hidden' />";
+
+    if(f!="view")
+    {
+        s = s + "<span class=\"action-content\" style=\"float:right\" >";
+        s = s + "<a href='#' onclick=\"selItemDelwzsoftcom7724a2596bf2433089bfa32f74f443bf(event);return false\"><img width=\"18\"  src=\"./imgs/del.png\"></a></span>";
+    }
+    d.innerHTML=s;
+
+    d.childNodes[0].innerHTML=title;
+    d.childNodes[1].value=id;
+    document.getElementById("divSelItemswzsoftcom7724a2596bf2433089bfa32f74f443bf").appendChild(d);
+    document.getElementById("divSelItemswzsoftcom7724a2596bf2433089bfa32f74f443bf").style.display="block";
+    document.getElementById("divSelSearchswzsoftcom7724a2596bf2433089bfa32f74f443bf").style.display="none";
+
+    if(selTypewzsoftcom7724a2596bf2433089bfa32f74f443bf=="1")
+    {
+        document.getElementById("inpSelwzsoftcom7724a2596bf2433089bfa32f74f443bf").style.display="none";
+    }
+
+    selItemValueswzsoftcom7724a2596bf2433089bfa32f74f443bf();
+
+}
+function selItemValueswzsoftcom7724a2596bf2433089bfa32f74f443bf()
+{
+    let ids="";
+    let titles="";
+    let ds = document.getElementById("divSelItemswzsoftcom7724a2596bf2433089bfa32f74f443bf");
+    for (let dNode of ds.childNodes) 
+    {
+        if(dNode.className == "selItemDiv")
+        {
+            let id = dNode.childNodes[1].value;
+            let title = dNode.childNodes[0].innerHTML;
+            id = id.replaceAll(",","&#44;");
+            title = title.replaceAll(",","&#44;");
+            ids=ids+id+",";
+            titles=titles+title+",";
+        }
+    }
+
+    if(ids.indexOf(","))
+    {
+        ids = ids.substring(0,ids.length-1);
+        titles = titles.substring(0,titles.length-1);
+    }
+
+    window.setDataItemInwzsoftcom7724a2596bf2433089bfa32f74f443bf("psnid",ids);
+    window.setDataItemInwzsoftcom7724a2596bf2433089bfa32f74f443bf("psnidstxt",titles);
+
+    onchangewzsoftcom7724a2596bf2433089bfa32f74f443bf();
+
+}
+function selItemSearchwzsoftcom7724a2596bf2433089bfa32f74f443bf(e)
+{
+    let inp = e.target.value;
+    //alert(inp);
+    if(inp.length>=2)
+    {
+        let paras = {};
+        paras['viewCode']="psn";
+        paras['curPage']=1;
+        paras['pageItmes']=100;
+        paras['topItems']=3;
+        paras['filter_searchkey_like']=inp;
+
+        axios.post("./../api/datalist",paras).then(function(res){
+        redatas=Object.values(res.data)[0];
+
+        let str="";
+        for (let item of redatas) 
+        {
+            let itemID = "";
+            let itemTitle = "";
+
+            itemID = item["PSNID"]+"";
+            itemTitle = item["NAME"]+"("+item["EMAIL"]+")";
+
+            itemID=itemID.replaceAll("'","\\'");
+            itemTitle=itemTitle.replaceAll("'","\\'");
+            itemTitle=itemTitle.replaceAll('"','&quot;');
+
+            str = str + "<div class=\"selItemShow\" onclick=\"selItemDowzsoftcom7724a2596bf2433089bfa32f74f443bf('"+ itemID +"','"+ itemTitle +"','')\" ><span style=\"border:none\">"+ itemTitle +"</span>";
+            str = str + "</div>";
+        }
+        let dnode = document.getElementById("divSelSearchswzsoftcom7724a2596bf2433089bfa32f74f443bf");
+        dnode.innerHTML=str;
+        dnode.style.display="block";
+
+        }).catch(function (err) {
+        });
+    }
+    else
+        selItemHidewzsoftcom7724a2596bf2433089bfa32f74f443bf();
+}
+
+const ComConfigVuewzsoftcom7724a2596bf2433089bfa32f74f443bf = 
+{
+    data() 
+    {
+        return {
+            isView:false,
+            titleshow:true,
+            viewdatas:null,
+            dataitem:{"psnid":""},
+            curpage:1
+        }
+    },
+    methods: 
+    {
+        getDataItem(k) 
+        {
+            if(k=="seltext")
+            {
+                return this.dataitem['psnidstxt'];
+            }
+            return this.dataitem[k];
+        },
+        setDataItem(k,v)
+        {
+            if(k=='s#display')
+            {
+                let p = document.getElementById("selectwzsoftcom7724a2596bf2433089bfa32f74f443bf").parentElement.parentElement;
+                if(p&&v==true)
+                    p.style.display="block";
+                else
+                    p.style.display="none";
+            }
+            else
+            {
+                if(k=="seltext")
+                {
+                    this.dataitem['psnidstxt']=v;
+                }
+                else
+                    this.dataitem[k]=v;
+
+                document.getElementById("divSelItemswzsoftcom7724a2596bf2433089bfa32f74f443bf").innerHTML="";
+
+                if(this.dataitem['psnid']&&this.dataitem['psnid']!=""&&this.dataitem['psnidstxt'])
+                {
+                    let ids=this.dataitem['psnid'];
+                    let titles=this.dataitem['psnidstxt'];
+                    let arrids = ids.split(",");
+                    let arrtitles = titles.split(",");
+                    for(var i=0;i<arrids.length;i++)
+                    {
+                        if(this.isView)
+                            selItemDowzsoftcom7724a2596bf2433089bfa32f74f443bf(arrids[i],arrtitles[i],'view');
+                        else
+                            selItemDowzsoftcom7724a2596bf2433089bfa32f74f443bf(arrids[i],arrtitles[i],'');
+                    }
+                    if(selTypewzsoftcom7724a2596bf2433089bfa32f74f443bf=="1")
+                    {
+                        document.getElementById("inpSelwzsoftcom7724a2596bf2433089bfa32f74f443bf").style.display="none";
+                    }
+                }
+
+            }
+            
+        },
+        setDataItemIn(k,v)
+        {
+            this.dataitem[k]=v;
+        },
+        valDataItem()
+        {
+            let n=0;
+            let msg="";
+            let str="";
+            if(this.dataitem.psnid)
+                str = this.dataitem.psnid;
+            str = str.toString().trim();
+            let fieldnoempty = false;
+            if(fieldnoempty&&str=="")
+            {
+                n=-1
+                msg = "Delegator cannot be empty";
+            }
+            if(n==-1)
+            {
+                document.getElementById("valmsgwzsoftcom7724a2596bf2433089bfa32f74f443bf").style.display="block";
+                document.getElementById("valmsgwzsoftcom7724a2596bf2433089bfa32f74f443bf").innerHTML=msg;
+                return false;
+            }
+            else
+            {
+                document.getElementById("valmsgwzsoftcom7724a2596bf2433089bfa32f74f443bf").style.display="none";
+                document.getElementById("valmsgwzsoftcom7724a2596bf2433089bfa32f74f443bf").innerHTML="";
+            }
+            return true;
+
+        }
+    },
+    mounted() 
+    {
+        this.setDataItem('s#display',true);
+        window.getDataItemwzsoftcom7724a2596bf2433089bfa32f74f443bf = this.getDataItem;
+        window.setDataItemwzsoftcom7724a2596bf2433089bfa32f74f443bf = this.setDataItem;
+        window.setDataItemInwzsoftcom7724a2596bf2433089bfa32f74f443bf = this.setDataItemIn;
+        window.valDataItemwzsoftcom7724a2596bf2433089bfa32f74f443bf = this.valDataItem;
+    }
+}
+
+Vue.createApp(ComConfigVuewzsoftcom7724a2596bf2433089bfa32f74f443bf).mount('#selectwzsoftcom7724a2596bf2433089bfa32f74f443bf');
+
+function onchangewzsoftcom7724a2596bf2433089bfa32f74f443bf()
+{
+    window.valDataItemwzsoftcom7724a2596bf2433089bfa32f74f443bf();
+    
+}
+var selTypewzsoftcomde389b506564443d8c8c614bfc2b48b9="2";
+
+function selItemHidewzsoftcomde389b506564443d8c8c614bfc2b48b9()
+{
+    let dnode = document.getElementById("divSelSearchswzsoftcomde389b506564443d8c8c614bfc2b48b9");
+    dnode.style.display="none";
+}
+function selItemDelwzsoftcomde389b506564443d8c8c614bfc2b48b9(e)
+{
+    let p = e.srcElement.parentElement.parentElement.parentElement;
+    if(p.parentElement.className=="divSelItemswzsoftcomde389b506564443d8c8c614bfc2b48b9")
+    {
+        p.parentElement.removeChild(p);
+        document.getElementById("inpSelwzsoftcomde389b506564443d8c8c614bfc2b48b9").style.display="block";
+        selItemValueswzsoftcomde389b506564443d8c8c614bfc2b48b9();
+    }
+
+}
+function selItemDowzsoftcomde389b506564443d8c8c614bfc2b48b9(id,title,f)
+{
+    let d = document.createElement("div");
+    d.className="selItemDiv";
+
+    let s="";
+    s = s + "<span class=\"action-content\" style=\"border:none\"></span>";
+    s = s + "<input type='hidden' />";
+
+    if(f!="view")
+    {
+        s = s + "<span class=\"action-content\" style=\"float:right\" >";
+        s = s + "<a href='#' onclick=\"selItemDelwzsoftcomde389b506564443d8c8c614bfc2b48b9(event);return false\"><img width=\"18\"  src=\"./imgs/del.png\"></a></span>";
+    }
+    d.innerHTML=s;
+
+    d.childNodes[0].innerHTML=title;
+    d.childNodes[1].value=id;
+    document.getElementById("divSelItemswzsoftcomde389b506564443d8c8c614bfc2b48b9").appendChild(d);
+    document.getElementById("divSelItemswzsoftcomde389b506564443d8c8c614bfc2b48b9").style.display="block";
+    document.getElementById("divSelSearchswzsoftcomde389b506564443d8c8c614bfc2b48b9").style.display="none";
+
+    if(selTypewzsoftcomde389b506564443d8c8c614bfc2b48b9=="1")
+    {
+        document.getElementById("inpSelwzsoftcomde389b506564443d8c8c614bfc2b48b9").style.display="none";
+    }
+
+    selItemValueswzsoftcomde389b506564443d8c8c614bfc2b48b9();
+
+}
+function selItemValueswzsoftcomde389b506564443d8c8c614bfc2b48b9()
+{
+    let ids="";
+    let titles="";
+    let ds = document.getElementById("divSelItemswzsoftcomde389b506564443d8c8c614bfc2b48b9");
+    for (let dNode of ds.childNodes) 
+    {
+        if(dNode.className == "selItemDiv")
+        {
+            let id = dNode.childNodes[1].value;
+            let title = dNode.childNodes[0].innerHTML;
+            id = id.replaceAll(",","&#44;");
+            title = title.replaceAll(",","&#44;");
+            ids=ids+id+",";
+            titles=titles+title+",";
+        }
+    }
+
+    if(ids.indexOf(","))
+    {
+        ids = ids.substring(0,ids.length-1);
+        titles = titles.substring(0,titles.length-1);
+    }
+
+    window.setDataItemInwzsoftcomde389b506564443d8c8c614bfc2b48b9("psnidlist",ids);
+    window.setDataItemInwzsoftcomde389b506564443d8c8c614bfc2b48b9("psnidliststxt",titles);
+
+    onchangewzsoftcomde389b506564443d8c8c614bfc2b48b9();
+
+}
+function selItemSearchwzsoftcomde389b506564443d8c8c614bfc2b48b9(e)
+{
+    let inp = e.target.value;
+    //alert(inp);
+    if(inp.length>=2)
+    {
+        let paras = {};
+        paras['viewCode']="psn";
+        paras['curPage']=1;
+        paras['pageItmes']=100;
+        paras['topItems']=3;
+        paras['filter_searchkey_like']=inp;
+
+        axios.post("./../api/datalist",paras).then(function(res){
+        redatas=Object.values(res.data)[0];
+
+        let str="";
+        for (let item of redatas) 
+        {
+            let itemID = "";
+            let itemTitle = "";
+
+            itemID = item["PSNID"]+"";
+            itemTitle = item["NAME"]+"("+item["EMAIL"]+")";
+
+            itemID=itemID.replaceAll("'","\\'");
+            itemTitle=itemTitle.replaceAll("'","\\'");
+            itemTitle=itemTitle.replaceAll('"','&quot;');
+
+            str = str + "<div class=\"selItemShow\" onclick=\"selItemDowzsoftcomde389b506564443d8c8c614bfc2b48b9('"+ itemID +"','"+ itemTitle +"','')\" ><span style=\"border:none\">"+ itemTitle +"</span>";
+            str = str + "</div>";
+        }
+        let dnode = document.getElementById("divSelSearchswzsoftcomde389b506564443d8c8c614bfc2b48b9");
+        dnode.innerHTML=str;
+        dnode.style.display="block";
+
+        }).catch(function (err) {
+        });
+    }
+    else
+        selItemHidewzsoftcomde389b506564443d8c8c614bfc2b48b9();
+}
+
+const ComConfigVuewzsoftcomde389b506564443d8c8c614bfc2b48b9 = 
+{
+    data() 
+    {
+        return {
+            isView:false,
+            titleshow:true,
+            viewdatas:null,
+            dataitem:{"psnidlist":""},
+            curpage:1
+        }
+    },
+    methods: 
+    {
+        getDataItem(k) 
+        {
+            if(k=="seltext")
+            {
+                return this.dataitem['psnidliststxt'];
+            }
+            return this.dataitem[k];
+        },
+        setDataItem(k,v)
+        {
+            if(k=='s#display')
+            {
+                let p = document.getElementById("selectwzsoftcomde389b506564443d8c8c614bfc2b48b9").parentElement.parentElement;
+                if(p&&v==true)
+                    p.style.display="block";
+                else
+                    p.style.display="none";
+            }
+            else
+            {
+                if(k=="seltext")
+                {
+                    this.dataitem['psnidliststxt']=v;
+                }
+                else
+                    this.dataitem[k]=v;
+
+                document.getElementById("divSelItemswzsoftcomde389b506564443d8c8c614bfc2b48b9").innerHTML="";
+
+                if(this.dataitem['psnidlist']&&this.dataitem['psnidlist']!=""&&this.dataitem['psnidliststxt'])
+                {
+                    let ids=this.dataitem['psnidlist'];
+                    let titles=this.dataitem['psnidliststxt'];
+                    let arrids = ids.split(",");
+                    let arrtitles = titles.split(",");
+                    for(var i=0;i<arrids.length;i++)
+                    {
+                        if(this.isView)
+                            selItemDowzsoftcomde389b506564443d8c8c614bfc2b48b9(arrids[i],arrtitles[i],'view');
+                        else
+                            selItemDowzsoftcomde389b506564443d8c8c614bfc2b48b9(arrids[i],arrtitles[i],'');
+                    }
+                    if(selTypewzsoftcomde389b506564443d8c8c614bfc2b48b9=="1")
+                    {
+                        document.getElementById("inpSelwzsoftcomde389b506564443d8c8c614bfc2b48b9").style.display="none";
+                    }
+                }
+
+            }
+            
+        },
+        setDataItemIn(k,v)
+        {
+            this.dataitem[k]=v;
+        },
+        valDataItem()
+        {
+            let n=0;
+            let msg="";
+            let str="";
+            if(this.dataitem.psnidlist)
+                str = this.dataitem.psnidlist;
+            str = str.toString().trim();
+            let fieldnoempty = false;
+            if(fieldnoempty&&str=="")
+            {
+                n=-1
+                msg = "Delegatee cannot be empty";
+            }
+            if(n==-1)
+            {
+                document.getElementById("valmsgwzsoftcomde389b506564443d8c8c614bfc2b48b9").style.display="block";
+                document.getElementById("valmsgwzsoftcomde389b506564443d8c8c614bfc2b48b9").innerHTML=msg;
+                return false;
+            }
+            else
+            {
+                document.getElementById("valmsgwzsoftcomde389b506564443d8c8c614bfc2b48b9").style.display="none";
+                document.getElementById("valmsgwzsoftcomde389b506564443d8c8c614bfc2b48b9").innerHTML="";
+            }
+            return true;
+
+        }
+    },
+    mounted() 
+    {
+        window.getDataItemwzsoftcomde389b506564443d8c8c614bfc2b48b9 = this.getDataItem;
+        window.setDataItemwzsoftcomde389b506564443d8c8c614bfc2b48b9 = this.setDataItem;
+        window.setDataItemInwzsoftcomde389b506564443d8c8c614bfc2b48b9 = this.setDataItemIn;
+        window.valDataItemwzsoftcomde389b506564443d8c8c614bfc2b48b9 = this.valDataItem;
+    }
+}
+
+Vue.createApp(ComConfigVuewzsoftcomde389b506564443d8c8c614bfc2b48b9).mount('#selectwzsoftcomde389b506564443d8c8c614bfc2b48b9');
+
+function onchangewzsoftcomde389b506564443d8c8c614bfc2b48b9()
+{
+    window.valDataItemwzsoftcomde389b506564443d8c8c614bfc2b48b9();
+    
+}
+
+
+</script>
+<script src="./js/menu.js"></script>
+</body>
+</html>

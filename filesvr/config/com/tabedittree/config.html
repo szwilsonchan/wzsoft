@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css?5465" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+<script src="selColor.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content-item" >
+        <div class="left">Title</div>
+        <div class="right"><input type="text" v-model="dataitem.config.fieldtitle" /></div>
+    </div>
+    <div class="updWin-content-item" >
+        <div class="left">Style</div>
+        <div class="right" style="line-height: 45px;">
+            Background Color: <input type="text" v-model="dataitem.config.conbg"  style="width:20%" id="color-picker-conbg" />
+            Border Radius: <input type="text" v-model="dataitem.config.conradius" style="width:10%" />
+        </div>
+    </div>
+    <div class="updWin-content-item" >
+        <div class="left">Template</div>
+        <div class="right" style="line-height: 40px;">
+            <input type="radio" name="radiostype" value="0" v-model="dataitem.temptype" ><label>Default</label>
+            <input type="radio" name="radiostype" value="1" v-model="dataitem.temptype" ><label>Custom</label>
+            <textarea v-show="dataitem.temptype=='1'" v-model="dataitem.tempcontent"  style="width:90%;height:300px"></textarea>
+        </div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Data</div>
+            <div class="right">
+                <select  v-model="dataitem.config.viewcode" @change="selDataItem">
+                    <option></option>
+                    <option v-for="v in viewdatas"  name="viewcode" :value="v['TABLENAME']" >{{v['NAME']}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Field</div>
+            <div class="right">
+                <input type="radio" name="radios" value="1" v-model="dataitem.config.seltype" ><label>Select</label>
+                <input type="radio" name="radios" value="2" v-model="dataitem.config.seltype" ><label>Input</label>
+                <div v-show="dataitem.config.seltype=='1'"> 
+                    Display：<select  style="width:15%" v-model="dataitem.config.big_showfield" >
+                        <option></option>
+                        <option v-for="v in datafields"  name="viewcode" :value="v['FIELD']" >{{v['FIELD_TITLE']}}</option>
+                    </select>
+                    Sort：<select  style="width:15%" v-model="dataitem.config.orderone" >
+                        <option></option>
+                        <option v-for="v in datafields"  name="viewcode" :value="v['FIELD']" >{{v['FIELD_TITLE']}}</option>
+                    </select>&nbsp;
+                    <select  style="width:10%" v-model="dataitem.config.ordertwo" >
+                        <option value="asc">Asc</option>
+                        <option value="desc">Desc</option>
+                    </select>
+                </div>
+                <div v-show="dataitem.config.seltype=='2'"> 
+                    Display：<input type="text" style="width:20%" v-model="dataitem.config.big_showfield" >
+                    Sort：<input type="text" style="width:20%" v-model="dataitem.config.orderfield" placeholder="e.g.:  name_asc">
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Display</div>
+            <div class="right" style="line-height: 40px;">
+                Page：<input type="checkbox" v-model="dataitem.config.formshow" style="width:30px" />
+                +NewButton：<input type="checkbox" checked="true" v-model="dataitem.config.showaddbtn" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Event</div>
+            <div class="right">
+                <span>On Value Change: </span>
+                <input type="button" class="btnOK"  style="width:90px" value="Design Code" onclick="parent.openCodeValWin('onchange');" />&nbsp;&nbsp;
+                <span>On Data Load: </span>
+                <input type="button" class="btnOK"  style="width:90px" value="Design Code" onclick="parent.openCodeValWin('onload');" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+window.gDatalist=[];
+
+function closeAdd(e)
+{
+    let p = e.target;
+    p.parentElement.style.display="none"
+}
+
+function checkVarName(str)
+{
+    if(str.indexOf("'")>=0)
+        return false;
+    if(str.indexOf('"')>=0)
+        return false;
+    return true;
+}
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            viewdatas:null,
+            datafields:null,
+            showitems:[{"name":"Display","code":"block"},{"name":"Hidden","code":"none"}],
+            dataitem:{"comid":"17","comname":"Tree Data List Edit","comtitle":"","temptype":"0","tempcontent":"","code":{"onchange":{},"onload":{}},"attrset":{"refresh":"s#refresh","Display":"s#display"},"config":{"conbg":"#fff","conradius":"2em","viewcode":"","seltype":"1","formshow":true,"showaddbtn":true,"fieldtitle":"","orderone":"","ordertwo":"asc","orderfield":"","big_showfield":""}}
+        }
+    },
+    methods: 
+    {
+        selDataItem() 
+        {
+            let paras = {};
+            paras['viewCode']="data_fields";
+            paras['curPage']=1;
+            paras['pageItmes']=100;
+            paras['filter_tablename_equal']=this.dataitem.config.viewcode;
+            var that = this;
+            axios.post("./../../../../api/datalist",paras).then(function(res){
+            that.datafields=Object.values(res.data)[0];    
+            }).catch(function (err) {
+            });
+        },
+        getDataItem() 
+        {
+            this.dataitem.comtitle = this.dataitem.config.fieldtitle;
+            if(this.dataitem.config.seltype=="1")
+            {
+                if(this.dataitem.config.orderone!="")
+                    this.dataitem.config.orderfield = this.dataitem.config.orderone + "_" + this.dataitem.config.ordertwo;
+                else
+                    this.dataitem.config.orderfield="";
+            }
+
+            let viewhtml = "";
+            let isrc = "";
+            if(parent.gPageName!="temp_formin")
+            {
+                isrc = "./../config/com/tabedittree/view.html";
+            }
+            else
+            {
+                isrc = "./../../../config/com/tabedittree/view.html"; 
+            }
+
+            viewhtml = viewhtml + "<div style=\"width:100%;padding:10px;box-sizing: border-box;background-color:"+ this.dataitem.config.conbg +";border-radius: "+ this.dataitem.config.conradius +";\" >";
+            viewhtml = viewhtml + "<div style=\"color: black;font-size:1em;font-weight: bold;width:100%;box-sizing: border-box;height:30px;line-height: 30px;margin-bottom: 10px;text-align: left;\">";
+            viewhtml = viewhtml + "<span>"+ this.dataitem.config.fieldtitle +"</span>";
+            viewhtml = viewhtml + "</div>";
+            viewhtml = viewhtml + "<div>";
+            viewhtml = viewhtml + "<iframe style='border:none;width:100%' marginwidth=\"0\" marginheight=\"0\"  src='"+ isrc +"'></iframe>";
+            viewhtml = viewhtml + "</div>";
+            viewhtml = viewhtml + "</div>";
+
+            this.dataitem.config.viewhtml=viewhtml;
+
+            return this.dataitem;
+        },
+        getDataItemByKey(k) 
+        {
+            return this.dataitem.config[k];
+        },
+        setDataItemByKey(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+            this.selDataItem();
+        },
+        getDatas() 
+        {
+            let paras = {};
+            paras['viewCode']="data";
+            paras['curPage']=1;
+            paras['pageItmes']=100;
+            paras['filter_open_equal']="1";
+            var that = this;
+            axios.post("./../../../../api/datalist",paras).then(function(res){
+            that.viewdatas=Object.values(res.data)[0];
+            window.gDatalist=that.viewdatas;
+            }).catch(function (err) {
+            });
+        },
+        setFormValue(fValue,codename) 
+        {
+            let c = this.dataitem['code'];
+            c[codename] = fValue;
+        },
+        getFormValue(codename) 
+        {
+            let c = this.dataitem['code'];
+            return c[codename];
+        },
+        setDataItemByK(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        }
+    },
+    mounted() 
+    {
+        this.getDatas();
+        window.getDataItem = this.getDataItem;
+        window.getDataItemByKey = this.getDataItemByKey;
+        window.setDataItemByKey = this.setDataItemByKey;
+        window.setDataItem = this.setDataItem;
+        window.setFormValue = this.setFormValue;
+        window.getFormValue = this.getFormValue;
+        window.setDataItemByK = this.setDataItemByK;
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+Colorpicker.create({
+el: "color-picker-conbg", 
+color: "", 
+change: function (elem, hex) {
+    elem.style.borderColor = hex;
+    window.setDataItemByK('conbg',hex);
+}
+});
+
+</script>
+
+</body>
+</html>

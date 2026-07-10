@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+<script src="selColor.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Title</div>
+            <div class="right"><input type="text" v-model="dataitem.config.fieldtitle" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Button Style</div>
+            <div class="right" style="line-height: 45px;">
+                Button Background: <input type="text" v-model="dataitem.config.btnbg"  style="width:20%" id="color-picker-btnbg" />
+                Hover: <input type="text" v-model="dataitem.config.btnbghover"  style="width:20%" id="color-picker-btnbghover" />
+                <br>
+                Button Width: <input type="text" v-model="dataitem.config.btnwidth" style="width:20%" />
+                Button Height: <input type="text" v-model="dataitem.config.btnheight" style="width:20%" />
+                Button Padding: <input type="text" v-model="dataitem.config.btnpadding" style="width:20%" />
+                <br>
+                Border Width: <input type="text" v-model="dataitem.config.btnborder" style="width:8%" />
+                Border Style: <input type="text" v-model="dataitem.config.btnborderstyle" style="width:10%" />
+                Border Radius: <input type="text" v-model="dataitem.config.btnradius" style="width:10%" />
+                Border Color: <input type="text" v-model="dataitem.config.btnbordercolor" id="color-picker-bordercolor" style="width:15%" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Align</div>
+            <div class="right">
+
+                <input type="radio" name="radioalignname" value="left" v-model="dataitem.config.namealign" ><label>Left</label>
+                <input type="radio" name="radioalignname" value="center" v-model="dataitem.config.namealign" ><label>Center</label>
+                <input type="radio" name="radioalignname" value="right" v-model="dataitem.config.namealign" ><label>Right</label>
+
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Button Background Image</div>
+            <div class="right">
+                Image: <input type="text"  style="width:50%" v-model="dataitem.config.btnbgurl" value="" />
+                <input class="btnAddVar" type="button"  onclick="varSelShowFile(event)" value="+Upload Image" >
+                <div class="selDiv" id="divFile" style="display:none;line-height: 40px;" >
+                    <div id="fileUpd" >
+                        <label class="fileContainer">Select file to upload：<input id="bgfile" ref="clearFile" type="file" onchange="fileUpload();return false"></label>
+                    </div>
+                    <div id="fileUpded" style="display: none;">
+                        <a id="fileHref" href="javascript:void(0)" onclick="fileDownload();return false"  style="text-decoration-line: none;"></a>&nbsp;&nbsp;
+                        <a href="javascript:void(0)" onclick="fileDelete();return false" >Delete</a>
+                    </div>
+                    <input class="btnAddVar"  type="button" value="OK" onclick="imgAdd(event)" />
+                    <input class="btnCancleVar"  type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div><Br>
+                Repeat：<select v-model="dataitem.config.btnbgrepeat" value="relative" style="width:15%">
+                    <option></option>
+                    <option>repeat</option>
+                    <option>repeat-x</option>
+                    <option>repeat-y</option>
+                    <option>no-repeat</option>
+                    <option>inherit</option>
+                </select>
+                Position：<input type="text" v-model="dataitem.config.btnbgpos" style="width:25%" value="left top"  />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Text Font</div>
+            <div class="right" style="line-height: 45px;">Size: <input type="text" v-model="dataitem.config.fontsize" style="width:20%" />
+                Color: <input type="text" v-model="dataitem.config.fontcolor"  style="width:20%" id="color-picker" />
+                <br>
+                Font: <input type="text" v-model="dataitem.config.fontfamily" style="width:20%" />
+                Line Height: <input type="text" v-model="dataitem.config.lineheight" style="width:20%" />
+                <br>
+                Weight: <select v-model="dataitem.config.fontweight" style="width:30%">
+                    <option></option>
+                    <option>normal</option>
+                    <option>bold</option>
+                </select> 
+                Style: <select v-model="dataitem.config.fontstyle" style="width:30%">
+                    <option></option>
+                    <option>normal</option>
+                    <option>italic</option>
+                    <option>oblique</option>
+                </select>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">DisplayCondition</div>
+            <div class="right"><input type="text" v-model="dataitem.config.isview" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Event Handlers</div>
+            <div class="right">
+                <span>On Click: </span>
+                <input type="button" class="btnOK"  value="Design Code" onclick="parent.openCodeValWin('listcodeonclick');" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+window.bgfileContent={};
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            dataitem:{
+                "comid":"7002",
+                "comname":"Button",
+                "comtitle":"",
+                "code":{"listcodeonclick":{}},
+                "config":{"namealign":"left","isview":"1==1","lineheight":"40px","titlewidth":"15%","namewidth":"85%","fieldtitle":"","formshow":true,"fontsize":"","fontsize":"","fontfamily":"","fontcolor":"","fontweight":"","fontstyle":"","btnbg":"","btnbghover":"","btnwidth":"","btnheight":"","btnradius":"","lineheight":"","btnpadding":"","btnborder":"","btnborderstyle":"","btnbordercolor":"","btnbgurl":"","btnbgrepeat":"no-repeat","btnbgpos":"left top","btnbgposx":"","btnbgposy":""},
+                "attrset":{"Display":"s#display"},
+                "attrtitle":{},
+                "attrsubmit":{"value":""}
+            }
+        }
+    },
+    methods: 
+    {
+        getDataItem() 
+        {
+            this.dataitem.comtitle=this.dataitem.config.fieldtitle;
+            if(this.dataitem.config.btnbgrepeat=="no-repeat"&&this.dataitem.config.btnbgpos=="")
+            {
+                this.dataitem.config.btnbgposx="center";
+                this.dataitem.config.btnbgposy="center";
+            }
+            else
+            {
+                this.dataitem.config.btnbgposx="";
+                this.dataitem.config.btnbgposy="";
+            }
+
+            let bgurl = this.dataitem.config.btnbgurl;
+            bgurl = bgurl.replace("url(","url(./../../.");
+
+            let viewhtml = "";
+            viewhtml = viewhtml + "<div style=\"width:100%;float:left;margin-bottom:5px;text-align:" + this.dataitem.config.namealign + "\">";
+            viewhtml = viewhtml + "<button  style=\"background-image:"+ bgurl +";background-position:"+ this.dataitem.config.btnbgpos+";background-position-x:"+ this.dataitem.config.btnbgposx+";background-position-y:"+ this.dataitem.config.btnbgposy+";background-repeat:"+ this.dataitem.config.btnbgrepeat+";border-style: none;padding: "+ this.dataitem.config.btnpadding+ ";border-radius: "+ this.dataitem.config.btnradius+ ";border-color: "+ this.dataitem.config.btnbordercolor+ ";border-style: "+ this.dataitem.config.btnborderstyle+ ";border-width: "+ this.dataitem.config.btnborder+ ";background-color: "+ this.dataitem.config.btnbg+ ";width:"+ this.dataitem.config.btnwidth+ ";height:"+ this.dataitem.config.btnheight+ ";cursor: pointer;outline:none;box-sizing: border-box;line-height:"+ this.dataitem.config.lineheight+ "; font-size:"+ this.dataitem.config.fontsize+ ";color:"+ this.dataitem.config.fontcolor+ ";font-family:"+ this.dataitem.config.fontfamily+ ";font-weight:"+ this.dataitem.config.fontweight+ ";font-style:"+ this.dataitem.config.fontstyle + ";\">"+ this.dataitem.config.fieldtitle +"</button>";
+            viewhtml = viewhtml + "</div>";
+
+            this.dataitem.config.viewhtml=viewhtml;
+            
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+            if(!this.dataitem.code.listcodeonclick)
+            {
+                this.dataitem.code={"listcodeonclick":{}};
+            }
+
+            document.getElementById("color-picker").style.borderColor = this.dataitem.config['fontcolor'];
+            document.getElementById("color-picker-bordercolor").style.borderColor = this.dataitem.config['btnbordercolor'];
+            document.getElementById("color-picker-btnbg").style.borderColor = this.dataitem.config['btnbg'];
+            document.getElementById("color-picker-btnbghover").style.borderColor = this.dataitem.config['btnbghover'];
+        },
+        setFormValue(fValue,codename) 
+        {
+            let c = this.dataitem['code'];
+            c[codename] = fValue;
+        },
+        getFormValue(codename) 
+        {
+            let c = this.dataitem['code'];
+            return c[codename];
+        },
+        setDataItemByK(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        }
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.setDataItem = this.setDataItem;
+        window.setFormValue = this.setFormValue;
+        window.getFormValue = this.getFormValue;
+        window.setDataItemByK = this.setDataItemByK;
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+function varSelShowFile(e)
+{
+    let p = e.target.parentElement;
+    for (let dNode of p.childNodes) 
+    {
+        if(dNode.className=="selDiv")
+        {
+            dNode.style.display="block";
+            break;
+        }
+    }
+}
+
+function  fileUpload()
+{
+    let file = document.getElementById("bgfile").files[0];
+    let fv = document.getElementById("bgfile").value;
+    fv = fv.substring(fv.indexOf(".")+1);
+    let params = new FormData();
+    params.append('file', file)
+    axios({
+        url: "./../../../../api/uploadFile",
+        method: "post",
+        data: params,
+        headers: { 'Content-Type': 'multipart/form-data' }
+    }).then(function(res)
+    {
+        window.bgfileContent=res.data;
+        document.getElementById("fileUpded").style.display="block";
+        document.getElementById("fileUpd").style.display="none";
+        document.getElementById("fileHref").innerText=window.bgfileContent['fileName'];
+
+        }).catch(function (err) {
+        });
+}
+function fileDelete()
+{
+    window.bgfileContent={};
+    document.getElementById("fileUpded").style.display="none";
+    document.getElementById("fileUpd").style.display="block";
+}
+
+function fileDownload()
+{
+    axios({
+        url: './../../../../api/downloadFile',
+        method: 'POST',
+        data:{"fileGuid":window.bgfileContent['fileGUID']},
+        responseType: 'blob', // important
+    }).then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', window.bgfileContent['fileName']);
+        document.body.appendChild(link);
+        link.click();
+    });
+}
+function imgAdd(e)
+{
+    window.setDataItemByK("btnbgurl","url(./../upload/" + window.bgfileContent['filePath']+")")
+    document.getElementById("divFile").style.display="none";
+}
+
+function closeAdd(e)
+{
+    let p = e.target;
+    p.parentElement.style.display="none"
+}
+
+Colorpicker.create({
+el: "color-picker", 
+color: "", 
+change: function (elem, hex) {
+    elem.style.borderColor = hex;
+    window.setDataItemByK('fontcolor',hex);
+}
+});
+
+Colorpicker.create({
+el: "color-picker-bordercolor", 
+color: "", 
+change: function (elem, hex) {
+    elem.style.borderColor = hex;
+    window.setDataItemByK('btnbordercolor',hex);
+}
+});
+
+Colorpicker.create({
+el: "color-picker-btnbg", 
+color: "", 
+change: function (elem, hex) {
+    elem.style.borderColor = hex;
+    window.setDataItemByK('btnbg',hex);
+}
+});
+
+Colorpicker.create({
+                el: "color-picker-btnbghover", 
+                color: "", 
+                change: function (elem, hex) {
+                    elem.style.borderColor = hex;
+                    window.setDataItemByK('btnbghover',hex);
+                }
+              });
+
+</script>
+
+</body>
+</html>

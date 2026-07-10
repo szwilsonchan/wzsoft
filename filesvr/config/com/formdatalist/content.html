@@ -1,0 +1,85 @@
+<div class="content-tab[@configid@]" id="datalist[@configid@]" style="display:none">
+    <div class="content-tab-title">
+        <span>[@fieldtitle@]：<span v-show="!this.isView">[@fieldnoemptylbl@]</span>
+    </div>
+    <div class="content-tab-filter" v-show="!this.isView" >
+        <div class="actionbtns">
+            <input  type="button" value="+[@capaddbtn@]" @click="openAddWinVue('',addDatas,'')" />
+        </div>
+    </div>
+    <div class="content-tab-con" >
+        <table class="tabdata" >
+            <tr>
+                <th>[@capno@]</th>
+                <th v-for="datalab in datalabs">{{datalab}}</th>
+                <th>[@capaction@]</th>
+            </tr>
+            <tr v-for="(data,index) in datas">
+                <td style="text-align: center;">{{index+1}}</td>
+                <template v-for="item of Object.keys(datalabs)">
+                    <td v-if="data[item]!=null" v-html="data[item]" ></td>
+                    <td v-if="data[item]==null" v-html="data[item.toUpperCase()]" ></td>
+                </template >
+            <td style="width:260px">
+                <ul class="action-content">
+                    <li v-show="!this.isView&&([@showbtnprev@])" ><a href="javascript:void(0)" @click="moveUp(index)">[@capup@]</a></li>
+                    <li v-show="!this.isView&&([@showbtnnext@])" ><a href="javascript:void(0)" @click="moveDown(index)">[@capdown@]</a></li>
+                    <li v-show="this.isView" ><a href="javascript:void(0)" @click="openUpdWinVue('',updDatas,index)">[@capview@]</a></li>
+                    <li v-show="!this.isView&&([@showbtnupd@])" ><a href="javascript:void(0)" @click="openUpdWinVue('',updDatas,index)">[@capupd@]</a></li>
+                    <li v-show="!this.isView&&([@showbtndel@])" ><a href="javascript:void(0)" @click="openWinVue('[@infodel@]',delDatas,index)">[@capdel@]</a></li>
+                </ul>
+            </td>
+            </tr>
+        </table>
+    </div>
+    <span style="color:red;display:none" id="valmsg1[@configid@]"></span>
+</div>
+<div class="content-tabmobile[@configid@]" id="datalistmobile[@configid@]" style="display:none">
+    <div class="content-tab-title">
+        <span>[@fieldtitle@]：<span v-show="!this.isView">[@fieldnoemptylbl@]</span>
+    </div>
+    <div class="content-tab-filter" v-show="!this.isView" >
+        <div class="actionbtns">
+            <input  type="button" value="+[@capaddbtn@]" @click="openAddWinVue('',addDatas,'')" />
+        </div>
+    </div>
+    <div class="content-tab-con" >
+        <table class="tabdata" >
+            <tr>
+                <th><span v-for="datalab in datalabs">{{datalab}}/</span>[@capaction@]</th>
+            </tr>
+            <tr v-for="(data,index) in datas">
+            <td>
+                <template v-for="(item,key) in data">
+                    <span v-if="datalabs[key]" >{{item}}<br/></span>
+                </template >
+                <ul class="action-content">
+                    
+                    <li v-show="!this.isView" ><a href="javascript:void(0)" @click="openWinVue('[@infodel@]',delDatas,index)">[@capdel@]</a></li>
+                    <li v-show="!this.isView" ><a href="javascript:void(0)" @click="openUpdWinVue('',updDatas,index)">[@capupd@]</a></li>
+                    <li v-show="this.isView"><a href="javascript:void(0)" @click="openUpdWinVue('',updDatas,index)">[@capview@]</a></li>
+                    <li v-show="!this.isView" ><a href="javascript:void(0)" @click="moveDown(index)">[@capdown@]</a></li>
+                    <li v-show="!this.isView" ><a href="javascript:void(0)" @click="moveUp(index)">[@capup@]</a></li>
+                    
+                </ul>
+            </td>
+            </tr>
+        </table>
+    </div>
+    <span style="color:red;display:none" id="valmsg2[@configid@]"></span>
+</div>
+<div id="updWin[@configid@]" class="updWin[@configid@]">
+    <div class="updWin-content" >[@filecontent@]</div>
+    <div class="updWinBtn">
+        <input id="saveBtn[@configid@]" type="button" class="btnOK"  value="[@btnsave@]" onclick="openWinOK[@configid@]()" />
+        <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeWin[@configid@]()" />
+    </div>
+</div>
+<div id="coverWin[@configid@]" class="coverWin[@configid@]"></div>
+<div id="modalWin[@configid@]" class="modalWin[@configid@]">
+    <div class="modalWinMsg"><span id="modalWinMsg[@configid@]"></span></div>
+    <div class="modalWinBtn">
+        <input type="button" class="btnOK"  value="[@btnok@]" onclick="openWinOK[@configid@]()" />
+        <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeWin[@configid@]()" />
+    </div>
+</div>

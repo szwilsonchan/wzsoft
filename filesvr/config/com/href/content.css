@@ -1,0 +1,31 @@
+.updWin-content-item[@configid@]
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.updWin-content-item[@configid@] .left
+{ 
+    width:[@titlewidth@];
+    box-sizing: border-box;
+    font-size:1em;
+    line-height:40px;
+    padding-right:15px;
+    text-align:[@titlealign@];
+    font-weight: bold;
+    float:left;
+}
+.updWin-content-item[@configid@] .right
+{
+    width:[@namewidth@];
+    box-sizing: border-box;
+    text-align:[@namealign@];
+    line-height:40px;
+    float:left;
+}
+
+.updWin-content-item[@configid@] .right a:visited
+{
+    color: [@fontcolor@];
+}

@@ -1,0 +1,15 @@
+<div class="updWin-content-item[@configid@]" id="select[@configid@]" style="display:none">
+    <div class="left"  v-show="titleshow">[@fieldtitle@]：<span v-show="!this.isView">[@fieldnoemptylbl@]</span></div>
+    <div class="right" v-show="!this.isView">
+        <select  v-model="dataitem.[@fieldname@]" id="selvalue[@configid@]" onchange="onchange[@configid@]()">
+            <option></option>
+            <option v-for="v in viewdatas"  name="[@fieldname@]" :value="v['[@big_valuefield@]']" >{{v['[@big_showfield@]']}}</option>
+        </select>
+        <span style="color:red;display:none" id="valmsg[@configid@]"></span>
+    </div>
+    <div class="right" v-show="this.isView">
+        {{dataitem.[@fieldname@]STXT}}
+    </div>
+</div>
+
+        

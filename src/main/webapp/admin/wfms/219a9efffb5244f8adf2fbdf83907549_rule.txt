@@ -1,0 +1,1 @@
+{"rules": [{"conSId": "flow-chart-node21779518037811", "conTId": "flow-chart-node11779518036177", "rule_code": "50e3e6209f63482082249983626d273f"}, {"conSId": "flow-chart-node21779518037811", "conTId": "flow-chart-node31779518036177", "rule_code": "f5332fb4ca484f1aa2c83c9a0b22b0d3"}]}

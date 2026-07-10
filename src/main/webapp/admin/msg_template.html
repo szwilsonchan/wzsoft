@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/main.css" type="text/css"  />
+<script src="./../js/vue.global.js"></script>
+<script src="./../js/axios.min.js"></script>
+<script src="./js/funcadmin.js"></script>
+<script>
+
+    window.viewcode="msg_template";
+
+</script>
+
+</head>
+<body>
+<div class="main-wrapper">
+    <div class="header">
+        <div class="logDiv">
+            <img src="./../upload/logo.png" height="36px" onclick="showmenuleftpc()" />
+        </div>
+        <div class="logoutDiv">
+            <input type="button" class="btnLogout"  value="Logout" onclick="document.location.href='./../logout'" />
+        </div>
+    </div>     
+    <div class="menu-left" >
+        <ul class="menu-content" id="menu-content">
+            <li v-for="data in datas" >
+                    <a href="javascript:void(0)" v-show="data.PID==null&&((showpid['S'+data.MENUID])||(data.LOCATION==this.curLocation))"  @click="setMenuSession(data.MENUID,data.LOCATION)" class="active">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID==null&&((!showpid['S'+data.MENUID])&&(data.LOCATION!=this.curLocation))"  @click="setMenuSession(data.MENUID,data.LOCATION)" class="menu">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID!=null&&showpid['S'+data.PID]&&data.LOCATION==this.curLocation&&this.curLocation!=null" @click="setMenuSession(null,data.LOCATION)" class="activesub">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID!=null&&showpid['S'+data.PID]&&data.LOCATION!=this.curLocation" @click="setMenuSession(null,data.LOCATION)" class="menusub">{{data.NAME}}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="content" id="content">
+        <div class="content-title">
+            <span>Message Template Management</span>
+        </div>
+        <div class="content-tab" id="datalist">
+            <div class="content-tab-title">
+                <span>TemplateList</span>
+            </div>
+            <div class="content-info" id="content-info" style="display:none">
+                <div class="left" id="content-info-msg"></div>
+                <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+            </div>
+            <div class="content-tab-filter" >
+                <div class="pageselshow">
+                    Per Page
+                    <select class="sel" v-model="pageitems" @change="getDatasByFilters(1)">
+                        <option selected>2</option>
+                        <option>10</option>
+                        <option>20</option>
+                        <option>50</option>
+                    </select>
+                    Records
+                </div>
+                <div class="actionbtns">
+                    <input type="button" value="+Add" @click="openAddWinVue('',addDatas,'')" />&nbsp;
+                    <input type="button" value="Email Log" onclick="document.location.href='./msg_mail.html'" />&nbsp;
+                    <input type="button" value="SMS Log" onclick="document.location.href='./msg_msg.html'" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="button" value="Export" @click="goExport()" />&nbsp;
+                    <input type="button" value="Import" onclick="openUpdImportWin()" />&nbsp;
+                </div>
+                <div class="searchcombine" >
+                    <input type="button" class="btn"  value="Search" @click="getDatasByFilters(1)" />
+                </div>
+                <div class="searchcombine" id="view_prp_filters">
+                    <input type="text" class="text" name="filter_searchkey_like" value="" />
+                </div>
+            </div>
+            <div class="content-tab-con" >
+                <table class="tabdata" >
+                    <tr>
+                        <th><input type="checkbox" :checked="selAll" @click="checkedAllId()"></th>
+                        <th v-for="datalab in datalabs" @click="sortdata(Object.keys(datalab)[0])" >
+                            {{Object.values(datalab)[0]}} 
+                            <img v-show="this.sortfield==Object.keys(datalab)[0]&&this.sorttype=='asc'" src="./imgs/sortasc.png" />
+                            <img v-show="this.sortfield==Object.keys(datalab)[0]&&this.sorttype=='desc'" src="./imgs/sortdesc.png" /></th>
+                        <th>Actions</th>
+                    </tr>
+                    <tr v-for="data in datas">
+                        <td style="text-align: center;"><input type="checkbox" :checked="selIds.indexOf(data[pkey])>=0" name="checkboxinput" @click="checkedOneId(data[pkey])"></td>
+                        <template v-for="item in datalabs">
+                            <td v-if="arrShowTitles.indexOf(Object.keys(item)[0])!=-1">{{showtype(Object.keys(item)[0],data[Object.keys(item)[0]])}}</td>
+                        </template>
+                    <td>
+                        <ul class="action-content">
+                            <li><a href="javascript:void(0)" @click="openUpdWinVue('',updDatas,data[pkey],'u')"><img width="23"  src="./imgs/update.png"></a></li>
+                            <li><a href="javascript:void(0)" @click="openUpdWinVue('',updDatas,data[pkey],'t')">Template</a></li>
+                            <li><a href="javascript:void(0)" @click="openWinVue('Are you sure you want to delete this record?',delDatas,data[pkey])"><img width="23" src="./imgs/del.png"></a></li>
+                        </ul>
+                    </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="content-tab-pages">
+                <div class="itemsshow">
+                    <span>Total {{totalitems}} records</span>
+                </div>
+                <div class="pagesshow" id="pagesshow" v-show="hasitmes">
+                    <ul class="page-content">
+                        <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage+1)">Next</a></li>
+                        <li v-for="page in showpages">
+                            <a href="javascript:void(0)" v-if="page.i==this.curpage" @click="getDatasByFilters(page.i)" class="active">{{page.i}}</a>
+                            <a href="javascript:void(0)" v-if="page.i!=this.curpage" @click="getDatasByFilters(page.i)" >{{page.i}}</a>
+                        </li>
+                        <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage-1)">Previous</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="updWinImport" class="updWin">
+                <div class="updWin-info" id="updWinImport-info" style="display:none">
+                    <div class="left" id="updWinImport-info-msg"></div>
+                    <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+                </div>
+                <div class="updWin-content" >
+                    <div class="updWin-content-item">
+                        <div class="left" >Code File</div>
+                        <div class="right" > 
+                            <div class="selDiv" style="line-height: 40px;" >
+                                <div v-show="!blnUpdedZip" >
+                                    <label class="fileContainer">Select file to upload:<input id="filezip" ref="clearFileZip" type="file" @change="fileUploadZip()"></label>
+                                </div>
+                                <div v-show="blnUpdedZip">
+                                    <img height="20" src="./imgs/file.png"><a href="javascript:void(0)" @click="fileDownloadZip()"  style="text-decoration-line: none;">{{fileContentZip['fileName']}}</a>&nbsp;&nbsp;
+                                    <a href="javascript:void(0)" @click="fileDeleteZip()" >Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="updWinBtn">
+                    <input type="button" class="btnOK"  value="Save" @click="goImport()" />
+                    <input type="button" class="btnCancle"  value="Cancel" onclick="closeWin()" />
+                </div>
+            </div>
+            <div id="updWin" class="updWin" style="width:980px;top:30px">
+                <div class="updWin-info" id="updWin-info" style="display:none">
+                    <div class="left" id="updWin-info-msg"></div>
+                    <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+                </div>
+                <div class="updWin-content" >
+                    <div class="updWin-content-item" v-show="this.isupd">
+                        <div class="left" style="width:60px">No.</div>
+                        <div class="right"><input type="text" readonly class="readonly" v-model="dataitem.TEMPID" /></div>
+                    </div>
+                    <div class="updWin-content-item" v-show="this.isupd" style="line-height: 40px;">
+                        <div class="left" style="width:60px">ID</div>
+                        <div class="right">{{dataitem.GUID}}</div>
+                    </div>
+                    <div class="updWin-content-item" v-show="this.updtype=='u'">
+                        <div class="left" style="width:60px">Name</div>
+                        <div class="right"><input type="text" v-model="dataitem.NAME" /></div>
+                    </div>
+                    <div class="updWin-content-item" v-show="!this.isupd">
+                        <div class="left" style="width:60px">Type</div>
+                        <div class="right">
+                            <input type="radio" name="radios" value="m" v-model="dataitem.MSGTYPE" ><label>Email</label>
+                            <input type="radio" name="radios" value="p" v-model="dataitem.MSGTYPE" ><label>SMS</label>
+                        </div>
+                    </div>
+                    <div class="updWin-content-item" v-show="this.updtype=='u'">
+                        <div class="left" style="width:60px">Tag</div>
+                        <div class="right">
+                            <div class="divObjAdd" >
+                                <input class="btnAddObj" type="button"  onclick="addTagShow(event)" value="+Add New Tag" >
+                                <div class="addObjDiv" style="display:none" ><input style="width:35%" type="text" value="" placeholder="Name" /><input class="btnSave" type="button" value="Save" onclick="addTagDo(event,'divObjs')" />
+                                    <input class="btnCancleObj" type="button" value="Cancel" onclick="closeAdd(event)" />
+                                </div>
+                            </div>
+                            <div class="divObjs" id="divObjs"></div>
+                        </div>
+                    </div>
+                    <div class="updWin-content-item" v-show="this.isupd&&this.dataitem.MSGTYPE=='m'&&this.updtype=='t'">
+                        <div class="left" style="width:60px">Title</div>
+                        <div class="right" style="line-height: 30px;">
+                            <input class="btnAddObj" type="button"  onclick="varSelShow(event)" value="+Insert Tag" ><br/>
+                            <div class="addObjDiv" style="display:none;margin-bottom: 5px;" ><select class="sel" onchange="varSelAdd(event,'title')">
+                                <option></option>
+                            </select><input class="btnCancle" type="button" value="Cancel" onclick="closeAdd(event)" />
+                            </div>
+                            <input type="text" style="width:880px" v-model="dataitem.MSGTITLE" />
+                        </div>
+                    </div>
+                    <div class="updWin-content-item" v-show="this.isupd&&this.updtype=='t'">
+                        <div class="left" style="width:60px">Content</div>
+                        <div class="right" > 
+                            <input class="btnAddObj" type="button"  onclick="varSelShow(event)" value="+Insert Tag" >
+                            <div class="addObjDiv" style="display:none;margin-bottom: 5px;" ><select class="sel" onchange="varSelAdd(event,'content')">
+                                <option></option>
+                            </select><input class="btnCancle" type="button" value="Cancel" onclick="closeAdd(event)" />
+                            </div>
+                            <input class="btnAddObj" type="button"  onclick="varSelShowFile(event)" value="+Upload File" >
+                            <div class="selDiv" style="display:none;line-height: 40px;" >
+                                <div v-show="!blnUpded" >
+                                    <label class="fileContainer">Select file to upload:<input id="file" ref="clearFile" type="file" @change="fileUpload()"></label>
+                                </div>
+                                <div v-show="blnUpded">
+                                    <img height="20" src="./imgs/file.png"><a href="javascript:void(0)" @click="fileDownload()"  style="text-decoration-line: none;">{{fileContent['fileName']}}</a>&nbsp;&nbsp;
+                                    <a href="javascript:void(0)" @click="fileDelete()" >Delete</a>
+                                </div>
+                                <input class="btnAddObj"  type="button" value="Insert File" onclick="fileAdd(event)" />
+                                <input class="btnAddObj"  type="button" value="Insert Image" onclick="imgAdd(event)" />
+                                <input class="btnCancleObj"  type="button" value="Cancel" onclick="closeAdd(event)" />
+                            </div>
+
+                            <iframe id="editorIframe" frameborder="no" style="width:900px;height:510px"  marginwidth="0" marginheight="0" src="./../manage/editor.html?height=500px" ></iframe>
+                            <input type="hidden" v-model="dataitem.MSGCONTENT" />
+                        </div>
+                    </div>
+                </div>
+                <div class="updWinBtn">
+                    <input type="button" class="btnOK"  value="Save" onclick="openWinOK()" />
+                    <input type="button" class="btnCancle"  value="Cancel" onclick="closeWin()" />
+                </div>
+            </div>
+        </div>
+    </div> 
+    <div class="footer">
+        Copyright by WSoft
+    </div> 
+    <div id="coverWin" class="coverWin"></div>
+    <div id="modalWin" class="modalWin">
+        <div class="modalWinMsg"><span id="modalWinMsg"></span></div>
+        <div class="modalWinBtn">
+            <input type="button" class="btnOK"  value="OK" onclick="openWinOK()" />
+            <input type="button" class="btnCancle"  value="Cancel" onclick="closeWin()" />
+        </div>
+    </div>
+    <div class="codeVal" id="codeVal" style="display:none">
+        <iframe id="codeValiframe" frameborder="no" marginwidth="0" marginheight="0" src="./code_design.html" ></iframe>
+    </div>
+</div>
+<script>
+
+    window.callback=null;
+    window.callbackpara=null;
+
+    function openUpdImportWin() 
+    {
+        document.getElementById("coverWin").style.display="block";
+        document.getElementById("updWinImport").style.display="block";
+        document.getElementById("content-info").style.display="none";
+    }
+
+    String.prototype.replaceAll=function(str,replace,ingore){
+				ingore = ingore || false;
+				var reg;
+				if(!ingore){
+					reg = new RegExp(str,"g");
+				}else{
+					reg = new RegExp(str,"gi");
+				}
+				return this.replace(reg,replace);
+			}
+
+    function varSelShow(e)
+    {
+        let p = e.target.parentElement;
+        for (let dNode of p.childNodes) 
+        {
+            if(dNode.className=="addObjDiv")
+            {
+                dNode.style.display="block";
+                let s = dNode.firstChild;
+                s.options.length=0
+                s.add(new Option("",""));
+
+                let pp = document.getElementById("divObjs");
+                for (let dNodeSub of pp.childNodes) 
+                {
+                    let fn = dNodeSub.childNodes[0].innerText;
+                    s.add(new Option(fn,fn));
+                }
+
+                break;
+            }
+        }
+    }
+    function varSelAdd(e,f)
+    {
+        let k,v;
+        let p = e.target.parentElement;
+        let pp = e.target.parentElement.parentElement.parentElement;
+        for (let dNode of p.childNodes) 
+        {
+            if(dNode.className=="sel")
+            {
+                v=dNode.options[dNode.selectedIndex].text;
+                k=dNode.options[dNode.selectedIndex].value;
+                k=k.toUpperCase();
+                window.setTitleKey('[@'+k+'@]',f);
+                break;
+            }
+        }
+
+    }
+    function closeAdd(e)
+    {
+        let p = e.target;
+        p.parentElement.style.display="none"
+    }
+    function checkVarName(str)
+    {
+        if(str.indexOf("'")>=0)
+            return false;
+        if(str.indexOf('"')>=0)
+            return false;
+        return true;
+    }
+    function addTagShow(e)
+    {
+        let p = e.target.parentElement;
+        for (let dNode of p.childNodes) 
+        {
+            if(dNode.className=="addObjDiv")
+            {
+                dNode.style.display="block";
+                break;
+            }
+        }
+    }
+    function addTagDo(e,cl)
+    {
+        let dn
+        let p = e.target.parentElement;
+        let pp = e.target.parentElement.parentElement.parentElement;
+    
+        dn=p.childNodes[0].value;
+        dn=dn.toUpperCase();
+        
+        let dc = document.createElement("div");
+        dc.className="selObjDiv";
+    
+        let msg="";
+        if(!checkVarName(dn))
+            msg = msg + "Tag name cannot contain single or double quotes;\n";
+    
+        if(dn.trim().length>20)
+            msg = msg + "Tag name cannot exceed 20 chars;\n";
+        
+        if(msg!="")
+        {
+            alert(msg);
+            return;
+        }
+    
+        str = "<span style=\"border:none;line-height: 24px\"></span>";
+        str = str + "<span class=\"action-obj\" style=\"float:right\" ><a href=\"#\" onclick=\"selTagDel(event,'','"+ cl +"')\" ><img width=\"18\"  src=\"./imgs/del.png\"></a></span>";
+        dc.innerHTML = str;
+        dc.childNodes[0].innerText = dn;
+    
+        for (let dNode of pp.childNodes) 
+        {
+            if(dNode.className==cl)
+            {
+                dNode.appendChild(dc);
+                break;
+            }
+        }
+        p.style.display="none";
+    
+    }
+    
+    function selTagDel(e,objname,cl)
+    {
+        let p = e.target.parentElement.parentElement.parentElement;
+        let pp = p.parentElement;
+        if(pp.className==cl)
+            pp.removeChild(p);
+    }
+    
+    function openWin(msg,callback,callbackpara) 
+    {
+        document.getElementById("coverWin").style.display="block";
+        document.getElementById("modalWin").style.display="block";
+        document.getElementById("modalWinMsg").innerText=msg;
+        window.callback=callback;
+        window.callbackpara=callbackpara;
+    }
+    function openUpdWin(msg,callback,callbackpara,f) 
+    {
+        document.getElementById("coverWin").style.display="block";
+        document.getElementById("updWin").style.display="block";
+        document.getElementById("content-info").style.display="none";
+        window.callback=callback;
+        window.callbackpara=callbackpara;
+    }
+    function openAddWin(msg,callback,callbackpara) 
+    {
+        document.getElementById("coverWin").style.display="block";
+        document.getElementById("updWin").style.display="block";
+        document.getElementById("content-info").style.display="none";
+        window.callback=callback;
+        window.callbackpara=callbackpara;
+    }
+    function openWinOK() 
+    {
+        window.callback(window.callbackpara); 
+    }
+    
+    function closeWin() 
+    {
+        document.getElementById("coverWin").style.display="none";
+        document.getElementById("modalWin").style.display="none";
+        document.getElementById("updWin").style.display="none";
+        document.getElementById("updWinImport").style.display="none";
+    }
+    
+    function closeInfoMsg(e) 
+    {
+        e.srcElement.parentElement.style.display="none";
+    }
+    const DataListVue = 
+    {
+        data() 
+        {
+            return {
+                datas:null,
+                dataitem:{},
+                datalabs:null,
+                datatotal:null,
+                curpage:1,
+                totalpage:0,
+                totalitems:0,
+                pageitems:10,
+                beginpage:0,
+                endpage:0,
+                showpages:[],
+                hasitmes:true,
+                pkey:null,
+                isupd:true,
+                updtype:"u",
+                oldlocation:"",
+                returnmsg:'',
+                arrShowTitles:[],
+                fileContent:{},
+				blnUpded:false,
+                fileContentZip:{},
+				blnUpdedZip:false,
+                sortfield:'',
+                sorttype:'',
+                selIds:[],
+                pkeyIds:[],
+                selAll:false
+            }
+        },
+        methods: 
+        {
+            goExport() 
+            {
+                if(this.selIds.length==0)
+                {
+                    document.getElementById("content-info-msg").innerHTML="Please select records to export first!";
+                    document.getElementById("content-info").style.display="block";
+                }
+                else
+                {
+                    let paras = {};
+                    paras['itemIDs']=this.selIds.join(",");
+                    var that = this;
+                    axios({
+                        url: './../api/msgtempexport',
+                        method: 'POST',
+                        data:paras,
+                        responseType: 'blob', 
+                    }).then((response) => {
+                        const url = window.URL.createObjectURL(new Blob([response.data]));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', 'msgtemp.zip');
+                        document.body.appendChild(link);
+                        link.click();
+                    });
+                }
+            },
+            goImport() 
+            {
+                let paras = {};
+                if(this.blnUpdedZip)
+                    paras['msgfile']=this.fileContentZip['filePath'];
+                else
+                {
+                    alert("Please upload the file to import.");
+                    return;
+                }
+
+                var that = this;
+                axios.post("./../api/msgtempimport",paras).then(function(res)
+                {
+                    let m = res.data;
+                    if(m['msg']!="")
+                    {
+                        document.getElementById("content-info-msg").innerHTML=m['msg'];
+                        document.getElementById("content-info").style.display="block";
+                    }
+                    else
+                    {
+                        document.getElementById("content-info-msg").innerHTML="Records imported successfully!";
+                        document.getElementById("content-info").style.display="block";
+                        that.getDatasByFilters(that.curpage);
+                    }
+                    closeWin();
+
+                }).catch(function (err) {
+                });
+            },
+            checkedOneId(Id) 
+            {
+                let idIndex = this.selIds.indexOf(Id)
+                if (idIndex >= 0) {
+                this.selIds.splice(idIndex, 1)
+                } else {
+                this.selIds.push(Id)
+                }
+            },
+            checkedAllId() 
+            {
+                if(!this.selAll)
+                {
+                    this.selIds = this.pkeyIds;
+                    this.selAll=true;
+                }
+                else
+                {
+                    this.selIds = [];
+                    this.selAll=false;
+                }
+            },
+            showtype(k,v)
+            {
+                if(k=='MSGTYPE')
+                {
+                    if(v=='p')
+                        return 'SMS';
+                    else
+                        return 'Email';
+                }
+                return v;
+            },
+            sortdata(field)
+            {
+                if(this.sortfield==field)
+                {
+                    if(this.sorttype=='asc')
+                        this.sorttype='desc';
+                    else
+                        this.sorttype='asc';
+                }
+                else
+                    this.sorttype='asc';
+
+                this.sortfield=field;
+                this.getDatasByFilters(1);
+            },
+            getMsgContent() 
+            {
+                let iw = document.getElementById('editorIframe').contentWindow;
+                let v = iw.getEditerValue();
+                this.dataitem['MSGCONTENT'] = v;
+            },
+            setDataItem() 
+            {
+                let v = this.dataitem['MSGCONTENT'];
+                this.dataitem['MSGCONTENT']=v;
+                let iframe = document.getElementById("editorIframe");
+                iframe.src="./../manage/editor.html?height=500px";
+                if (iframe.attachEvent)
+                {
+                    iframe.attachEvent("onload", setWin1);
+                    } else {
+                    iframe.onload = setWin2;
+                }
+            },
+            setWin1()
+            {
+                let iw = document.getElementById('editorIframe').contentWindow;
+                iw.setEditerValue(this.dataitem['MSGCONTENT']);
+                document.getElementById("editorIframe").detachEvent("onload", setWin1);
+            },
+            setWin2()
+            {
+                let iw = document.getElementById('editorIframe').contentWindow;
+                iw.setEditerValue(this.dataitem['MSGCONTENT']);
+                document.getElementById("editorIframe").onload=null;
+            },
+            fileDelete()
+            {
+                this.fileContent={};
+                this.blnUpded=false;
+                this.$refs.clearFile.value = '';
+            },
+            fileDeleteZip()
+            {
+                this.fileContentZip={};
+                this.blnUpdedZip=false;
+                this.$refs.clearFileZip.value = '';
+            },
+            fileDownload()
+            {
+                that=this;
+                axios({
+                    url: './../api/downloadFile',
+                    method: 'POST',
+                    data:{"fileGuid":that.fileContent['fileGUID']},
+                    responseType: 'blob', // important
+                }).then((response) => {
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', that.fileContent['fileName']);
+                    document.body.appendChild(link);
+                    link.click();
+                });
+            },
+            fileDownloadZip()
+            {
+                that=this;
+                axios({
+                    url: './../api/downloadFile',
+                    method: 'POST',
+                    data:{"fileGuid":that.fileContentZip['fileGUID']},
+                    responseType: 'blob', // important
+                }).then((response) => {
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', that.fileContentZip['fileName']);
+                    document.body.appendChild(link);
+                    link.click();
+                });
+            },
+            getfileContent()
+            {
+                if(this.blnUpded)
+                    return this.fileContent;
+            },
+            fileUploadZip()
+            {
+                let file = document.getElementById("filezip").files[0];
+                let fv = document.getElementById("filezip").value;
+                fv = fv.substring(fv.indexOf(".")+1);
+
+                if(fv.toUpperCase()!="ZIP")
+                {
+                    alert("Only ZIP format files can be uploaded.");
+                    return;
+                }
+
+                let params = new FormData();
+                params.append('file', file)
+                that=this;
+                axios({
+                    url: "./../api/uploadFile",
+                    method: "post",
+                    data: params,
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                }).then(function(res){
+                    that.fileContentZip=res.data;    
+                    that.blnUpdedZip=true; 
+
+                    }).catch(function (err) {
+                    });
+            },
+            fileUpload()
+            {
+                let file = document.getElementById("file").files[0];
+                let fv = document.getElementById("file").value;
+                fv = fv.substring(fv.indexOf(".")+1);
+
+                let params = new FormData();
+                params.append('file', file)
+                that=this;
+                axios({
+                    url: "./../api/uploadFile",
+                    method: "post",
+                    data: params,
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                }).then(function(res){
+                    that.fileContent=res.data;    
+                    that.blnUpded=true; 
+
+                    }).catch(function (err) {
+                    });
+            },
+            genMsgKeys()
+            {
+                let pp = document.getElementById("divObjs");
+                let msgkeys = {keys:[]};
+                for (let dNodeSub of pp.childNodes) 
+                {
+                    let fn = dNodeSub.childNodes[0].innerText;
+                    msgkeys.keys.push(fn);
+                }
+                this.dataitem['MSGKEYS'] = JSON.stringify(msgkeys);
+            },
+            getDatas () 
+            {
+                let paras = {};
+                paras['viewCode']=window.viewcode;
+                paras['curPage']=this.curpage;
+                paras['pageItmes']=this.pageitems;
+                var that = this;
+                axios.post("./../api/datalist",paras).then(function(res){
+                that.datas=Object.values(res.data)[0];    
+                that.datalabs=Object.values(res.data)[1];  
+                that.arrShowTitles=[];
+                for(let item of that.datalabs)
+                {
+                    let fkey = Object.keys(item)[0];
+                    that.arrShowTitles.push(fkey.toUpperCase());
+                } 
+                that.datatotal=Object.values(res.data)[2];
+                let p = Object.values(Object.values(res.data)[3])[0];
+                that.pkey=p['pkey'];
+                that.totalitems=Object.values(Object.values(Object.values(that.datatotal)[0]))[0];
+
+                that.pkeyIds = [];
+                that.selIds=[];
+                that.selAll=false;
+                for(let item of that.datas)
+                {
+                    that.pkeyIds.push(item[that.pkey]);
+                }
+
+                that.dealPages();
+                }).catch(function (err) {
+                });
+            },
+            getDatasByFilters(curpage) 
+            {
+                if(curpage==0)
+                    return;
+                if(curpage>this.totalpage&&this.totalpage!=0)
+                    return;
+                let view_filters = document.getElementById("view_prp_filters");
+                let paras = {};
+                paras['viewCode']=window.viewcode;
+                for (let node of view_filters.childNodes) 
+                {
+                    let fname = node.name;
+                    if(fname!=undefined)
+                    {
+                        let farrs=fname.split("_");
+                        if(farrs.length==3&&farrs[0]=="filter")
+                        {
+                            paras[fname]=node.value;
+                        }
+                    }
+                }
+                paras['curPage']=curpage;
+                paras['pageItmes']=this.pageitems;
+                if(this.sortfield!='')
+                    paras['order_'+ this.sortfield + '_' + this.sorttype]="1";
+                var that = this;
+                axios.post("./../api/datalist",paras).then(function(res){
+                that.datas=Object.values(res.data)[0];    
+                that.datalabs=Object.values(res.data)[1];  
+                that.arrShowTitles=[];
+                for(let item of that.datalabs)
+                {
+                    let fkey = Object.keys(item)[0];
+                    that.arrShowTitles.push(fkey.toUpperCase());
+                } 
+                that.datatotal=Object.values(res.data)[2];
+                let p = Object.values(Object.values(res.data)[3])[0];
+                that.pkey=p['pkey'];
+                that.totalitems=Object.values(Object.values(Object.values(that.datatotal)[0]))[0];
+                that.curpage=paras['curPage'];
+
+                that.pkeyIds = [];
+                that.selIds=[];
+                that.selAll=false;
+                for(let item of that.datas)
+                {
+                    that.pkeyIds.push(item[that.pkey]);
+                }
+
+                that.dealPages();
+                }).catch(function (err) {
+                });
+            },
+            getDataItem(itemid) 
+            {
+                let paras = {};
+                paras['viewCode']=window.viewcode;
+                paras['itemIDs']=itemid;
+                var that = this;
+                axios.post("./../api/dataget",paras).then(function(res){
+                that.dataitem=Object.values(Object.values(res.data)[0])[0];
+                
+                let pp = document.getElementById("divObjs");
+                pp.innerHTML="";
+                let msgkeys = JSON.parse(that.dataitem['MSGKEYS']);
+                for (let item of msgkeys['keys']) 
+                {
+                    let dc = document.createElement("div");
+                    dc.className="selObjDiv";
+                    str = "<span style=\"border:none;line-height: 24px\"></span>";
+                    str = str + "<span class=\"action-obj\" style=\"float:right\" ><a href=\"#\" onclick=\"selTagDel(event,'','divObjs')\" ><img width=\"18\"  src=\"./imgs/del.png\"></a></span>";
+                    dc.innerHTML = str;
+                    dc.childNodes[0].innerText = item;
+                    pp.appendChild(dc);
+
+                    that.setDataItem();
+                }
+
+                }).catch(function (err) {
+                });
+            },
+            delDatas(itemid) 
+            {
+                let paras = {};
+                paras['viewCode']=window.viewcode;
+                paras['itemIDs']=itemid;
+                var that = this;
+                axios.post("./../api/datadel",paras).then(function(res){
+                that.getDatasByFilters(that.curpage);
+                closeWin();
+                document.getElementById("content-info-msg").innerHTML="Record deleted successfully!";
+                document.getElementById("content-info").style.display="block";
+                }).catch(function (err) {
+                });
+            },
+            updDatas(itemid) 
+            {
+                let paras = {};
+                paras['viewCode']=window.viewcode;
+                paras['itemIDs']=itemid;
+                this.genMsgKeys();
+                this.getMsgContent();
+
+                let msg="";
+                if(!gCheckValueNull(this.dataitem['NAME']))
+                {
+                    msg = msg+"Template name cannot be empty<br>";
+                }
+                else
+                {
+                    if(!gCheckValueLen(this.dataitem['NAME'],100))
+                    {
+                        msg = msg+"Role name cannot exceed 100 characters.<br/>";
+                    }
+                }
+                if(this.dataitem.MSGTYPE=='m'&&this.updtype=='t')
+                {
+                    if(!gCheckValueNull(this.dataitem['MSGTITLE']))
+                    {
+                        msg = msg+"Email subject cannot be empty<br>";
+                    }
+                    else
+                    {
+                        if(!gCheckValueLen(this.dataitem['MSGTITLE'],300))
+                        {
+                            msg = msg+"Email subject cannot exceed 300 characters.<br/>";
+                        }
+                    }
+                }
+                if(!gCheckValueLen(this.dataitem['MSGCONTENT'],2000))
+                {
+                    msg = msg+"Content cannot exceed 2000 characters.<br/>";
+                }
+
+                if(msg!="")
+                {
+                    document.getElementById("updWin-info-msg").innerHTML=msg;
+                    document.getElementById("updWin-info").style.display="block";
+                    return;
+                }
+
+                for (let v in this.dataitem) 
+                {
+                    if(v!=this.pkey)
+                    {
+                        paras['field_'+v] = this.dataitem[v];
+                    }
+                }
+                var that = this;
+                axios.post("./../api/dataupd",paras).then(function(res)
+                {
+                    that.returnmsg=Object.values(Object.values(res.data)[0])[0];
+                    if(that.returnmsg!="")
+                    {
+                        document.getElementById("updWin-info-msg").innerHTML=that.returnmsg;
+                        document.getElementById("updWin-info").style.display="block";
+                    }
+                    else
+                    {
+                        that.getDatasByFilters(that.curpage);
+                        closeWin();
+                        document.getElementById("content-info-msg").innerHTML="Record updated successfully!";
+                        document.getElementById("content-info").style.display="block";
+                    }
+                }).catch(function (err) {
+                });
+    
+            },
+            addDatas() 
+            {
+                let paras = {};
+                paras['viewCode']=window.viewcode;
+                this.genMsgKeys();
+
+                let msg="";
+                if(!gCheckValueNull(this.dataitem['NAME']))
+                {
+                    msg = msg+"Template name cannot be empty<br>";
+                }
+                else
+                {
+                    if(!gCheckValueLen(this.dataitem['NAME'],100))
+                    {
+                        msg = msg+"Role name cannot exceed 100 characters.<br/>";
+                    }
+                }
+                if(msg!="")
+                {
+                    document.getElementById("updWin-info-msg").innerHTML=msg;
+                    document.getElementById("updWin-info").style.display="block";
+                    return;
+                }
+
+                for (let v in this.dataitem) 
+                {
+                    if(v!=this.pkey)
+                    {
+                        paras['field_'+v] = this.dataitem[v];
+                    }
+                }
+                paras['field_GUID'] = genUUID();
+                var that = this;
+                axios.post("./../api/dataadd",paras).then(function(res){
+                    that.returnmsg=Object.values(Object.values(res.data)[0])[0];
+                    if(that.returnmsg!="")
+                    {
+                        document.getElementById("updWin-info-msg").innerHTML=that.returnmsg;
+                        document.getElementById("updWin-info").style.display="block";
+                    }
+                    else
+                    {
+                        that.getDatasByFilters(that.curpage);
+                        closeWin();
+                        document.getElementById("content-info-msg").innerHTML="Record added successfully!";
+                        document.getElementById("content-info").style.display="block";
+                    }
+                }).catch(function (err) {
+                });
+    
+            },
+            openWinVue(msg,callback,callbackpara) 
+            {
+                openWin(msg,callback,callbackpara);
+            },
+            openUpdWinVue(msg,callback,callbackpara,f) 
+            {
+                this.getDataItem(callbackpara);
+
+                this.isupd=true;
+                this.updtype=f;
+                openUpdWin(msg,callback,callbackpara);
+            },
+            openAddWinVue(msg,callback,callbackpara) 
+            {
+                this.dataitem={"MSGTYPE":"m","MSGTITLE":"","MSGCONTENT":""};
+                this.isupd=false;
+                this.updtype="u";
+                openAddWin(msg,callback,callbackpara);
+            },
+            dealPages () 
+            {
+                let items = parseInt(this.totalitems);
+                let pItmes = parseInt(this.pageitems);
+                if(items==0)
+                {
+                    this.hasitmes=false;
+                    return;
+                }
+                if(items % pItmes==0)
+                    this.totalpage = parseInt(items/pItmes);
+                else
+                    this.totalpage = parseInt(items/pItmes)+1;
+        
+                this.beginpage = ((this.curpage-2)>=1)?(this.curpage-2):1;
+                this.endpage = ((this.beginpage+4)<=this.totalpage)?(this.beginpage+4):this.totalpage;
+    
+                this.showpages=[];
+                for(let i=this.endpage;i>=this.beginpage;i--)
+                {
+                    this.showpages.push({i});
+                }
+            },
+            setTitleKey(v,f)
+            {
+                if(f=='title')
+                {
+                    this.dataitem['MSGTITLE'] = this.dataitem['MSGTITLE'] + v;
+                }
+                else
+                {
+                    let iw = document.getElementById('editorIframe').contentWindow;
+				    iw.setDataTag(v);
+                }
+            }
+        },
+        mounted() 
+        {
+            this.getDatas();
+            window.setTitleKey = this.setTitleKey;
+            window.setWin1 = this.setWin1;
+			window.setWin2 = this.setWin2;
+			window.getfileContent = this.getfileContent;
+        }
+    }
+    
+    Vue.createApp(DataListVue).mount('#datalist');
+
+    function varSelShowFile(e)
+    {
+        let p = e.target.parentElement;
+        for (let dNode of p.childNodes) 
+        {
+            if(dNode.className=="selDiv")
+            {
+                dNode.style.display="block";
+                break;
+            }
+        }
+    }
+
+    function fileAdd(e)
+    {
+        let pagelocation = document.location.toString();
+        let website = pagelocation.substring(0,pagelocation.indexOf("/admin/"));
+
+        let f = window.getfileContent();
+        let s = "<a href=\"" + website + "/upload/"+ f['filePath'] +"\">"+ f['fileName']  +"</a>";
+        let iw = document.getElementById('editorIframe').contentWindow;
+        iw.setDataTag(s);
+    }
+
+    function imgAdd(e)
+    {
+        let pagelocation = document.location.toString();
+        let website = pagelocation.substring(0,pagelocation.indexOf("/admin/"));
+
+        let f = window.getfileContent();
+        let s = "<img src=\"" + website + "/upload/"+ f['filePath'] +"\">";
+        let iw = document.getElementById('editorIframe').contentWindow;
+        iw.setDataTag(s);
+    }
+    
+</script>
+<script src="./js/menu.js"></script>
+</body>
+</html>

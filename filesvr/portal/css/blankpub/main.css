@@ -1,0 +1,116 @@
+*
+{
+    margin: 0px;
+    padding: 0px;
+}
+.main-wrapper 
+{
+    width:100%;
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    min-height:fit-content;
+}
+.logoutDiv 
+{
+    width:200px;
+    float:right;
+}
+.logoutDiv .btnLogout
+{
+    border-style: none;
+    border-radius: 2em;
+    background-color: rgb(46, 162, 240);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-right: 10px;
+    outline:none;
+    box-sizing: border-box;
+    float:right;
+}
+.logoutDiv .btnLogout:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+.noempty
+{
+    color:red;
+}
+.conParentHidden
+{
+    display: none;
+    z-Index:1000;
+}
+.coverWin 
+{ 
+    position:fixed;left:0px;top:0px;
+    background:rgba(0, 0, 0, 0.4);
+    width:100%;  
+    height:100%;
+    filter:alpha(opacity=60);  
+    opacity:0.6;  
+    display:none; 
+    z-Index:999;  
+}
+
+.modalWin 
+{ 
+    position:fixed;
+    width:500px;
+    height:300px;
+    top:20%;
+    left:39%;
+    background-color:#fff;
+    display:none;
+    cursor:pointer;
+    text-align: center;
+    z-Index:1999;  
+}
+.modalWin .modalWinMsg 
+{
+    color: black;
+    font-size:1em;
+    font-weight: bold;
+    width:100%;
+    margin-top: 18%;
+    box-sizing: border-box;
+    height:fit-content;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+.modalWinBtn .btnOK
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(46, 162, 240);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.modalWinBtn .btnOK:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+.modalWinBtn .btnCancle
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(205, 209, 212);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.modalWinBtn .btnCancle:hover
+{
+    background-color: rgb(102, 183, 238);
+}

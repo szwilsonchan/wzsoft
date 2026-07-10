@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Activate Account</title>
+    <link rel="stylesheet" href="./css/login.css" type="text/css"  />
+    <script src="./js/axios.min.js"></script>
+    <script src="./js/funclogin.js"></script>
+</head>
+<body>
+<div id="setPass" class="loginWin" style="display: none;">
+    <div class="logImg">
+            <img src="./../upload/logo.png" height="36px" />
+    </div>
+    <div class="loginWin-info" id="updWin-info-setpass" style="display:none">
+        <div class="left" id="updWin-info-setpass-msg"></div>
+    </div>
+    <div class="loginWin-content" >
+        <div class="loginWin-content-item">
+            <div class="left">Enter Password</div>
+            <div class="right"><input type="password" id="password" /></div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">Confirm</div>
+            <div class="right"><input type="password" id="passwordconfirm" /></div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">CAPTCHA</div>
+            <div class="right">
+                <input type="text" class="cpachaInput" id="cpachacode"  />
+	            <img id="cpacha-img" class="cpachaImg" title="Click to switch CAPTCHA"  src="./../user/getcpacha?vl=4&w=150&h=40&type=loginCpacha" onclick="changeCpacha()">
+            </div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">&nbsp;</div>
+            <div class="right"><input type="button" class="btnOK"  value="Activate Account" onclick="setconfirm()" /></div>
+        </div>
+        <div class="content-info" id="content-info-setpass" style="display:none">
+            <div id="content-info-setpass-msg"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    var confirmkey = getKey();
+    if(confirmkey!="")
+    {
+        document.getElementById("setPass").style.display="block";
+
+        if(ismobilefunc())
+        {
+            document.getElementById("setPass").className = "loginWinMobile";
+            document.getElementById("setPass").style.display="block";
+        }
+        else
+        {
+            document.getElementById("setPass").className = "loginWin";
+            document.getElementById("setPass").style.display="block";
+        }
+    }
+
+    function ismobilefunc()
+    {
+        var ua=navigator.userAgent.toLowerCase();
+        var ismobile = false;
+
+        if(contains(ua,"ipad")||(contains(ua,"rv:1.2.3.4"))||(contains(ua,"0.0.0.0"))||(contains(ua,"8.0.552.237"))){return false}
+        if((contains(ua,"android") && contains(ua,"mobile"))||(contains(ua,"android") && contains(ua,"mozilla")) ||(contains(ua,"android") && contains(ua,"opera"))
+        ||contains(ua,"ucweb7")||contains(ua,"iphone")){ismobile=true;}
+
+        return ismobile;
+    }
+
+    function contains(a, b)
+    {
+        if(a.indexOf(b)!=-1)
+            return true;
+        else
+            return false;
+    }
+
+    function setconfirm()
+    {
+        let paras = {};
+        paras['password']=document.getElementById("password").value.trim();
+        paras['passwordconfirm']=document.getElementById("passwordconfirm").value.trim();
+        paras['cpacha']=document.getElementById("cpachacode").value;
+        paras['activekey']=confirmkey;
+
+        let msg="";
+        if(paras['password']=="")
+        {
+            msg = msg + "Please enter password.";
+        }
+        if(paras['password']!=paras['passwordconfirm'])
+        {
+            msg = msg + "Passwords do not match.";
+        }
+        if(msg!="")
+        {
+            document.getElementById("updWin-info-setpass-msg").innerHTML=msg;
+            document.getElementById("updWin-info-setpass").style.display="block";
+            return;
+        }
+
+        axios.post("./../user/psnconfirm",paras).then(function(res){
+            let mreturn = res.data
+            let msg = mreturn['msg'];   
+            if(msg!="")
+            {
+                document.getElementById("updWin-info-setpass-msg").innerHTML=msg;
+                document.getElementById("updWin-info-setpass").style.display="block";
+                changeCpacha();
+            }
+            else
+            {
+                document.getElementById("content-info-setpass-msg").innerHTML="Activation successful.";
+                document.getElementById("content-info-setpass").style.display="block";
+            }
+        }).catch(function (err) {
+        });
+    }
+
+    function getKey() 
+    {
+        let pagelocation = document.location.toString();
+        let paras = pagelocation.split("?");
+        if (paras.length > 1) 
+        {
+            item = paras[1].split("=");
+            if(item[0]=="key")
+            {
+                return item[1];
+            }
+        }
+        return "";
+    }
+
+    function changeCpacha(){
+        document.getElementById("cpacha-img").src='./../user/getcpacha?vl=4&w=150&h=40&type=loginCpacha&t=' + new Date().getTime();
+    }
+
+    </script>
+</body>
+</html>

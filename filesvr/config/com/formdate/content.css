@@ -1,0 +1,80 @@
+.updWin-content-item[@configid@]
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.updWin-content-item[@configid@] .left
+{ 
+    width:[@titlewidth@];
+    box-sizing: border-box;
+    font-size:[@itemfontsize@];
+    line-height:[@itemheight@];
+    padding-right:15px;
+    text-align:[@titlealign@];
+    font-weight: bold;
+    float:left;
+}
+.updWin-content-item[@configid@] .right
+{
+    width:[@namewidth@];
+    font-size:[@itemfontsize@];
+    box-sizing: border-box;
+    text-align:left;
+    line-height:[@itemheight@];
+    float:left;
+}
+
+.updWin-content-item[@configid@] input[type=text]:not(.readonly)
+{
+    border: 1px solid rgb(173, 170, 170);
+    border-radius: 0.8em;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    width:90%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.updWin-content-item[@configid@] input[type=text]:focus:not(.readonly)
+{
+    border: 1px solid rgb(46, 162, 240);
+}
+
+.date-picker-wp 
+{
+    display: none;
+    position: absolute;
+    background: #f1f1f1;
+    left: 40px;
+    top: 40px;
+    border-top: 4px solid #3879d9;
+}
+.date-picker-wp table 
+{
+    border: 1px solid #ddd;
+}
+.date-picker-wp td 
+{
+    background: #fafafa;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    width:[@itemheight@];
+    border: 1px solid #ccc;
+    text-align: center;
+}
+.date-picker-wp td.noborder 
+{
+    border: none;
+    background: none;
+}
+.date-picker-wp td a 
+{
+    color: #1c93c4;
+    text-decoration: none;
+}
+.strong[@configid@] {font-weight: bold}
+.hand[@configid@] {cursor: pointer; color: #3879d9}

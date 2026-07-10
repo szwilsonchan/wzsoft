@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css?5465" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+<script src="selColor.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Title</div>
+            <div class="right"><input type="text" v-model="dataitem.config.fieldtitle" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Template</div>
+            <div class="right" style="line-height: 40px;">
+                <input type="radio" name="radiostype" value="0" v-model="dataitem.temptype" ><label>Default</label>
+                <input type="radio" name="radiostype" value="1" v-model="dataitem.temptype" ><label>Custom</label>
+                <textarea v-show="dataitem.temptype=='1'" v-model="dataitem.tempcontent"  style="width:90%;height:300px"></textarea>
+            </div>
+        </div>
+        <div class="updWin-content-item" v-show="!this.isupd">
+            <div class="left">Type</div>
+            <div class="right" >
+                <select class="sel" v-model="dataitem.config.mode">
+                    <option :value="">All</option>
+                    <option :value="0">To-do</option>
+                    <option :value="1">Done</option>
+                </select>
+            </div>
+            <div id ="pagelistsub" style="display:none"></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Style</div>
+            <div class="right" style="line-height: 45px;">
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="1" v-model="dataitem.config.apptype" ><label>PC</label>
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="2" v-model="dataitem.config.apptype" ><label>Mobile</label><Br/>
+                <div style="float:left">
+                    Line Height：<input type="text" v-model="dataitem.config.itemheight" style="width:60px" />
+                    Font Size：<input type="text" v-model="dataitem.config.itemfontsize" style="width:60px" />
+                </div><Br/>
+                Background Color: <input type="text" v-model="dataitem.config.conbg"  style="width:20%" id="color-picker-conbg" />
+                Border Radius: <input type="text" v-model="dataitem.config.conradius" style="width:10%" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Business Data</div>
+            <div class="right">
+                <select  v-model="dataitem.config.viewcode" @change="selDataItem" style="width:60%">
+                    <option></option>
+                    <option v-for="v in viewdatas"  name="viewcode" :value="v['TABLENAME']" >{{v['NAME']}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Sort</div>
+            <div class="right">
+                <input type="radio" name="radios" value="1" v-model="dataitem.config.seltype" ><label>Select</label>
+                <input type="radio" name="radios" value="2" v-model="dataitem.config.seltype" ><label>Input</label>
+                <div v-show="dataitem.config.seltype=='1'"> 
+                    <select  style="width:15%" v-model="dataitem.config.orderone" >
+                        <option></option>
+                        <option v-for="v in datafields"  name="viewcode" :value="v['FIELD']" >{{v['FIELD_TITLE']}}</option>
+                    </select>&nbsp;
+                    <select  style="width:10%" v-model="dataitem.config.ordertwo" >
+                        <option value="asc">Asc</option>
+                        <option value="desc">Desc</option>
+                    </select>
+                </div>
+                <div v-show="dataitem.config.seltype=='2'"> 
+                    <input type="text" style="width:20%" v-model="dataitem.config.orderfield" placeholder="e.g.:  name_asc">
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Count</div>
+            <div class="right">
+            Per Page：<input type="text" style="width:50px" v-model="dataitem.config.pageitems" />
+            Total：<input type="text" style="width:50px" v-model="dataitem.config.topitems" placeholder="0 = Unlimited" />
+            Debug Log：<input type="checkbox" v-model="dataitem.config.isdebug" style="width:30px" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Display</div>
+            <div class="right">
+            Page：<input type="checkbox" v-model="dataitem.config.formshow" style="width:30px" />
+            Multi Select：<input type="checkbox" v-model="dataitem.config.checkboxshow" style="width:20px" />
+            Search：<select  v-model="dataitem.config.filtershow" style="width:60px"><option v-for="v in showitems" :value="v['code']" >{{v['name']}}</option></select>
+            Pagination：<select  v-model="dataitem.config.pageshow" style="width:60px"><option v-for="v in showitems" :value="v['code']" >{{v['name']}}</option></select>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Top Buttons</div>
+            <div class="right">
+                <div class="divBtnTopsAdd" >
+                    <input class="btnAddBtn" type="button"  onclick="addBtnShow(event)" value="+AddNewButton" >
+                    <div class="addBtnDiv" style="display:none" ><input style="width:35%" type="text" value="" placeholder="Button Name" /><input style="width:35%" type="text" value="1==1" placeholder="Button Display Rule" /><input class="btnSave" type="button" value="Save" onclick="addBtnDo(event,'divBtnTops','a','top')" />
+                        <input class="btnCancle" type="button" value="Cancel" onclick="closeAdd(event)" />
+                    </div>
+                </div>
+                <div class="divBtnTops" id="divBtnTops"></div>
+                <div class="divItemUpd" id="divItemUpdtop">
+                    <div class="configItemUpdDiv" id="divItemUpdNodetop"><input style="width:25%" type="text" value="" placeholder="Button Name" /><input style="width:25%" type="text" value="1==1" placeholder="Button Display Rule" /><input type="hidden"  /><input class="btnSave" type="button" value="Save" onclick="configItemUpdDo(event,'divBtnTops','u','top')" />
+                        <input class="btnCancle" type="button" value="Cancel" onclick="gConfigItemClose(event)" />
+                    </div>
+                </div>
+            </div>
+            <div class="left">Inline Buttons</div>
+            <div class="right">
+                <div class="divBtnTopsAdd" >
+                    <input class="btnAddBtn" type="button"  onclick="addBtnShow(event)" value="+AddNewButton" >
+                    <div class="addBtnDiv" style="display:none" ><input style="width:35%" type="text" value="" placeholder="Button Name" /><input style="width:25%" type="text" value="1==1" placeholder="Button Display Rule" /><input class="btnSave" type="button" value="Save" onclick="addBtnDo(event,'divBtnMids','a','mid')" />
+                        <input class="btnCancle" type="button" value="Cancel" onclick="closeAdd(event)" />
+                    </div>
+                </div>
+                <div class="divBtnMids" id="divBtnMids"></div>
+                <div class="divItemUpd" id="divItemUpdmid">
+                    <div class="configItemUpdDiv" id="divItemUpdNodemid"><input style="width:25%" type="text" value="" placeholder="Button Name" /><input style="width:25%" type="text" value="1==1" placeholder="Button Display Rule" /><input type="hidden"  /><input class="btnSave" type="button" value="Save" onclick="configItemUpdDo(event,'divBtnMids','u','mid')" />
+                        <input class="btnCancle" type="button" value="Cancel" onclick="gConfigItemClose(event)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Search Conditions</div>
+            <div class="right">
+                <div class="divBtnTopsAdd" >
+                    <input class="btnAddBtn" type="button"  onclick="varSelDbShow(event)" value="+Add New Condition" >
+                    <div class="addBtnDiv" style="display:none"><select class="varSelValue" onchange="varSelDbFieldShow(event,'')" style="width:20%">
+                            <option></option>
+                            </select><select class="varSelValue" style="width:20%;margin-left: 10px;" onchange="varSelDbFieldName(event,'')" >
+                            <option></option></select><input type="text" style="width:20%" value="" placeholder="Display Name" /><input type="hidden" /><input type="hidden" /><input type="hidden" />
+                            <input class="btnSave" type="button" value="Save" onclick="varSelDbFieldAdd(event,'divSearchs')" />
+                            <input class="btnCancle" type="button" value="Cancel" onclick="closeAdd(event)" />
+                    </div>
+                </div>
+                <div class="divSearchs" id="divSearchs"></div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Event</div>
+            <div class="right">
+                <span>On Value Change: </span>
+                <input type="button" class="btnOK"  value="Design Code" onclick="parent.openCodeValWin('onchange');" />&nbsp;&nbsp;
+                <span>On Data Load: </span>
+                <input type="button" class="btnOK"  value="Design Code" onclick="parent.openCodeValWin('onload');" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="./../../../js/funcconfig.js"></script>
+<script src="./../../../js/functab.js"></script>
+<script>
+
+window.gDatalist=[];
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            viewdatas:null,
+            datafields:null,
+            showitems:[{"name":"Display","code":"block"},{"name":"Hidden","code":"none"}],
+            dataitem:{"comid":"2000","comname":"WorkflowList","comtitle":"","temptype":"0","tempcontent":"","code":{"onchange":{},"onload":{}},"attrset":{"refresh":"s#refresh","Display":"s#display"},"attrget":{"selectedIds":"s#selids"},"config":{"isdebug":false,"apptype":"1","lan":"e","mode":"0","conbg":"#fff","conradius":"2em","seltype":"1","searchdatas":[],"searchcontent":"","viewcode":"","showappbtn":true,"checkboxshow":true,"orderfield":"","pageitems":10,"topitems":0,"formshow":true,"filtershow":"block","pageshow":"block","fieldtitle":"","btntophtml":"","btnmidhtml":"","btnmidhtmlth":"","btnfunc":"","btnfuncmid":"","btnfunctop":"","btntopcontent":"","btnmidcontent":"","orderone":"","ordertwo":""}}
+        }
+    },
+    methods: 
+    {
+        selDataItem() 
+        {
+            let paras = {};
+            paras['viewCode']="data_fields";
+            paras['curPage']=1;
+            paras['pageItmes']=100;
+            paras['filter_isinfile_equal']="0";
+            paras['filter_tablename_equal']=this.dataitem.config.viewcode;
+            var that = this;
+            axios.post("./../../../../api/datalist",paras).then(function(res){
+            that.datafields=Object.values(res.data)[0];
+            parent.listdatafields = that.datafields;
+            }).catch(function (err) {
+            });
+        },
+        genBtnContent(pp,dNode,f,m,tf)
+        {
+            gGenBtnContent(this.dataitem,pp,dNode,f,m,tf);
+            this.getBtnContentDo(pp,tf);
+        },
+        getBtnContentDo(pp,tf)
+        {
+            gGetBtnContentDo(this.dataitem,pp,tf);
+        },
+        getDataItem() 
+        {
+            this.dataitem.comtitle = this.dataitem.config.fieldtitle;
+            if(this.dataitem.config.seltype=="1")
+            {
+                if(this.dataitem.config.orderone!="")
+                    this.dataitem.config.orderfield = this.dataitem.config.orderone + "_" + this.dataitem.config.ordertwo;
+                else
+                    this.dataitem.config.orderfield="";
+            }
+
+            this.dataitem['config']['btnfunc']="";
+            if(this.dataitem['config']['btnfunctop']!="")
+            {
+                this.dataitem['config']['btnfunc'] =  this.dataitem['config']['btnfunctop'];
+                if(this.dataitem['config']['btnfuncmid']!="")
+                {
+                    this.dataitem['config']['btnfunc'] = this.dataitem['config']['btnfunc'] + this.dataitem['config']['btnfuncmid'];
+                }
+            }
+            else
+            {
+                this.dataitem['config']['btnfunc'] =  this.dataitem['config']['btnfuncmid'];
+            }
+
+            let viewhtml = "";
+
+            if(this.dataitem.config.apptype=="1")
+            {
+                this.dataitem.config.uwinwidth="800px";
+                this.dataitem.config.uwinmleft="-400px";
+
+                this.dataitem.config.mwinwidth="600px";
+                this.dataitem.config.mwinmleft="-300px";
+                this.dataitem.config.mwintop="10%";
+                this.dataitem.config.searchwidth="168px";
+
+                viewhtml = viewhtml + "<div style=\"width:100%;padding:10px;box-sizing: border-box;\" >";
+                viewhtml = viewhtml + "<div style=\"color: black;font-size:"+ this.dataitem.config.itemfontsize +";line-height:"+ this.dataitem.config.itemheight +";font-weight: bold;width:100%;box-sizing: border-box;margin-bottom: 10px;text-align: left;\">";
+                viewhtml = viewhtml + "<span>"+ this.dataitem.config.fieldtitle +"</span>";
+                viewhtml = viewhtml + "</div>";
+                viewhtml = viewhtml + "<div class=\"content-tab-con\" >";
+                viewhtml = viewhtml + "<table class=\"tabdata\" style=\"font-size: 0.8em;border-collapse: collapse;width:100%;\">";
+                viewhtml = viewhtml + "<tr>";
+                viewhtml = viewhtml + "<th style=\"height: 30px;padding: 5px;background-color: rgb(207, 230, 245);border: 1px solid rgb(207, 230, 245);\" >ID</th>";
+                viewhtml = viewhtml + "<th style=\"height: 30px;padding: 5px;background-color: rgb(207, 230, 245);border: 1px solid rgb(207, 230, 245);\" >Business DataTitle</th>";
+                viewhtml = viewhtml + "<th style=\"height: 30px;padding: 5px;background-color: rgb(207, 230, 245);border: 1px solid rgb(207, 230, 245);\" >Status</th>";
+                viewhtml = viewhtml + "<th style=\"height: 30px;padding: 5px;background-color: rgb(207, 230, 245);border: 1px solid rgb(207, 230, 245);\" >Actions</th>";
+                viewhtml = viewhtml + "</tr>";
+                viewhtml = viewhtml + "<tr>";
+                viewhtml = viewhtml + "<td style=\"border: 1px solid rgb(233, 232, 230);color: rgb(138, 135, 135);height: 30px;padding: 5px;\" >1</td>";
+                viewhtml = viewhtml + "<td style=\"border: 1px solid rgb(233, 232, 230);color: rgb(138, 135, 135);height: 30px;padding: 5px;\">Business Data1</td>";
+                viewhtml = viewhtml + "<td style=\"border: 1px solid rgb(233, 232, 230);color: rgb(138, 135, 135);height: 30px;padding: 5px;\">Pending Approval</td>";
+                viewhtml = viewhtml + "<td style=\"border: 1px solid rgb(233, 232, 230);color: rgb(138, 135, 135);height: 30px;padding: 5px;\">";
+                viewhtml = viewhtml + "<ul style=\"margin-top: -3px;\">";
+                viewhtml = viewhtml + "<li style=\"list-style: none;\"><a style=\"margin-left: 10px;width:42px;display: block;color: rgb(252, 249, 249);background-color:rgb(30, 108, 211);border-radius: 0.8em;height:32px;text-align: center;padding-top:1px;padding-right:2px;box-sizing: border-box;background-repeat: no-repeat;text-decoration: none;float:left;\" href=\"javascript:void(0)\" >View</a></li>";
+                viewhtml = viewhtml + "<li style=\"list-style: none;\"><a style=\"margin-left: 10px;width:42px;display: block;color: rgb(252, 249, 249);background-color:rgb(30, 108, 211);border-radius: 0.8em;height:32px;text-align: center;padding-top:1px;padding-right:2px;box-sizing: border-box;background-repeat: no-repeat;text-decoration: none;float:left;\" href=\"javascript:void(0)\" >Review</a></li>";
+                viewhtml = viewhtml + "</ul>";
+                viewhtml = viewhtml + "</td>";
+                viewhtml = viewhtml + "</tr>";
+                viewhtml = viewhtml + "</table>";
+                viewhtml = viewhtml + "</div>";
+                viewhtml = viewhtml + "</div>";
+            }
+            else
+            {
+                this.dataitem.config.uwinwidth="90%";
+                this.dataitem.config.uwinmleft="-45%";
+
+                this.dataitem.config.mwinwidth="90%";
+                this.dataitem.config.mwinmleft="-45%";
+                this.dataitem.config.mwintop="10%";
+                this.dataitem.config.searchwidth="250px";
+
+                viewhtml = viewhtml + "<div style=\"width:100%;padding:10px;box-sizing: border-box;\" >";
+                viewhtml = viewhtml + "<div style=\"color: black;font-size:"+ this.dataitem.config.itemfontsize +";line-height:"+ this.dataitem.config.itemheight +";font-weight: bold;width:100%;box-sizing: border-box;margin-bottom: 10px;text-align: left;\">";
+                viewhtml = viewhtml + "<span>"+ this.dataitem.config.fieldtitle +"</span>";
+                viewhtml = viewhtml + "</div>";
+                viewhtml = viewhtml + "<div class=\"content-tab-con\" >";
+                viewhtml = viewhtml + "<table class=\"tabdata\" style=\"font-size:"+ this.dataitem.config.itemfontsize +";border-collapse: collapse;width:100%;\">";
+                viewhtml = viewhtml + "<tr>";
+                viewhtml = viewhtml + "<th style=\"height: "+ this.dataitem.config.itemheight +";padding: 5px;background-color: rgb(207, 230, 245);border: 1px solid rgb(207, 230, 245);\" >ID/Business DataTitle/Status</th>";
+                viewhtml = viewhtml + "</tr>";
+                viewhtml = viewhtml + "<tr><td style=\"border: 1px solid rgb(233, 232, 230);color: rgb(138, 135, 135);line-height: "+ this.dataitem.config.itemheight +";padding: 5px;\">ID<br>Business Data1<br>Pending Approval";
+                viewhtml = viewhtml + "<ul style=\"margin-top: -3px;\">";
+                viewhtml = viewhtml + "<li style=\"list-style: none;float:right\"><a style=\"margin-left: 10px;width:"+ this.dataitem.config.itemheight +";display: block;color: rgb(252, 249, 249);background-color:rgb(30, 108, 211);border-radius: 1em;height:"+ this.dataitem.config.itemheight +";text-align: center;padding-top:5px;padding-right:2px;box-sizing: border-box;background-repeat: no-repeat;text-decoration: none;float:left;\" href=\"javascript:void(0)\" >Approve</a></li>";
+                viewhtml = viewhtml + "<li style=\"list-style: none;float:right\"><a style=\"margin-left: 10px;width:"+ this.dataitem.config.itemheight +";display: block;color: rgb(252, 249, 249);background-color:rgb(30, 108, 211);border-radius: 1em;height:"+ this.dataitem.config.itemheight +";text-align: center;padding-top:5px;padding-right:2px;box-sizing: border-box;background-repeat: no-repeat;text-decoration: none;float:left;\" href=\"javascript:void(0)\" >View</a></li>";
+                viewhtml = viewhtml + "</ul></td></tr></table>";
+                viewhtml = viewhtml + "</div>";
+                viewhtml = viewhtml + "</div>";
+            }
+
+            this.dataitem.config.viewhtml=viewhtml;
+
+            let pm=document.getElementById("divBtnMids");
+            this.getBtnContentDo(pm,'mid');
+
+            let pt=document.getElementById("divBtnTops");
+            this.getBtnContentDo(pt,'top');
+
+            if(this.dataitem.config.lan=="c")
+            {
+                this.dataitem.config.cappegenum1 = "Per PageDisplay";
+                this.dataitem.config.cappegenum2 = "records";
+                this.dataitem.config.cappegenum3 = "records";
+                this.dataitem.config.capdata = "Business Data";
+                this.dataitem.config.caplog = "ReviewLog";
+                this.dataitem.config.capdetail = "ReviewDetail";
+                this.dataitem.config.capapprove = "Approve";
+                this.dataitem.config.btnsearch = "Search";
+                this.dataitem.config.btnsearchsub="HeightLevel";
+                this.dataitem.config.capaction = "Actions";
+                this.dataitem.config.capview = "View";
+                this.dataitem.config.btnsave = "Save";
+                this.dataitem.config.btnok = "OK";
+                this.dataitem.config.btncancle = "Cancel";
+                this.dataitem.config.pageup = "Previous";
+                this.dataitem.config.pagedown = "Next";
+                this.dataitem.config.status1 = "Draft";
+                this.dataitem.config.status2 = "In Review";
+                this.dataitem.config.status3 = "Approved";
+                this.dataitem.config.appitem = "ReviewContent";
+                this.dataitem.config.appcon = "Review Comments";
+                this.dataitem.config.btnapp = "ApproveApproved";
+                this.dataitem.config.btnreturn = "Returned To";
+                this.dataitem.config.wstatus1 = "Pending Approval";
+                this.dataitem.config.wstatus2 = "Approved";
+                this.dataitem.config.appsucc = "SuccessReview";
+                this.dataitem.config.submitpsn = "Submitter";
+                this.dataitem.config.infonoexceed = "InputContentlength cannot exceed ";
+                this.dataitem.config.infonumber = "Enter DecimalFormat:";
+                this.dataitem.config.infodate = "Enter DateFormat:";
+                this.dataitem.config.seloptiondt = "<option value='dtequal'>equals</option><option value='dtgt'>greater than</option><option value='dtgte'>greater thanequals</option><option value='dtlt'>less than</option><option value='dtlte'>less thanequals</option>";
+                this.dataitem.config.seloptiond = "<option value='dequal'>equals</option><option value='dgt'>greater than</option><option value='dgte'>greater thanequals</option><option value='dlt'>less than</option><option value='dlte'>less thanequals</option>";
+                this.dataitem.config.infodelsuc = "SuccessDeleterecords";
+            }
+            else
+            {
+                this.dataitem.config.cappegenum1 = "Display ";
+                this.dataitem.config.cappegenum2 = "records per page";
+                this.dataitem.config.cappegenum3 = "records ";
+                this.dataitem.config.capdata = "Data";
+                this.dataitem.config.caplog = "Logs";
+                this.dataitem.config.capdetail = "Detail";
+                this.dataitem.config.capapprove = "Approval";
+                this.dataitem.config.btnsearch = "Search";
+                this.dataitem.config.btnsearchsub="More";
+                this.dataitem.config.capaction = "Action";
+                this.dataitem.config.capview = "View";
+                this.dataitem.config.btnsave = "Save";
+                this.dataitem.config.btnok = "Confirm";
+                this.dataitem.config.btncancle = "Cancle";
+                this.dataitem.config.pageup = "Prev";
+                this.dataitem.config.pagedown = "Next";
+                this.dataitem.config.status1 = "Filling";
+                this.dataitem.config.status2 = "Pending";
+                this.dataitem.config.status3 = "Approved";
+                this.dataitem.config.appitem = "Content";
+                this.dataitem.config.appcon = "Comments";
+                this.dataitem.config.btnapp = "Approve";
+                this.dataitem.config.btnreturn = "Back to ";
+                this.dataitem.config.wstatus1 = "Pending";
+                this.dataitem.config.wstatus2 = "Approved";
+                this.dataitem.config.appsucc = "Approve successful";
+                this.dataitem.config.submitpsn = "Submitter";
+                this.dataitem.config.infonoexceed = "The length of input content cannot exceed ";
+                this.dataitem.config.infonumber = "Please enter the number format:";
+                this.dataitem.config.infodate = "Please enter date format:";
+                this.dataitem.config.seloptiondt = "<option value='dtequal'>==</option><option value='dtgt'>&gt;</option><option value='dtgte'>&gt;=</option><option value='dtlt'>&lt;</option><option value='dtlte'>&lt;=</option>";
+                this.dataitem.config.seloptiond = "<option value='dequal'>==</option><option value='dgt'>&gt;</option><option value='dgte'>&gt;=</option><option value='dlt'>&lt;</option><option value='dlte'>&lt;=</option>";
+                this.dataitem.config.infodelsuc = "Successfully deleted record";
+            }
+
+            return this.dataitem;
+        },
+        getDataItemByKey(k) 
+        {
+            return this.dataitem.config[k];
+        },
+        setDataItemByKey(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+            this.selDataItem();
+            document.getElementById("divBtnTops").innerHTML = this.dataitem['config']['btntopcontent'];
+            document.getElementById("divBtnMids").innerHTML = this.dataitem['config']['btnmidcontent'];
+            document.getElementById("divSearchs").innerHTML = this.dataitem['config']['searchcontent'];
+            this.setDivDrag("divBtnTops");
+            this.setDivDrag("divBtnMids");
+            this.setDivDrag("divSearchs");
+
+            this.getBtnContentDo(document.getElementById("divBtnTops"),'top');
+            this.getBtnContentDo(document.getElementById("divBtnMids"),'mid');
+        },
+        setDivDrag(divid) 
+        {
+            let dmr = document.getElementById(divid);
+            for (let dNodeSub of dmr.childNodes) 
+            {
+                if(gdivClassCode.indexOf("," +dNodeSub.className+ ",")>=0)
+                {
+                    dealDivDrag(dNodeSub);
+                }
+            }
+        },
+        getDatas() 
+        {
+            let paras = {};
+            paras['viewCode']="data";
+            paras['curPage']=1;
+            paras['pageItmes']=100;
+            paras['filter_open_equal']="1";
+            var that = this;
+            axios.post("./../../../../api/datalist",paras).then(function(res){
+            that.viewdatas=Object.values(res.data)[0];
+            window.gDatalist=that.viewdatas;
+            }).catch(function (err) {
+            });
+        },
+        setFormValue(fValue,codename) 
+        {
+            let c = this.dataitem['code'];
+            c[codename] = fValue;
+        },
+        getFormValue(codename) 
+        {
+            let c = this.dataitem['code'];
+            return c[codename];
+        },
+        setDataItemByK(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        }, 
+        getDataItemSub() 
+        {
+            return this.dataitem;
+        }
+    },
+    mounted() 
+    {
+        this.getDatas();
+        window.getDataItem = this.getDataItem;
+        window.getDataItemSub = this.getDataItemSub;
+        window.getDataItemByKey = this.getDataItemByKey;
+        window.setDataItemByKey = this.setDataItemByKey;
+        window.setDataItem = this.setDataItem;
+        window.genBtnContent = this.genBtnContent;
+        window.setFormValue = this.setFormValue;
+        window.getFormValue = this.getFormValue;
+        window.setDataItemByK = this.setDataItemByK;
+
+        gInitConfig();
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+Colorpicker.create({
+el: "color-picker-conbg", 
+color: "", 
+change: function (elem, hex) {
+    elem.style.borderColor = hex;
+    window.setDataItemByK('conbg',hex);
+}
+});
+
+</script>
+
+</body>
+</html>

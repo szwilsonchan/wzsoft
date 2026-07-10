@@ -1,0 +1,259 @@
+:root {
+    --color-primary: #06b6d4;
+    --color-primary-hover: #0891b2;
+    --color-primary-light: #cffafe;
+    --color-success: #34d399;
+    --color-success-hover: #10b981;
+    --color-warning: #fbbf24;
+    --color-danger: #fb7185;
+    --color-border: #e2e8f0;
+    --color-border-hover: #94a3b8;
+    --color-text: #1e293b;
+    --color-text-secondary: #64748b;
+    --color-text-light: #94a3b8;
+    --color-bg: #f8fafc;
+    --color-canvas: #ffffff;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.1);
+    --radius-sm: 8px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --transition: 0.2s ease;
+}
+.content-tab[@configid@]
+{
+    background-color:[@conbg@];
+    border-radius: [@conradius@];
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin: 0px;
+    width:100%;
+    box-sizing: border-box;
+    height: fit-content;
+    overflow:auto;
+}
+.content-tab[@configid@] .content-tab-title 
+{
+    color: black;
+    font-size:1em;
+    font-weight: bold;
+    width:100%;
+    box-sizing: border-box;
+    height:30px;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+.content-tab[@configid@] .content-tab-filter 
+{
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    float: left;
+}
+.content-tab[@configid@] .content-tab-con 
+{
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+.content-tab[@configid@] .actionbtns 
+{
+    box-sizing: border-box;
+    margin-left:10px;
+    overflow:auto;
+    float: right;
+}
+.content-tab[@configid@] .actionbtns input[type=button]
+{
+    border-style: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-primary);
+    color:#000;
+    height:40px;
+    min-width:90px;
+    cursor: pointer;
+    outline:none;
+    margin-right:2px;
+    box-sizing: border-box;
+}
+.content-tab[@configid@] .actionbtns input[type=button]:hover
+{
+    background-color: var(--color-primary-hover);
+}
+
+.content-tab[@configid@] .tabdata
+{
+    border-collapse: collapse;
+    font-size: 0.8em;
+    width:100%;
+}
+.content-tab[@configid@] .tabdata th
+{
+    background-color: var(--color-primary-light);
+    border: 1px solid var(--color-primary-light);
+    cursor:pointer;
+}
+.content-tab[@configid@] .tabdata tr:hover
+{
+    background-color: var(--color-bg);
+}
+
+.content-tab[@configid@] .tabdata th
+{
+    height: 30px;
+    padding: 5px;
+}
+.content-tab[@configid@] .tabdata td
+{
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    height: 30px;
+    padding: 5px;
+}
+.content-tab[@configid@] .action-content
+{
+    margin-top: -3px;
+}
+.content-tab[@configid@] .action-content li
+{
+    list-style: none;
+}
+.content-tab[@configid@] .action-content a:link
+{
+    margin-left: 10px;
+    min-width:32px;
+    display: block;
+    color: #fff;
+    background-color:var(--color-primary-hover);
+    border-radius: var(--radius-lg);
+    height:32px;
+    text-align: center;
+    padding-top:5px;
+    padding-right:2px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    float:left;
+}
+.content-tab[@configid@] .action-content a.active
+{
+    background-color:var(--color-primary);
+}
+.content-tab[@configid@] .action-content a:hover:not(.active)
+{
+    background-color:var(--color-primary);
+}
+.content-tab[@configid@] .action-content a:visited
+{
+    color: #fff;
+}
+.coverWin[@configid@] 
+{ 
+    position:fixed;left:0px;top:0px;
+    background:rgba(0, 0, 0, 0.4);
+    width:100%;  
+    height:100%;
+    filter:alpha(opacity=60);  
+    opacity:0.6;  
+    display:none; 
+    z-Index:999;  
+}
+.wfmWin[@configid@] 
+{ 
+    position:fixed;
+    width:[@uwinwidth@];
+    height:500px;
+    top:10%;
+    left:50%;
+    margin-left:[@uwinmleft@];
+    background-color:#fff;
+    display:none;
+    cursor:pointer;
+    text-align: center;
+    overflow:auto; 
+    z-Index:9999;  
+}
+.wfmWin[@configid@] .btnCancle
+{
+    border-style: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-border);
+    color:#fff;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    width:160px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.wfmWin[@configid@] .btnCancle:hover
+{
+    background-color: var(--color-primary-hover);
+}
+.modalWin[@configid@] 
+{ 
+    position:fixed;
+    min-height:300px;
+    top:[@mwintop@];
+    left:50%;
+    width:[@mwinwidth@];
+    margin-left:[@mwinmleft@];
+    background-color:#fff;
+    display:none;
+    cursor:pointer;
+    text-align: center;
+    z-Index:9999;  
+}
+.modalWin[@configid@] .modalWinMsg 
+{
+    color: black;
+    font-size:[@itemfontsize@];
+    font-weight: bold;
+    width:100%;
+    margin-top: [@mwintop@];
+    box-sizing: border-box;
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    margin-bottom: 10px;
+}
+.modalWin[@configid@] .modalWinBtn .btnOK
+{
+    border-style: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-primary);
+    color:#fff;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    width:160px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.modalWin[@configid@] .modalWinBtn .btnOK:hover
+{
+    background-color: var(--color-primary-hover);
+}
+.modalWin[@configid@] .modalWinBtn .btnCancle
+{
+    border-style: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-border);
+    color:#fff;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    width:160px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.modalWin[@configid@] .modalWinBtn .btnCancle:hover
+{
+    background-color: var(--color-primary-hover);
+}
+

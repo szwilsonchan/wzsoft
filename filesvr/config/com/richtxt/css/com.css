@@ -1,0 +1,118 @@
+:root {
+    --color-primary: #06b6d4;
+    --color-primary-hover: #0891b2;
+    --color-primary-light: #cffafe;
+    --color-success: #34d399;
+    --color-success-hover: #10b981;
+    --color-warning: #fbbf24;
+    --color-danger: #fb7185;
+    --color-border: #e2e8f0;
+    --color-border-hover: #94a3b8;
+    --color-text: #1e293b;
+    --color-text-secondary: #64748b;
+    --color-text-light: #94a3b8;
+    --color-bg: #f8fafc;
+    --color-canvas: #ffffff;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.1);
+    --radius-sm: 8px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --transition: 0.2s ease;
+}
+html
+{ 
+    overflow-x:hidden; 
+}
+body
+{
+    margin: 0px;
+    padding: 0px;
+}
+.btnAddVar
+{
+    border-style: none;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-primary);
+    background-color: #fff;
+    color:#000;
+    height:26px;
+    min-width:90px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    outline:none;
+    box-sizing: border-box;
+}
+.btnAddVar:hover
+{
+    background-color: var(--color-primary-hover);
+}
+.btnCancleVar
+{
+    border-style: none;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-primary);
+    background-color: #fff;
+    color:#000;
+    height:26px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.btnCancleVar:hover
+{
+    background-color: var(--color-primary-hover);
+}
+.divTag
+{
+ padding-top:5px;
+}
+.divTag select
+{
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg);
+    padding: 5px;
+    width:50%;
+    height:40px;
+}
+
+.fileContainer {
+    overflow: hidden;
+    position: relative;
+    border:1px solid var(--color-primary);
+    background-color:#fff;
+    color:#000;
+    border-radius: var(--radius-sm);
+    float: left;
+    padding-left: 10px;
+    width:200px;
+    height:26px;
+    line-height:26px;
+    margin-top: 8px;
+    margin-left: 3px;
+    text-align:center;
+}
+
+.fileContainer [type=file] {
+    display: block;
+    font-size: 999px;
+    filter: alpha(opacity=0);
+    min-height: 100%;
+    min-width: 100%;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+    cursor: pointer;
+}
+
+.fileContainer:hover
+{
+    background-color: var(--color-primary);
+}

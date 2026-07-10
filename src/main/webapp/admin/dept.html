@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/main.css" type="text/css"  />
+<script src="./../js/vue.global.js"></script>
+<script src="./../js/axios.min.js"></script>
+<script src="./js/funcadmin.js"></script>
+<script>
+
+    window.viewcode="dept";
+
+</script>
+
+</head>
+<body>
+<div class="main-wrapper">
+    <div class="header">
+        <div class="logDiv">
+            <img src="./../upload/logo.png" height="36px" onclick="showmenuleftpc()" />
+        </div>
+        <div class="logoutDiv">
+            <input type="button" class="btnLogout"  value="Logout" onclick="document.location.href='./../logout'" />
+        </div>
+    </div>     
+    <div class="menu-left" >
+        <ul class="menu-content" id="menu-content">
+            <li v-for="data in datas" >
+                    <a href="javascript:void(0)" v-show="data.PID==null&&((showpid['S'+data.MENUID])||(data.LOCATION==this.curLocation))"  @click="setMenuSession(data.MENUID,data.LOCATION)" class="active">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID==null&&((!showpid['S'+data.MENUID])&&(data.LOCATION!=this.curLocation))"  @click="setMenuSession(data.MENUID,data.LOCATION)" class="menu">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID!=null&&showpid['S'+data.PID]&&data.LOCATION==this.curLocation&&this.curLocation!=null" @click="setMenuSession(null,data.LOCATION)" class="activesub">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID!=null&&showpid['S'+data.PID]&&data.LOCATION!=this.curLocation" @click="setMenuSession(null,data.LOCATION)" class="menusub">{{data.NAME}}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="content" id="content">
+        <div class="content-title">
+            <span>Department Management</span>
+        </div>
+        <div class="content-tab" id="datalist">
+            <div class="content-tab-title">
+                <span>Department List</span>
+            </div>
+        <div class="content-info" id="content-info" style="display:none">
+            <div class="left" id="content-info-msg"></div>
+            <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+        </div>
+            <div class="content-tab-filter" >
+                <div class="pageselshow">
+                    Per Page
+                    <select class="sel" v-model="pageitems" @change="getDatasByFilters(1)">
+                        <option selected>2</option>
+                        <option>10</option>
+                        <option>20</option>
+                        <option>50</option>
+                    </select>
+                    Records
+                </div>
+                <div class="actionbtns">
+                    <input type="button" value="+Add" @click="openAddWinVue('',addDatas,'')" />
+                </div>
+                <div class="searchcombine" >
+                    <input type="button" class="btn"  value="Search" @click="getDatasByFilters(1)" />
+                </div>
+                <div class="searchcombine" id="view_prp_filters">
+                    <input type="text" class="text" name="filter_searchkey_like" value="" />
+                </div>
+            </div>
+            <div class="content-tab-con" >
+                <table class="tabdata" >
+                    <tr>
+                        <th v-for="datalab in datalabs">{{Object.values(datalab)[0]}}</th>
+                        <th>Actions</th>
+                    </tr>
+                    <tr v-for="data in datas">
+                        <template v-for="item in datalabs">
+                            <td v-if="arrShowTitles.indexOf(Object.keys(item)[0])!=-1&&Object.keys(item)[0]!='SNUM'"><span v-show="Object.keys(item)[0]=='NAME'&&data['PID']!='0'">&nbsp;&nbsp;&nbsp;</span>{{data[Object.keys(item)[0]]}}</td>
+                            <td v-if="arrShowTitles.indexOf(Object.keys(item)[0])!=-1&&Object.keys(item)[0]=='SNUM'&&data['PID']!='0'">{{data['SNUMSUB']}}</td>
+                            <td v-if="arrShowTitles.indexOf(Object.keys(item)[0])!=-1&&Object.keys(item)[0]=='SNUM'&&data['PID']=='0'">{{data['SNUM']}}</td>
+                        </template>
+                    <td>
+                        <ul class="action-content">
+                            <li><a href="javascript:void(0)" @click="openUpdWinVue('',updDatas,data[pkey])"><img width="23"  src="./imgs/update.png"></a></li>
+                            <li><a href="javascript:void(0)" @click="openWinVue('Are you sure you want to delete this record?',delDatas,data[pkey])"><img width="23" src="./imgs/del.png"></a></li>
+                        </ul>
+                    </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="content-tab-pages">
+                <div class="itemsshow">
+                    <span>Total {{totalitems}} records</span>
+                </div>
+                <div class="pagesshow" id="pagesshow" v-show="hasitmes">
+                    <ul class="page-content">
+                        <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage+1)">Next</a></li>
+                        <li v-for="page in showpages">
+                            <a href="javascript:void(0)" v-if="page.i==this.curpage" @click="getDatasByFilters(page.i)" class="active">{{page.i}}</a>
+                            <a href="javascript:void(0)" v-if="page.i!=this.curpage" @click="getDatasByFilters(page.i)" >{{page.i}}</a>
+                        </li>
+                        <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage-1)">Previous</a></li>
+                    </ul>
+                </div>
+            </div>
+    <div id="updWin" class="updWin">
+        <div class="updWin-info" id="updWin-info" style="display:none">
+            <div class="left" id="updWin-info-msg"></div>
+            <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+        </div>
+        <div class="updWin-content" >
+            <div class="updWin-content-item" v-show="this.isupd">
+                <div class="left">No.</div>
+                <div class="right"><input type="text" readonly class="readonly" v-model="dataitem.DEPTID" name="deptid" value="" /></div>
+            </div>
+            <div class="updWin-content-item" >
+                <div class="left">Organization</div>
+                <div class="right">
+                    <input type="text" id="inpSel" oninput="selItemSearch(event)" onclick="selItemSearch(event)" />
+                    <div class="dropcontent" id="divSelSearchs" ></div>
+                    <div class="divSelItems" id="divSelItems" > </div>
+                </div>
+            </div>
+            <div class="updWin-content-item" >
+                <div class="left">Parent Department</div>
+                <div class="right" >
+                    <select  v-model="dataitem.PID" class="sel">
+                        <option></option>
+                        <option v-for="v in depts"  :value="v['DEPTID']+'|'+v['SNUM']" >{{v['NAME']}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">Department Name</div>
+                <div class="right"><input type="text" v-model="dataitem.NAME" /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">Foreign Name</div>
+                <div class="right"><input type="text" v-model="dataitem.ENAME" /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">Department Sort Order</div>
+                <div class="right"><input type="text" v-model="dataitem.SNUM" /></div>
+            </div>
+            <div class="updWin-content-item" style="line-height: 40px;">
+                <div class="left">Searchable</div>
+                <div class="right">
+                    <input type="radio" name="radiospub" value="1" v-model="dataitem.ISPUB" ><label>Yes</label>
+                    <input type="radio" name="radiospub" value="0" v-model="dataitem.ISPUB" ><label>No</label>
+                </div>
+            </div>
+            <div class="updWin-content-item" >
+                <div class="left">Department Roles</div>
+                <div class="right" id ="rolelist">
+                    <div v-for='(role, index) in roles' :key="index">
+                    <input type='checkbox' :checked="roleIds.indexOf(role.ROLEID)>=0" name='checkboxinput' class='input-checkbox' @click='checkedOne(role.ROLEID)'>{{role.NAME}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="updWinBtn">
+            <input type="button" class="btnOK"  value="Save" onclick="openWinOK()" />
+            <input type="button" class="btnCancle"  value="Cancel" onclick="closeWin()" />
+        </div>
+    </div>
+        </div>
+    </div> 
+    <div class="footer">
+        Copyright by WSoft
+    </div> 
+    <div id="coverWin" class="coverWin"></div>
+    <div id="modalWin" class="modalWin">
+        <div class="modalWinMsg"><span id="modalWinMsg"></span></div>
+        <div class="modalWinBtn">
+            <input type="button" class="btnOK"  value="OK" onclick="openWinOK()" />
+            <input type="button" class="btnCancle"  value="Cancel" onclick="closeWin()" />
+        </div>
+    </div>
+</div>
+
+<script>
+
+window.callback=null;
+window.callbackpara=null;
+
+function openWin(msg,callback,callbackpara) 
+{
+    document.getElementById("coverWin").style.display="block";
+    document.getElementById("modalWin").style.display="block";
+    document.getElementById("modalWinMsg").innerText=msg;
+    window.callback=callback;
+    window.callbackpara=callbackpara;
+}
+function openUpdWin(msg,callback,callbackpara) 
+{
+    document.getElementById("coverWin").style.display="block";
+    document.getElementById("updWin").style.display="block";
+    document.getElementById("content-info").style.display="none";
+    window.callback=callback;
+    window.callbackpara=callbackpara;
+}
+function openAddWin(msg,callback,callbackpara) 
+{
+    document.getElementById("coverWin").style.display="block";
+    document.getElementById("updWin").style.display="block";
+    document.getElementById("content-info").style.display="none";
+    window.callback=callback;
+    window.callbackpara=callbackpara;
+}
+function openWinOK() 
+{
+    window.callback(window.callbackpara); 
+}
+
+function closeWin() 
+{
+    document.getElementById("coverWin").style.display="none";
+    document.getElementById("modalWin").style.display="none";
+    document.getElementById("updWin").style.display="none";
+}
+
+function closeInfoMsg(e) 
+{
+    e.srcElement.parentElement.style.display="none";
+}
+function selItemHide()
+{
+    let dnode = document.getElementById("divSelSearchs");
+    dnode.style.display="none";
+}
+function selItemDel(e)
+{
+    let p = e.srcElement.parentElement.parentElement.parentElement;
+    if(p.parentElement.className=="divSelItems")
+    {
+        p.parentElement.removeChild(p);
+        document.getElementById("inpSel").style.display="block";
+        window.setDepts([]);
+    }
+
+}
+function selItemDo(id,title)
+{
+
+    let paras = {};
+    paras['viewCode']="dept";
+    paras['curPage']=1;
+    paras['pageItmes']=100;
+    paras['filter_orgid_equal']=id;
+    paras['filter_pid_equal']="0";
+    var that = this;
+    axios.post("./../api/datalist",paras).then(function(res){
+    depts=Object.values(res.data)[0];
+    window.setDepts(depts);
+
+    let d = document.createElement("div");
+    d.className="selItemDiv";
+
+    let s="";
+    s = s + "<span class=\"selaction-content\" style=\"line-height:25px\"></span>";
+    s = s + "<input type='hidden' />";
+    s = s + "<span class=\"selaction-content\" style=\"float:right;line-height:25px\" ><a href='javascript:void(0)' onclick=\"selItemDel(event);return false\"><img width=\"18\"  src=\"./imgs/del.png\"></a></span>";
+    d.innerHTML=s;
+
+    d.childNodes[0].innerHTML=title;
+    d.childNodes[1].value=id;
+    document.getElementById("divSelItems").appendChild(d);
+    document.getElementById("divSelItems").style.display="block";
+    document.getElementById("divSelSearchs").style.display="none";
+    document.getElementById("inpSel").style.display="none";
+
+    }).catch(function (err) {
+    });
+
+
+}
+function selItemSearch(e)
+{
+    let inp = e.target.value;
+    //alert(inp);
+    if(inp.length>=2)
+    {
+        let paras = {};
+        paras['viewCode']="org";
+        paras['curPage']=1;
+        paras['pageItmes']=100;
+        paras['topItems']=3;
+        paras['filter_searchkey_like']=inp;
+
+        axios.post("./../api/datalist",paras).then(function(res){
+        let orgdatas=Object.values(res.data)[0];
+
+        let str="";
+        for (let item of orgdatas) 
+        {
+            let itemID = "";
+            let itemTitle = "";
+
+            itemID = item["ORGID"]+"";
+            itemTitle = item["NAME"];
+
+            itemID=itemID.replaceAll("'","\\'");
+            itemTitle=itemTitle.replaceAll("'","\\'");
+            itemTitle=itemTitle.replaceAll('"','&quot;');
+
+            str = str + "<div class=\"selItemShow\" onclick=\"selItemDo('"+ itemID +"','"+ itemTitle +"')\" ><span style=\"border:none\">"+ itemTitle +"</span></div>";
+        }
+
+        let dnode = document.getElementById("divSelSearchs");
+        if(str!="")
+        {
+            dnode.innerHTML="<div class=\"selItemShow\" style=\"text-align:right\"><div class='searchclose' onclick=\"closeSearchDiv(event)\">&Chi;</div></div>"+str;
+            dnode.style.display="block";
+        }
+
+        }).catch(function (err) {
+        });
+    }
+    else
+        selItemHide();
+}
+
+function closeSearchDiv(e)
+{
+    e.target.parentElement.parentElement.style.display="none";
+}
+
+const DataListVue = 
+{
+    data() 
+    {
+        return {
+            datas:null,
+            dataitem:{},
+            datalabs:null,
+            datatotal:null,
+            datalocations:null,
+            curpage:1,
+            totalpage:0,
+            totalitems:0,
+            pageitems:10,
+            beginpage:0,
+            endpage:0,
+            showpages:[],
+            hasitmes:true,
+            pkey:null,
+            isupd:true,
+            oldlocation:"",
+            returnmsg:'',
+            arrShowTitles:[],
+            depts:[],
+            roles:null,
+            roleIds:[]
+        }
+    },
+    methods: 
+    {
+        checkedOne (roleId) 
+        {
+            let idIndex = this.roleIds.indexOf(roleId)
+            if (idIndex >= 0) {
+            this.roleIds.splice(idIndex, 1)
+            } else {
+            this.roleIds.push(roleId)
+            }
+        },
+        setDatalocation(dl)
+        {
+            this.datalocations=dl;	
+        },
+        getDatas () 
+        {
+            let paras = {};
+            paras['viewCode']=window.viewcode;
+            paras['curPage']=this.curpage;
+            paras['pageItmes']=this.pageitems;
+            paras['order_snum#asc,snumsub#asc']="1";
+            var that = this;
+            axios.post("./../api/datadeptlist",paras).then(function(res){
+            that.datas=Object.values(res.data)[0];    
+            that.datalabs=Object.values(res.data)[1];  
+            that.arrShowTitles=[];
+            for(let item of that.datalabs)
+            {
+                let fkey = Object.keys(item)[0];
+                that.arrShowTitles.push(fkey.toUpperCase());
+            } 
+            that.datatotal=Object.values(res.data)[2];
+            let p = Object.values(Object.values(res.data)[3])[0];
+            that.pkey=p['pkey'];
+            that.totalitems=Object.values(Object.values(Object.values(that.datatotal)[0]))[0];
+            that.dealPages();
+
+            that.roles = Object.values(res.data)[5];
+
+            }).catch(function (err) {
+            });
+        },
+        getDatasByFilters(curpage) 
+        {
+            if(curpage==0)
+                return;
+            if(curpage>this.totalpage&&this.totalpage!=0)
+                return;
+            let view_filters = document.getElementById("view_prp_filters");
+            let paras = {};
+            paras['viewCode']=window.viewcode;
+            for (let node of view_filters.childNodes) 
+            {
+                let fname = node.name;
+                if(fname!=undefined)
+                {
+                    let farrs=fname.split("_");
+                    if(farrs.length==3&&farrs[0]=="filter")
+                    {
+                        paras[fname]=node.value;
+                    }
+                }
+            }
+            paras['curPage']=curpage;
+            paras['pageItmes']=this.pageitems;
+            paras['order_snum#asc,snumsub#asc']="1";
+            var that = this;
+            axios.post("./../api/datadeptlist",paras).then(function(res){
+            that.datas=Object.values(res.data)[0];    
+            that.datalabs=Object.values(res.data)[1];  
+            that.arrShowTitles=[];
+            for(let item of that.datalabs)
+            {
+                let fkey = Object.keys(item)[0];
+                that.arrShowTitles.push(fkey.toUpperCase());
+            } 
+            that.datatotal=Object.values(res.data)[2];
+            let p = Object.values(Object.values(res.data)[3])[0];
+            that.pkey=p['pkey'];
+            that.totalitems=Object.values(Object.values(Object.values(that.datatotal)[0]))[0];
+            that.curpage=paras['curPage'];
+            that.dealPages();
+            }).catch(function (err) {
+            });
+        },
+        getDataItem(itemid) 
+        {
+            let paras = {};
+            paras['viewCode']=window.viewcode;
+            paras['itemIDs']=itemid;
+            var that = this;
+            axios.post("./../api/datadeptget",paras).then(function(res){
+            that.dataitem=Object.values(Object.values(res.data)[0])[0];    
+            that.oldlocation = that.dataitem["LOCATION"];
+
+            that.roleIds=[];
+            let arrTmp=Object.values(res.data)[1];
+            for(let item of arrTmp)
+            {
+                that.roleIds.push(item['ROLEID']); 
+            }
+
+            if(that.dataitem['ORGID']!=null)
+                selItemDo(that.dataitem['ORGID'],that.dataitem['ORGNAME']);
+
+            if(that.dataitem['PID']!=0)
+            {
+                that.dataitem['PID'] = that.dataitem['PID'] + "|" + that.dataitem['SNUM'];
+                that.dataitem['SNUM'] = that.dataitem['SNUMSUB'];
+            }
+
+            }).catch(function (err) {
+            });
+        },
+        delDatas(itemid) 
+        {
+            let paras = {};
+            paras['viewCode']=window.viewcode;
+            paras['itemIDs']=itemid;
+            var that = this;
+            axios.post("./../api/datadeptdel",paras).then(function(res){
+            that.getDatasByFilters(that.curpage);
+            closeWin();
+            document.getElementById("content-info-msg").innerHTML="Record deleted successfully!";
+            document.getElementById("content-info").style.display="block";
+            }).catch(function (err) {
+            });
+        },
+        updDatas(itemid) 
+        {
+            let paras = {};
+            paras['viewCode']=window.viewcode;
+            paras['itemIDs']=itemid;
+            for (let v in this.dataitem) 
+            {
+                if(v!=this.pkey&&v!="OLD_LOCATION")
+                {
+                    paras['field_'+v] = this.dataitem[v];
+                }
+            }
+            paras['field_ORGID'] = null;
+            paras['field_ORGNAME'] = null;
+            if(this.dataitem['PID']==null||this.dataitem['PID']=="")
+                paras['field_PID'] = "0";
+            
+            if(this.dataitem['PID']==null||this.dataitem['PID']=="")
+            {
+                paras['field_PID'] = "0";
+                paras['field_SNUMSUB'] = "0";
+            }
+            else
+            {
+                let sp = this.dataitem['PID'];
+                paras['field_PID'] = sp.substring(0,sp.indexOf("|"));
+                paras['field_SNUMSUB'] = paras['field_SNUM'];
+                paras['field_SNUM'] = sp.substring(sp.indexOf("|")+1);
+            }
+
+            if(paras['field_PID']+''==itemid)
+            {
+                document.getElementById("updWin-info-msg").innerHTML="Cannot select own department as parent";
+                document.getElementById("updWin-info").style.display="block";
+                return;
+            }
+            else
+            {
+                document.getElementById("updWin-info-msg").innerHTML="";
+                document.getElementById("updWin-info").style.display="none";
+            }
+
+            let dorg = document.getElementById("divSelItems");
+            for (let dNode of dorg.childNodes) 
+            {
+                if(dNode.className == "selItemDiv")
+                {
+                    paras['field_ORGID'] = dNode.childNodes[1].value;
+                    paras['field_ORGNAME'] = dNode.childNodes[0].innerHTML;
+                }
+            }
+
+            let msg="";
+            if(!gCheckValueNull(this.dataitem['NAME']))
+            {
+                msg=msg+"Department name cannot be empty.<br/>";
+            }
+            else
+            {
+                if(!gCheckValueLen(this.dataitem['NAME'],200))
+                {
+                    msg=msg+"Department name cannot exceed 200 characters.<br/>";
+                }
+            }
+            if(!gCheckValueLen(this.dataitem['ENAME'],500))
+            {
+                msg=msg+"Foreign name cannot exceed 500 characters.<br/>";
+            }
+            if(!gCheckValueNull(paras['field_ORGID']))
+            {
+                msg=msg+"Organization cannot be empty.<br/>";
+            }
+            if(!gCheckValueNull(this.dataitem['SNUM']))
+            {
+                msg=msg+"Sort order cannot be empty.<br/>";
+            }
+            else
+            {
+                if(!gCheckValueNum(this.dataitem['SNUM'],0,1000))
+                {
+                    msg=msg+"Sort order must be an integer >0 and <1000.<br/>";
+                }
+            }
+            if(this.roleIds.join(",")!="")
+            {
+                paras['ROLEIDS']=this.roleIds.join(",");
+            }
+            else
+            {
+                msg = msg+"Role cannot be empty.<br>";
+            }
+            if(msg!="")
+            {
+                document.getElementById("updWin-info-msg").innerHTML=msg;
+                document.getElementById("updWin-info").style.display="block";
+                return;
+            }
+
+            var that = this;
+            axios.post("./../api/datadeptupd",paras).then(function(res)
+            {
+                that.returnmsg=Object.values(Object.values(res.data)[0])[0];
+                if(that.returnmsg!="")
+                {
+                    document.getElementById("updWin-info-msg").innerHTML=that.returnmsg;
+                    document.getElementById("updWin-info").style.display="block";
+                }
+                else
+                {
+                    that.getDatasByFilters(that.curpage);
+                    closeWin();
+                    document.getElementById("content-info-msg").innerHTML="Record updated successfully!";
+                    document.getElementById("content-info").style.display="block";
+                }
+            }).catch(function (err) {
+            });
+
+        },
+        addDatas() 
+        {
+            let paras = {};
+            paras['viewCode']=window.viewcode;
+            for (let v in this.dataitem) 
+            {
+                if(v!=this.pkey)
+                {
+                    paras['field_'+v] = this.dataitem[v];
+                }
+            }
+            paras['field_ORGID'] = null;
+            paras['field_ORGNAME'] = null;
+            if(this.dataitem['PID']==null||this.dataitem['PID']=="")
+            {
+                paras['field_PID'] = "0";
+                paras['field_SNUMSUB'] = "0";
+            }
+            else
+            {
+                let sp = this.dataitem['PID'];
+                paras['field_PID'] = sp.substring(0,sp.indexOf("|"));
+                paras['field_SNUMSUB'] = paras['field_SNUM'];
+                paras['field_SNUM'] = sp.substring(sp.indexOf("|")+1);
+            }
+
+            let dorg = document.getElementById("divSelItems");
+            for (let dNode of dorg.childNodes) 
+            {
+                if(dNode.className == "selItemDiv")
+                {
+                    paras['field_ORGID'] = dNode.childNodes[1].value;
+                    paras['field_ORGNAME'] = dNode.childNodes[0].innerHTML;
+                }
+            }
+
+            let msg="";
+            if(!gCheckValueNull(this.dataitem['NAME']))
+            {
+                msg=msg+"Department name cannot be empty.<br/>";
+            }
+            else
+            {
+                if(!gCheckValueLen(this.dataitem['NAME'],200))
+                {
+                    msg=msg+"Department name cannot exceed 200 characters.<br/>";
+                }
+            }
+            if(!gCheckValueLen(this.dataitem['ENAME'],500))
+            {
+                msg=msg+"Foreign name cannot exceed 500 characters.<br/>";
+            }
+            if(!gCheckValueNull(paras['field_ORGID']))
+            {
+                msg=msg+"Organization cannot be empty.<br/>";
+            }
+            if(!gCheckValueNull(this.dataitem['SNUM']))
+            {
+                msg=msg+"Sort order cannot be empty.<br/>";
+            }
+            else
+            {
+                if(!gCheckValueNum(this.dataitem['SNUM'],0,1000))
+                {
+                    msg=msg+"Sort order must be an integer >0 and <1000.<br/>";
+                }
+            }
+            if(this.roleIds.join(",")!="")
+            {
+                paras['ROLEIDS']=this.roleIds.join(",");
+            }
+            else
+            {
+                msg = msg+"Role cannot be empty.<br>";
+            }
+            if(msg!="")
+            {
+                document.getElementById("updWin-info-msg").innerHTML=msg;
+                document.getElementById("updWin-info").style.display="block";
+                return;
+            }
+
+            var that = this;
+            axios.post("./../api/datadeptadd",paras).then(function(res){
+                that.returnmsg=Object.values(Object.values(res.data)[0])[0];
+                if(that.returnmsg!="")
+                {
+                    document.getElementById("updWin-info-msg").innerHTML=that.returnmsg;
+                    document.getElementById("updWin-info").style.display="block";
+                }
+                else
+                {
+                    that.getDatasByFilters(that.curpage);
+                    closeWin();
+                    document.getElementById("content-info-msg").innerHTML="Record added successfully!";
+                    document.getElementById("content-info").style.display="block";
+                }
+            }).catch(function (err) {
+            });
+
+        },
+        openWinVue(msg,callback,callbackpara) 
+        {
+            openWin(msg,callback,callbackpara);
+        },
+        openUpdWinVue(msg,callback,callbackpara) 
+        {
+            document.getElementById("divSelItems").innerHTML="";
+            document.getElementById("divSelItems").style.display="none";
+            document.getElementById("divSelSearchs").style.display="none";
+            document.getElementById("inpSel").style.display="block";
+
+            document.getElementById("updWin-info-msg").innerHTML="";
+            document.getElementById("updWin-info").style.display="none";
+
+            this.getDataItem(callbackpara);
+            this.isupd=true;
+            openUpdWin(msg,callback,callbackpara);
+        },
+        openAddWinVue(msg,callback,callbackpara) 
+        {
+            document.getElementById("divSelItems").innerHTML="";
+            document.getElementById("divSelItems").style.display="none";
+            document.getElementById("divSelSearchs").style.display="none";
+            document.getElementById("inpSel").style.display="block";
+
+            document.getElementById("updWin-info-msg").innerHTML="";
+            document.getElementById("updWin-info").style.display="none";
+
+            this.dataitem={"ISPUB":"1"};
+            this.isupd=false;
+            this.roleIds=[];
+            openAddWin(msg,callback,callbackpara);
+        },
+        dealPages () 
+        {
+            let items = parseInt(this.totalitems);
+            let pItmes = parseInt(this.pageitems);
+            if(items==0)
+            {
+                this.hasitmes=false;
+                return;
+            }
+            if(items % pItmes==0)
+                this.totalpage = parseInt(items/pItmes);
+            else
+                this.totalpage = parseInt(items/pItmes)+1;
+    
+            this.beginpage = ((this.curpage-2)>=1)?(this.curpage-2):1;
+            this.endpage = ((this.beginpage+4)<=this.totalpage)?(this.beginpage+4):this.totalpage;
+
+            this.showpages=[];
+            for(let i=this.endpage;i>=this.beginpage;i--)
+            {
+                this.showpages.push({i});
+            }
+        },
+        setDepts(v) 
+        {
+            this.depts = v
+        }
+    },
+    mounted() 
+    {
+        this.getDatas();
+        window.setDepts = this.setDepts;
+    }
+}
+
+Vue.createApp(DataListVue).mount('#datalist');
+
+</script>
+<script src="./js/menu.js"></script>
+</body>
+</html>

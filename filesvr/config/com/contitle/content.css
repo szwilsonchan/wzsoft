@@ -1,0 +1,13 @@
+.content-title[@configid@] 
+{
+    color: [@concolor@];
+    font-size:1.1em;
+    font-weight: bold;
+    background-color:[@conbgcolor@];
+    border-radius: 2em;
+    padding-left: 20px;
+    width:100%;
+    box-sizing: border-box;
+    height:40px;
+    line-height: 40px;
+}

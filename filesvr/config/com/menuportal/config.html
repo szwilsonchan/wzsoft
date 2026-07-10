@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+<script src="selColor.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" style="line-height: 40px;">
+            <div class="left">MenuType</div>
+            <div class="right">
+                <input type="radio" name="apptype" value="1" v-model="dataitem.config.apptype" ><label>PC</label>
+                <input type="radio" name="apptype" value="2" v-model="dataitem.config.apptype" ><label>Mobile</label>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">MenuStyle</div>
+            <div class="right" style="line-height: 45px;">
+                Button Background: <input type="text" v-model="dataitem.config.btnbg"  style="width:20%" id="color-picker-btnbg" />
+                Hover: <input type="text" v-model="dataitem.config.btnbghover"  style="width:20%" id="color-picker-btnbghover" />
+                Left Margin: <input type="text" v-model="dataitem.config.btnmarginleft" style="width:15%" />
+                <br>
+                Button Width: <input type="text" v-model="dataitem.config.btnwidth" style="width:15%" />
+                Button Height: <input type="text" v-model="dataitem.config.btnheight" style="width:15%" />
+                Button Padding: <input type="text" v-model="dataitem.config.btnpadding" style="width:15%" />
+                <br>
+                Border Width: <input type="text" v-model="dataitem.config.btnborder" style="width:8%" />
+                Border Style: <input type="text" v-model="dataitem.config.btnborderstyle" style="width:10%" />
+                Border Radius: <input type="text" v-model="dataitem.config.btnradius" style="width:10%" />
+                Border Color: <input type="text" v-model="dataitem.config.btnbordercolor" id="color-picker-bordercolor" style="width:15%" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Text Font</div>
+            <div class="right" style="line-height: 45px;">Size: <input type="text" v-model="dataitem.config.fontsize" style="width:20%" />
+                Color: <input type="text" v-model="dataitem.config.fontcolor"  style="width:20%" id="color-picker" />
+                <br>
+                Font: <input type="text" v-model="dataitem.config.fontfamily" style="width:20%" />
+                Line Height: <input type="text" v-model="dataitem.config.lineheight" style="width:20%" />
+                <br>
+                Weight: <select v-model="dataitem.config.fontweight" style="width:30%">
+                    <option></option>
+                    <option>normal</option>
+                    <option>bold</option>
+                </select> 
+                Style: <select v-model="dataitem.config.fontstyle" style="width:30%">
+                    <option></option>
+                    <option>normal</option>
+                    <option>italic</option>
+                    <option>oblique</option>
+                </select>
+            </div>
+        </div>
+        <div class="updWin-content-item" style="line-height: 40px;">
+            <div class="left">Data Source</div>
+            <div class="right">
+                <input type="radio" name="radiosmenu" value="1" v-model="dataitem.config.menumode" ><label>ManagementApplication</label>
+                <input type="radio" name="radiosmenu" value="2" v-model="dataitem.config.menumode" ><label>PublicApplication</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            viewdatas:null,
+            dataitem:{"comid":"5001","comname":"Menu","comtitle":"","config":{"apptype":"1","btnmarginleft":"5px","menumode":"2","fontsize":"","fontsize":"","fontfamily":"","fontcolor":"","fontweight":"","fontstyle":"","btnbg":"","btnbghover":"","btnwidth":"100px","btnheight":"40px","btnradius":"1em","lineheight":"40px","btnpadding":"","btnborder":"","btnborderstyle":"","btnbordercolor":""}}
+        }
+    },
+    methods: 
+    {
+        getDataItem() 
+        {
+
+            let viewhtml = "";
+            viewhtml = viewhtml + "<div style=\"width:100%;float:left;margin-bottom:5px;\">";
+            viewhtml = viewhtml + "<button  style=\"border-style: none;padding: "+ this.dataitem.config.btnpadding+ ";border-radius: "+ this.dataitem.config.btnradius+ ";border-color: "+ this.dataitem.config.btnbordercolor+ ";border-style: "+ this.dataitem.config.btnborderstyle+ ";border-width: "+ this.dataitem.config.btnborder+ ";background-color: "+ this.dataitem.config.btnbg+ ";width:"+ this.dataitem.config.btnwidth+ ";height:"+ this.dataitem.config.btnheight+ ";cursor: pointer;outline:none;box-sizing: border-box;line-height:"+ this.dataitem.config.lineheight+ "; font-size:"+ this.dataitem.config.fontsize+ ";color:"+ this.dataitem.config.fontcolor+ ";font-family:"+ this.dataitem.config.fontfamily+ ";font-weight:"+ this.dataitem.config.fontweight+ ";font-style:"+ this.dataitem.config.fontstyle + ";\">Menu Level 1</button>";
+            viewhtml = viewhtml + "<button  style=\"border-style: none;padding: "+ this.dataitem.config.btnpadding+ ";border-radius: "+ this.dataitem.config.btnradius+ ";border-color: "+ this.dataitem.config.btnbordercolor+ ";border-style: "+ this.dataitem.config.btnborderstyle+ ";border-width: "+ this.dataitem.config.btnborder+ ";background-color: "+ this.dataitem.config.btnbg+ ";width:"+ this.dataitem.config.btnwidth+ ";height:"+ this.dataitem.config.btnheight+ ";cursor: pointer;outline:none;box-sizing: border-box;line-height:"+ this.dataitem.config.lineheight+ "; font-size:"+ this.dataitem.config.fontsize+ ";color:"+ this.dataitem.config.fontcolor+ ";font-family:"+ this.dataitem.config.fontfamily+ ";font-weight:"+ this.dataitem.config.fontweight+ ";font-style:"+ this.dataitem.config.fontstyle + ";\">Menu Level 2</button>";
+            viewhtml = viewhtml + "</div>";
+
+            this.dataitem.config.viewhtml=viewhtml;
+
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+            document.getElementById("color-picker").style.borderColor = this.dataitem.config['fontcolor'];
+            document.getElementById("color-picker-bordercolor").style.borderColor = this.dataitem.config['btnbordercolor'];
+            document.getElementById("color-picker-btnbg").style.borderColor = this.dataitem.config['btnbg'];
+            document.getElementById("color-picker-btnbghover").style.borderColor = this.dataitem.config['btnbghover'];
+        },
+        setDataItemByK(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        }
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.setDataItem = this.setDataItem;
+        window.setDataItemByK = this.setDataItemByK;
+
+        if(parent.gIsMobilePage)
+        {
+            this.dataitem.config.apptype="2";
+        }
+        else
+        {
+            this.dataitem.config.apptype="1"; 
+        }
+
+        if(parent.gIsPortalRight)
+        {
+            this.dataitem.config.menumode="2";
+        }
+        else
+        {
+            this.dataitem.config.menumode="1";
+        }
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+Colorpicker.create({
+el: "color-picker", 
+color: "", 
+change: function (elem, hex) {
+    elem.style.borderColor = hex;
+    window.setDataItemByK('fontcolor',hex);
+}
+});
+
+Colorpicker.create({
+el: "color-picker-bordercolor", 
+color: "", 
+change: function (elem, hex) {
+    elem.style.borderColor = hex;
+    window.setDataItemByK('btnbordercolor',hex);
+}
+});
+
+Colorpicker.create({
+el: "color-picker-btnbg", 
+color: "", 
+change: function (elem, hex) {
+    elem.style.borderColor = hex;
+    window.setDataItemByK('btnbg',hex);
+}
+});
+
+Colorpicker.create({
+                el: "color-picker-btnbghover", 
+                color: "", 
+                change: function (elem, hex) {
+                    elem.style.borderColor = hex;
+                    window.setDataItemByK('btnbghover',hex);
+                }
+              });
+
+</script>
+
+</body>
+</html>

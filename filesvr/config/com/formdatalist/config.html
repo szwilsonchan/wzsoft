@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Title</div>
+            <div class="right"><input type="text" id="fieldTitle" v-model="dataitem.config.fieldtitle" /></div>
+        </div>
+        <div class="updWin-content-item" id="divDbField">
+            <div class="left">DB Field</div>
+            <div class="right">
+                <input type="text" v-model="dataitem.config.fieldname" style="width:200px"/>
+                <input class="btnOK" id="inpDbField" type="button"  onclick="selFieldGetDbFields(event)" value="+Existing Field" style="width:120px">
+                <div class="selDiv" style="display:none;" ><select class="varSelValue" style="margin-bottom: 10px;">
+                    <option></option></select><br/><input class="btnOK" type="button" value="Select" onclick="selFieldAdd(event)" /><input class="btnCancle" type="button" value="Cancel" onclick="selCloseAdd(event)" />
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Style</div>
+            <div class="right" style="line-height: 40px;">
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="1" v-model="dataitem.config.apptype" ><label>PC</label>
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="2" v-model="dataitem.config.apptype" ><label>Mobile</label><Br/>
+                <div style="float:left">
+                    Line Height：<input type="text" v-model="dataitem.config.itemheight" style="width:60px" />
+                    Font Size：<input type="text" v-model="dataitem.config.itemfontsize" style="width:60px" />
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">ListForm</div>
+            <div class="right"><input type="button" class="btnOK"  value="Design Form" onclick="openFormWin()" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Read Only</div>
+            <div class="right" style="line-height:40px">
+                <input type="radio" name="radiosview" value="true" v-model="dataitem.config.isview" ><label>Yes</label>
+                <input type="radio" name="radiosview" value="false" v-model="dataitem.config.isview" ><label>No</label>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">ActionsButtonDisplay</div>
+            <div class="right" style="line-height:40px">
+                Move Up：<input type="text" v-model="dataitem.config.showbtnprev" /><br/>
+                Move Down：<input type="text" v-model="dataitem.config.showbtnnext" /><br/>
+                Edit：<input type="text" v-model="dataitem.config.showbtnupd" /><br/>
+                Delete：<input type="text" v-model="dataitem.config.showbtndel" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Required</div>
+            <div class="right" style="line-height:40px"><input type="checkbox" v-model="dataitem.config.fieldnoempty" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Max Count</div>
+            <div class="right" style="line-height:40px"><input type="text" v-model="dataitem.config.itemmax" style="width:60px" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Display</div>
+            <div class="right" style="line-height:40px">
+                Form：<input type="checkbox" v-model="dataitem.config.formshow" style="width:5%" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Event</div>
+            <div class="right">
+                <span>On Value Change: </span>
+                <input type="button" class="btnOK"  value="Design Code" onclick="parent.openCodeValWin('onchange');" />
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./../../../js/funcconfig.js"></script>
+
+<script>
+
+function openFormWin()
+{
+
+    if(parent.gTempform)
+        parent.openTempFormWin("./temp_formin.html");
+    else
+        parent.openTempFormWin("./../config/com/formdatalist/temp_formin.html");
+}
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            dataitem:{
+                "comid":"1101",
+                "comname":"Data List",
+                "comtitle":"",
+                "needval":"true",
+                "code":{"onchange":{}},
+                "config":{"apptype":"1","lan":"e","isview":false,"fieldinfile":"1","fieldname":"","fieldtype":"nvarchar2","fieldlen":"2000","fieldnoempty":false,"fieldnoemptylbl":"","fieldshow":false,"formshow":true,"fieldtitle":"","showbtnprev":"1==1","showbtnnext":"1==1","showbtnupd":"1==1","showbtndel":"1==1","itemmax":"50"},
+                "attrget":{"listData":"listdata"},
+                "attrset":{"listData":"listdata","Display":"s#display","readonly":"s#isview"},
+                "attrsubmit":{"value":""},
+                "form":"",
+                "fields":[]
+            }
+        }
+    },
+    methods: 
+    {
+        getDataItem() 
+        {
+            let fdnu=this.dataitem.config.fieldname;
+            this.dataitem.config.fieldname=fdnu.toUpperCase();
+
+            if(this.dataitem.config.fieldnoempty)
+                this.dataitem.config.fieldnoemptylbl = "<span class=\"noempty\">*</span>";
+            else
+                this.dataitem.config.fieldnoemptylbl = "";
+            this.dataitem.comtitle=this.dataitem.config.fieldtitle;
+            this.dataitem.attrsubmit.value=this.dataitem.config.fieldname;
+            
+            let viewhtml = "";
+            let noempty="";
+            if(this.dataitem.config.fieldnoempty)
+            {
+                noempty = "<font color=red>*</font>";
+            }
+            if(this.dataitem.config.apptype=="1")
+            {
+                this.dataitem.config.uwinwidth="800px";
+                this.dataitem.config.uwinmleft="-400px";
+
+                this.dataitem.config.mwinwidth="600px";
+                this.dataitem.config.mwinmleft="-300px";
+                this.dataitem.config.mwintop="20%";
+
+                viewhtml = viewhtml + "<div style=\"width:100%;padding:10px;box-sizing: border-box;\" >";
+                viewhtml = viewhtml + "<div style=\"color: black;font-size:"+ this.dataitem.config.itemfontsize +";line-height:"+ this.dataitem.config.itemheight +";font-weight: bold;width:50%;box-sizing: border-box;margin-bottom: 10px;text-align: left;float:left\">";
+                viewhtml = viewhtml + "<span>"+ this.dataitem.config.fieldtitle + noempty +"</span>";
+                viewhtml = viewhtml + "</div>";
+                viewhtml = viewhtml + "<div style=\"width:50%;float: right;\">";
+                viewhtml = viewhtml + "<div style=\"float: right;margin-bottom:7px\" >";
+                viewhtml = viewhtml + "<input  type=\"button\" value=\"++New\" style=\"border-style: none;border-radius: 0.3em;background-color: rgb(46, 162, 240);color:#fff;height:40px;width:90px;cursor: pointer;outline:none;box-sizing: border-box;\"  />";
+                viewhtml = viewhtml + "</div>";
+                viewhtml = viewhtml + "</div>";
+                viewhtml = viewhtml + "<div class=\"content-tab-con\" >";
+                viewhtml = viewhtml + "<table class=\"tabdata\" style=\"font-size: 0.8em;border-collapse: collapse;width:100%;\">";
+                viewhtml = viewhtml + "<tr>";
+                viewhtml = viewhtml + "<th style=\"height: 30px;padding: 5px;background-color: rgb(207, 230, 245);border: 1px solid rgb(207, 230, 245);\" >No.</th>";
+                viewhtml = viewhtml + "<th style=\"height: 30px;padding: 5px;background-color: rgb(207, 230, 245);border: 1px solid rgb(207, 230, 245);\" >Title1</th>";
+                viewhtml = viewhtml + "<th style=\"height: 30px;padding: 5px;background-color: rgb(207, 230, 245);border: 1px solid rgb(207, 230, 245);\" >Title2</th>";
+                viewhtml = viewhtml + "<th style=\"height: 30px;padding: 5px;background-color: rgb(207, 230, 245);border: 1px solid rgb(207, 230, 245);\" >Title3</th>";
+                viewhtml = viewhtml + "<th style=\"height: 30px;padding: 5px;background-color: rgb(207, 230, 245);border: 1px solid rgb(207, 230, 245);\" >Actions</th>";
+                viewhtml = viewhtml + "</tr>";
+                viewhtml = viewhtml + "<tr>";
+                viewhtml = viewhtml + "<td style=\"border: 1px solid rgb(233, 232, 230);color: rgb(138, 135, 135);height: 30px;padding: 5px;\" >1</td>";
+                viewhtml = viewhtml + "<td style=\"border: 1px solid rgb(233, 232, 230);color: rgb(138, 135, 135);height: 30px;padding: 5px;\">Field1</td>";
+                viewhtml = viewhtml + "<td style=\"border: 1px solid rgb(233, 232, 230);color: rgb(138, 135, 135);height: 30px;padding: 5px;\">Field2</td>";
+                viewhtml = viewhtml + "<td style=\"border: 1px solid rgb(233, 232, 230);color: rgb(138, 135, 135);height: 30px;padding: 5px;\">Field3</td>";
+                viewhtml = viewhtml + "<td style=\"border: 1px solid rgb(233, 232, 230);color: rgb(138, 135, 135);height: 30px;padding: 5px;\">";
+                viewhtml = viewhtml + "<ul style=\"margin-top: -3px;\">";
+                viewhtml = viewhtml + "<li style=\"list-style: none;\"><a style=\"margin-left: 10px;width:42px;display: block;color: rgb(252, 249, 249);background-color:rgb(30, 108, 211);border-radius: 0.8em;height:32px;text-align: center;padding-top:1px;padding-right:2px;box-sizing: border-box;background-repeat: no-repeat;text-decoration: none;float:left;\" href=\"javascript:void(0)\" ><img width=\"70%\" src=\"./../imgs/update.png\"></a></li>";
+                viewhtml = viewhtml + "<li style=\"list-style: none;\"><a style=\"margin-left: 10px;width:42px;display: block;color: rgb(252, 249, 249);background-color:rgb(30, 108, 211);border-radius: 0.8em;height:32px;text-align: center;padding-top:1px;padding-right:2px;box-sizing: border-box;background-repeat: no-repeat;text-decoration: none;float:left;\" href=\"javascript:void(0)\" ><img width=\"70%\" src=\"./../imgs/del.png\"></a></li>";
+                viewhtml = viewhtml + "</ul>";
+                viewhtml = viewhtml + "</td>";
+                viewhtml = viewhtml + "</tr>";
+                viewhtml = viewhtml + "</table>";
+                viewhtml = viewhtml + "</div>";
+                viewhtml = viewhtml + "</div>";
+            }
+            else
+            {
+                this.dataitem.config.uwinwidth="90%";
+                this.dataitem.config.uwinmleft="-45%";
+
+                this.dataitem.config.mwinwidth="90%";
+                this.dataitem.config.mwinmleft="-45%";
+                this.dataitem.config.mwintop="10%";
+
+                viewhtml = viewhtml + "<div style=\"width:100%;padding:10px;box-sizing: border-box;\" >";
+                viewhtml = viewhtml + "<div style=\"color: black;font-size:"+ this.dataitem.config.itemfontsize +";line-height:"+ this.dataitem.config.itemheight +";font-weight: bold;width:100%;box-sizing: border-box;margin-bottom: 10px;text-align: left;\">";
+                viewhtml = viewhtml + "<span>"+ this.dataitem.config.fieldtitle + noempty +"</span>";
+                viewhtml = viewhtml + "</div>";
+                viewhtml = viewhtml + "<div style=\"border: 1px solid rgb(233, 232, 230);width:100%;\">";
+                viewhtml = viewhtml + "<div style=\"float: right;margin-bottom:7px;width:100%;\" >";
+                viewhtml = viewhtml + "<input  type=\"button\" value=\"++New\" style=\"border-style: none;font-size:"+ this.dataitem.config.itemfontsize +";border-radius: 0.8em;background-color: rgba(247, 191, 87, 0.685);color:#000;height:"+ this.dataitem.config.itemheight +";width:100%;cursor: pointer;outline:none;box-sizing: border-box;\"  />";
+                viewhtml = viewhtml + "</div>";
+                viewhtml = viewhtml + "</div>";
+                viewhtml = viewhtml + "<div class=\"content-tab-con\" >";
+                viewhtml = viewhtml + "<table class=\"tabdata\" style=\"font-size:"+ this.dataitem.config.itemfontsize +";border-collapse: collapse;width:100%;\">";
+                viewhtml = viewhtml + "<tr>";
+                viewhtml = viewhtml + "<th style=\"height: "+ this.dataitem.config.itemheight +";padding: 5px;background-color: rgb(207, 230, 245);border: 1px solid rgb(207, 230, 245);\" >Title1/Title2/Title3</th>";
+                viewhtml = viewhtml + "</tr>";
+                viewhtml = viewhtml + "<tr><td style=\"border: 1px solid rgb(233, 232, 230);color: rgb(138, 135, 135);line-height: "+ this.dataitem.config.itemheight +";padding: 5px;\">Field1<br>Field2<br>Field3";
+                viewhtml = viewhtml + "<ul style=\"margin-top: -3px;\">";
+                viewhtml = viewhtml + "<li style=\"list-style: none;float:right\"><a style=\"margin-left: 10px;width:"+ this.dataitem.config.itemheight +";display: block;color: rgb(252, 249, 249);background-color:rgb(30, 108, 211);border-radius: 1em;height:"+ this.dataitem.config.itemheight +";text-align: center;padding-top:5px;padding-right:2px;box-sizing: border-box;background-repeat: no-repeat;text-decoration: none;float:left;\" href=\"javascript:void(0)\" >Del</a></li>";
+                viewhtml = viewhtml + "<li style=\"list-style: none;float:right\"><a style=\"margin-left: 10px;width:"+ this.dataitem.config.itemheight +";display: block;color: rgb(252, 249, 249);background-color:rgb(30, 108, 211);border-radius: 1em;height:"+ this.dataitem.config.itemheight +";text-align: center;padding-top:5px;padding-right:2px;box-sizing: border-box;background-repeat: no-repeat;text-decoration: none;float:left;\" href=\"javascript:void(0)\" >Edit</a></li>";
+                viewhtml = viewhtml + "</ul></td></tr></table>";
+                viewhtml = viewhtml + "</div>";
+                viewhtml = viewhtml + "</div>";
+            }
+
+            if(this.dataitem.config.lan=="c")
+            {
+                this.dataitem.config.capno = "No.";
+                this.dataitem.config.capaction = "Actions";
+                this.dataitem.config.capaddbtn = "Add";
+                this.dataitem.config.capup = "Prev";
+                this.dataitem.config.capdown = "Next";
+                this.dataitem.config.capview = "View";
+                this.dataitem.config.capupd = "Edit";
+                this.dataitem.config.capdel = "Del";
+                this.dataitem.config.infodel = "Are you sure you want to delete this record?";
+                this.dataitem.config.btnsave = "Save";
+                this.dataitem.config.btnok = "OK";
+                this.dataitem.config.btncancle = "Cancel";
+                this.dataitem.config.msgitemmax = "Record count cannot exceed ";
+            }
+            else
+            {
+                this.dataitem.config.capno = "No.";
+                this.dataitem.config.capaction = "Action";
+                this.dataitem.config.capaddbtn = "Add";
+                this.dataitem.config.capup = "Up";
+                this.dataitem.config.capdown = "Down";
+                this.dataitem.config.capview = "View";
+                this.dataitem.config.capupd = "Upd";
+                this.dataitem.config.capdel = "Del";
+                this.dataitem.config.infodel = "Are you sure you want to delete the record?";
+                this.dataitem.config.btnsave = "Save";
+                this.dataitem.config.btnok = "Confirm";
+                this.dataitem.config.btncancle = "Cancle";
+                this.dataitem.config.msgitemmax = "'s records cannot exceed ";
+            }
+
+            this.dataitem.config.viewhtml=viewhtml;
+
+            let msg="";
+            msg = gCheckField(this.dataitem.config.fieldname,this.dataitem.config.fieldlen);
+
+            if(msg!="")
+                alert(msg);
+            else
+                return this.dataitem;
+   
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+        },
+        setFormValue(fValue,codename) 
+        {
+            let c = this.dataitem['code'];
+            c[codename] = fValue;
+        },
+        getFormValue(codename) 
+        {
+            let c = this.dataitem['code'];
+            return c[codename];
+        },
+        setFormConValue(fValue) 
+        {
+            this.dataitem['form']=fValue;
+        },
+        getFormConValue() 
+        {
+            return this.dataitem['form'];
+        },
+        setFieldsValue(fValue) 
+        {
+            this.dataitem['fields']=fValue;
+        },
+        getFieldsValue() 
+        {
+            return this.dataitem['fields'];
+        }, 
+        getDataItemSub() 
+        {
+            return this.dataitem;
+        },
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.getDataItemSub = this.getDataItemSub;
+        window.setDataItem = this.setDataItem;
+        window.setFormValue = this.setFormValue;
+        window.getFormValue = this.getFormValue;
+        window.setFormConValue = this.setFormConValue;
+        window.getFormConValue = this.getFormConValue;
+        window.setFieldsValue = this.setFieldsValue;
+        window.getFieldsValue = this.getFieldsValue;
+
+        gInitConfig();
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+.content-tab[@configid@] 
+{
+    background-color:[@conbg@];
+    border-radius: [@conradius@];
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin: 0px;
+    width:100%;
+    box-sizing: border-box;
+    height: fit-content;
+    overflow:auto;
+}
+.content-tab[@configid@] .content-tab-title 
+{
+    color: black;
+    font-size:1em;
+    font-weight: bold;
+    width:100%;
+    cursor:pointer;
+    box-sizing: border-box;
+    height:30px;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+.content-tab[@configid@] .tabdata
+{
+    border-collapse: collapse;
+    font-size: 0.8em;
+    width:100%;
+}
+.content-tab[@configid@] .tabdata tr:hover
+{
+    background-color: rgb(237, 242, 245);
+}
+.content-tab[@configid@] .tabdata .selitem
+{
+    background-color: rgb(237, 242, 245);
+}
+.content-tab[@configid@] .tabdata td
+{
+    border: 1px solid rgb(233, 232, 230);
+    color: rgb(138, 135, 135);
+    cursor: pointer;
+    height: 30px;
+    padding: 5px;
+}

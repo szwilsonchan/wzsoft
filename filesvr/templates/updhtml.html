@@ -1,0 +1,178 @@
+
+    <div class="select-tab" >
+        <ul>
+            <li id="sel-tab2" onclick="selContentTab(event)" style="width:20%" class="selected">Component</li>
+            <li id="sel-tab1" onclick="selContentTab(event)" style="width:20%" >Appearance</li>
+            <li style="width:58%" >&nbsp;</li>
+        </ul>
+    </div>
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" id="updWin-sel-tab2" >
+        <div class="updWin-content-item" style="display:none">
+            <div class="left">Component</div>
+            <div class="right" id ="complist">
+                <select class="sel" id="con-com" onchange="showComconfig()" >
+                    <option></option>
+                    <option v-for="data in datas" :value="data['COMID']+'|'+data['PIC']+'|'+data['CONFIG']" >{{data['NAME']}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="updWin-content-item" id="compconfig" style="display:none"> 
+            <iframe id="compiframe" class="compiframe" style="height:560px" frameborder="no" marginwidth="0" marginheight="0" scrolling="auto" ></iframe>
+        </div>
+    </div>
+    <div class="updWin-content" id="updWin-sel-tab1" style="display: none;">
+        <div class="updWin-content-item" id="conParentId" style="display: none;">
+            <div class="left">ContainerID</div>
+            <div class="right">
+                <input type="text" id="con-id" value="" style="width:35%" />
+                <div id="divHidden" style="display:inline">
+                    Is Overlay: <select id="con-hiddendiv" value="no" style="width:35%"  >
+                        <option value="no">No</option>
+                        <option value="yes"> is </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" id="conParentName" style="display: none;">
+            <div class="left">ContainerName</div>
+            <div class="right"><input type="text" id="con-name" value="" style="width:35%"  />
+                <div id="div-display" style="display:inline">
+                    &nbsp;Show：
+                    <select id="con-display" value="" style="width:20%">
+                        <option>block</option>
+                        <option>none</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Border</div>
+            <div class="right">
+                Width：<input type="text"  style="width:10%" id="con-border-width" value="" />
+                Style：<input type="text"  style="width:15%" id="con-border-style" value="" />
+                Border Radius：<input type="text" id="con-border-radius" style="width:10%" value="" />
+                Color：<input type="text" id="color-picker" style="width:16%" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Overflow</div>
+            <div class="right">
+                <select id="con-overflow" value="relative" style="width:25%">
+                    <option></option>
+                    <option>auto</option>
+                    <option>visible</option>
+                    <option>hidden</option>
+                    <option>scroll</option>
+                    <option>inherit</option>
+                </select>
+                BackgroundColor：<input type="text" id="color-picker1" style="width:15%" />
+                Box Shadow：<input type="text" id="con-shadow" style="width:20%" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Background Image</div>
+            <div class="right">
+                Image：<input type="text"  style="width:50%" id="con-bg-url" value="" />
+                <input class="btnAddVar" type="button"  onclick="varSelShowFile(event)" value="+Upload Image" >
+                <div class="selDiv" id="divFile" style="display:none;line-height: 40px;" >
+                    <div id="fileUpd" >
+                        <label class="fileContainer">Please select File：<input id="bgfile" ref="clearFile" type="file" onchange="fileUpload();return false"></label>
+                    </div>
+                    <div id="fileUpded" style="display: none;">
+                        <a id="fileHref" href="javascript:void(0)" onclick="fileDownload();return false"  style="text-decoration-line: none;"></a>&nbsp;&nbsp;
+                        <a href="javascript:void(0)" onclick="fileDelete();return false" >Delete</a>
+                    </div>
+                    <input class="btnAddVar"  type="button" value="OK" onclick="imgAdd(event)" />
+                    <input class="btnCancleVar"  type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div><Br>
+                Repeat：<select id="con-bg-repeat" value="relative" style="width:15%">
+                    <option></option>
+                    <option>repeat</option>
+                    <option>repeat-x</option>
+                    <option>repeat-y</option>
+                    <option>no-repeat</option>
+                    <option>inherit</option>
+                </select>
+                Position：<input type="text"  style="width:15%" id="con-bg-pos" value="left top"  />
+                Scale：<input type="text"  style="width:15%" id="con-bg-size" value="100% 100%"  />
+            </div>
+        </div>
+        <div class="updWin-content-item" id="conParentPosition">
+            <div class="left">PositionMode</div>
+            <div class="right">
+                <select id="con-position" value="relative" style="width:15%" >
+                    <option>relative</option>
+                    <option>absolute</option>
+                    <option>fixed</option>
+                </select>&nbsp;&nbsp;
+                Z-Index：<input type="text"  style="width:15%" id="con-zindex" value="1"  />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Position</div>
+            <div class="right">
+                Top：<input type="text" id="con-ptop"  style="width:15%" value="" />
+                Bottom：<input type="text" id="con-pbottom"  style="width:15%" value="" />
+                Left：<input type="text" id="con-pleft"  style="width:15%" value="" />
+                Right：<input type="text" id="con-pright"  style="width:15%" value="" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Margin</div>
+            <div class="right">
+                Top：<input type="text" id="con-margin-top"  style="width:15%" value="" />
+                Bottom：<input type="text" id="con-margin-bottom"  style="width:15%" value="" />
+                Left：<input type="text" id="con-margin-left"  style="width:15%" value="" />
+                Right：<input type="text" id="con-margin-right"  style="width:15%" value="" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Padding</div>
+            <div class="right">
+                Top：<input type="text" id="con-padding-top"  style="width:15%" value="" />
+                Bottom：<input type="text" id="con-padding-bottom"  style="width:15%" value="" />
+                Left：<input type="text" id="con-padding-left"  style="width:15%" value="" />
+                Right：<input type="text" id="con-padding-right"  style="width:15%" value="" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Width</div>
+            <div class="right">
+                Width：<input type="text" id="con-width"  style="width:20%" value="" />
+                Min：<input type="text" id="con-width-min"  style="width:20%" value="" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Height</div>
+            <div class="right">
+                Height：<input type="text" id="con-height" style="width:20%" value="" />
+                Min：<input type="text" id="con-height-min"  style="width:20%" value="" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Float</div>
+            <div class="right">
+                <select id="con-float" value="" style="width:20%">
+                    <option></option>
+                    <option>left</option>
+                    <option>right</option>
+                </select>
+                Text Align：<select id="con-textalign" value="" style="width:20%">
+                    <option></option>
+                    <option>left</option>
+                    <option>right</option>
+                    <option>center</option>
+                    <option>justify</option>
+                    <option>inherit</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="updWinBtn">
+        <input type="button" class="btnOK"  value="Save" onclick="openWinOK()" />
+        <input type="button" class="btnCancle"  value="Cancel" onclick="closeWin()" />
+    </div>

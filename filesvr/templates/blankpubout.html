@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/blankpub/main.css" type="text/css"  />	
+<script src="./js/vue.global.js"></script>
+<script src="./js/axios.min.js"></script>
+<script src="./js/func.js"></script>
+<script src="./js/funcsub.js"></script>
+<script src="./js/funcfront.js"></script>
+[@stylefile@]
+</head>
+<body scroll="no">
+<div class="main-wrapper" id="main-wrapper">
+    [@filecontent@]
+    <div id="formVue" style="display:none"></div>
+</div>
+<div id="coverWin" class="coverWin"></div>
+<div id="modalWin" class="modalWin">
+    <div class="modalWinMsg"><span id="modalWinMsg"></span></div>
+    <div class="modalWinBtn">
+        <div>
+            <input type="button" id="modalWinBtnOK" class="btnOK"  value="OK" />
+            <input type="button" id="modalWinBtnCancle" class="btnCancle"  value="Cancel" />
+        </div>
+    </div>
+</div>
+[@jsfile@]
+<script>
+    [@gfuncs@];
+
+    function gValPage()
+    {
+        var valmsgglobal="";
+        var valn=1;
+        [@valcodes@]
+        if((typeof(valmsgglobal) == "undefined"||valmsgglobal=="")&&valn==1)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    function initFormDatasJS()
+    {
+        [@initformdatas@]
+    }
+
+    const FormVue = 
+    {
+        data() 
+        {
+            return {
+                pageid:'[@pageid@]',
+                dataitem:{},
+                returnmsg:''
+            }
+        },
+        methods: 
+        {
+            initFormDatas()
+            {
+                let paras = {};
+                setPageParas(paras,mapPara);
+                paras['pageID']=this.pageid;
+                var that = this;
+                axios.post("./../portal/api/datainit",paras).then(function(res){
+                    let redata = res.data; 
+                    if(redata!=null)
+                        getGlobalParas(redata,mapPara); 
+                    initFormDatasJS();
+
+                }).catch(function (err) {
+                    alert("DataInitialization error");
+                });
+            },
+            getDataItem(k) 
+            {
+                k=k.toUpperCase();
+                return this.dataitem[k];
+            },
+            setDataItem(k,v)
+            {
+                k=k.toUpperCase();
+                this.dataitem[k]=v;
+            }
+        },
+        mounted() 
+        {
+
+            this.initFormDatas();
+            window.getDataItem = this.getDataItem;
+            window.setDataItem = this.setDataItem;
+
+        }
+    }
+    
+    Vue.createApp(FormVue).mount('#formVue');
+    
+    </script>
+
+</body>
+</html>

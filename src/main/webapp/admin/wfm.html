@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/main.css" type="text/css"  />
+<script src="./../js/vue.global.js"></script>
+<script src="./../js/axios.min.js"></script>
+<script src="./js/funcadmin.js"></script>
+<script>
+
+    window.viewcode="wfm";
+
+</script>
+
+</head>
+<body>
+<div class="main-wrapper">
+    <div class="header">
+        <div class="logDiv">
+            <img src="./../upload/logo.png" height="36px" onclick="showmenuleftpc()" />
+        </div>
+        <div class="logoutDiv">
+            <input type="button" class="btnLogout"  value="Logout" onclick="document.location.href='./../logout'" />
+        </div>
+    </div>    
+    <div class="menu-left" >
+        <ul class="menu-content" id="menu-content">
+            <li v-for="data in datas" >
+                    <a href="javascript:void(0)" v-show="data.PID==null&&((showpid['S'+data.MENUID])||(data.LOCATION==this.curLocation))"  @click="setMenuSession(data.MENUID,data.LOCATION)" class="active">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID==null&&((!showpid['S'+data.MENUID])&&(data.LOCATION!=this.curLocation))"  @click="setMenuSession(data.MENUID,data.LOCATION)" class="menu">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID!=null&&showpid['S'+data.PID]&&data.LOCATION==this.curLocation&&this.curLocation!=null" @click="setMenuSession(null,data.LOCATION)" class="activesub">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID!=null&&showpid['S'+data.PID]&&data.LOCATION!=this.curLocation" @click="setMenuSession(null,data.LOCATION)" class="menusub">{{data.NAME}}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="content" id="content">
+        <div class="content-title">
+            <span>Workflow Management</span>
+        </div>
+        <div class="content-tab" id="datalist">
+            <div class="content-tab-title">
+                <span>Workflow List</span>
+            </div>
+        <div class="content-info" id="content-info" style="display:none">
+            <div class="left" id="content-info-msg"></div>
+            <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+        </div>
+            <div class="content-tab-filter" >
+                <div class="pageselshow">
+                    Per Page
+                    <select class="sel" v-model="pageitems" @change="searchDatas()">
+                        <option selected>2</option>
+                        <option>10</option>
+                        <option>20</option>
+                        <option>50</option>
+                    </select>
+                    Records
+                </div>
+                <div class="actionbtns">
+                    <input type="button" value="+Add" @click="openAddWinVue('',addDatas,'')" />&nbsp;
+                    <input type="button" value="Export" @click="goExport()" />&nbsp;
+                    <input type="button" value="Import" onclick="openUpdImportWin()" />&nbsp;
+                </div>
+                <div class="searchcombine" >
+                    <input type="button" class="btn"  value="Search" @click="searchDatas()" />
+                </div>
+                <div class="searchcombine" id="view_prp_filters">
+                    <input type="text" class="text" name="filter_searchkey_like" value="" />
+                </div>
+            </div>
+            <div class="content-tab-con" >
+                <table class="tabdata" >
+                    <tr>
+                        <th><input type="checkbox" :checked="selAll" @click="checkedAllId()"></th>
+                        <th v-for="datalab in datalabs" @click="sortdata(Object.keys(datalab)[0])" >
+                            {{Object.values(datalab)[0]}} 
+                            <img v-show="this.sortfield==Object.keys(datalab)[0]&&this.sorttype=='asc'" src="./imgs/sortasc.png" />
+                            <img v-show="this.sortfield==Object.keys(datalab)[0]&&this.sorttype=='desc'" src="./imgs/sortdesc.png" /></th>
+                        <th>Actions</th>
+                    </tr>
+                    <tr v-for="data in datas">
+                        <td style="text-align: center;"><input type="checkbox" :checked="selIds.indexOf(data[pkey])>=0" name="checkboxinput" @click="checkedOneId(data[pkey])"></td>
+                        <template v-for="item in datalabs">
+                            <td v-if="arrShowTitles.indexOf(Object.keys(item)[0])!=-1">{{data[Object.keys(item)[0]]}}</td>
+                        </template>
+                    <td>
+                        <ul class="action-content">
+                            <li><a href="javascript:void(0)" @click="openUpdWinVue('',updDatas,data[pkey])"><img width="23"  src="./imgs/update.png"></a></li>
+                            <li><a :href="'./wfm_design.html?wfmid='+data['WFMID']" >Design</a></li>
+                            <li><a :href="'./wfm_entrust.html?wfmid='+data['WFMID']" >Delegate</a></li>
+                            <li><a href="javascript:void(0)" @click="openWinVue('Are you sure you want to delete this record?<br><font color=red>Note: Related review records will also be deleted and cannot be recovered!</font>',delDatas,data[pkey])"><img width="23" src="./imgs/del.png"></a></li>
+                        </ul>
+                    </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="content-tab-pages">
+                <div class="itemsshow">
+                    <span>Total {{totalitems}} records</span>
+                </div>
+                <div class="pagesshow" id="pagesshow" v-show="hasitmes">
+                    <ul class="page-content">
+                        <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage+1)">Next</a></li>
+                        <li v-for="page in showpages">
+                            <a href="javascript:void(0)" v-if="page.i==this.curpage" @click="getDatasByFilters(page.i)" class="active">{{page.i}}</a>
+                            <a href="javascript:void(0)" v-if="page.i!=this.curpage" @click="getDatasByFilters(page.i)" >{{page.i}}</a>
+                        </li>
+                        <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage-1)">Previous</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="updWinImport" class="updWin">
+                <div class="updWin-info" id="updWinImport-info" style="display:none">
+                    <div class="left" id="updWinImport-info-msg"></div>
+                    <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+                </div>
+                <div class="updWin-content" >
+                    <div class="updWin-content-item">
+                        <div class="left" >Page File</div>
+                        <div class="right" > 
+                            <div class="selDiv" style="line-height: 40px;" >
+                                <div v-show="!blnUpdedZip" >
+                                    <label class="fileContainer">Select file to upload:<input id="filezip" ref="clearFileZip" type="file" @change="fileUploadZip()"></label>
+                                </div>
+                                <div v-show="blnUpdedZip">
+                                    <img height="20" src="./imgs/file.png"><a href="javascript:void(0)" @click="fileDownloadZip()"  style="text-decoration-line: none;">{{fileContentZip['fileName']}}</a>&nbsp;&nbsp;
+                                    <a href="javascript:void(0)" @click="fileDeleteZip()" >Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="updWinBtn">
+                    <input type="button" class="btnOK"  value="Save" @click="goImport()" />
+                    <input type="button" class="btnCancle"  value="Cancel" onclick="closeWin()" />
+                </div>
+            </div>
+    <div id="updWin" class="updWin">
+        <div class="updWin-info" id="updWin-info" style="display:none">
+            <div class="left" id="updWin-info-msg"></div>
+            <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+        </div>
+        <div class="updWin-content" >
+            <div class="updWin-content-item" v-show="this.isupd">
+                <div class="left">No.</div>
+                <div class="right"><input type="text" readonly class="readonly" v-model="dataitem.WFMID" name="wfmid" value="" /></div>
+            </div>
+            <div class="updWin-content-item" v-show="this.isupd" style="line-height: 40px;">
+                <div class="left">Unique ID</div>
+                <div class="right">{{dataitem.GUID}}</div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">Workflow Name</div>
+                <div class="right"><input type="text" v-model="dataitem.NAME" name="filed_name" value="" /></div>
+            </div>
+            <div class="updWin-content-item" >
+                <div class="left">Associated Dataset</div>
+                <div class="right">
+                    <select  v-model="dataitem.TBLNAME" @change="selDataItem" class="sel">
+                        <option></option>
+                        <option v-for="v in wfmdatas"  name="filed_dataid" :value="v['TABLENAME']" >{{v['NAME']}}</option>
+                    </select>
+                </div>
+                <div id ="wfmsdatalistsub" style="display:none"></div>
+            </div>
+            <div class="updWin-content-item" >
+                <div class="left">Title Field</div>
+                <div class="right">
+                    <select  v-model="dataitem.DATANAMEFIELD" class="sel">
+                        <option></option>
+                        <option v-for="v in wfmdatafields"  name="field_datanamefield" :value="v['FIELD']" >{{v['FIELD_TITLE']}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="updWin-content-item" style="line-height:40px">
+                <div class="left">Notification Method</div>
+                <div class="right">
+                    <input type="radio" name="radiosmsg" value="0" v-model="dataitem.MSGMODE" ><label>No Notification</label>
+                    <input type="radio" name="radiosmsg" value="1" v-model="dataitem.MSGMODE" ><label>Email Only</label>
+                    <input type="radio" name="radiosmsg" value="2" v-model="dataitem.MSGMODE" ><label>Mobile Only</label>
+                    <input type="radio" name="radiosmsg" value="3" v-model="dataitem.MSGMODE" ><label>Email & Mobile</label>
+                </div>
+            </div>
+            <div class="updWin-content-item" style="line-height:40px">
+                <div class="left">Dataset Status Update</div>
+                <div class="right">
+                    <input type="radio" name="radiosrights" value="1" v-model="dataitem.UPDDATA" ><label>Update</label>
+                    <input type="radio" name="radiosrights" value="0" v-model="dataitem.UPDDATA" ><label>No Update</label>
+                </div>
+            </div>
+        </div>
+        <div class="updWinBtn">
+            <input type="button" class="btnOK"  value="Save" onclick="openWinOK()" />
+            <input type="button" class="btnCancle"  value="Cancel" onclick="closeWin()" />
+        </div>
+    </div>
+        </div>
+    </div> 
+    <div class="footer">
+        Copyright by WSoft
+    </div> 
+    <div id="coverWin" class="coverWin"></div>
+    <div id="modalWin" class="modalWin">
+        <div class="modalWinMsg"><span id="modalWinMsg"></span></div>
+        <div class="modalWinBtn">
+            <input type="button" class="btnOK"  value="OK" onclick="openWinOK()" />
+            <input type="button" class="btnCancle"  value="Cancel" onclick="closeWin()" />
+        </div>
+    </div>
+</div>
+
+<script>
+
+window.callback=null;
+window.callbackpara=null;
+
+function openUpdImportWin() 
+{
+    document.getElementById("coverWin").style.display="block";
+    document.getElementById("updWinImport").style.display="block";
+    document.getElementById("content-info").style.display="none";
+}
+
+function openWin(msg,callback,callbackpara) 
+{
+    document.getElementById("coverWin").style.display="block";
+    document.getElementById("modalWin").style.display="block";
+    document.getElementById("modalWinMsg").innerHTML=msg;
+    window.callback=callback;
+    window.callbackpara=callbackpara;
+}
+function openUpdWin(msg,callback,callbackpara) 
+{
+    document.getElementById("coverWin").style.display="block";
+    document.getElementById("updWin").style.display="block";
+    document.getElementById("content-info").style.display="none";
+    window.callback=callback;
+    window.callbackpara=callbackpara;
+}
+function openAddWin(msg,callback,callbackpara) 
+{
+    document.getElementById("coverWin").style.display="block";
+    document.getElementById("updWin").style.display="block";
+    document.getElementById("content-info").style.display="none";
+    window.callback=callback;
+    window.callbackpara=callbackpara;
+}
+function openWinOK() 
+{
+    window.callback(window.callbackpara); 
+}
+
+function closeWin() 
+{
+    document.getElementById("coverWin").style.display="none";
+    document.getElementById("modalWin").style.display="none";
+    document.getElementById("updWin").style.display="none";
+    document.getElementById("updWinImport").style.display="none";
+}
+
+function closeInfoMsg(e) 
+{
+    e.srcElement.parentElement.style.display="none";
+}
+const DataListVue = 
+{
+    data() 
+    {
+        return {
+            datas:null,
+            dataitem:{},
+            datalabs:null,
+            datatotal:null,
+            datalocations:null,
+            curpage:1,
+            totalpage:0,
+            totalitems:0,
+            pageitems:10,
+            beginpage:0,
+            endpage:0,
+            showpages:[],
+            hasitmes:true,
+            pkey:null,
+            isupd:true,
+            wfmdatas:null,
+            wfmdatafields:null,
+            returnmsg:'',
+            arrShowTitles:[],
+            fileContentZip:{},
+            blnUpdedZip:false,
+            sortfield:'',
+            sorttype:'',
+            selIds:[],
+            pkeyIds:[],
+            selAll:false
+        }
+    },
+    methods: 
+    {
+        goExport() 
+        {
+            if(this.selIds.length==0)
+            {
+                document.getElementById("content-info-msg").innerHTML="Please select records to export first!";
+                document.getElementById("content-info").style.display="block";
+            }
+            else
+            {
+                let paras = {};
+                paras['itemIDs']=this.selIds.join(",");
+                var that = this;
+                axios({
+                    url: './../api/wfmexport',
+                    method: 'POST',
+                    data:paras,
+                    responseType: 'blob', 
+                }).then((response) => {
+                    const url = window.URL.createObjectURL(new Blob([response.data]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'wfm.zip');
+                    document.body.appendChild(link);
+                    link.click();
+                });
+            }
+        },
+        goImport() 
+        {
+            let paras = {};
+            if(this.blnUpdedZip)
+                paras['datafile']=this.fileContentZip['filePath'];
+            else
+            {
+                alert("Please upload the file to import.");
+                return;
+            }
+
+            var that = this;
+            axios.post("./../api/wfmimport",paras).then(function(res)
+            {
+                let m = res.data;
+                if(m['msg']!="")
+                {
+                    document.getElementById("content-info-msg").innerHTML=m['msg'];
+                    document.getElementById("content-info").style.display="block";
+                }
+                else
+                {
+                    document.getElementById("content-info-msg").innerHTML="Records imported successfully!";
+                    document.getElementById("content-info").style.display="block";
+                    that.getDatasByFilters(that.curpage);
+                }
+                closeWin();
+
+            }).catch(function (err) {
+            });
+        },
+        checkedOneId(Id) 
+        {
+            let idIndex = this.selIds.indexOf(Id)
+            if (idIndex >= 0) {
+            this.selIds.splice(idIndex, 1)
+            } else {
+            this.selIds.push(Id)
+            }
+        },
+        checkedAllId() 
+        {
+            if(!this.selAll)
+            {
+                this.selIds = this.pkeyIds;
+                this.selAll=true;
+            }
+            else
+            {
+                this.selIds = [];
+                this.selAll=false;
+            }
+        },
+        fileDeleteZip()
+        {
+            this.fileContentZip={};
+            this.blnUpdedZip=false;
+            this.$refs.clearFileZip.value = '';
+        },
+        fileDownloadZip()
+        {
+            that=this;
+            axios({
+                url: './../api/downloadFile',
+                method: 'POST',
+                data:{"fileGuid":that.fileContentZip['fileGUID']},
+                responseType: 'blob', // important
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', that.fileContentZip['fileName']);
+                document.body.appendChild(link);
+                link.click();
+            });
+        },
+        fileUploadZip()
+        {
+            let file = document.getElementById("filezip").files[0];
+            let fv = document.getElementById("filezip").value;
+            fv = fv.substring(fv.indexOf(".")+1);
+
+            if(fv.toUpperCase()!="ZIP")
+            {
+                alert("Only ZIP format files can be uploaded.");
+                return;
+            }
+
+            let params = new FormData();
+            params.append('file', file)
+            that=this;
+            axios({
+                url: "./../api/uploadFile",
+                method: "post",
+                data: params,
+                headers: { 'Content-Type': 'multipart/form-data' }
+            }).then(function(res){
+                that.fileContentZip=res.data;    
+                that.blnUpdedZip=true; 
+
+            }).catch(function (err) {
+            });
+        },
+        sortdata(field)
+        {
+            if(this.sortfield==field)
+            {
+                if(this.sorttype=='asc')
+                    this.sorttype='desc';
+                else
+                    this.sorttype='asc';
+            }
+            else
+                this.sorttype='asc';
+
+            this.sortfield=field;
+            gSetSessionStoreNull("adminwfm");
+            this.getDatasByFilters(1);
+        },
+        setWfmdatas(dl)
+        {
+            this.wfmdatas=dl;	
+        },
+        selDataItem() 
+        {
+            let paras = {};
+            paras['viewCode']="data_fields";
+            paras['curPage']=1;
+            paras['pageItmes']=100;
+            paras['filter_tablename_equal']=this.dataitem['TBLNAME'];
+            paras['filter_isinfile_equal']="0";
+            var that = this;
+            axios.post("./../api/datalist",paras).then(function(res){
+            that.wfmdatafields=Object.values(res.data)[0];    
+            }).catch(function (err) {
+            });
+        },
+        getDatas () 
+        {
+            let paras = {};
+            let spara = gGetSessionStore("adminwfm");
+            if(spara)
+            {
+                paras = spara['para'];
+                this.pageitems = paras['pageItmes'];
+            }
+            else
+            {
+                paras['viewCode']=window.viewcode;
+                paras['curPage']=this.curpage;
+                paras['pageItmes']=this.pageitems;
+            }
+
+            var that = this;
+            axios.post("./../api/datalist",paras).then(function(res){
+            that.datas=Object.values(res.data)[0];    
+            that.datalabs=Object.values(res.data)[1]; 
+            that.arrShowTitles=[];
+            for(let item of that.datalabs)
+            {
+                let fkey = Object.keys(item)[0];
+                that.arrShowTitles.push(fkey.toUpperCase());
+            }  
+            that.datatotal=Object.values(res.data)[2];
+            let p = Object.values(Object.values(res.data)[3])[0];
+            that.pkey=p['pkey'];
+            that.totalitems=Object.values(Object.values(Object.values(that.datatotal)[0]))[0];
+
+            that.pkeyIds = [];
+            that.selIds=[];
+            that.selAll=false;
+            for(let item of that.datas)
+            {
+                that.pkeyIds.push(item[that.pkey]);
+            }
+            that.curpage = paras['curPage'];
+            that.dealPages();
+            gSetSessionStore("adminwfm",paras,that.curpage);
+
+            }).catch(function (err) {
+            });
+        },
+        searchDatas() 
+        {
+            gSetSessionStoreNull("adminwfm"); 
+            this.getDatasByFilters(1);
+        },
+        getDatasByFilters(curpage) 
+        {
+            let paras = null;
+            let spara = gGetSessionStore("adminwfm");
+            if(spara)
+            {
+                paras = spara['para'];
+            }
+
+            if(curpage==0)
+                return;
+
+            if(curpage>this.totalpage&&this.totalpage!=0)
+                return;
+
+            if(paras==null)
+            {
+                paras={};
+                let view_filters = document.getElementById("view_prp_filters");
+                paras['viewCode']=window.viewcode;
+                for (let node of view_filters.childNodes) 
+                {
+                    let fname = node.name;
+                    if(fname!=undefined)
+                    {
+                        let farrs=fname.split("_");
+                        if(farrs.length==3&&farrs[0]=="filter")
+                        {
+                            paras[fname]=node.value;
+                        }
+                    }
+                }
+                paras['pageItmes']=this.pageitems;
+                if(this.sortfield!='')
+                    paras['order_'+ this.sortfield + '_' + this.sorttype]="1";
+            }
+            paras['curPage']=curpage;
+
+            var that = this;
+            axios.post("./../api/datalist",paras).then(function(res){
+            that.datas=Object.values(res.data)[0];    
+            that.datalabs=Object.values(res.data)[1];  
+            that.arrShowTitles=[];
+            for(let item of that.datalabs)
+            {
+                let fkey = Object.keys(item)[0];
+                that.arrShowTitles.push(fkey.toUpperCase());
+            } 
+            that.datatotal=Object.values(res.data)[2];
+            let p = Object.values(Object.values(res.data)[3])[0];
+            that.pkey=p['pkey'];
+            that.totalitems=Object.values(Object.values(Object.values(that.datatotal)[0]))[0];
+
+            that.pkeyIds = [];
+            that.selIds=[];
+            that.selAll=false;
+            for(let item of that.datas)
+            {
+                that.pkeyIds.push(item[that.pkey]);
+            }
+
+            that.curpage=paras['curPage'];
+            that.dealPages();
+            gSetSessionStore("adminwfm",paras,that.curpage);
+
+            }).catch(function (err) {
+            });
+        },
+        getDataItem(itemid) 
+        {
+            let paras = {};
+            paras['viewCode']=window.viewcode;
+            paras['itemIDs']=itemid;
+            var that = this;
+            axios.post("./../api/dataget",paras).then(function(res){
+            that.dataitem=Object.values(Object.values(res.data)[0])[0];    
+            that.oldlocation = that.dataitem["LOCATION"];
+            that.selDataItem();
+            }).catch(function (err) {
+            });
+        },
+        delDatas(itemid) 
+        {
+            let paras = {};
+            paras['viewCode']=window.viewcode;
+            paras['itemIDs']=itemid;
+            var that = this;
+            axios.post("./../api/wfmdel",paras).then(function(res){
+            that.getDatasByFilters(that.curpage);
+            closeWin();
+            document.getElementById("content-info-msg").innerHTML="Record deleted successfully!";
+            document.getElementById("content-info").style.display="block";
+            }).catch(function (err) {
+            });
+        },
+        updDatas(itemid) 
+        {
+            let paras = {};
+            paras['viewCode']=window.viewcode;
+            paras['itemIDs']=itemid;
+
+            for (let v in this.dataitem) 
+            {
+                if(v!=this.pkey)
+                {
+                    paras['field_'+v] = this.dataitem[v];
+                }
+            }
+
+            let msg="";
+            if(!gCheckValueNull(this.dataitem['NAME']))
+            {
+                msg = msg+"Name cannot be empty<br>";
+            }
+            else
+            {
+                if(!gCheckValueLen(this.dataitem['NAME'],200))
+                {
+                    msg = msg+"Name cannot exceed 200 characters.<br/>";
+                }
+            }
+            if(!gCheckValueNull(this.dataitem['DATANAMEFIELD']))
+            {
+                msg = msg+"Title field cannot be empty<br>";
+            }
+            if(msg!="")
+            {
+                document.getElementById("updWin-info-msg").innerHTML=msg;
+                document.getElementById("updWin-info").style.display="block";
+                return;
+            }
+
+            var that = this;
+            axios.post("./../api/dataupd",paras).then(function(res)
+            {
+                that.returnmsg=Object.values(Object.values(res.data)[0])[0];
+                if(that.returnmsg!="")
+                {
+                    document.getElementById("updWin-info-msg").innerHTML=that.returnmsg;
+                    document.getElementById("updWin-info").style.display="block";
+                }
+                else
+                {
+                    that.getDatasByFilters(that.curpage);
+                    closeWin();
+                    document.getElementById("content-info-msg").innerHTML="Record updated successfully!";
+                    document.getElementById("content-info").style.display="block";
+                }
+            }).catch(function (err) {
+            });
+
+        },
+        addDatas() 
+        {
+            let paras = {};
+            paras['viewCode']=window.viewcode;
+            paras["field_GUID"]=genUUID();
+            let msg="";
+            if(!gCheckValueNull(this.dataitem['NAME']))
+            {
+                msg = msg+"Name cannot be empty<br>";
+            }
+            else
+            {
+                if(!gCheckValueLen(this.dataitem['NAME'],200))
+                {
+                    msg = msg+"Name cannot exceed 200 characters.<br/>";
+                }
+            }
+            if(!gCheckValueNull(this.dataitem['DATANAMEFIELD']))
+            {
+                msg = msg+"Title field cannot be empty<br>";
+            }
+            if(msg!="")
+            {
+                document.getElementById("updWin-info-msg").innerHTML=msg;
+                document.getElementById("updWin-info").style.display="block";
+                return;
+            }
+
+            for (let v in this.dataitem) 
+            {
+                if(v!=this.pkey)
+                {
+                    paras['field_'+v] = this.dataitem[v];
+                }
+            }
+            var that = this;
+            axios.post("./../api/dataadd",paras).then(function(res){
+                that.returnmsg=Object.values(Object.values(res.data)[0])[0];
+                if(that.returnmsg!="")
+                {
+                    document.getElementById("updWin-info-msg").innerHTML=that.returnmsg;
+                    document.getElementById("updWin-info").style.display="block";
+                }
+                else
+                {
+                    that.getDatasByFilters(that.curpage);
+                    closeWin();
+                    document.getElementById("content-info-msg").innerHTML="Record added successfully!";
+                    document.getElementById("content-info").style.display="block";
+                }
+            }).catch(function (err) {
+            });
+
+        },
+        openWinVue(msg,callback,callbackpara) 
+        {
+            openWin(msg,callback,callbackpara);
+        },
+        openUpdWinVue(msg,callback,callbackpara) 
+        {
+            this.getDataItem(callbackpara);
+            this.isupd=true;
+
+            document.getElementById("updWin-info-msg").innerHTML="";
+            document.getElementById("updWin-info").style.display="none";
+
+            openUpdWin(msg,callback,callbackpara);
+        },
+        openAddWinVue(msg,callback,callbackpara) 
+        {
+            this.dataitem={};
+            this.dataitem={"UPDDATA":"1","MSGMODE":"0"};
+            this.isupd=false;
+            openAddWin(msg,callback,callbackpara);
+        },
+        dealPages () 
+        {
+            let items = parseInt(this.totalitems);
+            let pItmes = parseInt(this.pageitems);
+            if(items==0)
+            {
+                this.hasitmes=false;
+                return;
+            }
+            else
+            {
+                this.hasitmes=true;
+            }
+            if(items % pItmes==0)
+                this.totalpage = parseInt(items/pItmes);
+            else
+                this.totalpage = parseInt(items/pItmes)+1;
+    
+            this.beginpage = ((this.curpage-2)>=1)?(this.curpage-2):1;
+            this.endpage = ((this.beginpage+4)<=this.totalpage)?(this.beginpage+4):this.totalpage;
+
+            this.showpages=[];
+            for(let i=this.endpage;i>=this.beginpage;i--)
+            {
+                this.showpages.push({i});
+            }
+        }
+    },
+    mounted() 
+    {
+        this.getDatas();
+        window.setWfmdatas=this.setWfmdatas;
+    }
+}
+
+Vue.createApp(DataListVue).mount('#datalist');
+
+const WfmsDatalistVue = 
+    {
+        data() 
+        {
+            return {
+                datas:null,
+            }
+        },
+        methods: 
+        {
+            getDatas () 
+            {
+                let paras = {};
+                paras['viewCode']="data";
+                paras['curPage']=1;
+                paras['pageItmes']=100;
+                paras['filter_datatype_equal']="basic";
+                paras['filter_open_equal']="1";
+                var that = this;
+                axios.post("./../api/datalist",paras).then(function(res){
+                that.datas=Object.values(res.data)[0];
+                window.setWfmdatas(that.datas);   
+                }).catch(function (err) {
+                });
+            }
+        },
+        mounted() 
+        {
+            this.getDatas();
+        }
+    }
+    
+    Vue.createApp(WfmsDatalistVue).mount('#wfmsdatalistsub')
+
+</script>
+<script src="./js/menu.js"></script>
+</body>
+</html>

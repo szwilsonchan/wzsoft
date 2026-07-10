@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+<script src="selColor.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Org RegisterLink</div>
+            <div class="right"><input type="text" v-model="dataitem.config.reghref" /></div>
+        </div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Org Register Text</div>
+            <div class="right"><input type="text" v-model="dataitem.config.regtext" /></div>
+        </div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Person RegisterLink</div>
+            <div class="right"><input type="text" v-model="dataitem.config.regpsnhref" /></div>
+        </div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Person Register Text</div>
+            <div class="right"><input type="text" v-model="dataitem.config.regpsntext" /></div>
+        </div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Forgot PasswordLink</div>
+            <div class="right"><input type="text" v-model="dataitem.config.reggetpasshref" /></div>
+        </div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Forgot Password Text</div>
+            <div class="right"><input type="text" v-model="dataitem.config.reggetpasstext" /></div>
+        </div>
+    </div>
+    <div class="updWin-content-item" >
+        <div class="left">Style</div>
+        <div class="right" style="line-height: 45px;">
+            <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="1" v-model="dataitem.config.apptype" ><label>PC</label>
+            <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="2" v-model="dataitem.config.apptype" ><label>Mobile</label><Br/>
+        </div>
+    </div>
+    <div class="updWin-content-item" v-show="this.dataitem.config.apptype=='1'">
+        <div class="left">Mobile redirects to:</div>
+        <div class="right" style="line-height: 40px;">
+            <input type="text" v-model="dataitem.config.repage" />
+        </div>
+    </div>
+    <div class="updWin-content-item" v-show="this.dataitem.config.apptype=='2'">
+        <div class="left">PC redirects to:</div>
+        <div class="right" style="line-height: 40px;">
+            <input type="text" v-model="dataitem.config.repage" />
+        </div>
+    </div>
+</div>
+
+<script src="./../../../js/funcconfig.js"></script>
+
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            comdatas:null,
+            dataitem:{"comid":"4004","comname":"Login","comtitle":"","config":{"repage":"","apptype":"1","lan":"e","conbg":"#fff","conradius":"2em","reghref":"./reg_org.html","regtext":"Org Register","regpsnhref":"./reg_psn.html","regpsntext":"Person Register","reggetpasshref":"./reg_getpassword.html","reggetpasstext":"Forgot Password"}}
+        }
+    },
+    methods: 
+    {
+        changeLan()
+        {
+            if(this.dataitem.config.lan=="c")
+            {
+                this.dataitem.config.regtext = "Org Register";
+                this.dataitem.config.regpsntext = "Person Register";
+                this.dataitem.config.reggetpasstext = "Forgot Password";
+            }
+            else
+            {
+                this.dataitem.config.regtext = "Organization registration";
+                this.dataitem.config.regpsntext = "User registration";
+                this.dataitem.config.reggetpasstext = "Forgot password";
+            }
+        },
+        getDataItem() 
+        {
+            if(this.dataitem.config.lan=="c")
+            {
+                this.dataitem.config.capname = "Username";
+                this.dataitem.config.capnameinfo = "Enter Username, Email or Mobile";
+                this.dataitem.config.cappass = "Password";
+                this.dataitem.config.capcode = "CAPTCHA";
+                this.dataitem.config.capcodedo = "Click to switch CAPTCHA";
+                this.dataitem.config.caplogin = "Login";
+                this.dataitem.config.actionwidth = "85px";
+                this.dataitem.config.actionborder = "";
+                this.dataitem.config.capmode1 = "PasswordMode";
+                this.dataitem.config.capmode2 = "SMS";
+                this.dataitem.config.capmobile = "Mobile";
+                this.dataitem.config.captionsend = "Send ";
+                this.dataitem.config.msgmobile1 = "Mobilecannot be empty。";
+                this.dataitem.config.msgmobile2 = "Mobile format is incorrect.";
+                this.dataitem.config.msgmobile3 = "Mobile length cannot exceed 20 characters.";
+                this.dataitem.config.msgmobilesend = "Sent successfully";
+            }
+            else
+            {
+                this.dataitem.config.capname = "Username";
+                this.dataitem.config.capnameinfo = "Enter username, email or mobile";
+                this.dataitem.config.cappass = "Password";
+                this.dataitem.config.capcode = "Captcha";
+                this.dataitem.config.capcodedo = "Switch the captcha";
+                this.dataitem.config.caplogin = "Login";
+                this.dataitem.config.actionwidth = "80%";
+                this.dataitem.config.actionborder = "margin-bottom:5px;padding-left:10px;border-radius: 0.5em;border: 1px solid rgb(46, 162, 240);heigth:36px;line-height:36px";
+                this.dataitem.config.capmode1 = "By Password";
+                this.dataitem.config.capmode2 = "By SMS Code";
+                this.dataitem.config.capmobile = "Mobile";
+                this.dataitem.config.captionsend = "Send";
+                this.dataitem.config.msgmobile1 = "Mobile cannot be empty";
+                this.dataitem.config.msgmobile2 = "Incorrect mobile format";
+                this.dataitem.config.msgmobile3 = "The length of the mobile cannot exceed 20";
+                this.dataitem.config.msgmobilesend = "Successfully sent";
+            }
+
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+        },
+        setDataItemByK(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        }, 
+        getDataItemSub() 
+        {
+            return this.dataitem;
+        }
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.getDataItemSub = this.getDataItemSub;
+        window.setDataItem = this.setDataItem;
+        window.setDataItemByK = this.setDataItemByK;
+
+        gInitConfig();
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+Colorpicker.create({
+el: "color-picker-conbg", 
+color: "", 
+change: function (elem, hex) {
+    elem.style.borderColor = hex;
+    window.setDataItemByK('conbg',hex);
+}
+});
+
+</script>
+
+</body>
+</html>

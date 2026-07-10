@@ -1,0 +1,131 @@
+.updWin-content-item[@configid@]
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.updWin-content-item[@configid@] .left
+{ 
+    width:[@titlewidth@];
+    box-sizing: border-box;
+    font-size:[@itemfontsize@];
+    line-height:[@itemheight@];
+    padding-right:15px;
+    text-align:[@titlealign@];
+    font-weight: bold;
+    float:left;
+}
+.updWin-content-item[@configid@] .right
+{
+    width:[@namewidth@];
+    box-sizing: border-box;
+    text-align:left;
+    line-height:40px;
+    float:left;
+}
+.btnAddVar[@configid@]
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(247, 164, 71);
+    color:#fff;
+    height:26px;
+    min-width:90px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    outline:none;
+    box-sizing: border-box;
+}
+.btnAddVar[@configid@]:hover
+{
+    background-color: rgb(240, 182, 116);
+}
+.btnCancleVar[@configid@]
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(205, 209, 212);
+    color:#fff;
+    height:26px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.btnCancleVar[@configid@]:hover
+{
+    background-color: rgb(240, 182, 116);
+}
+.divTag[@configid@]
+{
+ padding-top:5px;
+}
+.divTag[@configid@] select
+{
+    border: none;
+    border-radius: 0.8em;
+    background-color: rgb(234, 237, 241);
+    padding: 5px;
+    width:50%;
+    height:40px;
+}
+
+.fileContainer[@configid@] {
+    overflow: hidden;
+    position: relative;
+    background-color: rgb(102, 183, 238);
+    border-radius: .5em;
+    float: left;
+    padding-left: 10px;
+    width:200px;
+    height:26px;
+    line-height:26px;
+    margin-top: 8px;
+    margin-left: 3px;
+    text-align:center;
+}
+
+.fileContainer[@configid@] [type=file] {
+    display: block;
+    font-size: 999px;
+    filter: alpha(opacity=0);
+    min-height: 100%;
+    min-width: 100%;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+    cursor: pointer;
+}
+
+.fileContainer[@configid@]:hover
+{
+    background-color: rgb(46, 162, 240);
+}
+
+.editorIframe[@configid@]
+{
+    width:[@stylewidth@];
+    height:[@styleheight@];
+}
+
+.updWin-content-item[@configid@] .msgtitle:not(.readonly)
+{
+    border: 1px solid rgb(234, 237, 241);
+    border-radius: 0.8em;
+    height:40px;
+    width:90%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.updWin-content-item[@configid@] .msgtitle:focus:not(.readonly)
+{
+    border: 1px solid rgb(46, 162, 240);
+}

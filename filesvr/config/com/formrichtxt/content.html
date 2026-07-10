@@ -1,0 +1,23 @@
+<div class="updWin-content-item[@configid@]" id="input[@configid@]" style="display:none">
+    <div class="left"  v-show="titleshow">[@fieldtitle@]：<span v-show="!this.isView">[@fieldnoemptylbl@]</div>
+    <div class="right" v-show="!this.isView">
+        <div class="divTag[@configid@]" id="divFile[@configid@]">
+            <input class="btnAddVar[@configid@]" type="button"  onclick="varSelShowFile[@configid@](event)" value="+[@capfile@]" >
+            <div class="selDiv" style="display:none;line-height: 40px;" >
+                <div v-show="!blnUpded" >
+                    <label class="fileContainer[@configid@]">[@caption@]<input id="file[@configid@]" ref="clearFile" type="file" @change="fileUpload()"></label>
+                </div>
+                <div v-show="blnUpded">
+                    <img height="20" src="./imgs/file.png"><a href="javascript:void(0)" @click="fileDownload()"  style="text-decoration-line: none;">{{fileContent['fileName']}}</a>&nbsp;&nbsp;
+                    <a href="javascript:void(0)" @click="fileDelete()" >[@capdel@]</a>
+                </div>
+                <input class="btnAddVar[@configid@]"  type="button" value="[@capfilein@]" onclick="fileAdd[@configid@](event)" />
+                <input class="btnAddVar[@configid@]"  type="button" value="[@capimgin@]" onclick="imgAdd[@configid@](event)" />
+                <input class="btnCancleVar[@configid@]"  type="button" value="[@capcancle@]" onclick="closeAdd[@configid@](event)" />
+            </div>
+        </div>
+        <iframe id="editorIframe[@configid@]" frameborder="no"  class="editorIframe[@configid@]" marginwidth="0" marginheight="0" src="editor.html?height=[@styleheight@]" ></iframe>              
+        <span style="color:red;display:none" id="valmsg[@configid@]"></span>
+    </div>
+    <div class="right" v-show="this.isView" v-html="dataitem.[@fieldname@]" ></div>
+</div>

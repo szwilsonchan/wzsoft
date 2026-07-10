@@ -1,0 +1,18 @@
+        <div class="updWin-content-item[@configid@]" id="input[@configid@]">
+            <div class="left"  v-show="titleshow">[@fieldtitle@]：<span v-show="!this.isView">[@fieldnoemptylbl@]</span></div>
+            <div class="right" v-show="!this.isView">
+                <input type="text" v-model="dataitem.[@fieldname@]"  onchange="onchange[@configid@]()" onblur="onblur[@configid@]()" />
+                <span style="color:red;display:none" id="valmsg[@configid@]"></span>
+            </div>
+            <div class="right" v-show="this.isView">
+                {{dataitem.[@fieldname@]}}
+            </div>
+            <div v-show="!this.isView&&this.needmsgval" style="float:left;margin-top:5px;box-sizing: border-box;width:100%">
+                <div class="left"  v-show="!this.isView&&this.needmsgval&&titleshow">[@caption@]：<span>[@fieldnoemptylbl@]</span></div>
+                <div class="msgline" >
+                    <input type="text" class="msgInput[@configid@]" v-model="dataitem.FORM_MSG_[@fieldname@]" onchange="msgonchange[@configid@]()" onblur="msgonblur[@configid@]()" />
+                    <button id="msg-btn[@configid@]" class="msgBtn[@configid@]" @click="sendMsg($event)">[@captionsend@]</button>
+                    <div style="float:left;width:100%;color:red;display:none" id="valmsgsub[@configid@]"></div>
+                </div>
+            </div>
+        </div>

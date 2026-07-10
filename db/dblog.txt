@@ -1,0 +1,42 @@
+app,appport,page,data_form,msg_template,data_fields,config,dept
+
+data.filter
+update dbwzsoft.data set filters='where 1=1' where filters='where 1=1 ';
+
+
+SET SQL_SAFE_UPDATES=0;
+delete from tblamtapp;
+delete from tblamtapplist;
+delete from tblamtdo;
+delete from tblamtdolist;
+delete from tblamtdostat;
+delete from tblcrorgbank;
+delete from tblevcontentall;
+delete from tblevformprp;
+delete from tblevitems;
+delete from tblevitemspsn;
+delete from tblevitemspsncon;
+delete from tblevmail;
+delete from tblevprj;
+delete from tblevprjamt;
+delete from tblevprjlist;
+delete from tblevprjrpt;
+delete from tblevtask;
+delete from tblevtaskgroup;
+delete from tbloutcome;
+delete from tblpresume;
+delete from tblprj;
+delete from tblprjamt;
+delete from tblprjapp;
+delete from tblprjapplist;
+delete from tblprjcr;
+delete from tblprjplan;
+delete from tblprjpsn;
+delete from tblprjrpt;
+delete from tblprp;
+delete from tblprppsn;
+delete from tblregorg;
+delete from tblreviewer;
+delete from tbltag;
+delete from tbltagitem;
+delete from tbltest;

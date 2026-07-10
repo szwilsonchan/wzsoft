@@ -1,0 +1,34 @@
+.updWin-content-item[@configid@]
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    text-align:[@namealign@];
+    float:left;
+}
+
+.updWin-content-item[@configid@] button
+{
+    border-style: none;
+    padding: [@btnpadding@];
+    border-radius: [@btnradius@];
+    border-color: [@btnbordercolor@];
+    border-style: [@btnborderstyle@];
+    border-width: [@btnborder@];
+    background-color: [@btnbg@];
+    width:[@btnwidth@];
+    height:[@btnheight@];
+    cursor: pointer;
+    outline:none;
+    box-sizing: border-box;
+    line-height:[@lineheight@]; 
+    font-size:[@fontsize@];
+    color:[@fontcolor@];
+    font-family:[@fontfamily@];
+    font-weight:[@fontweight@];
+    font-style:[@fontstyle@];
+}
+.updWin-content-item[@configid@] button:hover
+{
+    background-color: [@btnbghover@];
+}

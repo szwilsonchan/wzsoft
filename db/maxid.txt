@@ -1,0 +1,1 @@
+select table_name, AUTO_INCREMENT from information_schema.tables where table_name="com"

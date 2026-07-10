@@ -1,0 +1,171 @@
+.updWin-content-item[@configid@]
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.updWin-content-item[@configid@] .left
+{ 
+    width:[@titlewidth@];
+    box-sizing: border-box;
+    font-size:[@itemfontsize@];
+    line-height:[@itemheight@];
+    padding-right:15px;
+    text-align:[@titlealign@];
+    font-weight: bold;
+    float:left;
+}
+.updWin-content-item[@configid@] .right
+{
+    width:[@namewidth@];
+    box-sizing: border-box;
+    font-size:[@itemfontsize@];
+    line-height:[@itemheight@];
+    text-align:left;
+    float:left;
+}
+
+.dropcontent[@configid@]
+{
+    display:none;
+    position: absolute;
+    height:fit-content;
+    z-index: 2100;
+    min-width:[@dropdivwidth@];
+    background-color:white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    text-align: left;
+}
+.dropcontent[@configid@] .selItemShow
+{
+  margin:1px;
+  padding: 5px;
+  cursor:pointer;
+  float:left;
+  height:fit-content;
+  min-width:160px;
+  width:100%;
+  font-size:[@itemfontsize@];
+  height:[@itemheight@];
+  background-color: rgb(234, 237, 241);
+}
+.dropcontent[@configid@] .selItemShow:hover
+{
+  background-color: rgb(104, 187, 241);
+}
+.divSelItems[@configid@]
+{
+  display:none;
+}
+.divSelItems[@configid@] .selItemDiv
+{
+  padding:0px;
+  margin:0px;
+  float:left;
+  height:[@itemheight@];
+  line-height:[@itemheight@];
+  min-width:[@selitemwidth@];
+  width:fit-content;
+  box-sizing: border-box;
+  border-radius: 0.8em;
+  border: 1px solid rgb(102, 183, 238);
+}
+
+.divSelItems[@configid@] .action-content a:link
+{
+    display: block;
+    color: rgb(252, 249, 249);
+    background-color:#06b6d4;
+    border-radius: 0.4em;
+    font-size:[@itemfontsize@];
+    text-align: center;
+    padding-top:0px;
+    padding-right:1px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    float:left;
+}
+
+.divSelItems[@configid@] .action-content a:visited
+{
+    color: #06b6d4;
+}
+
+.divSelItems[@configid@] .action-content a.active
+{
+    background-color:#0891b2;
+}
+.divSelItems[@configid@] .action-content a:hover:not(.active)
+{
+    background-color:#0891b2;
+}
+
+.treeItem[@configid@] {
+    padding-left: 20px;
+    margin: 16px;
+    font-size:[@itemfontsize@];
+}
+.searchclose[@configid@]
+{
+    margin-left: 5px;
+    width:[@itemheight@];
+    display: block;
+    color: rgb(252, 249, 249);
+    background-color:rgb(30, 108, 211);
+    border-radius: 0.4em;
+    height:[@itemheight@];
+    font-size:[@itemfontsize@];
+    text-align: center;
+    padding-top:2px;
+    padding-right:1px;
+    box-sizing: border-box;
+    float:right;
+}
+.itemIcon[@configid@] {
+    display: inline-block;
+    width: [@itemheight@];
+    height:[@itemheight@];
+    font-size:[@itemfontsize@];
+    color: white;
+    font-weight: bolder;
+    text-align: center;
+    border-radius: 50%;
+    background: rgb(85, 141, 213);
+    margin-right: 10px;
+    cursor: pointer;
+}
+.itemIconSub[@configid@] {
+    display: inline-block;
+    width: [@itemheight@];
+    height:[@itemheight@];
+    font-size:[@itemfontsize@];
+    color: white;
+    font-weight: bolder;
+    text-align: center;
+    border-radius: 50%;
+    background: rgb(205, 209, 212);
+    margin-right: 10px;
+    cursor: pointer;
+}
+.btnAddVar[@configid@]
+{
+    border-style: none;
+    border-radius: 0.3em;
+    background-color: rgb(206, 203, 200);
+    color:#000;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    min-width:[@selbtnwidth@];
+    cursor: pointer;
+    margin-top: 5px;
+    margin-left: 5px;
+    outline:none;
+    box-sizing: border-box;
+    border: 1px solid rgb(107, 106, 106);
+}
+.btnAddVar[@configid@]:hover
+{
+    background-color: rgb(230, 192, 157);
+}

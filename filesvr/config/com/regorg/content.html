@@ -1,0 +1,39 @@
+<div id="sendRequest[@configid@]" class="loginWin[@configid@]" style="height:500px">
+    <div class="loginWin-info" id="updWin-info-sendrequest[@configid@]" style="display:none">
+        <div class="left" id="updWin-info-sendrequest-msg[@configid@]"></div>
+    </div>
+    <div class="loginWin-content" >
+        <div class="loginWin-content-item">
+            <div class="left">[@caporgname@]</div>
+            <div class="right"><input type="text" id="name[@configid@]" /></div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">[@cappsn@]</div>
+            <div class="right"><input type="text" id="psnname[@configid@]" /></div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">[@capemail@]</div>
+            <div class="right"><input type="text" id="psnemail[@configid@]" /></div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">[@capmobile@]</div>
+            <div class="right">
+                <input type="text" id="psnmobile[@configid@]" /><br/>
+            </div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">[@capcode@]</div>
+            <div class="right">
+                <input type="text" class="cpachaInput" id="cpachacode[@configid@]"  />
+	            <img id="cpacha-img[@configid@]" class="cpachaImg" title="[@capcodedo@]"  src="./../user/getcpacha?vl=4&w=150&h=40&type=loginCpacha" onclick="changeCpacha[@configid@]()">
+            </div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">&nbsp;</div>
+            <div class="right" style="line-height:50px"><input type="button" class="btnOK"  value="[@btnsend@]" onclick="regorg[@configid@]()" /></div>
+        </div>
+        <div class="content-info" id="content-info-sendrequest[@configid@]" style="display:none">
+            <div id="content-info-sendrequest-msg[@configid@]"></div>
+        </div>
+    </div>
+</div>

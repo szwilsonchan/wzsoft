@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Title</div>
+            <div class="right"><input type="text" v-model="dataitem.config.fieldtitle" /></div>
+        </div>
+        <div class="updWin-content-item" id="divDbField">
+            <div class="left">Field</div>
+            <div class="right">
+                <input type="text" v-model="dataitem.config.fieldname" style="width:200px"/>
+                Max Length：<input type="text" style="width:20%" v-model="dataitem.config.fieldlen" placeholder="Enter StringMax Length" style="width: 20%"  />
+                <input class="btnOK" id="inpDbField" type="button"  onclick="selFieldGetDbFields(event)" value="+Existing Field" style="width:120px">
+                <div class="selDiv" style="display:none;" ><select class="varSelValue" style="margin-bottom: 10px;">
+                    <option></option></select><br/><input class="btnOK" type="button" value="Select" onclick="selFieldAdd(event)" /><input class="btnCancle" type="button" value="Cancel" onclick="selCloseAdd(event)" />
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Style</div>
+            <div class="right">
+                Title Visible：<input type="checkbox" v-model="dataitem.config.titleshow" style="width: 6%"/>
+                <div v-show="dataitem.config.titleshow">
+                    Title Align：
+                    <input type="radio" name="radioalign" value="right" v-model="dataitem.config.titlealign" ><label>Right</label>
+                    <input type="radio" name="radioalign" value="left" v-model="dataitem.config.titlealign" ><label>Left</label>
+                    &nbsp;&nbsp;Title Width：
+                    <input type="text" v-model="dataitem.config.titlewidth" style="width:15%" /><br/>
+                </div>
+                Content Width：
+                <input type="text" v-model="dataitem.config.namewidth" style="width:15%" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">SelectTemplate</div>
+            <div class="right">
+                <select  v-model="dataitem.config.tempid" >
+                    <option></option>
+                    <option v-for="v in viewdatas"  name="viewcode" :value="v['GUID']" >{{v['NAME']}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Size</div>
+            <div class="right">
+                Height：<input type="text" v-model="dataitem.config.styleheight" style="width:20%" />
+                Width：<input type="text" v-model="dataitem.config.stylewidth" style="width:20%"/>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Required</div>
+            <div class="right"><input type="checkbox" v-model="dataitem.config.fieldnoempty" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Display</div>
+            <div class="right">
+                List：<input type="checkbox" v-model="dataitem.config.fieldshow" style="width:6%"/>
+                Form：<input type="checkbox" v-model="dataitem.config.formshow" style="width:6%" />
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./../../../js/funcconfig.js"></script>
+
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            viewdatas:null,
+            dataitem:{
+                "comid":"6001",
+                "comname":"EmailSMSTemplate",
+                "comtitle":"",
+                "needval":"true",
+                "code":{"onchange":{}},
+                "config":{"tempid":"","titlealign":"right","titleshow":true,"fieldname":"","fieldtype":"nvarchar2","fieldlen":"2000","titlewidth":"15%","namewidth":"85%","fieldtitle":"","styleheight":"200px","stylewidth":"100%","fieldshow":false,"formshow":true,"fieldnoempty":false,"fieldnoemptylbl":""},
+                "attrget":{"inputValue":""},
+                "attrset":{"inputValue":"","Display":"s#display"},
+                "attrtitle":{},
+                "attrsubmit":{"value":""}
+            }
+        }
+    },
+    methods: 
+    {
+        getDataItem() 
+        {
+            let fdnu=this.dataitem.config.fieldname;
+            this.dataitem.config.fieldname=fdnu.toUpperCase();
+            
+            if(this.dataitem.config.fieldnoempty)
+                this.dataitem.config.fieldnoemptylbl = "<span class=\"noempty\">*</span>";
+            if(this.dataitem.config.regx=="")
+                this.dataitem.config.regxlbl="a";
+            else
+                this.dataitem.config.regxlbl=this.dataitem.config.regx;
+            this.dataitem.comtitle=this.dataitem.config.fieldtitle;
+            this.dataitem.attrget.inputValue=this.dataitem.config.fieldname;
+            this.dataitem.attrset.inputValue=this.dataitem.config.fieldname;
+            this.dataitem.attrsubmit.value=this.dataitem.config.fieldname;
+            if(this.dataitem.config.fieldshow)
+                this.dataitem.attrtitle[this.dataitem.config.fieldname]=this.dataitem.config.fieldtitle;
+            else
+                this.dataitem.attrtitle[this.dataitem.config.fieldname]="";
+            
+            let viewhtml = "";
+            let tshow = "display:none"
+            if(this.dataitem.config.titleshow)
+            {
+                tshow = "display:blcok";
+            }
+            let noempty="";
+            if(this.dataitem.config.fieldnoempty)
+            {
+                noempty = "<font color=red>*</font>";
+            }
+            
+
+            viewhtml = viewhtml + "<div style=\"width:100%;float:left;margin-bottom:5px\">";
+            viewhtml = viewhtml + "<div style=\""+ tshow +";width:"+ this.dataitem.config.titlewidth +";font-size:1em;line-height:40px;padding-right:15px;text-align:"+ this.dataitem.config.titlealign +";font-weight: bold;float:left;box-sizing: border-box;\">"+ this.dataitem.config.fieldtitle + noempty +"</div>";
+            viewhtml = viewhtml + "<div style=\"width:"+ this.dataitem.config.namewidth +";line-height:40px;float:left;height:"+ this.dataitem.config.styleheight +";box-sizing:border-box;\">";
+            viewhtml = viewhtml + "<input  placeholder=\"Enter TemplateTitle\"   type=\"text\" style=\"border: 1px solid rgb(173, 170, 170);border-radius: 0.8em;height:40px;width:100%;padding: 5px;padding-left: 15px;outline: none;box-sizing: border-box;margin-bottom:8px\" />";
+            viewhtml = viewhtml + "<iframe  style=\"width:100%;height:"+ this.dataitem.config.styleheight +"\" marginwidth=\"0\" marginheight=\"0\" src=\"htmleditorhtml?height="+ this.dataitem.config.styleheight +"\" ></iframe>";
+            viewhtml = viewhtml + "</div>";
+            viewhtml = viewhtml + "</div>";
+
+            this.dataitem.config.viewhtml=viewhtml;
+
+            let msg="";
+            msg = gCheckField(this.dataitem.config.fieldname,this.dataitem.config.fieldlen);
+
+            if(msg!="")
+                alert(msg);
+            else
+                return this.dataitem;
+   
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+        },
+        setFormValue(fValue,codename) 
+        {
+            let c = this.dataitem['code'];
+            c[codename] = fValue;
+        },
+        getFormValue(codename) 
+        {
+            let c = this.dataitem['code'];
+            return c[codename];
+        },
+        getDatas() 
+        {
+            let paras = {};
+            paras['viewCode']="msg_template";
+            paras['curPage']=1;
+            paras['pageItmes']=100;
+            var that = this;
+            axios.post("./../../../../api/datalist",paras).then(function(res){
+            that.viewdatas=Object.values(res.data)[0];     
+            }).catch(function (err) {
+            });
+        }, 
+        getDataItemSub() 
+        {
+            return this.dataitem;
+        }
+    },
+    mounted() 
+    {
+        this.getDatas();
+        window.getDataItem = this.getDataItem;
+        window.getDataItemSub = this.getDataItemSub;
+        window.setDataItem = this.setDataItem;
+        window.setFormValue = this.setFormValue;
+        window.getFormValue = this.getFormValue;
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+</script>
+
+</body>
+</html>

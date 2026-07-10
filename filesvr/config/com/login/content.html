@@ -1,0 +1,71 @@
+<div id="loginWin[@configid@]" class="loginWin[@configid@]" style="display: none;">
+    <div id="loginWin-info[@configid@]" class="loginWin-info" style="display:none">
+        <div class="left" id="loginWin-info-msg[@configid@]"></div>
+    </div>
+    <div class="loginWin-content" >
+        <div class="loginWin-content-item">
+            <div class="right" style="width:100%">
+                <input type="radio" class="rd" name="radiosmode" onchange="changeMode[@configid@]()" value="p" checked><label onclick="changeModeLable[@configid@](event)">[@capmode1@]</label>
+                <input type="radio" class="rd" name="radiosmode" onchange="changeMode[@configid@]()" value="s"><label onclick="changeModeLable[@configid@](event)">[@capmode2@]</label>
+            </div>
+        </div>
+    </div>
+    <div class="loginWin-content" id="divsms[@configid@]" style="display:none">
+        <div class="loginWin-content-item">
+            <div class="left" >[@capmobile@]：</div>
+            <div class="right" style="line-height: 48px;">
+                <input type="text" id="mobile[@configid@]" style="width:100%" />
+                <input type="text" id="smscode[@configid@]" style="width:50%" />
+                <button id="msg-btn[@configid@]" class="msgBtn[@configid@]" onclick="sendMsg[@configid@](event)">[@captionsend@]</button>
+                <div style="float:left;width:100%;color:red;display:none" id="valmsgsub[@configid@]"></div>
+            </div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">&nbsp;</div>
+            <div class="right">
+                <input type="button" class="btnOK"  value="[@caplogin@]" onclick="login[@configid@]()" />
+            </div>
+        </div>
+    </div>
+    <div class="loginWin-content" id="divpass[@configid@]">
+        <div class="loginWin-content-item">
+            <div class="left">[@capname@]</div>
+            <div class="right">
+                <input type="text" id="username[@configid@]" placeholder="[@capnameinfo@]" />
+            </div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">[@cappass@]</div>
+            <div class="right">
+                <input type="password" id="password[@configid@]">
+            </div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">[@capcode@]</div>
+            <div class="right">
+                <input type="text" id="cpachacode[@configid@]" class="cpachaInput"  />
+	            <img id="cpacha-img[@configid@]" class="cpachaImg" title="[@capcodedo@]"   src="./../user/getcpacha?vl=4&w=150&h=40&type=loginCpacha" onclick="changeCpacha[@configid@]()">
+            </div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">&nbsp;</div>
+            <div class="right">
+                <input type="button" class="btnOK"  value="[@caplogin@]" onclick="login[@configid@]()" />
+            </div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">&nbsp;</div>
+            <div class="right">
+                <div id="divorg[@configid@]" class="divorg" > 
+                    <a href="[@reghref@]" >[@regtext@]</a>
+                </div>
+                <div id="divpsn[@configid@]" class="divpsn"  > 
+                    <a href="[@regpsnhref@]" >[@regpsntext@]</a>
+                </div>
+                <div id="divpass[@configid@]"  class="divpass" > 
+                    <a href="[@reggetpasshref@]" >[@reggetpasstext@]</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

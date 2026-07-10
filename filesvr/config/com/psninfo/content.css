@@ -1,0 +1,723 @@
+.content-tab[@configid@]
+{
+    background-color:[@conbg@];
+    border-radius: [@conradius@];
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    margin: 0px;
+    width:100%;
+    box-sizing: border-box;
+    height: fit-content;
+    overflow:auto;
+}
+.content-tab[@configid@] .content-tab-title
+{
+    color: #1f2937;
+    font-size:1em;
+    font-weight: bold;
+    width:100%;
+    box-sizing: border-box;
+    height:30px;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+.content-info[@configid@]
+{
+    color: #065f46;
+    font-size:[@itemfontsize@];
+    min-height:[@itemheight@];
+    border: 1px solid #6ee7b7;
+    border-radius: 0.5em;
+    padding: 10px;
+    margin-bottom: 20px;
+    width:100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.content-info[@configid@] .left
+{
+    float:left;
+    width:90%;
+    box-sizing: border-box;
+}
+.content-info[@configid@] .right
+{
+    float:right;
+    color:#6b7280;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+.content-info[@configid@] .right:hover
+{
+    color:#1f2937;
+}
+.coverWin[@configid@]
+{
+    position:fixed;left:0px;top:0px;
+    background:rgba(0, 0, 0, 0.4);
+    width:100%;
+    height:100%;
+    filter:alpha(opacity=60);
+    opacity:0.6;
+    display:none;
+    z-Index:999;
+}
+
+.modalWin[@configid@]
+{
+    position:fixed;
+    min-height:300px;
+    top:[@mwintop@];
+    left:50%;
+    width:[@mwinwidth@];
+    margin-left:[@mwinmleft@];
+    background-color:#fff;
+    display:none;
+    cursor:pointer;
+    text-align: center;
+    z-Index:9999;
+}
+.modalWin[@configid@] .modalWinMsg
+{
+    color: #1f2937;
+    font-size:[@itemfontsize@];
+    font-weight: bold;
+    width:100%;
+    margin-top: [@mwintop@];
+    box-sizing: border-box;
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    margin-bottom: 10px;
+}
+.modalWin[@configid@] .modalWinBtn .btnOK
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: #06b6d4;
+    color:#fff;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    min-width:160px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.modalWin[@configid@] .modalWinBtn .btnOK:hover
+{
+    background-color: #0891b2;
+}
+.modalWin[@configid@] .modalWinBtn .btnCancle
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: #d1d5db;
+    color:#374151;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    min-width:160px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.modalWin[@configid@] .modalWinBtn .btnCancle:hover
+{
+    background-color: #9ca3af;
+    color:#fff;
+}
+.content-tab[@configid@] .menu-content
+{
+    padding: 5px;
+}
+.content-tab[@configid@] .menu-content li
+{
+    list-style: none;
+}
+.content-tab[@configid@] .menu-content a:link
+{
+    margin-bottom: 5px;
+    display: block;
+    color: #374151;
+    background-color:#f3f4f6;
+    border-radius: 3em;
+    height:30px;
+    line-height: 35px;
+    text-align: center;
+    text-decoration: none;
+}
+.content-tab[@configid@] .menu-content a:visited
+{
+    color: #374151;
+}
+.content-tab[@configid@] .menu-content a:hover
+{
+    background-color:#93c5fd;
+    color:#1e3a5f;
+}
+
+.content-tab[@configid@] .dropcontent
+{
+    display:none;
+    position: absolute;
+    min-height:50px;
+    z-index: 2100;
+    width:220px;
+    background-color:white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    text-align: left;
+}
+.content-tab[@configid@] .dropitem:hover .dropcontent
+{
+    display:block;
+}
+
+.date-picker-wp
+{
+    display: none;
+    position: absolute;
+    background: #f1f1f1;
+    left: 40px;
+    top: 40px;
+    border-top: 4px solid #3b82f6;
+}
+.date-picker-wp table
+{
+    border: 1px solid #ddd;
+}
+.date-picker-wp td
+{
+    background: #fafafa;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    width:[@itemheight@];
+    border: 1px solid #ccc;
+    text-align: center;
+}
+.date-picker-wp td.noborder
+{
+    border: none;
+    background: none;
+}
+.date-picker-wp td a
+{
+    color: #3b82f6;
+    text-decoration: none;
+}
+.strong[@configid@] {font-weight: bold}
+.hand[@configid@] {cursor: pointer; color: #3b82f6}
+.dropcontent[@configid@]
+{
+    display:none;
+    position: absolute;
+    height:fit-content;
+    z-index: 2100;
+    top:[@itemheight@];
+    min-width:260px;
+    background-color:white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    text-align: left;
+}
+.dropcontent[@configid@] .selItemShow
+{
+  margin:1px;
+  padding: 5px;
+  cursor:pointer;
+  float:left;
+  min-height:[@itemheight@];
+  min-width:160px;
+  width:100%;
+  font-size:[@itemfontsize@];
+  height:[@itemheight@];
+  background-color: #f3f4f6;
+}
+.dropcontent[@configid@] .selItemShow:hover
+{
+  background-color: #93c5fd;
+}
+.divSelItems[@configid@]
+{
+  display:none;
+}
+.divSelItems[@configid@] .selItemDiv
+{
+  padding:5px;
+  margin:3px;
+  float:left;
+  font-size:[@itemfontsize@];
+  min-height:[@itemheight@];
+  height:fit-content;
+  min-width:160px;
+  width:fit-content;
+  border-radius: 0.8em;
+  border: 1px solid #93c5fd;
+}
+.divSelItems[@configid@] .action-content a:link
+{
+    margin-left: 5px;
+    width:[@itemheight@];
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    display: block;
+    color: #fff;
+    background-color:#3b82f6;
+    border-radius: 0.4em;
+    text-align: center;
+    padding-top:2px;
+    padding-right:1px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    float:left;
+}
+
+.divSelItems[@configid@] .action-content a:visited
+{
+    color: #fff;
+}
+
+.divSelItems[@configid@] .action-content a.active
+{
+    background-color:#93c5fd;
+}
+.divSelItems[@configid@] .action-content a:hover:not(.active)
+{
+    background-color:#2563eb;
+}
+
+.updWin[@configid@]
+{
+    min-height:700px;
+    background-color:#fff;
+    cursor:pointer;
+    padding:20px;
+    box-sizing: border-box;
+    float:left;
+}
+.updWin[@configid@]  .updWin-content
+{
+    width:100%;
+    box-sizing: border-box;
+    float:left;
+}
+.updWin[@configid@]  .updWin-content .updWin-content-item
+{
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.updWin[@configid@]  .updWin-content-item .left
+{
+    width:[@titlewidth@];
+    box-sizing: border-box;
+    font-size:[@itemfontsize@];
+    line-height:[@itemheight@];
+    font-weight: bold;
+    text-align:[@titlealign@];
+    float:left;
+}
+.updWin[@configid@]  .updWin-content-item .right
+{
+    width:[@namewidth@];
+    box-sizing: border-box;
+    text-align:left;
+    float:left;
+    padding-left:10px;
+    font-size:[@itemfontsize@];
+    line-height:[@itemheight@];
+}
+.updWin[@configid@]  .updWin-content-item input[type=text]:not(.readonly)
+{
+    border: 1px solid #d1d5db;
+    margin-right:2px;
+    border-radius: 0.8em;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    width:100%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+.updWin[@configid@]  .updWin-content-item .readonly
+{
+    border:none;
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    font-size:[@itemfontsize@];
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+.updWin[@configid@]  .updWin-content-item input[type=text]:focus:not(.readonly)
+{
+    border: 1px solid #3b82f6;
+}
+.updWin[@configid@]  .btnOK
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: #06b6d4;
+    color:#fff;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    min-width:160px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.updWin[@configid@]  .btnOK:hover
+{
+    background-color: #0891b2;
+}
+.updWin[@configid@]  .btnCancle
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: #d1d5db;
+    color:#374151;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    min-width:160px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.updWin[@configid@]  .btnCancle:hover
+{
+    background-color: #9ca3af;
+    color:#fff;
+}
+.updWin[@configid@]  .updWin-info
+{
+    color: #000;
+    font-size:[@itemfontsize@];
+    background-color:#fbbf24;
+    border: 1px solid #fbbf24;
+    border-radius: 0.5em;
+    padding: 10px;
+    width:100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.updWin[@configid@]  .updWin-info .left
+{
+    float:left;
+    width:90%;
+    box-sizing: border-box;
+}
+.updWin[@configid@]  .updWin-info .right
+{
+    float:right;
+    color:#6b7280;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.updWin[@configid@] .updWin-content-item select
+{
+    border: none;
+    margin-right:2px;
+    min-width: 126px;
+    border-radius: 0.8em;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    background-color: #f3f4f6;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+
+.updWinPop[@configid@]
+{
+    position:fixed;
+    top:10%;
+    width:[@uwinwidth@];
+    min-height:700px;
+    top:10%;
+    left:50%;
+    margin-left:[@uwinmleft@];
+    background-color:#fff;
+    display:none;
+    cursor:pointer;
+    text-align: center;
+    padding:20px;
+    z-Index:9999;
+    box-sizing: border-box;
+}
+
+.updWinPop[@configid@] .updWin-content-item
+{
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.updWinPop[@configid@] .updWin-content-item span
+{
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+}
+.updWinPop[@configid@] .updWin-content-item .left
+{
+    width:[@titlewidth@];
+    box-sizing: border-box;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    padding-right:15px;
+    text-align:[@titlealign@];
+    font-weight: bold;
+    float:left;
+}
+.updWinPop[@configid@] .updWin-content-item .right
+{
+    position: relative;
+    width:[@namewidth@];
+    box-sizing: border-box;
+    text-align:left;
+    float:left;
+    padding-left:10px;
+    font-size:[@itemfontsize@];
+    line-height:[@itemheight@];
+}
+.updWinPop[@configid@] .updWin-content-item input[type=text]:not(.readonly)
+{
+    border: 1px solid #d1d5db;
+    border-radius: 0.8em;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    width:80%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+.updWinPop[@configid@]  .updWin-content-item .pwd
+{
+    border: 1px solid #d1d5db;
+    margin-right:2px;
+    border-radius: 0.8em;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    width:80%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+.updWinPop[@configid@] .btnOK
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: #06b6d4;
+    color:#fff;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    min-width:160px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.updWinPop[@configid@] .btnOK:hover
+{
+    background-color: #0891b2;
+}
+.updWinPop[@configid@] .btnCancle
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: #d1d5db;
+    color:#374151;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    min-width:160px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.updWinPop[@configid@] .btnCancle:hover
+{
+    background-color: #9ca3af;
+    color:#fff;
+}
+.updWinPop[@configid@] .updWin-info
+{
+    color: #000;
+    background-color:#fbbf24;
+    border: 1px solid #fbbf24;
+    border-radius: 0.5em;
+    padding: 10px;
+    width:100%;
+    box-sizing: border-box;
+    font-size:[@itemfontsize@];
+    min-height:[@itemheight@];
+    overflow: auto;
+}
+.updWinPop[@configid@] .updWin-info .left
+{
+    float:left;
+    width:90%;
+    box-sizing: border-box;
+}
+.updWinPop[@configid@] .updWin-info .right
+{
+    float:right;
+    color:#6b7280;
+    cursor: pointer;
+    box-sizing: border-box;
+    font-size:[@itemfontsize@];
+}
+
+.btnAddObj[@configid@]
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: #06b6d4;
+    color:#fff;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    min-width:160px;
+    cursor: pointer;
+    margin-left: 10px;
+    padding-left:5px;
+    padding-right:5px;
+    outline:none;
+    box-sizing: border-box;
+}
+.btnAddObj[@configid@]:hover
+{
+    background-color: #06b6d4;
+}
+
+.dropcontent[@configid@]
+{
+    display:block;
+    position: absolute;
+    height:fit-content;
+    z-index: 2100;
+    width:200px;
+    background-color:white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    text-align: left;
+}
+.dropcontent[@configid@] .selItemShow
+{
+  margin:1px;
+  padding: 5px;
+  float:left;
+  height:fit-content;
+  min-width:160px;
+  width:100%;
+  font-size: 0.6em;
+  background-color: #f3f4f6;
+}
+.dropcontent[@configid@] div:hover
+{
+  background-color: #93c5fd;
+}
+
+.selItemDiv[@configid@]
+{
+  padding:5px;
+  margin:3px;
+  float:left;
+  height:fit-content;
+  min-width:160px;
+  width:fit-content;
+  border-radius: 0.8em;
+  border: 1px solid #93c5fd;
+}
+
+.divSelItems[@configid@]
+{
+  display:block;
+}
+
+
+.selaction-content[@configid@] a:link
+{
+    margin-left: 5px;
+    width:24px;
+    display: block;
+    color: #fff;
+    background-color:#3b82f6;
+    border-radius: 0.4em;
+    height:24px;
+    text-align: center;
+    padding-top:2px;
+    padding-right:1px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    float:left;
+}
+
+.selaction-content[@configid@] a:visited
+{
+    color: #fff;
+}
+
+.selaction-content[@configid@] a:hover:not(.active)
+{
+    background-color:#2563eb;
+}
+.selaction-content[@configid@]
+{
+    line-height:30px;
+}
+
+.searchclose[@configid@]
+{
+    margin-left: 5px;
+    width:[@itemheight@];
+    display: block;
+    color: #fff;
+    background-color:#3b82f6;
+    border-radius: 0.4em;
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    font-size:[@itemfontsize@];
+    text-align: center;
+    padding-top:2px;
+    padding-right:1px;
+    box-sizing: border-box;
+    float:right;
+}
+
+.select[@configid@]
+{
+  border: 1px solid #d1d5db;
+  border-radius: 0.8em;
+  font-size:[@itemfontsize@];
+  height:[@itemheight@];
+  line-height:[@itemheight@];
+  min-width:200px;
+  width:70%;
+  padding: 5px;
+  padding-left: 15px;
+  margin-bottom: 5px;
+  margin-left: 0px;
+  outline: none;
+  box-sizing: border-box;
+}

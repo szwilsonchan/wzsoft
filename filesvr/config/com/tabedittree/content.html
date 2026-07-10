@@ -1,0 +1,30 @@
+
+<div class="content-tab[@configid@]" id="datalist[@configid@]">
+    <div class="content-tab-title">
+        <span>[@fieldtitle@]</span>
+    </div>
+    <div class="content-info[@configid@]" id="content-info[@configid@]" style="display:none">
+        <div class="left" id="content-info-msg[@configid@]"></div>
+        <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+    </div>
+    <div class="content-tab-filter" >
+        <div class="actionbtns">
+            <div class="dropitem" style="display:inline;margin-right: 5px;" v-show="this.showaddbtn&&this.formnum>1">
+                <input type="button" value="+Add" @click="goAdd()" />
+                <div class="dropcontent" >
+                    <ul class="menu-content" id="divDataForms[@configid@]" ></ul>
+                </div>
+            </div>
+            <input type="button" value="+Add" @click="goAdd()" v-show="this.showaddbtn&&this.formnum==1" />
+        </div>
+    </div>
+    <div id="divSelSearchs[@configid@]" ></div>
+</div>
+<div id="coverWin[@configid@]" class="coverWin[@configid@]"></div>
+<div id="modalWin[@configid@]" class="modalWin[@configid@]">
+    <div class="modalWinMsg"><span id="modalWinMsg[@configid@]"></span></div>
+    <div class="modalWinBtn">
+        <input type="button" class="btnOK"  value="OK" onclick="openWinOK[@configid@]()" />
+        <input type="button" class="btnCancle"  value="取消" onclick="closeWin[@configid@]()" />
+    </div>
+</div>

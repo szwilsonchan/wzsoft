@@ -1,0 +1,423 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>flowchart</title>
+    <link rel="stylesheet" type="text/css" href="./css/wfmchart.css">
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/jsPlumb.min.js"></script>
+    <script src="./../js/vue.global.js"></script>
+    <script src="./../js/axios.min.js"></script>
+    <script src="./js/funcadmin.js"></script>
+    <script src='./js/wfmchart.js'></script>
+    <script src="./js/wfmnodes.js"></script>
+    <link rel="stylesheet" href="./css/wfm.css?5474658">
+    <script src="./js/wfm.js"></script>
+</head>
+
+<body>
+    <div class='flowchart-panel' id="datalist">
+        <div class='left'>
+            <h3>&nbsp;</h3>
+            <ul class='nodes'></ul>
+            <ul style="list-style: none;height:38px;text-align: center;padding: 10px;padding-left:30px;padding-right:30px;box-sizing: border-box;width:183px">
+                <br>
+                <input type="hidden" id="codeidWfmDoInit" >
+                <input type="button" class="btnDesign" style="width:100%;border-radius: 0.8em;font-size: 1em;" value="On Entry Code" onclick="openCodeValWin('WfmDoInit')">
+            </ul>
+            <ul style="list-style: none;height:38px;text-align: center;padding: 10px;padding-left:30px;padding-right:30px;box-sizing: border-box;width:183px">
+                <br>
+                <input type="hidden" id="codeidWfmDoReturn" >
+                <input type="button" class="btnDesign" style="width:100%;border-radius: 0.8em;font-size: 1em;" value="On Reject Code" onclick="openCodeValWin('WfmDoReturn')">
+            </ul>
+        </div>
+        <div class='middle'>
+            <div id="demo-chart">
+                <!-- <div class="startpoint point window node" style="left: 150px; top:20px; background-color:green" data-nodetype="startpoint" id="startpoint">Start</div>
+                <div class="endpoint point window node" style="left: 150px; top:350px" data-nodetype="endpoint" id="endpoint">End</div> -->
+            </div>
+        </div>
+        <div class='right' >
+            <div class="updNode" id="updNode" style="display:none">
+                <div class="updWin-info" id="updWin-info" style="display:none">
+                    <div class="left" id="updWin-info-msg"></div>
+                    <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+                </div>
+                <div class="updWin-content" >
+                    <div class="updWin-content-item">
+                        <div class="left">Node ID</div>
+                        <div class="right"><span id="wfmnodeid" ></span></div>
+                    </div>
+                    <div class="updWin-content-item">
+                        <div class="left">Node name</div>
+                        <div class="right"><input type="text" id="wfmname" /></div>
+                    </div>
+                    <div class="updWin-content-item">
+                        <div class="left">Node description</div>
+                        <div class="right"><input type="text" id="wfmdesc" /></div>
+                    </div>
+                    <div class="updWin-content-item">
+                        <div class="left">Node properties</div>
+                        <div class="right">
+                            Multi-approver mode:
+                            <select class="sel" style="width:90%" v-model="wfmitem.needall" id="wfmneedall">
+                                <option value=""></option>
+                                <option value="1">All must approve before proceeding</option>
+                            </select>
+                            <br/>
+                            When multiple preceding nodes exist:
+                            <select class="sel" style="width:90%" v-model="wfmitem.needbefore" id="wfmneedbefore">
+                                <option value=""></option>
+                                <option value="1">Wait for all preceding nodes to complete</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="updWin-content-item" >
+                        <div class="left">Select Form (can be empty)</div>
+                        <div class="right">
+                            <select class="sel" v-model="wfmitem.formname" id="wfmformname">
+                                <option></option>
+                                <template v-for="v in dutys">
+                                    <option v-if="v['DATATYPE']=='basic'"  :value="v['TABLENAME']" >{{v['NAME']}}</option>
+                                </template>
+                            </select>&nbsp;&nbsp;
+                            <input id="btnFormSet" type="button" class="btnDesign" value="Set Fields" onclick="openUpdWin()">
+                            <input type="hidden" id="formSetName">
+                            <input type="hidden" id="formSetHidden">
+                            <input type="hidden" id="formSetReadonly">
+                        </div>
+                    </div>
+                    <div class="updWin-content-item">
+                        <div class="left">Approver selection mode</div>
+                        <div class="right">
+                            <select class="sel" v-model="wfmitem.psnmode" id="wfmpsnmode">
+                                <option value="role">By Role</option>
+                                <option value="dutytree">By Duty Tree</option>
+                                <option value="selpsn">By Code Selection</option>
+                                <option value="psn">Designated Personnel</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="updWin-content-item" v-show="wfmitem.psnmode=='role'">
+                        <div class="left">Select role to execute</div>
+                        <div class="right" id ="rolelist"  >
+                            <select class="sel" v-model="wfmitem.role" id="wfmrole">
+                                <option></option>
+                                <option v-for="v in roles"  name="filed_roleid" :value="v['ROLEID']" >{{v['NAME']}}</option>
+                            </select>
+                            &nbsp;
+                            <select class="sel" id="wfmroleindept">
+                                <option value=""></option>
+                                <option value="dept">Dept Only</option>
+                                <option value="deptup">Parent dept only</option>
+                                <option value="deptall">This dept and parent depts</option>
+                                <option value="org">Org Only</option>
+                            </select>
+                        </div>
+                        <div id ="rolelistsub" style="display:none"></div>
+                    </div>
+                    <div class="updWin-content-item" v-show="wfmitem.psnmode=='dutytree'">
+                        <div class="left">Select duty tree</div>
+                        <div class="right">
+                            <select class="sel" v-model="wfmitem.dutytree" id="wfmdutytree">
+                                <option></option>
+                                <option v-for="v in dutys"  :value="v['TABLENAME']" >{{v['NAME']}}</option>
+                            </select>
+                            &nbsp;
+                            <select class="sel" id="wfmdutyloop" v-model="wfmitem.dutyloop" >
+                                <option value=""></option>
+                                <option value="1">Loop</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="updWin-content-item" v-show="wfmitem.psnmode=='psn'">
+                        <div class="left">Select personnel to execute</div>
+                        <div class="right" id ="psnlist">
+                            <input type="text" id="inpSel" oninput="selItemSearch(event)" placeholder="Enter name, email, or mobile to search" />
+                            <div class="dropcontent" id="divSelSearchs" ></div>
+                            <div class="divSelItems" id="divSelItems" > </div>
+                        </div>
+                    </div>
+                    <div class="updWin-content-item" v-show="wfmitem.psnmode=='selpsn'">
+                        <div class="left">Code-based executor selection</div>
+                        <div class="right" >
+                            <input type="hidden" id="codeidWfmSelpsn" class="wfmSelpsnCode">
+                            <input type="button" class="btnDesign" value="Design Code" onclick="openCodeValWin('WfmSelpsn')">
+                        </div>
+                    </div>
+                    <div class="updWin-content-item" >
+                        <div class="left" style="margin-bottom:10px;">
+                            Routing<span class="action-content" style="float:right"><a style="width:60px;font-size: 0.6em;" href="javascript:void(0)" onclick="showAddCons(event)">+Add</a></span>
+                        </div>
+                        <div id="divAddCons" style="display:none;">
+                            <div style="width:98%;padding:6px">
+                                From: 
+                                <select id="conSrcNodeID" class="sel" style="width:160px" v-model="wfmitem.wfmcurnode" >
+                                    <option value=""></option>
+                                    <option v-for="v in wfmitem['wfmnodes']"  :value="v['nodeId']" >{{v['name']}}</option>
+                                </select>
+                            </div>
+                            <div style="width:80%;padding:6px">
+                                To: 
+                                <select id="conEndNodeID" class="sel" style="width:160px">
+                                    <option value=""></option>
+                                    <option v-for="v in wfmitem['wfmnodes']" :value="v['nodeId']" >{{v['name']}}</option>
+                                </select>
+                            </div>
+                            <div style="width:80%;padding:6px">
+                                <input class="btnDesign" type="button" value="Save" onclick="addConsDo(event)" />
+                                <input class="btnCancle" type="button" value="Cancel" onclick="closeAddCons(event)" />
+                            </div>
+                        </div>
+                        <div class="right" id="wfmRules">
+
+                        </div>
+                    </div>
+                    <div class="updWin-content-item" >
+                        <div class="left">Code Execution</div>
+                        <div class="right" id="wfmEndDo">
+                            <input type="hidden" id="codeidWfmDoStartDo" class="wfmStartDoCode">
+                            <input type="button" style="float:left" id="btnStartDo" class="btnDesign" value="On Enter" onclick="openCodeValWin('WfmDoStartDo')">
+                            <input type="hidden" id="codeidWfmDoEndDo" class="wfmEndDoCode">
+                            <input type="button" style="float:left" id="btnEndDo" class="btnDesign" value="On End" onclick="openCodeValWin('WfmDoEndDo')">
+                            <input type="hidden" id="codeidWfmDoRejectDo" class="wfmRejectDoCode">
+                            <input type="button" style="float:left" id="btnRejectDo" class="btnDesign" value="On Reject" onclick="openCodeValWin('WfmDoRejectDo')">
+                        </div>
+                    </div>
+                </div>
+                <div class="updWinBtn">
+                    <input type="button" class="btnSaveWfm"  value="Save Node" style="width: 110px;" />
+                    <div class="main-wrapper-info" id="saveWfm-msg" style="display:none;margin-left: 10px;"></div>
+                </div>
+            </div>
+        </div>
+        <div id="coverWin" class="coverWin"></div>
+        <div id="updWin" class="updWin">
+            <div class="updWin-content" >
+                <table class="tabdata" >
+                    <tr>
+                        <th>Field</th>
+                        <th>Hidden</th>
+                        <th>Read-Only</th>
+                    </tr>
+                    <tr v-for="(data,index) in formfields">
+                        <td v-html="data['FIELD_TITLE']"></td>
+                        <td><input type="checkbox" :checked="selFormHiddenIds.indexOf(data['FIELD'])>=0" name="chkhidden" @click="chkFormHiddenId(data['FIELD'])"></td>
+                        <td><input type="checkbox" :checked="selFormReadonlyIds.indexOf(data['FIELD'])>=0" name="chkreadonly" @click="chkFormReadonlyId(data['FIELD'])"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="updWinBtn">
+                <input type="button" class="btnOK"  value="Save" @click="saveFormFields()" />&nbsp;&nbsp;
+                <input type="button" class="btnCancle"  value="Cancel" onclick="closeWin()" />
+            </div>
+        </div>
+    </div>
+    <div class='main-wrapper-action' >
+        <input type="button" class="btnOK" value="Save" onclick="saveWfm()" />
+        <input type="button" class="btnCancle" value="Back" onclick="window.location.href='./wfm.html'" />
+        <div class="main-wrapper-info" id="main-wrapper-info" style="display:none">
+            <div class="left" id="main-wrapper-info-msg"></div>
+            <div class="right" ></div>
+        </div>
+    </div>
+    <div class="codeVal" id="codeVal" style="display:none">
+        <iframe id="codeValiframe" frameborder="no" marginwidth="0" marginheight="0" src="./code_design.html" ></iframe>
+    </div>
+
+</body>
+
+<script>
+
+function saveFormFieldsJS(fname,hiddenid,readonlyid)
+{
+    document.getElementById("formSetName").value=fname;
+    document.getElementById("formSetHidden").value=hiddenid.join(",");
+    document.getElementById("formSetReadonly").value=readonlyid.join(",");
+
+    //document.getElementById("updWin-info").style.display="block";
+    //document.getElementById("updWin-info-msg").innerHTML="Set successfully";
+    closeWin();
+}
+
+function openUpdWin() 
+{
+    if(document.getElementById("wfmformname").value=="")
+    {
+        alert("Please select a form first");
+        return;
+    }
+
+    if(document.getElementById("formSetName").value!=document.getElementById("wfmformname").value)
+    {
+        window.setFormHiddenId("");
+        window.setFormReadonlyId("");
+    }
+    else
+    {
+        window.setFormHiddenId(document.getElementById("formSetHidden").value);
+        window.setFormReadonlyId(document.getElementById("formSetReadonly").value);
+    }
+
+    window.getFormFields(document.getElementById("wfmformname").value);
+    
+    document.getElementById("coverWin").style.display="block";
+    document.getElementById("updWin").style.display="block";
+    document.getElementById("updWin-info").style.display="none";
+}
+
+function closeWin() 
+{
+    document.getElementById("coverWin").style.display="none";
+    document.getElementById("updWin").style.display="none";
+}
+
+function closeInfoMsg(e) 
+{
+    e.srcElement.parentElement.style.display="none";
+}
+
+const DataListVue = 
+{
+    data() 
+    {
+        return {
+            dataitem:{},
+            wfmitem:{},
+            formfields:null,
+            psns:null,
+            roles:null,
+            dutys:null,
+            selFormHiddenIds:[],
+            selFormReadonlyIds:[],
+            formname:null
+        }
+    },
+    methods: 
+    {
+        setFormHiddenId(Ids) 
+        {
+            this.selFormHiddenIds=[];
+            if(Ids!="")
+            {
+                this.selFormHiddenIds = Ids.split(",");
+            }
+        },
+        setFormReadonlyId(Ids) 
+        {
+            this.selFormReadonlyIds = [];
+            if(Ids!="")
+            {
+                this.selFormReadonlyIds = Ids.split(",");
+            }
+        },
+        chkFormHiddenId(Id) 
+        {
+            let idIndex = this.selFormHiddenIds.indexOf(Id)
+            if (idIndex >= 0) {
+            this.selFormHiddenIds.splice(idIndex, 1)
+            } else {
+            this.selFormHiddenIds.push(Id)
+            }
+        },
+        chkFormReadonlyId(Id) 
+        {
+            let idIndex = this.selFormReadonlyIds.indexOf(Id)
+            if (idIndex >= 0) {
+            this.selFormReadonlyIds.splice(idIndex, 1)
+            } else {
+            this.selFormReadonlyIds.push(Id)
+            }
+        },
+        setPsns(dl)
+        {
+            this.psns=dl;	
+        },
+        setRoles(dl)
+        {
+            this.roles=dl;	
+        },
+        setWfmItem(k,v)
+        {
+            this.wfmitem[k]=v;	
+        },
+        getDutys() 
+        {
+            let paras = {};
+            paras['viewCode']="data";
+            paras['curPage']=1;
+            paras['pageItmes']=100;
+            paras['filter_open_equal']="1";
+            var that = this;
+            axios.post("./../api/datalist",paras).then(function(res){
+            that.dutys=Object.values(res.data)[0];
+
+            }).catch(function (err) {
+            });
+        },
+        getFormFields(tblname) 
+        {
+            let paras = {};
+            paras['tablename']=tblname;
+            var that = this;
+            axios.post("./../api/dataformgetfieldlist",paras).then(function(res){
+            that.formfields=res.data;
+            that.formname = tblname;
+
+            }).catch(function (err) {
+            });
+        },
+        saveFormFields()
+        {
+            saveFormFieldsJS(this.formname,this.selFormHiddenIds,this.selFormReadonlyIds);
+        }
+    },
+    mounted() 
+    {
+        this.getDutys();
+        window.setPsns=this.setPsns;
+        window.setRoles=this.setRoles;
+        window.setWfmItem = this.setWfmItem;
+        window.getFormFields = this.getFormFields;
+        window.setFormHiddenId = this.setFormHiddenId;
+        window.setFormReadonlyId=this.setFormReadonlyId;
+    }
+}
+
+Vue.createApp(DataListVue).mount('#datalist');
+
+const RolelistVue = 
+{
+    data() 
+    {
+        return {
+            roles:null,
+        }
+    },
+    methods: 
+    {
+        getDatas () 
+        {
+            let paras = {};
+            paras['viewCode']="role";
+            paras['curPage']=1;
+            paras['pageItmes']=100;
+            var that = this;
+            axios.post("./../api/datalist",paras).then(function(res){
+            that.roles=Object.values(res.data)[0];
+            window.setRoles(that.roles);   
+            }).catch(function (err) {
+            });
+        }
+    },
+    mounted() 
+    {
+        this.getDatas();
+    }
+}
+
+Vue.createApp(RolelistVue).mount('#rolelistsub')
+
+</script>
+
+</html>

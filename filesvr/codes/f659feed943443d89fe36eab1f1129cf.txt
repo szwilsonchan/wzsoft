@@ -1,0 +1,9 @@
+;CharString=CharString+'';
+if(CharString.length>0)
+{
+return CharString.substring(0,CharString.length-1);
+}
+else
+{
+return CharString;
+};;;

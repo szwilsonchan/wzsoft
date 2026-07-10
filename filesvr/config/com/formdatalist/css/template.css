@@ -1,0 +1,829 @@
+:root {
+    --color-primary: #06b6d4;
+    --color-primary-hover: #0891b2;
+    --color-primary-light: #cffafe;
+    --color-success: #34d399;
+    --color-success-hover: #10b981;
+    --color-warning: #fbbf24;
+    --color-danger: #fb7185;
+    --color-border: #e2e8f0;
+    --color-border-hover: #94a3b8;
+    --color-text: #1e293b;
+    --color-text-secondary: #64748b;
+    --color-text-light: #94a3b8;
+    --color-bg: #f8fafc;
+    --color-canvas: #ffffff;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.1);
+    --radius-sm: 8px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --transition: 0.2s ease;
+}
+.conParentformin
+{
+    width:800px;
+    left:50%;
+    margin-top: 10px;
+    margin-botom: 10px;
+    padding:10px;
+    padding-botom:30px;
+    margin-left: -400px;
+    min-height: 700px;
+    height: fit-content;
+    position:relative;
+    box-sizing: border-box;
+    border:2px solid var(--color-border);
+    box-shadow: var(--shadow-md);
+    overflow: auto;
+    float:left;
+}
+
+body
+{
+    margin: 0px;
+    padding: 0px;
+}
+.comlist
+{
+    width:99%;
+    top:40px;
+    min-height: 60px;
+    height:fit-content;
+    background: var(--color-canvas);
+    border: 0px solid var(--color-primary);
+    padding-left:10px;
+    margin-bottom: 10px;
+    position: fixed;
+    float:left;
+    z-index: 1000;
+}
+.comitem
+{
+    margin:3px;
+    width:150px;
+    height:32px;
+    line-height: 32px;
+    float:left;
+    font-size: 0.6em;
+    border: 1px solid var(--color-border);
+}
+.comitem:hover
+{
+    border: 1px solid var(--color-primary);
+}
+.main-wrapper 
+{
+    width:100%;
+    position: relative;
+    top: 50px;
+    border: 1px solid var(--color-primary);
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    height: fit-content;
+    overflow: auto;
+    clear:both;
+}
+
+.tmp-action 
+{
+    padding:5px;
+    height:40px;
+    box-sizing: border-box;
+    text-align: left;
+    background-color: #fff;
+    width: 100%;
+    position: fixed;
+    z-index: 1001;
+}
+
+.tmp-action-save 
+{
+    box-sizing: border-box;
+    text-align: right;
+    float:right;
+}
+
+.tmp-action-add 
+{
+    position: relative;
+    height:fit-content;
+    box-sizing: border-box;
+    text-align: left;
+    float:left;
+}
+
+.tmp-action-save .btnOK
+{
+    border-style: none;
+    border-radius: 0.5em;
+    background-color: var(--color-success);
+    color:#fff;
+    height:30px;
+    width:80px;
+    cursor: pointer;
+    outline:none;
+    box-sizing: border-box;
+}
+.tmp-action-save .btnOK:hover
+{
+    background-color: var(--color-warning);
+}
+.tmp-action-save .btnCancle
+{
+    border-style: none;
+    border-radius: 0.5em;
+    background-color: var(--color-border);
+    color:#fff;
+    height:30px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.tmp-action-save .btnCancle:hover
+{
+    background-color: var(--color-success);
+}
+.tmp-action-add .dropcontent
+{
+    display:none;
+    position: absolute;
+    min-height:50px;
+    z-index: 2100;
+    width:200px;
+    background-color:white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    text-align: left;
+}
+.dropitem:hover .dropcontent 
+{
+    display:block;
+}
+.tmp-action-add .menu-content
+{
+    padding: 5px;
+}
+.tmp-action-add .menu-content li
+{
+    list-style: none;
+}
+.tmp-action-add .menu-content a:link
+{
+    margin-bottom: 5px;
+    display: block;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    border-radius: 3em;
+    height:30px;
+    line-height: 35px;
+    text-align: center;
+    text-decoration: none;
+}
+.tmp-action-add .menu-content a:visited
+{
+    color: var(--color-text);
+}
+.tmp-action-add .menu-content a:hover
+{
+    background-color: var(--color-primary-hover);
+}
+
+.tmp-action-add input[type=button]
+{
+    border-style: none;
+    border-radius: 0.5em;
+    background-color: var(--color-primary);
+    color:#fff;
+    height:30px;
+    width:110px;
+    cursor: pointer;
+    outline:none;
+    box-sizing: border-box;
+}
+.tmp-action-add input[type=button]:hover
+{
+    background-color: var(--color-primary-hover);
+}
+.main-wrapper-info
+{
+    color: black;
+    font-size:0.8em;
+    background-color: var(--color-primary-light);
+    border: none;
+    border-radius: 0.5em;
+    padding: 5px;
+    width:200px;
+    box-sizing: border-box;
+    overflow: auto;
+    position:absolute;
+    top:5px;
+    right:260px;
+}
+.main-wrapper-info .left
+{
+    float:left;
+    width:90%;
+    text-align: center;
+    box-sizing: border-box;
+    border: none;
+}
+
+.conParentheader 
+{
+    background-color: var(--color-bg);
+    margin: 0px;
+    padding:5px;
+    width:100%;
+    height:40px;
+    clear: both;
+    box-sizing: border-box;
+    z-index: 998;
+    float:left;
+}
+.conParentmenu-left 
+{
+    width:10%;
+    margin: 0px;
+    background-color: #fff;
+    box-sizing: border-box;
+    padding:0px;
+    min-height: 200px;
+    overflow: hidden;
+    float:left;
+}
+
+.content 
+{
+    width:90%;
+    margin: 0px;
+    min-height: 500px;
+    box-sizing: border-box;
+    background-color: var(--color-bg);
+    float:left; 
+}
+
+.com-wrapper
+{
+    border: 1px dotted var(--color-border-hover)
+}
+.com-wrapper:hover .template-action
+{
+    display: block
+}
+.comconfigTitle
+{
+    padding: 5px;
+    color: var(--color-text);
+    font-size: 1.2em;
+}
+.contentformin 
+{
+    width:700px;
+    left:50%;
+    margin-left: -350px;
+    min-height: 500px;
+    height: fit-content;
+    position:relative;
+    box-sizing: border-box;
+    background-color: var(--color-bg);
+    overflow: auto;
+    float:left;
+}
+.contentcodeval 
+{
+    width:100%;
+    height: fit-content;
+    min-height: 700px;
+    position:relative;
+    box-sizing: border-box;
+    background-color: var(--color-bg);
+    overflow: auto;
+    float:left;
+}
+.codeval-action 
+{
+    position:absolute;
+    top: 5px;
+    right: 180px;
+    overflow:visible;
+    padding-right: 2px;
+    box-sizing: border-box;
+    text-align: left;
+    z-index: 999;
+}
+
+.codeval-action .btnOK
+{
+    border-style: none;
+    border-radius: 0.5em;
+    background-color: var(--color-primary);
+    color:#fff;
+    height:30px;
+    width:60px;
+    cursor: pointer;
+    outline:none;
+    box-sizing: border-box;
+}
+.codeval-action .btnOK:hover
+{
+    background-color: var(--color-success);
+}
+.codeval-action .btnCancle
+{
+    border-style: none;
+    border-radius: 0.5em;
+    background-color: var(--color-border);
+    color:#fff;
+    height:30px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.codeval-action .btnCancle:hover
+{
+    background-color: var(--color-success);
+}
+.dropitem:hover .dropcontent 
+{
+    display:block;
+}
+
+.template-action-con 
+{
+    display:none;
+    position:absolute;
+    top: -15px;
+    right: 1px;
+    height:fit-content;
+    padding-right: 2px;
+    box-sizing: border-box;
+    text-align: right;
+}
+
+.template-action-con input[type=button]
+{
+    border-style: none;
+    border-radius: 0.5em;
+    background-color: var(--color-primary);
+    color:#fff;
+    height:20px;
+    cursor: pointer;
+    outline:none;
+    box-sizing: border-box;
+}
+.template-action-con input[type=button]:hover
+{
+    background-color: var(--color-success);
+}
+
+.template-action 
+{
+    position:absolute;
+    display:none;
+    top: 1px;
+    right: 1px;
+    height:fit-content;
+    padding-right: 2px;
+    box-sizing: border-box;
+    text-align: right;
+}
+
+.template-action input[type=button]
+{
+    border-style: none;
+    border-radius: 0.5em;
+    background-color: var(--color-primary);
+    color:#fff;
+    height:20px;
+    cursor: pointer;
+    outline:none;
+    box-sizing: border-box;
+}
+.template-action input[type=button]:hover
+{
+    background-color: var(--color-primary-hover);
+}
+
+.coverWin 
+{ 
+    position:absolute;left:0px;top:0px;
+    background:rgba(0, 0, 0, 0.4);
+    width:100%;  
+    height:100%;
+    filter:alpha(opacity=60);  
+    opacity:0.6;  
+    display:none; 
+    z-Index:999;  
+}
+
+.tempForm 
+{ 
+    position:fixed;
+    background:#fff;
+    left:0px;
+    top:0px;
+    width:100%;  
+    height:100%; 
+    z-Index:1002;  
+    display: none;
+}
+.tempForm iframe
+{ 
+    width:100%;   
+    height:100%;  
+}
+.codeVal 
+{ 
+    position:fixed;
+    background:#fff;
+    left:0px;
+    top:0px;
+    width:100%;  
+    height:100%; 
+    z-Index:1002;  
+    display: none;
+}
+.codeVal iframe
+{ 
+    width:100%;   
+    height:100%;  
+}
+.modalWin 
+{ 
+    position:absolute;
+    width:500px;
+    height:300px;
+    top:20%;
+    left:39%;
+    background-color:#fff;
+    display:none;
+    cursor:pointer;
+    text-align: center;
+    z-Index:9999;  
+}
+.modalWin .modalWinMsg 
+{
+    color: black;
+    font-size:1em;
+    font-weight: bold;
+    width:100%;
+    margin-top: 18%;
+    box-sizing: border-box;
+    height:30px;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+.modalWinBtn .btnOK
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: var(--color-primary);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.modalWinBtn .btnOK:hover
+{
+    background-color: var(--color-primary-hover);
+}
+.modalWinBtn .btnCancle
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: var(--color-border);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.modalWinBtn .btnCancle:hover
+{
+    background-color: var(--color-primary-hover);
+}
+
+.updWin 
+{ 
+    position:absolute;
+    width:900px;
+    height:838px;
+    top:10px;
+    left:50%;
+    margin-left: -350px;
+    background-color:#fff;
+    display:none;
+    cursor:pointer;
+    text-align: center;
+    padding:20px;
+    z-Index:1001;
+    overflow:auto;
+}
+
+.updWin .updWin-content
+{ 
+    width:100%;
+    box-sizing: border-box;
+    padding:2px;
+    overflow: visible; 
+    margin-bottom: 10px;
+}
+.updWin-content .updWin-content-item
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.updWin-content-item .left
+{ 
+    width:15%;
+    box-sizing: border-box;
+    font-size:1em;
+    line-height:40px;
+    padding-right:15px;
+    text-align:right;
+    font-weight: bold;
+    float:left;
+}
+.updWin-content-item .right
+{
+    width:85%;
+    box-sizing: border-box;
+    text-align:left;
+    float:left;
+}
+.updWin-content-item .compiframe
+{
+    width:100%;
+    height:650px;
+    border: 0px solid var(--color-primary);
+    box-sizing: border-box;
+    text-align:left;
+}
+
+.updWin-content-item input[type=text]:not(.readonly)
+{
+    border: 1px solid var(--color-border);
+    border-radius: 0.8em;
+    height:40px;
+    width:90%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+.updWin-content-item .readonly
+{
+    border:none;
+    height:40px;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+.updWin-content-item input[type=text]:focus:not(.readonly)
+{
+    border: 1px solid var(--color-primary);
+}
+.updWin-content-item select
+{
+    border: none;
+    border-radius: 0.8em;
+    background-color: var(--color-bg);
+    padding: 5px;
+    width:90%;
+    height:40px;
+}
+.updWin .btnOK
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: var(--color-primary);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.updWin .btnOK:hover
+{
+    background-color: var(--color-primary-hover);
+}
+.updWin .btnCancle
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: var(--color-border);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.updWin .btnCancle:hover
+{
+    background-color: var(--color-primary-hover);
+}
+.updWin-info
+{
+    color: black;
+    font-size:0.8em;
+    background-color: var(--color-primary-light);
+    border: 1px solid var(--color-primary);
+    border-radius: 0.5em;
+    padding: 10px;
+    width:100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.updWin-info .left
+{
+    float:left;
+    width:90%;
+    box-sizing: border-box;
+}
+.updWin-info .right
+{
+    float:right;
+    color:grey;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.select-tab ul
+{
+    padding: 0px;
+    margin: 0px;
+}
+.select-tab li
+{
+    list-style: none;
+    border-bottom: 1px solid var(--color-border);
+    padding: 5px;
+    text-align: center;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    display: block;
+    cursor: pointer;
+    float:left;
+}
+
+.select-tab .selected
+{
+    color: var(--color-primary);
+    font-weight: bold;
+    border-bottom: 1px solid var(--color-primary);
+}
+
+.conParentfooter 
+{
+    background-color: var(--color-bg);
+    width:100%;
+    height:60px;
+    color: var(--color-text-light);
+    clear: both;
+    box-sizing: border-box;
+}
+.conParent
+{
+    border: 2px dotted var(--color-success)
+}
+.conParent:hover .template-action-con 
+{
+    display:block;
+}
+.conParentHidden
+{
+    padding-top:15px;
+    display: none;
+    border: 2px dotted var(--color-success);
+    z-Index:1000;
+}
+.dropcontent div
+{
+  padding:5px;
+  margin:3px;
+  float:left;
+  height:fit-content;
+  min-width:160px;
+  width:fit-content;
+  border-radius: 0.8em;
+  border: 1px solid var(--color-primary-hover);
+}
+
+.action-content a:link
+{
+    margin-left: 5px;
+    width:24px;
+    display: block;
+    color: #fff;
+    background-color: var(--color-primary-hover);
+    border-radius: 0.4em;
+    height:24px;
+    text-align: center;
+    padding-top:2px;
+    padding-right:1px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    float:left;
+}
+.action-content a:visited
+{
+    color: #fff;
+}
+
+.action-content a.active
+{
+    background-color: var(--color-primary-hover);
+}
+.action-content a:hover:not(.active)
+{
+    background-color: var(--color-primary-hover);
+}
+
+.btnAddVar
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: var(--color-success);
+    color:#fff;
+    height:26px;
+    min-width:90px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    outline:none;
+    box-sizing: border-box;
+}
+.btnAddVar:hover
+{
+    background-color: var(--color-warning);
+}
+.btnCancleVar
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: var(--color-border);
+    color:#fff;
+    height:26px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.btnCancleVar:hover
+{
+    background-color: var(--color-warning);
+}
+
+.fileContainer {
+    overflow: hidden;
+    position: relative;
+    background-color: var(--color-primary-hover);
+    border-radius: .5em;
+    float: left;
+    padding-left: 10px;
+    width:200px;
+    height:26px;
+    line-height:26px;
+    margin-top: 8px;
+    margin-left: 3px;
+    text-align:center;
+}
+
+.fileContainer [type=file] {
+    display: block;
+    font-size: 999px;
+    filter: alpha(opacity=0);
+    min-height: 100%;
+    min-width: 100%;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+    cursor: pointer;
+}
+
+.fileContainer:hover
+{
+    background-color: var(--color-primary);
+}

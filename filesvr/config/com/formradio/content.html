@@ -1,0 +1,12 @@
+<div class="updWin-content-item[@configid@]" id="input[@configid@]" style="display:none">
+    <div class="left"  v-show="titleshow">[@fieldtitle@]：<span v-show="!this.isView">[@fieldnoemptylbl@]</span></div>
+    <div class="right" v-show="!this.isView">
+        <template v-for="item in this.viewdatas">
+            <input type="radio" class="rd" name="radios[@fieldname@]" :value="item['[@big_valuefield@]']" v-model="dataitem.[@fieldname@]" onchange="onchange[@configid@]()" ><label onclick="changeLable[@configid@](event)">{{item['[@big_showfield@]']}}&nbsp;</label>
+        </template>
+        <span style="color:red;display:none" id="valmsg[@configid@]"></span>
+    </div>
+    <div class="right" v-show="this.isView">
+        {{dataitem.[@fieldname@]STXT}}
+    </div>
+</div>

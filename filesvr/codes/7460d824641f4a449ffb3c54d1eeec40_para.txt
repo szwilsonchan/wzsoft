@@ -1,0 +1,1 @@
+{"para":[{"name":"访问人ID","ptype":"sys","type":"str","key":"访问人ID"},{"name":"访问人角色","ptype":"sys","type":"str","key":"访问人角色"},{"name":"访问人部门ID","ptype":"sys","type":"str","key":"访问人部门ID"}],"type":"def"}

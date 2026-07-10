@@ -1,0 +1,77 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Node.js ###
+node_modules/
+package.json
+package-lock.json
+
+### AI session artifacts (temp scripts, payloads, debug files) ###
+/*.mjs
+/*.mjs.bak
+/*.py
+/*.js
+/_*.json
+/_*.html
+/_*.txt
+/actual_*.html
+/expected_*.html
+/*.json
+/cookies.txt
+/*.bak
+/node_html/
+/node_html_full/
+/scripts/
+/__pycache__/
+/asset_mgmt_user_guide.md
+/plan.md
+/cn_*.txt
+/codes_chinese.txt
+/ref_*.txt
+/tempcontent_*.html
+/tempcontent_*.txt
+/tmp_*.txt
+/ookies.txt
+
+### Platform initial template (not needed for repo) ###
+/filesvrInit/
+
+### Platform runtime data (user-generated, not code) ###
+filesvr/uploadfiles/
+filesvr/pdffiles/
+filesvr/codelogs/
+filesvr/datafiles/
+
+### Claude Code ###
+.claude/

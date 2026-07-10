@@ -1,0 +1,281 @@
+<div class="content-tab[@configid@]" id="datalist[@configid@]" style="display:none">
+    <div class="content-tab-title">
+        <span>[@fieldtitle@]</span>
+    </div>
+    <div class="content-info[@configid@]" id="content-info1[@configid@]" style="display:none">
+        <div class="left" id="content-info-msg1[@configid@]"></div>
+        <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+    </div>
+    <div class="content-tab-filter" >
+        <div class="pageselshow">
+            [@cappegenum1@]
+            <select class="sel" v-model="pageitems" @change="getDatasByFilters(1)">
+                <option selected>2</option>
+                <option>10</option>
+                <option>20</option>
+                <option>50</option>
+            </select>
+            [@cappegenum2@]
+        </div>
+        <div class="actionbtns">
+            [@btntophtml@]
+        </div>
+        <div class="searchcombine" >
+            <input type="button" class="btn"  value="[@btnsearch@]" @click="getDatasByFilters(1)" />
+        </div>
+        <div class="searchcombine" id="view_prp_filters1[@configid@]">
+            <input type="text" class="text" name="filter_searchkey_like" value="" />
+        </div>
+    </div>
+    <div class="content-tab-con" >
+        <table class="tabdata" >
+            <tr>
+                <th v-for="datalab in datalabs">{{showDataLbl(Object.values(datalab)[0])}}</th>
+                <th>[@capaction@]</th>
+            </tr>
+            <tr v-for="data in datas">
+                <template v-for="item in datalabs">
+                    <td v-if="arrShowTitles.indexOf(Object.keys(item)[0])!=-1">{{showDataItem(Object.keys(item)[0],data[Object.keys(item)[0]])}}</td>
+                </template>
+                <td>
+                    <ul class="action-content">
+                        <li><a href="javascript:void(0)" @click="openUpdWinVue('',approveDatas,data[pkey])">[@btnapp@]</a></li>
+                        [@btnmidhtml@]
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="content-tab-pages">
+        <div class="itemsshow">
+            <span>{{totalitems}} [@cappegenum3@]</span>
+        </div>
+        <div class="pagesshow" id="pagesshow" v-show="hasitmes">
+            <ul class="page-content">
+                <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage+1)">[@pagedown@]</a></li>
+                <li v-for="page in showpages">
+                    <a href="javascript:void(0)" v-if="page.i==this.curpage" @click="getDatasByFilters(page.i)" class="active">{{page.i}}</a>
+                    <a href="javascript:void(0)" v-if="page.i!=this.curpage" @click="getDatasByFilters(page.i)" >{{page.i}}</a>
+                </li>
+                <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage-1)">[@pageup@]</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="updWin1[@configid@]" class="updWin[@configid@]">
+        <div class="updWin-info" id="updWin-info1[@configid@]" style="display:none">
+            <div class="left" id="updWin-info-msg1[@configid@]"></div>
+            <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+        </div>
+        <div class="updWin-content" style="line-height: 40px;">
+            <div class="updWin-content-item">
+                <div class="left">ID</div>
+                <div class="right"><input type="text" readonly class="readonly" v-model="dataitem.PSNID"  /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmname@]</div>
+                <div class="right">{{dataitem.NAME}}</div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmorg@]</div>
+                <div class="right">{{dataitem.ORGNAME}}</div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmemail@]</div>
+                <div class="right">{{dataitem.EMAIL}}</div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmmobile@]</div>
+                <div class="right">{{dataitem.MOBILE}}</div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@apptime@]</div>
+                <div class="right">{{dataitem.REQORGTIME}}</div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@appnote@]</div>
+                <div class="right">{{dataitem.REQORGNOTE}}</div>
+            </div>
+            <div class="updWin-content-item" >
+                <div class="left">[@appmode@]</div>
+                <div class="right" style="line-height: 40px;">
+                    <input type="radio" name="radiostemp" value="1" v-model="this.approvetype" ><label>&nbsp;[@apptype1@]&nbsp;</label>
+                    <input type="radio" name="radiotemp" value="2" v-model="this.approvetype" ><label>&nbsp;[@apptype2@]&nbsp;</label>
+                </div>
+            </div>
+            <div class="updWin-content-item" v-show="this.approvetype=='1'" >
+                <div class="left">[@frmdept@]</div>
+                <div class="right" >
+                    <select  class="sel" v-model="dataitem.REQDEPTID" id="selDeptid1[@configid@]" style="width:200px">
+                        <option value=""></option>
+                        <template v-for="v in depts">
+                            <option  v-if="v['PID']!='0'"  :value="v['DEPTID']" >&nbsp;&nbsp;&nbsp;&nbsp;{{v['NAME']}}</option>
+                            <option  v-if="v['PID']=='0'"  :value="v['DEPTID']" >{{v['NAME']}}</option>
+                        </template>
+                    </select>
+                </div>
+            </div>
+            <div class="updWin-content-item" v-show="this.approvetype=='1'" >
+                <div class="left">[@frmrole@]</div>
+                <div class="right" style="line-height:26px">
+                    <div v-for='(role, index) in roles' :key="index">
+                    <input type='checkbox' :checked="roleIds.indexOf(role.ROLEID)>=0" name='checkboxinput' class='input-checkbox' @click='checkedOne(role.ROLEID)'>&nbsp;{{role.NAME}}
+                    </div>
+                </div>
+                <div id ="rolelistsub" style="display:none"></div>
+            </div>
+            <div class="updWin-content-item" v-show="this.approvetype=='2'">
+                <div class="left">[@appreject@]</div>
+                <div class="right"><input type="text" id="appComment[@configid@]" /></div>
+            </div>
+        </div>
+        <div class="updWinBtn">
+            <input type="button" class="btnOK"  value="[@btnsave@]" onclick="openWinOK[@configid@]()" />
+            <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeWin[@configid@]()" />
+        </div>
+    </div>
+</div>
+<div class="content-tabmobile[@configid@]" id="datalistmobile[@configid@]" style="display:none">
+    <div class="content-tab-title">
+        <span>[@fieldtitle@]</span>
+    </div>
+    <div class="content-info[@configid@]" id="content-info2[@configid@]" style="display:none">
+        <div class="left" id="content-info-msg2[@configid@]"></div>
+        <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+    </div>
+    <div class="content-tab-filter" >
+        <div class="pageselshow">
+            [@cappegenum1@]
+            <select class="sel" v-model="pageitems" @change="getDatasByFilters(1)">
+                <option selected>2</option>
+                <option>10</option>
+                <option>20</option>
+                <option>50</option>
+            </select>
+            [@cappegenum2@]
+        </div>
+        <div class="actionbtns">
+            [@btntophtml@]
+        </div>
+        <div style="float:left;width:100%">
+            <div class="searchcombine" style="width:75%" id="view_prp_filters2[@configid@]">
+                <input type="text" class="text" name="filter_searchkey_like" value="" />
+            </div>
+            <div class="searchcombine" style="width:25%">
+                <input type="button" class="btnsub"  value="[@btnsearch@]" @click="getDatasByFilters(1)" />
+            </div>
+        </div>
+    </div>
+    <div class="content-tab-con" >
+        <table class="tabdata" >
+            <tr>
+                <th><span v-for="datalab in datalabs">{{showDataLbl(Object.values(datalab)[0])}}/</span>[@capaction@]</th>
+            </tr>
+            <tr v-for="data in datas">
+                <td>
+                    <template v-for="item in datalabs">
+                        <div v-if="arrShowTitles.indexOf(Object.keys(item)[0])!=-1">{{showDataItem(Object.keys(item)[0],data[Object.keys(item)[0]])}}</div>
+                    </template>
+                    <br/>
+                    <ul class="action-content">
+                        <li><a href="javascript:void(0)" @click="openUpdWinVue('',approveDatas,data[pkey])">[@btnapp@]</a></li>
+                        [@btnmidhtml@]
+                    </ul>
+                </td>
+            </tr>
+        </table> 
+    </div>
+    <div class="content-tab-pages">
+        <div class="itemsshow">
+            <span>{{totalitems}} [@cappegenum3@]</span>
+        </div>
+        <div class="pagesshow" id="pagesshow" v-show="hasitmes">
+            <ul class="page-content">
+                <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage+1)">[@pagedown@]</a></li>
+                <li v-for="page in showpages">
+                    <a href="javascript:void(0)" v-if="page.i==this.curpage" @click="getDatasByFilters(page.i)" class="active">{{page.i}}</a>
+                    <a href="javascript:void(0)" v-if="page.i!=this.curpage" @click="getDatasByFilters(page.i)" >{{page.i}}</a>
+                </li>
+                <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage-1)">[@pageup@]</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="updWin2[@configid@]" class="updWin[@configid@]">
+        <div class="updWin-info" id="updWin-info2[@configid@]" style="display:none">
+            <div class="left" id="updWin-info-msg2[@configid@]"></div>
+            <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+        </div>
+        <div class="updWin-content" style="line-height: 40px;">
+            <div class="updWin-content-item">
+                <div class="left">ID</div>
+                <div class="right"><input type="text" readonly class="readonly" v-model="dataitem.PSNID"  /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmname@]</div>
+                <div class="right">{{dataitem.NAME}}</div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmorg@]</div>
+                <div class="right">{{dataitem.ORGNAME}}</div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmemail@]</div>
+                <div class="right">{{dataitem.EMAIL}}</div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmmobile@]</div>
+                <div class="right">{{dataitem.MOBILE}}</div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@apptime@]</div>
+                <div class="right">{{dataitem.REQORGTIME}}</div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@appnote@]</div>
+                <div class="right">{{dataitem.REQORGNOTE}}</div>
+            </div>
+            <div class="updWin-content-item" >
+                <div class="left">[@appmode@]</div>
+                <div class="right" style="line-height: 40px;">
+                    <input type="radio" name="radiostemp" value="1" v-model="this.approvetype" ><label>&nbsp;[@apptype1@]&nbsp;</label>
+                    <input type="radio" name="radiotemp" value="2" v-model="this.approvetype" ><label>&nbsp;[@apptype2@]&nbsp;</label>
+                </div>
+            </div>
+            <div class="updWin-content-item" v-show="this.approvetype=='1'" >
+                <div class="left">[@frmdept@]</div>
+                <div class="right" >
+                    <select  class="sel" v-model="dataitem.REQDEPTID" id="selDeptid2[@configid@]" style="width:200px">
+                        <option></option>
+                        <template v-for="v in depts">
+                            <option  v-if="v['PID']!='0'"  :value="v['DEPTID']" >&nbsp;&nbsp;&nbsp;&nbsp;{{v['NAME']}}</option>
+                            <option  v-if="v['PID']=='0'"  :value="v['DEPTID']" >{{v['NAME']}}</option>
+                        </template>
+                    </select>
+                </div>
+            </div>
+            <div class="updWin-content-item" v-show="this.approvetype=='1'" >
+                <div class="left">[@frmrole@]</div>
+                <div class="right" style="line-height:26px">
+                    <div v-for='(role, index) in roles' :key="index">
+                    <input type='checkbox' :checked="roleIds.indexOf(role.ROLEID)>=0" name='checkboxinput' class='input-checkbox' @click='checkedOne(role.ROLEID)'>&nbsp;{{role.NAME}}
+                    </div>
+                </div>
+            </div>
+            <div class="updWin-content-item" v-show="this.approvetype=='2'">
+                <div class="left">[@appreject@]</div>
+                <div class="right"><input type="text" id="appComment[@configid@]" /></div>
+            </div>
+        </div>
+        <div class="updWinBtn">
+            <input type="button" class="btnOK"  value="[@btnsave@]" onclick="openWinOK[@configid@]()" />
+            <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeWin[@configid@]()" />
+        </div>
+    </div>
+</div>
+<div id="coverWin[@configid@]" class="coverWin[@configid@]"></div>
+<div id="modalWin[@configid@]" class="modalWin[@configid@]">
+    <div class="modalWinMsg"><span id="modalWinMsg[@configid@]"></span></div>
+    <div class="modalWinBtn">
+        <input type="button" class="btnOK"  value="[@btnok@]" onclick="openWinOK[@configid@]()" />
+        <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeWin[@configid@]()" />
+    </div>
+</div>

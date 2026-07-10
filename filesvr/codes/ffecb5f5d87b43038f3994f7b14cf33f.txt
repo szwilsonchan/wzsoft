@@ -1,0 +1,4 @@
+;var dt = gvalnum(vDate);
+var m=dt.getMonth()+1;
+return m+ '.' + dt.getDate();
+;;;

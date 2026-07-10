@@ -1,0 +1,34 @@
+<div class="content-tab[@configid@]" id="datalist[@configid@]">
+    <div class="content-tab-title">
+        <span>[@fieldtitle@]</span>
+    </div>
+    <div class="content-info" id="content-info[@configid@]" style="display:none">
+        <div class="left" id="content-info-msg[@configid@]"></div>
+        <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+    </div>
+    <div class="content-tab-filter" >
+        [@btntophtml@]
+    </div>
+    <div class="content-tab-con" >
+        <table class="tabdata" >
+            <tr>
+                <th v-for="datalab in datalabs" :style="{ width: this.getThWidth(datalab) }" v-html="datalab" ></th>
+                [@btnmidhtmlth@]
+            </tr>
+            <tr v-for="(data,index) in datas">
+                <template v-for="datalab in Object.keys(datalabs)">
+                    [@shtmla@]
+                </template>
+                [@btnmidhtml@]
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="coverWin[@configid@]" class="coverWin[@configid@]"></div>
+<div id="modalWin[@configid@]" class="modalWin[@configid@]">
+    <div class="modalWinMsg"><span id="modalWinMsg[@configid@]"></span></div>
+    <div class="modalWinBtn">
+        <input type="button" class="btnOK"  value="[@btnok@]" onclick="openWinOK[@configid@]()" />
+        <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeWin[@configid@]()" />
+    </div>
+</div>

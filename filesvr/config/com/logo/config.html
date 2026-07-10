@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Image Source</div>
+            <div class="right"><input type="text" v-model="dataitem.config.logopic" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Image Height</div>
+            <div class="right"><input type="text" v-model="dataitem.config.logoheight" /></div>
+        </div>  
+    </div>
+</div>
+
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            comdatas:null,
+            dataitem:{"comid":"2","comname":"LOGO","comtitle":"","config":{"logopic":"","logoheight":"35px"}}
+        }
+    },
+    methods: 
+    {
+        getDataItem() 
+        {
+            this.updDatas();
+            let viewhtml = "";
+
+            viewhtml = viewhtml + "<div  >";
+            viewhtml = viewhtml + "<img src=\"./."+ this.dataitem.config.logopic +"\" height=\""+ this.dataitem.config.logoheight +"\"  />";
+            viewhtml = viewhtml + "</div>";
+
+            this.dataitem.config.viewhtml=viewhtml;
+
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+        },
+        getDatas() 
+        {
+            let paras = {};
+            paras['viewCode']="com";
+            paras['itemIDs']="1";
+            var that = this;
+            axios.post("./../../../../api/dataget",paras).then(function(res){
+            that.comdatas=Object.values(Object.values(res.data)[0])[0];
+            if(that.comdatas["PARA"]!=null)
+            {
+                if(that.comdatas["PARA"].trim()!="")
+                {
+                    let para=JSON.parse(that.comdatas["PARA"]);
+                    that.dataitem.config.logopic=="";
+                        that.dataitem.config.logopic=para.logopic;
+                }
+            }
+            }).catch(function (err) {
+            });
+        },
+        updDatas() 
+        {
+            let paras = {};
+            paras['viewCode']="com";
+            paras['itemIDs']="2";
+            paras['field_para'] = "{\"logopic\":\"" + this.dataitem.config.logopic +"\"}";
+            
+            var that = this;
+            axios.post("./../../../../api/dataupd",paras).then(function(res)
+            {
+                
+            }).catch(function (err) {
+            });
+    
+        }
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.setDataItem = this.setDataItem;
+        this.getDatas();
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+</script>
+
+</body>
+</html>

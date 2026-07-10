@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css?5465" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+<script src="selColor.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Title</div>
+            <div class="right"><input type="text" v-model="dataitem.config.fieldtitle" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">CardSettings</div>
+            <div class="right">
+                <div class="divBtnTopsAdd" >
+                    <input class="btnAddBtn" type="button"  onclick="addBtnShow(event)" value="+AddNewCard" >
+                    <div class="addBtnDiv" style="display:none" ><input style="width:25%" type="text" value="" placeholder="CardName" /><input class="btnSave" type="button" value="Save" onclick="addBtnDo(event,'divBtnTops','a','top')" />
+                        <input class="btnCancle" type="button" value="Cancel" onclick="closeAdd(event)" />
+                    </div>
+                </div>
+                <div class="divBtnTops" id="divBtnTops"></div>
+                <div class="divItemUpd" id="divItemUpdtop">
+                    <div class="configItemUpdDiv" id="divItemUpdNodetop"><input style="width:25%" type="text" value="" placeholder="CardName" /><input type="hidden"  /><input class="btnSave" type="button" value="Save" onclick="configItemUpdDo(event,'divBtnTops','u','top')" />
+                        <input class="btnCancle" type="button" value="Cancel" onclick="gConfigItemClose(event)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">CardStyle</div>
+            <div class="right" style="line-height: 45px;">
+                Background Color: <input type="text" v-model="dataitem.config.btnbg"  style="width:20%" id="color-picker-btnbg" />
+                Selected Color: <input type="text" v-model="dataitem.config.btnbghover"  style="width:20%" id="color-picker-btnbghover" />
+                <br>
+                CardWidth: <input type="text" v-model="dataitem.config.btnwidth" style="width:20%" />
+                Card Height: <input type="text" v-model="dataitem.config.btnheight" style="width:20%" />
+                <br>
+                Font Size: <input type="text" v-model="dataitem.config.fontsize" style="width:20%" />
+                FontColor: <input type="text" v-model="dataitem.config.fontcolor"  style="width:20%" id="color-picker-fontcolor" />
+                Selected Color: <input type="text" v-model="dataitem.config.fontcolorsel"  style="width:20%" id="color-picker-fontcolorsel" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Display</div>
+            <div class="right" style="line-height:40px">
+                <input type="checkbox" v-model="dataitem.config.formshow" style="width:30px" />
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+var dragborder="11";
+var dragobj=null;
+var gdivClassCode = ",selBtnDiv,";
+
+document.addEventListener('dragstart', (e) => {
+    dragborder = e.target.style.border
+    dragobj = e.target;
+}, false)
+
+document.addEventListener('drag', (e) => {
+    e.target.style.border = '1px dashed red'
+})
+
+document.addEventListener('dragend', (e) => {
+    e.target.style.border = dragborder;
+}, false)
+
+function dealDivDrag(dc)
+{
+    dc.draggable=true;
+    dc.addEventListener('dragenter', (e) => {
+    }, false)
+
+    dc.addEventListener('dragover', e => {
+        e.preventDefault()
+        let p = e.target.parentNode;
+        let targetElement = e.target;
+        if(gdivClassCode.indexOf("," +targetElement.className+ ",")>=0)
+        {
+            if(gdivClassCode.indexOf("," +dragobj.className+ ",")>=0)
+            {
+                if(dragobj.nextSibling===targetElement)
+                {
+                    if(targetElement.nextSibling==null)
+                        p.appendChild(dragobj);
+                    else
+                        p.insertBefore(dragobj,targetElement.nextSibling);
+                }
+                else
+                {
+                    p.insertBefore(dragobj,targetElement);
+                }
+            }
+        }
+
+    }, false)
+
+    dc.addEventListener('drop', e => {
+        e.preventDefault()
+    }, false)
+}
+
+function closeAdd(e)
+{
+    let p = e.target;
+    p.parentElement.style.display="none"
+}
+
+function gCofigItemInitSelPara()
+{
+
+}
+
+function gConfigItemShowEdit(e,d,f)
+{
+    gCofigItemInitSelPara();
+
+    let pd=document.getElementById(d);
+    pd.style.display="block";
+
+    let ps=document.getElementById('divItemUpdNode'+f);
+    let pp=e.target.parentElement.parentElement;
+
+    let fn = pp.childNodes[0].innerText;
+    let fguid = pp.childNodes[1].value;
+
+    ps.childNodes[0].value=fn;
+    ps.childNodes[1].value=fguid;
+    
+    window.gItemForUpd=pp;
+
+    return;
+}
+
+function configItemUpdDo(e,cl,m,f)
+{
+    configItemUpdFunc(e,cl,m,window.gItemForUpd,f);
+    gConfigItemClose(e);
+}
+
+function configItemUpdFunc(e,cl,m,dc,f)
+{
+    let dn,df
+    let p = e.target.parentElement;
+
+    dn=p.childNodes[0].value;
+
+    let fguid="";
+    if(m=="a")
+    {
+        fguid=gGetGUIDID();
+    }
+    else
+    {
+        fguid= p.childNodes[1].value;
+    }
+
+    if(!dc)
+    {
+        dc = document.createElement("div");
+        dc.className="selBtnDiv";
+    }
+
+    let msg="";
+
+    if(dn.trim().length==0)
+        msg = msg + "Namelength cannot be empty;\n";
+
+    if(!checkVarName(dn))
+        msg = msg + "Namecannot contain quotes;\n";
+
+    if(msg!="")
+    {
+        alert(msg);
+        return;
+    }
+
+    let str = "<span style=\"border:none;\"></span>";
+    str = str + "<input type=\"hidden\" />";
+    str = str + "<span class=\"action-content\" style=\"float:right\" ><a href=\"javascript:void(0)\" onclick=\"gConfigItemShowEdit(event,'divItemUpd"+ f +"','"+ f +"');\" ><img width=\"18\"  src=\"./../../../imgs/update.png\"></a><a href=\"javascript:void(0)\" onclick=\"selBtnDel(event,'','"+ cl +"','"+ m +"','"+ f +"')\" ><img width=\"18\"  src=\"./../../../imgs/del.png\"></a></span>";
+    dc.innerHTML = str;
+    
+    dc.childNodes[0].innerText = dn;
+    dc.childNodes[1].value = fguid;
+
+    if(m=="a")
+    {
+        p.style.display="none";
+    }
+    return dc;
+
+}
+
+function gConfigItemClose(e)
+{
+    let p = e.target;
+    p.parentElement.parentElement.style.display="none"
+}
+
+function addBtnShow(e)
+{
+    let p = e.target.parentElement;
+    for (let dNode of p.childNodes) 
+    {
+        if(dNode.className=="addBtnDiv")
+        {
+            dNode.style.display="block";
+            break;
+        }
+    }
+}
+function addBtnDo(e,cl,m,f)
+{
+    let dc=configItemUpdFunc(e,cl,m,null,f);
+
+    let pp = e.target.parentElement.parentElement.parentElement;
+    for (let dNode of pp.childNodes) 
+    {
+        if(dNode.className==cl)
+        {
+            dNode.appendChild(dc);
+            dealDivDrag(dc);
+            genBtnContent(dNode,dc,'a',m,f);
+            break;
+        }
+    }
+}
+
+function selBtnDel(e,objname,cl,m,f)
+{
+    let p = e.target.parentElement.parentElement.parentElement;
+    if(p.parentElement.className==cl)
+    {
+        genBtnContent(p.parentElement,p,'d',m,f);
+    }
+}
+
+function gGenBtnContent(dataitem,pp,dNode,f,m,tf)
+{
+    if(f=='d')
+    {
+        pp.removeChild(dNode);
+    }
+}
+
+function gGetBtnContentDo(dataitem,pp,tf)
+{
+
+    let divbtn = "<div class=\"template-action-con\"><input type=\"button\" value=\"Edit\" onclick=\"openUpdWin('',updContainer,event)\"><input type=\"button\" value=\"Copy\" onclick=\"copyCom(event)\"><input type=\"button\" value=\"Paste\" onclick=\"pasteComSub(event)\"></div>";
+
+    let isupd=false;
+    let pc = parent.document.getElementById("divopcon"+dataitem.config.divguid);
+    if(pc)
+    {
+        isupd=true;
+    }
+
+    let btnbg = dataitem.config.btnbg;
+    let btnbghover = dataitem.config.btnbghover;
+    let fontcolor = dataitem.config.fontcolor;
+    let fontcolorsel = dataitem.config.fontcolorsel;
+    
+    let shtml="<div id='divop" + dataitem.config.divguid + "' style=\"box-sizing: border-box; margin-top:15px;position: relative; width: 100%; height: fit-content; float: left;\" draggable=\"false\" >";
+    let shtmltitle ="";
+    let shtmltitleSub ="<div id='divoptitle" + dataitem.config.divguid + "' style=\"border-bottom: 1px solid "+ btnbghover +"; box-sizing: border-box;position: relative; width: 100%; height: fit-content; float: left;\" draggable=\"false\" class=\"divopTitle\" >";
+    let shtmlcontent ="";
+    let shtmlcontentSub ="<div name='CardContainer' id='divopcon" + dataitem.config.divguid + "' style=\"box-sizing: border-box;position: relative; width: 100%; height: fit-content; float: left;\" draggable=\"false\" class=\"conParent\" >";
+    let sdisplay="";
+    let divbg="";
+    let divfontcolor="";
+    let dguids=[];
+
+    for (let dNodeSub of pp.childNodes) 
+    {
+        let fn = dNodeSub.childNodes[0].innerText;
+        let fguid = dNodeSub.childNodes[1].value;
+        dguids.push("divopc"+fguid);
+
+        if(sdisplay=="")
+        {
+            sdisplay = "block";
+            divbg = btnbghover;
+            divfontcolor = fontcolorsel;
+        }
+        else
+        {
+            sdisplay = "none";
+            divbg = btnbg;
+            divfontcolor = fontcolor;
+        }
+
+        shtmltitle = shtmltitle + "<div style=\"font-size:"+ dataitem.config.fontsize +";min-width:"+ dataitem.config.btnwidth +";min-height:"+ dataitem.config.btnheight +";line-height:"+ dataitem.config.btnheight +";border-top-left-radius:0.5em;border-top-right-radius:0.5em;margin-left:10px;background-color: "+ divbg +";color:"+ divfontcolor +";text-align:center;box-sizing: border-box; position: relative; height: fit-content; float: left;cursor:pointer\" id=\"divopt"+ fguid +"\" onclick=\"gDivopClick(event,'" + dataitem.config.divguid + "','" + dataitem.config.btnbg + "','" + dataitem.config.btnbghover + "','" + dataitem.config.fontcolor + "','" + dataitem.config.fontcolorsel + "')\" draggable=\"false\" >"+ fn +"</div>";
+        
+        let bexist=false;
+        if(isupd)
+        {
+            for(let dNode of pc.childNodes)
+            {
+                let did = dNode.id;
+                if(did=="divopc"+fguid)
+                {
+                    bexist=true;
+                    dNode.style.display=sdisplay;
+                    break;
+                }
+            }
+        }
+        if(!bexist)
+        {
+            shtmlcontent = shtmlcontent + "<div style=\"padding-top:15px;display:"+ sdisplay +";box-sizing: border-box; position: relative; width: 100%; height: fit-content; min-height: 100px; float: left;\" id=\"divopc"+ fguid +"\" name=\""+ fn +"\" draggable=\"false\" class=\"conParent\">"+ divbtn +"</div>";
+        }     
+    }
+
+    dataitem['config']['btntopcontent'] = pp.innerHTML;
+    if(!isupd)
+    {
+        shtmltitle = shtmltitleSub + shtmltitle+ "</div>";
+        shtml = shtml + shtmltitle + shtmlcontentSub + shtmlcontent+ "</div></div>";
+        dataitem['config']['viewhtml']=shtml;
+    }
+    else
+    {
+        for(let dNode of pc.childNodes)
+        {
+            let did = dNode.id;
+            if(dguids.indexOf(did)<0)
+            {
+                pc.removeChild(dNode);
+            }
+        }
+
+        shtmlcontent = pc.innerHTML+shtmlcontent;
+        shtmltitle = shtmltitleSub + shtmltitle+ "</div>";
+        shtml = shtml + shtmltitle + shtmlcontentSub + shtmlcontent+ "</div></div>";
+        dataitem['config']['viewhtml']=shtml;
+    }
+
+}
+
+function gGetGUIDID()
+{
+    var guid = "";
+    for (var i=1; i<=32; i++){
+        var n = Math.floor(Math.random()*16.0).toString(16);
+        guid +=   n;
+        if((i==8)||(i==12)||(i==16)||(i==20))
+            guid += "";
+    }
+    return guid;
+}
+
+function checkVarName(str)
+{
+    if(str.indexOf("'")>=0)
+        return false;
+    if(str.indexOf('"')>=0)
+        return false;
+    return true;
+}
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            dataitem:{"comid":"23","comname":"CardContainer","comtitle":"","attrset":{"Display":"s#display"},"config":{"divguid":"","fieldtitle":"","formshow":true,"viewhtml":"","btntopcontent":"","btnbg":"rgb(212, 215, 218)","btnbghover":"rgb(46, 162, 240)","btnheight":"36px","btnwidth":"128px","fontsize":"16px","fontcolor":"#000","fontcolorsel":"#fff"}}
+        }
+    },
+    methods: 
+    {
+        genBtnContent(pp,dNode,f,m,tf)
+        {
+            gGenBtnContent(this.dataitem,pp,dNode,f,m,tf);
+        },
+        getBtnContentDo(pp,tf)
+        {
+            if(this.dataitem.config.divguid=="")
+                this.dataitem.config.divguid=gGetGUIDID();
+            gGetBtnContentDo(this.dataitem,pp,tf);
+        },
+        getDataItem() 
+        {
+            this.dataitem.comtitle = this.dataitem.config.fieldtitle;
+
+            let pt=document.getElementById("divBtnTops");
+            this.getBtnContentDo(pt,'top');
+
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+            document.getElementById("divBtnTops").innerHTML = this.dataitem['config']['btntopcontent'];
+            this.setDivDrag("divBtnTops");
+        },
+        setDivDrag(divid) 
+        {
+            let dmr = document.getElementById(divid);
+            for (let dNodeSub of dmr.childNodes) 
+            {
+                if(gdivClassCode.indexOf("," +dNodeSub.className+ ",")>=0)
+                {
+                    dealDivDrag(dNodeSub);
+                }
+            }
+        },
+        setFormValue(fValue,codename) 
+        {
+            let c = this.dataitem['code'];
+            c[codename] = fValue;
+        },
+        getFormValue(codename) 
+        {
+            let c = this.dataitem['code'];
+            return c[codename];
+        },
+        setDataItemByK(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        },
+        getDataItemSub() 
+        {
+            return this.dataitem;
+        }
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.getDataItemSub = this.getDataItemSub;
+        window.setDataItem = this.setDataItem;
+        window.genBtnContent = this.genBtnContent;
+        window.setFormValue = this.setFormValue;
+        window.getFormValue = this.getFormValue;
+        window.setDataItemByK = this.setDataItemByK;
+
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+Colorpicker.create({
+    el: "color-picker-btnbg", 
+    color: "", 
+    change: function (elem, hex) {
+        elem.style.borderColor = hex;
+        window.setDataItemByK('btnbg',hex);
+    }
+    });
+
+Colorpicker.create({
+    el: "color-picker-btnbghover", 
+    color: "", 
+    change: function (elem, hex) {
+        elem.style.borderColor = hex;
+        window.setDataItemByK('btnbghover',hex);
+    }
+    });
+
+    
+Colorpicker.create({
+    el: "color-picker-fontcolor", 
+    color: "", 
+    change: function (elem, hex) {
+        elem.style.borderColor = hex;
+        window.setDataItemByK('fontcolor',hex);
+    }
+    });
+
+Colorpicker.create({
+    el: "color-picker-fontcolorsel", 
+    color: "", 
+    change: function (elem, hex) {
+        elem.style.borderColor = hex;
+        window.setDataItemByK('fontcolorsel',hex);
+    }
+    });
+
+</script>
+
+</body>
+</html>

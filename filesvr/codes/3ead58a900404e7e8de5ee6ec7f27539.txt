@@ -1,0 +1,29 @@
+ var DateCharString='';;if(vDate instanceof Date)
+{
+var year = vDate.getFullYear();
+var month = vDate.getMonth();
+var day = vDate.getDate();
+var hours = vDate.getHours();
+var min = vDate.getMinutes();
+var second = vDate.getSeconds();
+if(hours==0&&min==0&&second==0)
+{
+DateCharString = year + "-" +
+((month + 1) > 9 ? (month + 1) : "0" + (month + 1)) + "-" +
+(day > 9 ? day : ("0" + day))
+}
+else
+{
+DateCharString = year + "-" +
+((month + 1) > 9 ? (month + 1) : "0" + (month + 1)) + "-" +
+(day > 9 ? day : ("0" + day)) + " " +
+(hours > 9 ? hours : ("0" + hours)) + ":" +
+(min > 9 ? min : ("0" + min)) + ":" +
+(second > 9 ? second : ("0" + second));
+}
+}
+else
+{
+DateCharString = Date;
+}
+return BeforeChar+DateCharString+AfterChar;;;;

@@ -1,0 +1,238 @@
+
+<div class="content-tab[@configid@]" id="datalist[@configid@]" style="display:none">
+    <div class="content-tab-title">
+        <span>[@fieldtitle@]</span>
+    </div>
+    <div class="content-info[@configid@]" id="content-info1[@configid@]" style="display:none">
+        <div class="left" id="content-info-msg1[@configid@]"></div>
+        <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+    </div>
+    <div class="content-tab-filter" >
+        <div class="pageselshow">
+            [@cappegenum1@]
+            <select class="sel" v-model="pageitems" @change="getDatasByFilters(1)">
+                <option selected>2</option>
+                <option>10</option>
+                <option>20</option>
+                <option>50</option>
+            </select>
+            [@cappegenum2@]
+        </div>
+        <div class="actionbtns">
+            [@btntophtml@]
+        </div>
+        <div class="searchcombine" >
+            <input type="button" class="btnsub"  value="[@btnsearch@]" @click="searchByMode('')" />
+            <input type="button" v-if="this.viewcode!=''" class="btn"  value="[@btnsearchsub@]" @click="openSearchWinVue('',getDatasByFilters,'')" />
+        </div>
+        <div class="searchcombine" id="view_prp_filters1[@configid@]">
+            <input type="text" class="text" name="filter_searchkey_like" value="" />
+        </div>
+    </div>
+    <div class="content-tab-con" >
+        <table class="tabdata" >
+            <tr>
+                <th v-show="this.checkboxshow"><input type="checkbox" :checked="selAll" @click="checkedAllId()"></th>
+                <template v-for="datalab in datalabs">
+                    <th v-if="Object.keys(datalab)[0]!='SYSSTATUS'" @click="sortdata(Object.keys(datalab)[0])" >
+                        {{Object.values(datalab)[0]}} 
+                        <img v-show="this.sortfield==Object.keys(datalab)[0]&&this.sorttype=='asc'" src="./imgs/sortasc.png" />
+                        <img v-show="this.sortfield==Object.keys(datalab)[0]&&this.sorttype=='desc'" src="./imgs/sortdesc.png" /></th>
+                </template>
+                <th>[@capview@]</th>
+                <th>[@capaction@]</th>
+            </tr>
+            <tr v-for="data in datas">
+                <td v-show="this.checkboxshow" style="text-align: center;"><input type="checkbox" :checked="selIds.indexOf(data[pkey])>=0" name="checkboxinput" @click="checkedOneId(data[pkey])"></td>
+                <template v-for="item in datalabs">
+                    <td v-if="Object.keys(item)[0]!='SYSSTATUS'&&arrShowTitles.indexOf(Object.keys(item)[0])!=-1&&arrAmountFields.indexOf(Object.keys(item)[0])==-1" v-html="data[Object.keys(item)[0]]"></td>
+                    <td v-if="Object.keys(item)[0]!='SYSSTATUS'&&arrShowTitles.indexOf(Object.keys(item)[0])!=-1&&arrAmountFields.indexOf(Object.keys(item)[0])!=-1" style="text-align: right;" v-html="formatAmount(Object.keys(item)[0],data[Object.keys(item)[0]])"></td>
+                </template>
+                <td>
+                    <a class="hrefnml" v-if="(data['WRKTBLNAME']!=data['WRKFORMNAME'])" href="javascript:void(0)" @click="goView(data['WRKTBLNAME'],data['WRKDATAITEMID'])">[@capdata@]</a>
+                    <a class="hrefnml" v-if="this.showappbtn" href="javascript:void(0)" @click="showWfmLog(data['WRKWFMWORKID'],data['WRKTBLNAME'],data['WRKDATAITEMID'])">[@caplog@]</a>
+                    <a class="hrefnml" v-if="(data['WRKFORMNAME']!=null&&data['WRKFORMNAME']!='')&&data['WRKCOMPLETED']!='[@wstatus1@]'&&this.showappbtn" href="javascript:void(0)" @click="goApproveView(data['WRKFORMNAME'],data['WRKWFMWORKID'],data['WRKWFMNODEID'])">[@capdetail@]</a>
+                </td>
+                <td>
+                    <ul class="action-content">
+                        <li v-if="(data['WRKFORMNAME']!=null&&data['WRKFORMNAME']!='')&&data['WRKCOMPLETED']=='[@wstatus1@]'&&this.showappbtn"><a href="javascript:void(0)" @click="goApprove(data['WRKFORMNAME'],data['WRKWFMWORKID'],data['WRKWFMNODEID'])">[@capapprove@]</a></li>
+                        <li v-if="(data['WRKFORMNAME']==null||data['WRKFORMNAME']=='')&&data['WRKCOMPLETED']=='[@wstatus1@]'&&this.showappbtn"><a href="javascript:void(0)" @click="openUpdWinVue('',approveDatas,data['WRKWFMWORKID'])">[@capapprove@]</a></li>
+                        [@btnmidhtml@]
+                    </ul>
+                </td>
+            </tr>
+        </table> 
+    </div>
+    <div class="content-tab-pages">
+        <div class="itemsshow">
+            <span>{{totalitems}} [@cappegenum3@]</span>
+        </div>
+        <div class="pagesshow" id="pagesshow" v-show="hasitmes">
+            <ul class="page-content">
+                <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage+1)">[@pagedown@]</a></li>
+                <li v-for="page in showpages">
+                    <a href="javascript:void(0)" v-if="page.i==this.curpage" @click="getDatasByFilters(page.i)" class="active">{{page.i}}</a>
+                    <a href="javascript:void(0)" v-if="page.i!=this.curpage" @click="getDatasByFilters(page.i)" >{{page.i}}</a>
+                </li>
+                <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage-1)">[@pageup@]</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="updWin1[@configid@]" class="updWin[@configid@]">
+        <div class="updWin-info" id="updWin-info1[@configid@]" style="display:none">
+            <div class="left" id="updWin-info-msg1[@configid@]"></div>
+            <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+        </div>
+        <div class="updWin-content" >
+            <div class="updWin-content-item" style="line-height: 40px;">
+                <div class="left">[@appitem@]</div>
+                <div class="right">{{dataitem.DATAITEMNAME}}</div>
+            </div>
+            <div class="updWin-content-item" >
+                <div class="left" >[@appcon@]</div>
+                <div class="right"><textarea type="text" v-model="dataitem.APPROVECOMMENT" name="filed_approvecomment" style="width:90%;height:120px;padding:6px; font-size:[@itemfontsize@];"  ></textarea></div>
+            </div>
+        </div>
+        <div class="updWin-content-item">
+            <div class="left" >&nbsp;</div>
+            <div class="right">
+                <input type="button" class="btnApp"  value="[@btnapp@]" onclick="openWinOK[@configid@](1)" />
+                <input type="button" class="btnOK"  value="[@btnreturn@]" onclick="openWinOK[@configid@](0)" />
+                <select id="selRejectNode1[@configid@]" class="selReject"></select>
+                <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeWin[@configid@]()" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content-tabmobile[@configid@]" id="datalistmobile[@configid@]" style="display:none">
+    <div class="content-tab-title">
+        <span>[@fieldtitle@]</span>
+    </div>
+    <div class="content-info[@configid@]" id="content-info2[@configid@]" style="display:none">
+        <div class="left" id="content-info-msg2[@configid@]"></div>
+        <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+    </div>
+    <div class="content-tab-filter" >
+        <div class="pageselshow">
+            [@cappegenum1@]
+            <select class="sel" v-model="pageitems" @change="getDatasByFilters(1)">
+                <option selected>2</option>
+                <option>10</option>
+                <option>20</option>
+                <option>50</option>
+            </select>
+            [@cappegenum2@]
+        </div>
+        <div class="actionbtns">
+            [@btntophtml@]
+        </div>
+        <div style="float:left;width:100%">
+            <div class="searchcombine" style="width:55%" id="view_prp_filters2[@configid@]">
+                <input type="text" class="text" name="filter_searchkey_like" value="" />
+            </div>
+            <div class="searchcombine" style="width:45%">
+                <input type="button" v-if="this.viewcode!=''" class="btn"  value="[@btnsearchsub@]" @click="openSearchWinVue('',getDatasByFilters,'')" />
+                <input type="button" class="btnsub"  value="[@btnsearch@]" @click="searchByMode('')" />
+            </div>
+        </div>
+    </div>
+    <div class="content-tab-con" >
+        <table class="tabdata" >
+            <tr>
+                <th v-show="this.checkboxshow"><input type="checkbox" :checked="selAll" @click="checkedAllId()"></th>
+                <th>
+                    <template v-for="datalab in datalabs">
+                        <span v-if="Object.values(datalab)[0]!='SYSSTATUS'">{{Object.values(datalab)[0]}}/</span>
+                    </template>
+                    [@capaction@]</th>
+            </tr>
+            <tr v-for="data in datas">
+                <td v-show="this.checkboxshow" style="text-align: center;width:20%"><input type="checkbox" :checked="selIds.indexOf(data[pkey])>=0" name="checkboxinput" @click="checkedOneId(data[pkey])"></td>
+                <td>
+                    <template v-for="item in datalabs">
+                        <div v-if="Object.keys(item)[0]!='SYSSTATUS'&&arrShowTitles.indexOf(Object.keys(item)[0])!=-1&&arrAmountFields.indexOf(Object.keys(item)[0])==-1" v-html="showItemHtml(data[Object.keys(item)[0]])+'<br/>'"></div>
+                        <div v-if="Object.keys(item)[0]!='SYSSTATUS'&&arrShowTitles.indexOf(Object.keys(item)[0])!=-1&&arrAmountFields.indexOf(Object.keys(item)[0])!=-1" v-html="showItemHtml(formatAmount(Object.keys(item)[0],data[Object.keys(item)[0]]))"></div>
+                    </template>
+                    <a class="hrefnml" v-if="(data['WRKTBLNAME']!=data['WRKFORMNAME'])" href="javascript:void(0)" @click="goView(data['WRKTBLNAME'],data['WRKDATAITEMID'])">[@capdata@]</a>
+                    <a class="hrefnml" v-if="this.showappbtn" href="javascript:void(0)" @click="showWfmLog(data['WRKWFMWORKID'],data['WRKTBLNAME'],data['WRKDATAITEMID'])">[@caplog@]</a>
+                    <a class="hrefnml" v-if="(data['WRKFORMNAME']!=null&&data['WRKFORMNAME']!='')&&data['WRKCOMPLETED']!='[@wstatus1@]'&&this.showappbtn" href="javascript:void(0)" @click="goApproveView(data['WRKFORMNAME'],data['WRKWFMWORKID'],data['WRKWFMNODEID'])">[@capdetail@]</a>
+                    <br/>
+                    <ul class="action-content">
+                        <li v-if="(data['WRKFORMNAME']!=null&&data['WRKFORMNAME']!='')&&data['WRKCOMPLETED']=='[@wstatus1@]'&&this.showappbtn"><a href="javascript:void(0)" @click="goApprove(data['WRKFORMNAME'],data['WRKWFMWORKID'],data['WRKWFMNODEID'])">[@capapprove@]</a></li>
+                        <li v-if="(data['WRKFORMNAME']==null||data['WRKFORMNAME']=='')&&data['WRKCOMPLETED']=='[@wstatus1@]'&&this.showappbtn"><a href="javascript:void(0)" @click="openUpdWinVue('',approveDatas,data['WRKWFMWORKID'])">[@capapprove@]</a></li>
+                        [@btnmidhtml@]
+                    </ul>
+                </td>
+            </tr>
+        </table> 
+    </div>
+    <div class="content-tab-pages">
+        <div class="itemsshow">
+            <span>{{totalitems}} [@cappegenum3@]</span>
+        </div>
+        <div class="pagesshow" id="pagesshow" v-show="hasitmes">
+            <ul class="page-content">
+                <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage+1)" style="width:128px">[@pagedown@]</a></li>
+                <li v-for="page in showpages">
+                    <a href="javascript:void(0)" v-if="page.i==this.curpage" @click="getDatasByFilters(page.i)" class="active">{{page.i}}</a>
+                    <a href="javascript:void(0)" v-if="page.i!=this.curpage" @click="getDatasByFilters(page.i)" >{{page.i}}</a>
+                </li>
+                <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage-1)"  style="width:128px">[@pageup@]</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="updWin2[@configid@]" class="updWinMobile[@configid@]">
+        <div class="updWin-info" id="updWin-info2[@configid@]" style="display:none">
+            <div class="left" id="updWin-info-msg2[@configid@]"></div>
+            <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+        </div>
+        <div class="updWin-content" >
+            <div class="updWin-content-item">
+                <div class="left">[@appitem@]</div>
+                <div class="right">{{dataitem.DATAITEMNAME}}</div>
+            </div>
+            <div class="updWin-content-item" >
+                <div class="left" >[@appcon@]</div>
+                <div class="right"><textarea type="text" v-model="dataitem.APPROVECOMMENT" name="filed_approvecomment" style="font-size:[@itemfontsize@];width:90%;height:120px;padding:6px"  ></textarea></div>
+            </div>
+        </div>
+        <div class="updWin-content-item">
+            <div class="left" >&nbsp;</div>
+            <div class="right">
+                <input type="button" class="btnApp"  value="[@btnapp@]" onclick="openWinOK[@configid@](1)" />
+                <input type="button" class="btnOK"  value="[@btnreturn@]" onclick="openWinOK[@configid@](0)" />
+                <select id="selRejectNode2[@configid@]" class="selReject"></select>
+                <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeWin[@configid@]()" />
+            </div>
+        </div>
+    </div>
+</div>
+<div id="updWin[@configid@]" class="updWin[@configid@]">
+    <div class="updWin-info" id="updWin-info[@configid@]" style="display:none">
+        <div class="left" id="updWin-info-msg[@configid@]"></div>
+        <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" id="searchDiv[@configid@]" >
+
+    </div>
+    <div class="updWinBtn">
+        <input id="saveBtn" type="button" class="btnOK"  value="[@btnsearch@]"  onclick="gSearchByMode[@configid@]('s')" />
+        <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeWin[@configid@]()" />
+    </div>
+</div>
+<div id="coverWin[@configid@]" class="coverWin[@configid@]"></div>
+<div id="modalWin[@configid@]" class="modalWin[@configid@]">
+    <div class="modalWinMsg"><span id="modalWinMsg[@configid@]"></span></div>
+    <div class="modalWinBtn">
+        <input type="button" class="btnOK"  value="[@btnok@]" onclick="openWinOK[@configid@]()" />
+        <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeWin[@configid@]()" />
+    </div>
+</div>
+<div id="WfmWin[@configid@]" class="wfmWin[@configid@]">
+    <div id="WfmWinMsg[@configid@]" style="padding: 10px;">
+
+    </div>
+    <div class="modalWinBtn">
+        <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeWin[@configid@]()" />
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<div class="updWin-content-item[@configid@]" id="select[@configid@]" style="display:none">
+    <div class="left"  v-show="titleshow">[@fieldtitle@]：<span v-show="!this.isView">[@fieldnoemptylbl@]</span></div>
+    <div class="right">
+
+        <input id="inpSel[@configid@]" type="text" v-show="!this.isView" onfocus="selItemSearch[@configid@](event)" oninput="selItemSearch[@configid@](event)" onblur="window.onchange[@configid@]()" placeholder="[@searchinfo@]" />
+        <div class="dropcontent[@configid@]" id="divSelSearchs[@configid@]" ></div>
+        <div class="divSelItems[@configid@]" id="divSelItems[@configid@]" ></div>
+
+        <span style="color:red;display:none" id="valmsg[@configid@]" v-show="!this.isView"></span>
+    </div>
+</div>
+
+        

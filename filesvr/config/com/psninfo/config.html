@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css?5465" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+<script src="selColor.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Title</div>
+            <div class="right"><input type="text" v-model="dataitem.config.fieldtitle" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Template</div>
+            <div class="right" style="line-height: 40px;">
+                <input type="radio" name="radiostemp" value="0" v-model="dataitem.temptype" ><label>Default</label>
+                <input type="radio" name="radiotemp" value="1" v-model="dataitem.temptype" ><label>Custom</label>
+                <textarea v-show="dataitem.temptype=='1'" v-model="dataitem.tempcontent"  style="width:90%;height:300px"></textarea>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Style</div>
+            <div class="right" style="line-height:40px">
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="1" v-model="dataitem.config.apptype" ><label>PC</label>
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="2" v-model="dataitem.config.apptype" ><label>Mobile</label><Br/>
+                <div style="float:left">
+                    Title Visible：<input type="checkbox" v-model="dataitem.config.titleshow" style="width: 12%"/>
+                </div>                
+<div v-show="dataitem.config.titleshow" style="float:left;">
+                    Title Width：<input type="text" v-model="dataitem.config.titlewidth" style="width:60px" />&nbsp;&nbsp;
+                    Align：<input type="radio" name="radioalign" value="right" v-model="dataitem.config.titlealign" ><label>Right</label>
+                    <input type="radio" name="radioalign" value="left" v-model="dataitem.config.titlealign" ><label>Left</label>
+                </div>
+                <div style="float:left">
+                    Content Width：<input type="text" v-model="dataitem.config.namewidth" style="width:60px" />
+                    Line Height：<input type="text" v-model="dataitem.config.itemheight" style="width:60px" />
+                    Font Size：<input type="text" v-model="dataitem.config.itemfontsize" style="width:60px" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="./../../../js/funcconfig.js"></script>
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            dataitem:
+            {
+                "comid":"4002",
+                "comname":"Person Info",
+                "comtitle":"","temptype":"0","tempcontent":"",
+                "attrset":{"Display":"s#display"},"code":{},
+                "config":{"apptype":"1","lan":"e","conbg":"#fff","conradius":"1em","pageitems":2,"topitems":0,"showaddbtn":true,"showupdbtn":true,"showdelbtn":true,"checkboxshow":true,"fieldtitle":"","btntophtml":"","btnmidhtml":"","btnmidhtmlth":"","btnfunc":"","btntopcontent":"","btnmidcontent":"","titlewidth":"15%","namewidth":"85%","fieldtitle":"","titleshow":true,"itemheight":"36px","itemfontsize":"16px"}
+            }
+        }
+    },
+    methods: 
+    {
+        getDataItem() 
+        {
+            if(this.dataitem.config.lan=="c")
+            {
+                this.dataitem.config.upd = "Edit";
+                this.dataitem.config.pwd = "Password";
+                this.dataitem.config.pwd1 = "Current Password";
+                this.dataitem.config.pwd2 = "InputNewPassword";
+                this.dataitem.config.pwd3 = "Confirm New Password";
+                this.dataitem.config.pwd4 = "New password and confirm password do not match";
+                this.dataitem.config.btnsave = "SavePerson Info";
+                this.dataitem.config.btnok = "OK";
+                this.dataitem.config.btncancle = "Cancel";
+                this.dataitem.config.infoupdsuc = "SuccessSave";
+                this.dataitem.config.frmname = "Name";
+                this.dataitem.config.frmno = "Employee ID";
+                this.dataitem.config.frmsex = "Gender";
+                this.dataitem.config.frmdob = "Birth Date";
+                this.dataitem.config.frmorg = "Org";
+                this.dataitem.config.frmdept = "Department";
+                this.dataitem.config.frmrole = "Role";
+                this.dataitem.config.frmemail = "Email";
+                this.dataitem.config.frmcode = "CAPTCHA";
+                this.dataitem.config.frmcodeget = "Get CAPTCHA";
+                this.dataitem.config.frmtel = "Landline";
+                this.dataitem.config.frmmobile = "Mobile";
+                this.dataitem.config.frmdobmsg = "Birth DateFormat is incorrect";
+                this.dataitem.config.frmemailmsg = "Email format is incorrect";
+                this.dataitem.config.frmsex1 = "Male";
+                this.dataitem.config.frmsex2 = "Female";
+                this.dataitem.config.frmsex3 = "Other";
+                this.dataitem.config.frmapporg = "Join Org";
+                this.dataitem.config.frmappdept = "Join Department";
+                this.dataitem.config.frmapporgnote = "Reason to join";
+                this.dataitem.config.frmcodesend = "CAPTCHA sent, please check.";
+                this.dataitem.config.frmappmsg1 = "Application sent, please wait for Org Admin approval.";
+                this.dataitem.config.frmappmsg2 = "Your request to join ";
+                this.dataitem.config.frmappmsg3 = ", pending Org Admin review.";
+                this.dataitem.config.frmappmsg4 = ", request rejected. Reason: ";
+                this.dataitem.config.frmapporginfo = "Enter OrgNameSearch";
+                this.dataitem.config.joinorg = "Join New Org";
+            }
+            else
+            {
+                this.dataitem.config.upd = "Change ";
+                this.dataitem.config.pwd = "Password";
+                this.dataitem.config.pwd1 = "Old Pass";
+                this.dataitem.config.pwd2 = "New Pass";
+                this.dataitem.config.pwd3 = "Confirm Pass";
+                this.dataitem.config.pwd4 = "The new password and the confirmed password do not match";
+                this.dataitem.config.btnsave = "Save";
+                this.dataitem.config.btnok = "Confirm";
+                this.dataitem.config.btncancle = "Cancle";
+                this.dataitem.config.infoupdsuc = "Successfully save";
+                this.dataitem.config.frmname = "Name";
+                this.dataitem.config.frmno = "Job ID";
+                this.dataitem.config.frmsex = "Gender";
+                this.dataitem.config.frmdob = "Date of Birth";
+                this.dataitem.config.frmorg = "Org";
+                this.dataitem.config.frmdept = "Dept";
+                this.dataitem.config.frmrole = "Roles";
+                this.dataitem.config.frmemail = "Email";
+                this.dataitem.config.frmcode = "Verification code";
+                this.dataitem.config.frmcodeget = "Get verification code";
+                this.dataitem.config.frmtel = "Tel";
+                this.dataitem.config.frmmobile = "Mobile";
+                this.dataitem.config.frmdobmsg = "Birth date format is incorrect";
+                this.dataitem.config.frmemailmsg = "Incorrect email format";
+                this.dataitem.config.frmsex1 = "Male";
+                this.dataitem.config.frmsex2 = "Female";
+                this.dataitem.config.frmsex3 = "Other";
+                this.dataitem.config.frmapporg = "Org";
+                this.dataitem.config.frmappdept = "Dept";
+                this.dataitem.config.frmapporgnote = "Reason";
+                this.dataitem.config.frmcodesend = "Verification code has been sent";
+                this.dataitem.config.frmappmsg1 = "Successfully sent, please wait for approval from the org administrator.";
+                this.dataitem.config.frmappmsg2 = "You have applied to join ";
+                this.dataitem.config.frmappmsg3 = ", Waiting for org administrator to approve";
+                this.dataitem.config.frmappmsg4 = ", The application has been rejected due to:";
+                this.dataitem.config.frmapporginfo = "Please enter the org name to search";
+                this.dataitem.config.joinorg = "Join Org";
+
+            }
+
+            if(this.dataitem.config.apptype=="1")
+            {
+                this.dataitem.config.uwinwidth="800px";
+                this.dataitem.config.uwinmleft="-400px";
+                this.dataitem.config.mwinwidth="600px";
+                this.dataitem.config.mwinmleft="-300px";
+                this.dataitem.config.mwintop="10%";
+            }
+            else
+            {
+                this.dataitem.config.uwinwidth="90%";
+                this.dataitem.config.uwinmleft="-45%";
+
+                this.dataitem.config.mwinwidth="90%";
+                this.dataitem.config.mwinmleft="-45%";
+                this.dataitem.config.mwintop="10%";
+            }
+
+            this.dataitem.comtitle = this.dataitem.config.fieldtitle;
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+        },
+        setDataItemByK(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        }, 
+        getDataItemSub() 
+        {
+            return this.dataitem;
+        }
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.getDataItemSub = this.getDataItemSub;
+        window.setDataItem = this.setDataItem;
+        window.setDataItemByK = this.setDataItemByK;
+        gInitConfig();
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+Colorpicker.create({
+el: "color-picker-conbg", 
+color: "", 
+change: function (elem, hex) {
+    elem.style.borderColor = hex;
+    window.setDataItemByK('conbg',hex);
+}
+});
+
+</script>
+
+</body>
+</html>

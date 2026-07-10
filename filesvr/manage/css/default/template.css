@@ -1,0 +1,935 @@
+/* ========================================
+   Default Template - Modernized Styles
+   ======================================== */
+
+:root {
+    --color-primary: #06b6d4;
+    --color-primary-hover: #0891b2;
+    --color-primary-light: #cffafe;
+    --color-success: #34d399;
+    --color-success-hover: #10b981;
+    --color-warning: #fbbf24;
+    --color-warning-hover: #f59e0b;
+    --color-danger: #fb7185;
+    --color-bg: #f8fafb;
+    --color-surface: #ffffff;
+    --color-border: #e8eeef;
+    --color-border-focus: #a8d5d8;
+    --color-text: #334155;
+    --color-text-secondary: #788b9a;
+    --color-text-light: #a8b5c0;
+    --color-toolbar: #ffffff;
+    --color-canvas-bg: #f8fafb;
+    --color-canvas-grid: #e8eeef;
+    --color-drop-zone: #ecfeff;
+    --color-drop-border: #06b6d4;
+    --color-dragging: rgba(6, 182, 212, 0.1);
+    --shadow-xs: 0 1px 2px rgba(6, 182, 212, 0.03);
+    --shadow-sm: 0 1px 3px rgba(6, 182, 212, 0.04);
+    --shadow-md: 0 4px 8px rgba(6, 182, 212, 0.06);
+    --shadow-lg: 0 10px 20px rgba(6, 182, 212, 0.06);
+    --shadow-xl: 0 20px 25px rgba(6, 182, 212, 0.08);
+    --radius-sm: 8px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 18px;
+    --transition: 0.2s ease;
+    --transition-fast: 0.15s ease;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    background: var(--color-bg);
+    line-height: 1.5;
+}
+
+/* ========================================
+   Component List Panel
+   ======================================== */
+.comlist {
+    width: 99%;
+    top: 40px;
+    min-height: 60px;
+    height: fit-content;
+    background: var(--color-surface);
+    border: 0px solid var(--color-primary);
+    padding-left: 10px;
+    margin-bottom: 10px;
+    position: fixed;
+    float: left;
+    z-index: 1000;
+    box-shadow: var(--shadow-sm);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    overflow: visible;
+}
+
+.comitem {
+    margin: 3px;
+    width: 150px;
+    height: 32px;
+    line-height: 32px;
+    float: left;
+    font-size: 0.6em;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    cursor: grab;
+    transition: var(--transition);
+}
+
+.comitem:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-light);
+}
+
+/* ========================================
+   Main Layout
+   ======================================== */
+.main-wrapper {
+    width: 100%;
+    position: relative;
+    top: 50px;
+    border: 1px solid var(--color-primary);
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    height: fit-content;
+    overflow: auto;
+    clear: both;
+}
+
+/* ========================================
+   Toolbar
+   ======================================== */
+.tmp-action {
+    padding: 5px;
+    height: 40px;
+    box-sizing: border-box;
+    text-align: left;
+    background: var(--color-toolbar);
+    width: 100%;
+    position: fixed;
+    z-index: 1001;
+}
+
+.tmp-action-add {
+    position: relative;
+    height: fit-content;
+    box-sizing: border-box;
+    text-align: left;
+    float: left;
+}
+
+.tmp-action-save {
+    box-sizing: border-box;
+    text-align: right;
+    float: right;
+}
+
+.tmp-action-add input[type=button] {
+    border: none;
+    border-radius: 0.5em;
+    background: var(--color-primary);
+    color: #fff;
+    height: 30px;
+    width: 110px;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.tmp-action-add input[type=button]:hover {
+    background: var(--color-primary-hover);
+}
+
+.tmp-action-save .btnOK {
+    border: none;
+    border-radius: 0.5em;
+    background: var(--color-success);
+    color: #fff;
+    height: 30px;
+    width: 80px;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.tmp-action-save .btnOK:hover {
+    background: var(--color-success-hover);
+}
+
+.tmp-action-save .btnCancle {
+    border: none;
+    border-radius: 0.5em;
+    background-color: var(--color-text-light);
+    color: #fff;
+    height: 30px;
+    width: 60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.tmp-action-save .btnCancle:hover {
+    background: var(--color-warning-hover);
+}
+
+/* ========================================
+   Component List Dropdown
+   ======================================== */
+.tmp-action-add .dropcontent {
+    display: none;
+    position: absolute;
+    height: 500px;
+    z-index: 2100;
+    width: 200px;
+    background-color: var(--color-surface);
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    text-align: left;
+    overflow-y: scroll;
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+.dropitem:hover .dropcontent {
+    display: block;
+}
+
+.tmp-action-add .menu-content {
+    padding: 5px;
+}
+
+.tmp-action-add .menu-content li {
+    list-style: none;
+}
+
+.tmp-action-add .menu-content a:link,
+.tmp-action-add .menu-content a:visited {
+    margin-bottom: 5px;
+    display: block;
+    color: var(--color-text-secondary);
+    background-color: var(--color-bg);
+    border-radius: 3em;
+    height: 30px;
+    line-height: 35px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.tmp-action-add .menu-content a:hover {
+    background-color: var(--color-primary-light);
+}
+
+/* ========================================
+   Status Messages
+   ======================================== */
+.main-wrapper-info {
+    color: black;
+    font-size: 0.8em;
+    background-color: var(--color-bg);
+    border: none;
+    border-radius: 0.5em;
+    padding: 5px;
+    width: 200px;
+    box-sizing: border-box;
+    overflow: auto;
+    position: absolute;
+    top: 5px;
+    right: 260px;
+}
+
+.main-wrapper-info .left {
+    float: left;
+    width: 90%;
+    text-align: center;
+    box-sizing: border-box;
+    border: none;
+}
+
+/* ========================================
+   Canvas Header
+   ======================================== */
+.conParentheader {
+    background: var(--color-bg);
+    margin: 0;
+    padding: 5px;
+    width: 100%;
+    height: 55px;
+    clear: both;
+    box-sizing: border-box;
+    z-index: 998;
+    float: left;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.conParentmenu-left {
+    width: 10%;
+    margin: 0;
+    background: var(--color-surface);
+    box-sizing: border-box;
+    padding: 0;
+    min-height: 200px;
+    overflow: hidden;
+    float: left;
+    border-right: 1px solid var(--color-border);
+}
+
+.conParentcontent {
+    width: 90%;
+    margin: 0;
+    min-height: 500px;
+    box-sizing: border-box;
+    background-color: var(--color-canvas-bg);
+    background-image: radial-gradient(circle, var(--color-canvas-grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+    float: left;
+    position: relative;
+    padding: 16px;
+}
+
+/* ========================================
+   Component Wrapper (in canvas)
+   ======================================== */
+.com-wrapper {
+    border: 1px dotted var(--color-text-secondary);
+}
+
+.com-wrapper:hover {
+    border-color: var(--color-primary-light);
+}
+
+.com-wrapper:hover .template-action {
+    display: block;
+}
+
+/* ========================================
+   Component Action Toolbar
+   ======================================== */
+.template-action {
+    position: absolute;
+    display: none;
+    top: 1px;
+    right: 1px;
+    height: fit-content;
+    padding: 4px 6px;
+    box-sizing: border-box;
+    text-align: right;
+    background: var(--color-surface);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-border);
+    gap: 4px;
+}
+
+.template-action input[type=button] {
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    height: 26px;
+    min-width: 28px;
+    padding: 0 8px;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition-fast);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.template-action input[type=button]:hover {
+    background-color: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.template-action input[type=button]:active {
+    transform: scale(0.95);
+}
+
+/* Delete button - red accent */
+.template-action input[type=button][value="Delete"]:hover {
+    background-color: var(--color-danger);
+    color: #fff;
+    border-color: var(--color-danger);
+}
+
+/* ========================================
+   Container Action Toolbar
+   ======================================== */
+.template-action-con {
+    display: none;
+    position: absolute;
+    top: -15px;
+    right: 1px;
+    height: fit-content;
+    padding: 4px 6px;
+    box-sizing: border-box;
+    text-align: right;
+    background: var(--color-surface);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--color-border);
+    gap: 4px;
+}
+
+.template-action-con input[type=button] {
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    height: 26px;
+    min-width: 28px;
+    padding: 0 8px;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition-fast);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.template-action-con input[type=button]:hover {
+    background-color: var(--color-warning);
+    color: #fff;
+    border-color: var(--color-warning);
+    box-shadow: var(--shadow-sm);
+}
+
+.template-action-con input[type=button]:active {
+    transform: scale(0.95);
+}
+
+/* Container delete button - red accent */
+.template-action-con input[type=button][value="Delete"]:hover {
+    background-color: var(--color-danger);
+    color: #fff;
+    border-color: var(--color-danger);
+}
+
+/* ========================================
+   Container Styles
+   ======================================== */
+.conParent {
+    border: 2px dotted var(--color-success);
+}
+
+.conParent:hover .template-action-con {
+    display: block;
+}
+
+/* ========================================
+   Content Code Val
+   ======================================== */
+.contentcodeval {
+    width: 100%;
+    height: fit-content;
+    min-height: 700px;
+    position: relative;
+    box-sizing: border-box;
+    background: var(--color-surface);
+    overflow: auto;
+    float: left;
+}
+
+.codeval-action {
+    position: absolute;
+    top: 8px;
+    right: 24px;
+    overflow: visible;
+    padding-right: 2px;
+    box-sizing: border-box;
+    text-align: left;
+    z-index: 999;
+}
+
+.codeval-action .btnOK {
+    border: none;
+    border-radius: 0.8em;
+    background: var(--color-warning);
+    color: #fff;
+    height: 36px;
+    width: 60px;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.codeval-action .btnOK:hover {
+    background: var(--color-warning-hover);
+}
+
+.codeval-action .btnCancle {
+    border: none;
+    border-radius: 0.8em;
+    background-color: var(--color-text-light);
+    color: #fff;
+    height: 36px;
+    width: 60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.codeval-action .btnCancle:hover {
+    background: var(--color-primary-hover);
+}
+
+/* ========================================
+   Overlay / Modal
+   ======================================== */
+.coverWin {
+    position: fixed;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    height: 100%;
+    filter: alpha(opacity=60);
+    opacity: 0.6;
+    display: none;
+    z-Index: 999;
+}
+
+.tempForm {
+    position: fixed;
+    background: var(--color-surface);
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-Index: 1002;
+    display: none;
+}
+
+.tempForm iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.codeVal {
+    position: fixed;
+    background: var(--color-surface);
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-Index: 1002;
+    display: none;
+}
+
+.codeVal iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.modalWin {
+    position: fixed;
+    width: 500px;
+    height: 300px;
+    top: 20%;
+    left: 39%;
+    background-color: var(--color-surface);
+    display: none;
+    cursor: pointer;
+    text-align: center;
+    z-Index: 9999;
+}
+
+.modalWin .modalWinMsg {
+    color: var(--color-text);
+    font-size: 1em;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 18%;
+    box-sizing: border-box;
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+
+.modalWinBtn .btnOK {
+    border: none;
+    border-radius: 0.8em;
+    background: var(--color-primary);
+    color: #fff;
+    height: 40px;
+    width: 60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.modalWinBtn .btnOK:hover {
+    background: var(--color-primary-hover);
+}
+
+.modalWinBtn .btnCancle {
+    border: none;
+    border-radius: 0.8em;
+    background-color: var(--color-text-light);
+    color: #fff;
+    height: 40px;
+    width: 60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.modalWinBtn .btnCancle:hover {
+    background: var(--color-primary-hover);
+}
+
+/* ========================================
+   Properties Modal (updWin)
+   ======================================== */
+.updWin {
+    position: fixed;
+    width: 900px;
+    height: 838px;
+    top: 10px;
+    left: 50%;
+    margin-left: -450px;
+    background-color: var(--color-surface);
+    display: none;
+    cursor: pointer;
+    text-align: center;
+    padding: 20px;
+    z-Index: 1001;
+    overflow: auto;
+}
+
+.updWin .updWin-content {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 2px;
+    overflow: visible;
+    margin-bottom: 10px;
+}
+
+.updWin-content .updWin-content-item {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    float: left;
+}
+
+.updWin-content-item .left {
+    width: 15%;
+    box-sizing: border-box;
+    font-size: 1em;
+    line-height: 40px;
+    padding-right: 15px;
+    text-align: right;
+    font-weight: bold;
+    float: left;
+}
+
+.updWin-content-item .right {
+    width: 85%;
+    box-sizing: border-box;
+    text-align: left;
+    float: left;
+}
+
+.updWin-content-item .compiframe {
+    width: 100%;
+    height: 650px;
+    border: 0px solid var(--color-primary);
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.updWin-content-item input[type=text]:not(.readonly) {
+    border: 1px solid var(--color-border);
+    border-radius: 0.8em;
+    height: 40px;
+    width: 90%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.updWin-content-item input[type=text]:not(.readonly):focus {
+    border-color: var(--color-primary);
+}
+
+.updWin-content-item .readonly {
+    border: none;
+    height: 40px;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.updWin-content-item select {
+    border: none;
+    border-radius: 0.8em;
+    background-color: var(--color-bg);
+    padding: 5px;
+    width: 90%;
+    height: 40px;
+}
+
+.updWin .btnOK {
+    border: none;
+    border-radius: 0.8em;
+    background: var(--color-primary);
+    color: #fff;
+    height: 40px;
+    width: 60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.updWin .btnOK:hover {
+    background: var(--color-primary-hover);
+}
+
+.updWin .btnCancle {
+    border: none;
+    border-radius: 0.8em;
+    background-color: var(--color-text-light);
+    color: #fff;
+    height: 40px;
+    width: 60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.updWin .btnCancle:hover {
+    background: var(--color-primary-hover);
+}
+
+.updWin-info {
+    color: var(--color-text);
+    font-size: 13px;
+    background-color: #fefce8;
+    border: none;
+    border-radius: 0.5em;
+    padding: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+.updWin-info .left {
+    float: left;
+    width: 90%;
+    box-sizing: border-box;
+}
+
+.updWin-info .right {
+    float: right;
+    color: var(--color-text-light);
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+/* ========================================
+   Tabs
+   ======================================== */
+.select-tab ul {
+    padding: 0;
+    margin: 0;
+}
+
+.select-tab li {
+    list-style: none;
+    float: left;
+    border-bottom: 2px solid var(--color-border);
+    padding: 8px 12px;
+    text-align: center;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    display: block;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    transition: var(--transition);
+}
+
+.select-tab .selected {
+    color: var(--color-primary);
+    font-weight: 600;
+    border-bottom-color: var(--color-primary);
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+.conParentfooter {
+    background-color: var(--color-bg);
+    width: 100%;
+    height: 60px;
+    color: var(--color-text-light);
+    clear: both;
+    box-sizing: border-box;
+    border-top: 1px solid var(--color-border);
+}
+
+/* ========================================
+   Drop Content
+   ======================================== */
+.dropcontent div {
+    padding: 5px;
+    margin: 1px;
+    float: left;
+    height: fit-content;
+    min-width: 160px;
+    width: 100%;
+    font-size: 16px;
+    height: 36px;
+    background-color: var(--color-bg);
+}
+
+.dropcontent div:hover {
+    background-color: var(--color-primary-light);
+}
+
+/* ========================================
+   Action Links
+   ======================================== */
+.action-content a:link,
+.action-content a:visited {
+    margin-left: 2px;
+    width: 28px;
+    height: 28px;
+    display: block;
+    color: #fff;
+    background: var(--color-primary);
+    border-radius: 0.4em;
+    font-size: 16px;
+    text-align: center;
+    padding-top: 0;
+    padding-right: 1px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    float: left;
+    transition: var(--transition-fast);
+}
+
+.action-content a:hover:not(.active) {
+    background: var(--color-primary-hover);
+}
+
+.action-content a.active {
+    background: var(--color-primary-hover);
+}
+
+/* ========================================
+   Variable/Add Buttons
+   ======================================== */
+.btnAddVar {
+    border: none;
+    border-radius: 0.3em;
+    background-color: rgb(206, 203, 200);
+    color: #000;
+    font-size: 16px;
+    height: 36px;
+    min-width: 200px;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-left: 5px;
+    outline: none;
+    box-sizing: border-box;
+    border: 1px solid rgb(107, 106, 106);
+    transition: var(--transition);
+}
+
+.btnAddVar:hover {
+    background-color: var(--color-primary-light);
+}
+
+.btnCancleVar {
+    border: none;
+    border-radius: 0.8em;
+    background-color: var(--color-text-light);
+    color: #fff;
+    height: 36px;
+    width: 60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline: none;
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+.btnCancleVar:hover {
+    background: var(--color-primary-hover);
+}
+
+/* ========================================
+   File Upload Container
+   ======================================== */
+.fileContainer {
+    overflow: hidden;
+    position: relative;
+    background: var(--color-primary);
+    float: left;
+    padding: 0 12px;
+    width: 200px;
+    height: 32px;
+    line-height: 32px;
+    margin-top: 8px;
+    margin-left: 3px;
+    text-align: center;
+    color: #fff;
+    font-size: 13px;
+    transition: var(--transition);
+}
+
+.fileContainer [type=file] {
+    display: block;
+    font-size: 999px;
+    filter: alpha(opacity=0);
+    min-height: 100%;
+    min-width: 100%;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+    cursor: pointer;
+}
+
+.fileContainer:hover {
+    background: var(--color-primary-hover);
+}
+
+/* ========================================
+   Misc
+   ======================================== */
+.noempty {
+    color: red;
+}
+
+.dropitem:hover .dropcontent {
+    display: block;
+}

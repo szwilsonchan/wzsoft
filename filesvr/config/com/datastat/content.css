@@ -1,0 +1,697 @@
+.content-tab[@configid@] 
+{
+    background-color:#fff;
+    border-radius: 2em;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin: 0px;
+    width:100%;
+    box-sizing: border-box;
+    height: fit-content;
+    overflow:auto;
+}
+.content-tab[@configid@] .content-tab-title 
+{
+    color: black;
+    font-weight: bold;
+    width:100%;
+    box-sizing: border-box;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    margin-bottom: 10px;
+}
+.content-tab[@configid@] .content-tab-filter 
+{
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    float: left;
+}
+.content-tab[@configid@] .content-tab-con 
+{
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+.content-tab[@configid@] .actionbtns 
+{
+    box-sizing: border-box;
+    margin-left:10px;
+    overflow:auto;
+    float: right;
+}
+
+.content-tab[@configid@] .pageselshow 
+{
+    box-sizing: border-box;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    color: rgb(173, 170, 170);
+    float: left;
+    display:[@pageshow@];
+}
+.content-tab[@configid@] .pageselshow .sel
+{
+    border: none;
+    border-radius: 0.8em;
+    background-color: rgb(234, 237, 241);
+    padding: 5px;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+}
+.content-tab[@configid@] .content-tab-filter .searchcombine 
+{
+    box-sizing: border-box;
+    float: right;
+    display:[@filtershow@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+}
+.content-tab[@configid@] .searchcombine .text
+{
+    border: 1px solid rgb(234, 237, 241);
+    border-top-left-radius: 0.8em;
+    border-bottom-left-radius: 0.8em;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+    width:100%;
+}
+.content-tab[@configid@] .searchcombine .text:focus
+{
+    border: 1px solid rgb(46, 162, 240);
+}
+.content-tab[@configid@] .searchcombine .btn
+{
+    border-style: none;
+    border-top-right-radius: 0.8em;
+    border-bottom-right-radius: 0.8em;
+    background-color: rgb(46, 162, 240);
+    color:#fff;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    width:50%;
+    padding:5px;
+    cursor: pointer;
+    margin-left: 0px;
+    outline:none;
+    box-sizing: border-box;
+}
+.content-tab[@configid@] .searchcombine .btn:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+.content-tab[@configid@] .searchcombine .btnsub
+{
+    border-style: none;
+    border-right:1px solid rgb(184, 223, 248);
+    background-color: rgb(46, 162, 240);
+    color:#fff;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    width:50%;
+    padding:5px;
+    cursor: pointer;
+    outline:none;
+    box-sizing: border-box;
+}
+.content-tab[@configid@] .searchcombine .btnsub:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+.content-tab[@configid@] .content-tab-pages
+{
+    width:100%;
+    box-sizing: border-box;
+    overflow:auto;
+    margin-bottom: 10px;
+    display:[@pageshow@];
+}
+.content-tab[@configid@] .content-tab-pages .itemsshow
+{
+    box-sizing: border-box;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    color: rgb(173, 170, 170);
+    overflow:auto;
+    float: left;
+}
+.content-tab[@configid@] .content-tab-pages .pagesshow
+{
+    overflow:visible;
+    width:80%;
+    float: right;
+}
+
+.content-tab[@configid@] .page-content li
+{
+    list-style: none;
+}
+.content-tab[@configid@] .page-content a:link
+{
+    margin-left: 10px;
+    min-width:60px;
+    padding:5px;
+    display: block;
+    color: rgb(80, 79, 79);
+    background-color:rgb(234, 237, 241);
+    border-radius: 1em;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    text-align: center;
+    text-decoration: none;
+    float:right;
+}
+.content-tab[@configid@] .page-content a:visited
+{
+    color: rgb(80, 79, 79);
+}
+.content-tab[@configid@] .page-content a.active
+{
+    background-color:rgb(104, 187, 241);
+}
+.content-tab[@configid@] .page-content a:hover:not(.active)
+{
+    background-color:rgb(104, 187, 241);
+}
+.content-tab[@configid@] .tabdata
+{
+    border-collapse: collapse;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    width:100%;
+}
+.content-tab[@configid@] .tabdata th
+{
+    background-color: rgb(207, 230, 245);
+    border: 1px solid rgb(207, 230, 245);
+}
+.content-tab[@configid@] .tabdata tr:hover
+{
+    background-color: rgb(237, 242, 245);
+}
+
+.content-tab[@configid@] .tabdata th
+{
+    height:[@itemheight@];
+    padding: 5px;
+}
+.content-tab[@configid@] .tabdata td
+{
+    border: 1px solid rgb(233, 232, 230);
+    color: rgb(138, 135, 135);
+    height:[@itemheight@];
+    padding: 5px;
+}
+.content-info[@configid@]
+{
+    color: rgb(15, 124, 6);
+    font-size:0.8em;
+    background-color:rgb(201, 226, 197);
+    border: 1px solid rgb(112, 189, 116);
+    border-radius: 0.5em;
+    padding: 10px;
+    margin-bottom: 20px;
+    width:100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.content-info[@configid@] .left
+{
+    float:left;
+    width:90%;
+    box-sizing: border-box;
+}
+.content-info[@configid@] .right
+{
+    float:right;
+    color:grey;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+.content-info[@configid@] .right:hover
+{
+    color:black;
+}
+.coverWin[@configid@] 
+{ 
+    position:fixed;left:0px;top:0px;
+    background:rgba(0, 0, 0, 0.4);
+    width:100%;  
+    height:100%;
+    filter:alpha(opacity=60);  
+    opacity:0.6;  
+    display:none; 
+    z-Index:999;  
+}
+
+.modalWin[@configid@] 
+{ 
+    position:fixed;
+    width:500px;
+    height:300px;
+    top:20%;
+    left:39%;
+    background-color:#fff;
+    display:none;
+    cursor:pointer;
+    text-align: center;
+    z-Index:9999;  
+}
+.modalWin[@configid@] .modalWinMsg 
+{
+    color: black;
+    font-size:1em;
+    font-weight: bold;
+    width:100%;
+    margin-top: 18%;
+    box-sizing: border-box;
+    height:30px;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+.modalWin[@configid@] .modalWinBtn .btnOK
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(46, 162, 240);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.modalWin[@configid@] .modalWinBtn .btnOK:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+.modalWin[@configid@] .modalWinBtn .btnCancle
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(205, 209, 212);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.modalWin[@configid@] .modalWinBtn .btnCancle:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+.content-tab[@configid@] .menu-content
+{
+    padding: 5px;
+}
+.content-tab[@configid@] .menu-content li
+{
+    list-style: none;
+}
+.content-tab[@configid@] .menu-content a:link
+{
+    margin-bottom: 5px;
+    display: block;
+    color: rgb(80, 79, 79);
+    background-color:rgb(234, 237, 241);
+    border-radius: 3em;
+    height:30px;
+    line-height: 35px;
+    text-align: center;
+    text-decoration: none;
+}
+.content-tab[@configid@] .menu-content a:visited
+{
+    color: rgb(80, 79, 79);
+}
+.content-tab[@configid@] .menu-content a:hover
+{
+    background-color:rgb(104, 187, 241);
+}
+
+.content-tab[@configid@] .dropcontent
+{
+    display:none;
+    position: absolute;
+    min-height:50px;
+    z-index: 2100;
+    width:220px;
+    background-color:white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    text-align: left;
+}
+.content-tab[@configid@] .dropitem:hover .dropcontent 
+{
+    display:block;
+}
+
+.date-picker-wp 
+{
+    display: none;
+    position: absolute;
+    background: #f1f1f1;
+    left: 40px;
+    top: 40px;
+    border-top: 4px solid #3879d9;
+}
+.date-picker-wp table 
+{
+    border: 1px solid #ddd;
+}
+.date-picker-wp td 
+{
+    background: #fafafa;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    width:[@itemheight@];
+    border: 1px solid #ccc;
+    text-align: center;
+}
+.date-picker-wp td.noborder 
+{
+    border: none;
+    background: none;
+}
+.date-picker-wp td a 
+{
+    color: #1c93c4;
+    text-decoration: none;
+}
+.strong[@configid@] {font-weight: bold}
+.hand[@configid@] {cursor: pointer; color: #3879d9}
+.dropcontent[@configid@]
+{
+    display:none;
+    position: absolute;
+    height:fit-content;
+    z-index: 2100;
+    top:40px;
+    min-width:200px;
+    background-color:white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    text-align: left;
+}
+.dropcontent[@configid@] .selItemShow
+{
+  margin:1px;
+  padding: 5px;
+  cursor:pointer;
+  float:left;
+  min-height:[@itemheight@];
+  min-width:160px;
+  width:100%;
+  font-size:[@itemfontsize@];
+  height:[@itemheight@];
+  background-color: rgb(234, 237, 241);
+}
+.dropcontent[@configid@] .selItemShow:hover
+{
+  background-color: rgb(104, 187, 241);
+}
+.divSelItems[@configid@]
+{
+  display:none;
+}
+.divSelItems[@configid@] .selItemDiv
+{
+  padding:5px;
+  margin:3px;
+  float:left;
+  font-size:[@itemfontsize@];
+  min-height:[@itemheight@];
+  line-height:[@itemheight@];
+  height:fit-content;
+  min-width:160px;
+  width:fit-content;
+  border-radius: 0.8em;
+  border: 1px solid rgb(102, 183, 238);
+}
+
+.divSelItems[@configid@] .action-content a:link
+{
+    margin-left: 5px;
+    width:[@itemheight@];
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    display: block;
+    color: rgb(252, 249, 249);
+    background-color:rgb(30, 108, 211);
+    border-radius: 0.4em;
+    text-align: center;
+    padding-top:2px;
+    padding-right:1px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    float:left;
+}
+
+.divSelItems[@configid@] .action-content a:visited
+{
+    color: rgb(252, 249, 249);
+}
+
+.divSelItems[@configid@] .action-content a.active
+{
+    background-color:rgb(104, 187, 241);
+}
+.divSelItems[@configid@] .action-content a:hover:not(.active)
+{
+    background-color:rgb(104, 187, 241);
+}
+
+.updWin[@configid@] 
+{ 
+    position:fixed;
+    top:10%;
+    width:[@uwinwidth@];
+    min-height:700px;
+    top:10%;
+    left:50%;
+    margin-left:[@uwinmleft@];
+    background-color:#fff;
+    display:none;
+    cursor:pointer;
+    text-align: center;
+    padding:20px;
+    z-Index:9999;  
+    box-sizing: border-box;
+}
+.updWin[@configid@]  .updWin-content
+{ 
+    width:100%;
+    box-sizing: border-box;
+    float:left;
+}
+.updWin[@configid@]  .updWin-content .updWin-content-item
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.updWin[@configid@]  .updWin-content-item .left
+{ 
+    width:100%;
+    box-sizing: border-box;
+    font-size:[@itemfontsize@];
+    line-height:[@itemheight@];
+    font-weight: bold;
+    text-align:left;
+    float:left;
+}
+.updWin[@configid@]  .updWin-content-item .right
+{
+    width:100%;
+    box-sizing: border-box;
+    text-align:left;
+    float:left;
+}
+.updWin[@configid@]  .updWin-content-item input[type=text]:not(.readonly)
+{
+    border: 1px solid rgb(234, 237, 241);
+    margin-right:2px;
+    border-radius: 0.8em;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    width:100%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+.updWin[@configid@]  .updWin-content-item .readonly
+{
+    border:none;
+    height:[@itemheight@];
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+.updWin[@configid@]  .updWin-content-item input[type=text]:focus:not(.readonly)
+{
+    border: 1px solid rgb(46, 162, 240);
+}
+.updWin[@configid@]  .btnOK
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(46, 162, 240);
+    color:#fff;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    width:160px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.updWin[@configid@]  .btnOK:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+.updWin[@configid@]  .btnCancle
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(205, 209, 212);
+    color:#fff;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    width:160px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.updWin[@configid@]  .btnCancle:hover
+{
+    background-color: rgb(102, 183, 238);
+}
+.updWin[@configid@]  .updWin-info
+{
+    color: black;
+    font-size:[@itemfontsize@];
+    background-color:rgb(241, 215, 180);
+    border: 1px solid rgb(206, 133, 37);
+    border-radius: 0.5em;
+    padding: 10px;
+    width:100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.updWin[@configid@]  .updWin-info .left
+{
+    float:left;
+    width:90%;
+    box-sizing: border-box;
+}
+.updWin[@configid@]  .updWin-info .right
+{
+    float:right;
+    color:grey;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.updWin[@configid@] .updWin-content-item select
+{
+    border: none;
+    margin-right:2px;
+    width: 126px;
+    border-radius: 0.8em;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    background-color: rgb(234, 237, 241);
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.searchclose[@configid@]
+{
+    margin-left: 5px;
+    width:[@itemheight@];
+    display: block;
+    color: rgb(252, 249, 249);
+    background-color:rgb(30, 108, 211);
+    border-radius: 0.4em;
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    font-size:[@itemfontsize@];
+    text-align: center;
+    padding-top:2px;
+    padding-right:1px;
+    box-sizing: border-box;
+    float:right;
+}
+.treeItem[@configid@] {
+    padding-left: 20px;
+    font-size:[@itemfontsize@];
+    line-height:[@itemheight@];
+    margin: 16px;
+}
+
+.itemIcon[@configid@] {
+    display: inline-block;
+    color: white;
+    font-weight: bolder;
+    text-align: center;
+    font-size:[@itemfontsize@];
+    width: [@itemheight@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    border-radius: 50%;
+    background: rgb(85, 141, 213);
+    margin-right: 10px;
+    cursor: pointer;
+}
+.itemIconSub[@configid@] {
+    display: inline-block;
+    width: [@itemheight@];
+    height:[@itemheight@];
+    line-height:[@itemheight@];
+    font-size:[@itemfontsize@];
+    color: white;
+    font-weight: bolder;
+    text-align: center;
+    border-radius: 50%;
+    background: rgb(205, 209, 212);
+    margin-right: 10px;
+    cursor: pointer;
+}
+.btnAddVar[@configid@]
+{
+    border-style: none;
+    border-radius: 0.8em;
+    background-color: rgb(247, 164, 71);
+    color:#fff;
+    font-size:[@itemfontsize@];
+    height: [@itemheight@];
+    min-width:160px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    outline:none;
+    box-sizing: border-box;
+}
+.btnAddVar[@configid@]:hover
+{
+    background-color: rgb(240, 182, 116);
+}

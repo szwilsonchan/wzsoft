@@ -1,0 +1,10 @@
+        <div class="updWin-content-item[@configid@]" id="input[@configid@]" style="display:none">
+            <div class="left"  v-show="titleshow">[@fieldtitle@]：<span v-show="!this.isView">[@fieldnoemptylbl@]</div>
+            <div class="right" v-show="!this.isView">
+                <textarea v-model="dataitem.[@fieldname@]"  onchange="onchange[@configid@]()" onblur="onblur[@configid@]()" ></textarea>
+                <span style="color:red;display:none" id="valmsg[@configid@]"></span>
+            </div>
+            <div class="right" v-show="this.isView" style="white-space:pre-wrap">
+                {{dataitem.[@fieldname@]}}
+            </div>
+        </div>

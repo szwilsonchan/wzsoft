@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+<script src="selColor.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Text Content</div>
+            <div class="right" style="line-height: 40px;">
+                <input type="text" v-model="dataitem.config.content" /><input class="btnAddVar" type="button"  onclick="varSelShow(event)" value="+AddLabel" > 
+                <br><font style="font-size: 12px;color: #7a7777;">Remark：Label: Please use uppercase letters</font>
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="varSelAdd(event,0)">
+                    <option></option>
+                </select><select class="varSelValue" onchange="varSelAdd(event,1)">
+                <option></option>
+            </select><select class="varSelValue" >
+            <option></option>
+        </select><br/><input class="btnAddVar" type="button" value="Add" onclick="varSelAdd(event,2)" /><input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+            </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Text Font</div>
+            <div class="right" style="line-height: 60px;">Size: <input type="text" v-model="dataitem.config.fontsize" style="width:20%" />
+                Color: <input type="text" v-model="dataitem.config.fontcolor"  style="width:20%" id="color-picker" />
+                <br>
+                Font: <input type="text" v-model="dataitem.config.fontfamily" style="width:70%" /><br>
+                Weight: <select v-model="dataitem.config.fontweight" style="width:30%">
+                    <option></option>
+                    <option>normal</option>
+                    <option>bold</option>
+                </select> 
+                Style: <select v-model="dataitem.config.fontstyle" style="width:30%">
+                    <option></option>
+                    <option>normal</option>
+                    <option>italic</option>
+                    <option>oblique</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            comdatas:null,
+            dataitem:{"comid":"3004","comname":"Text Box","comtitle":"","config":{"content":"","fontsize":"","fontfamily":"","fontcolor":"","fontweight":"","fontstyle":""}}
+        }
+    },
+    methods: 
+    {
+        getDataItem() 
+        {
+            this.dataitem.comtitle=this.dataitem.config.content;
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+            document.getElementById("color-picker").style.borderColor = this.dataitem.config['fontcolor'];
+        },
+        setDataItemByK(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        },
+        setLabelKey(v)
+        {
+            this.dataitem.config.content = this.dataitem.config.content + v;
+        }
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.setDataItem = this.setDataItem;
+        window.setDataItemByK = this.setDataItemByK;
+        window.setLabelKey = this.setLabelKey;
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+function varSelShow(e)
+{
+    let p = e.target.parentElement;
+    for (let dNode of p.childNodes) 
+    {
+        if(dNode.className=="selDiv")
+        {
+            dNode.style.display="block";
+            let s = dNode.firstChild;
+            s.options.length=0
+            s.add(new Option("",""));
+            for( let item of parent.varGDataFileds)
+            {
+                s.add(new Option(item['FIELD_TITLE'],item['FIELD']+"|"+item['FIELD_FIELDS']));
+            }
+
+            break;
+        }
+    }
+}
+function closeAdd(e)
+{
+    let p = e.target;
+    p.parentElement.style.display="none"
+}
+function varSelAdd(e,n)
+{
+    let p = e.target.parentElement;
+    let pp = e.target.parentElement.parentElement.parentElement;
+    let dNode = p.childNodes[n];
+    let v=dNode.options[dNode.selectedIndex].text;
+    let k=dNode.options[dNode.selectedIndex].value;
+    let k1 = k.substring(0,k.indexOf("|"));
+    let k2 = k.substring(k.indexOf("|")+1);
+    if(k2!=="null"&&n<2)
+    {
+        let fs = [];
+        fs=JSON.parse(k2);
+        let s = p.childNodes[n+1];
+        s.options.length=0
+        s.add(new Option("",""));
+        for( let item of fs)
+        {
+            if(item['fields'])
+                s.add(new Option(item['title'],item['name']+"|"+JSON.stringify(item['fields'])));
+            else
+                s.add(new Option(item['title'],item['name']+"|"));
+        }
+    }
+
+    if(n==2)
+    {
+        let dNode = p.childNodes[2];
+        let v=dNode.options[dNode.selectedIndex].text;
+        let k=dNode.options[dNode.selectedIndex].value;
+        let k1 = k.substring(0,k.indexOf("|"));
+
+        let dNode1 = p.childNodes[0];
+        let pv1=dNode1.options[dNode1.selectedIndex].text;
+        let pk1=dNode1.options[dNode1.selectedIndex].value;
+        pk1 = pk1.substring(0,pk1.indexOf("|"));
+
+        let dNode2 = p.childNodes[1];
+        let pv2=dNode2.options[dNode2.selectedIndex].text;
+        let pk2=dNode2.options[dNode2.selectedIndex].value;
+        pk2 = pk2.substring(0,pk2.indexOf("|"));
+
+        if(k1!="")
+            k1 = pk1 + "-" +  pk2 + "-" +  k1; 
+        else if(pk2!="")
+            k1 = pk1 + "-" +  pk2;    
+        else if (pk1!="")
+            k1 = pk1;
+
+        k1=k1.toUpperCase(); ;
+        window.setLabelKey('[@'+k1+'@]');
+    }
+}
+Colorpicker.create({
+                el: "color-picker", 
+                color: "", 
+                change: function (elem, hex) {
+                    elem.style.borderColor = hex;
+                    window.setDataItemByK('fontcolor',hex);
+                }
+              });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+;Char=Char+'';;;;if(gvalnum(End)==gvalnum('')){return Char.substring(Start);;;;}else{return Char.substring(Start,End);;;;};;

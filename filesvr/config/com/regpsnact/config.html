@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+<script src="selColor.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Style</div>
+            <div class="right" style="line-height: 40px;">
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="1" v-model="dataitem.config.apptype" ><label>PC</label>
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="2" v-model="dataitem.config.apptype" ><label>Mobile</label>
+            </div>
+        </div>
+        <div class="updWin-content-item" v-show="this.dataitem.config.apptype=='1'">
+            <div class="left">Mobile redirects to:</div>
+            <div class="right" style="line-height: 40px;">
+                <input type="text" v-model="dataitem.config.repage" />
+            </div>
+        </div>
+        <div class="updWin-content-item" v-show="this.dataitem.config.apptype=='2'">
+            <div class="left">PC redirects to:</div>
+            <div class="right" style="line-height: 40px;">
+                <input type="text" v-model="dataitem.config.repage" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="./../../../js/funcconfig.js"></script>
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            comdatas:null,
+            dataitem:{"comid":"4008","comname":"PersonActivate","comtitle":"PersonActivate","config":{"repage":"","apptype":"1","lan":"e","conbg":"#fff","conradius":"2em"}}
+        }
+    },
+    methods: 
+    {
+        changeLan()
+        {
+
+        },
+        getDataItem() 
+        {
+            if(this.dataitem.config.lan=="c")
+            {
+
+                this.dataitem.config.capcode = "CAPTCHA";
+                this.dataitem.config.capcodedo = "Click to switch CAPTCHA";
+                this.dataitem.config.btnsend = "Activate Account";
+
+                this.dataitem.config.cappass1 = "Enter Account Password";
+                this.dataitem.config.cappass2 = "Confirm New Password";
+                this.dataitem.config.msgpwdnew = "Enter Account Password。";
+                this.dataitem.config.msgpwdnew1 = "Passwordlength cannot exceed 20 characters。";
+                this.dataitem.config.msgpwdnew2 = "The two passwords do not match.";
+                this.dataitem.config.msgact = "ActivateSuccess";
+
+            }
+            else
+            {
+                this.dataitem.config.capcode = "Captcha";
+                this.dataitem.config.capcodedo = "Switch the captcha";
+                this.dataitem.config.btnsend = "Activate account";
+                this.dataitem.config.cappass1 = "Enter password";
+                this.dataitem.config.cappass2 = "Confirm password";
+                this.dataitem.config.msgpwdnew = "Please enter password";
+                this.dataitem.config.msgpwdnew1 = "The length of the password cannot exceed 20";
+                this.dataitem.config.msgpwdnew2 = "The password and confirm password do not match";
+                this.dataitem.config.msgact = "Activation successful";
+            }
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+        },
+        setDataItemByK(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        }, 
+        getDataItemSub() 
+        {
+            return this.dataitem;
+        }
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.getDataItemSub = this.getDataItemSub;
+        window.setDataItem = this.setDataItem;
+        window.setDataItemByK = this.setDataItemByK;
+        gInitConfig();
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+Colorpicker.create({
+el: "color-picker-conbg", 
+color: "", 
+change: function (elem, hex) {
+    elem.style.borderColor = hex;
+    window.setDataItemByK('conbg',hex);
+}
+});
+
+</script>
+
+</body>
+</html>

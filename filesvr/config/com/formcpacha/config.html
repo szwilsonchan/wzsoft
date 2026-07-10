@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Style</div>
+            <div class="right"  style="line-height: 40px;">
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="1" v-model="dataitem.config.apptype" ><label>PC</label>
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="2" v-model="dataitem.config.apptype" ><label>Mobile</label><Br/>
+                <div style="float:left;width:100%">
+                    Title Visible: <input type="checkbox" v-model="dataitem.config.titleshow" style="width: 12%"/>
+                </div>
+                <div v-show="dataitem.config.titleshow" style="float:left;padding-left: 20px;">
+                    Title Width: <input type="text" v-model="dataitem.config.titlewidth" style="width:60px" />&nbsp;&nbsp;
+                    Align: <input type="radio" name="radioalign" value="right" v-model="dataitem.config.titlealign" ><label>Right</label>
+                    <input type="radio" name="radioalign" value="left" v-model="dataitem.config.titlealign" ><label>Left</label>
+                </div>
+                <div style="float:left">
+                    Content Width: <input type="text" v-model="dataitem.config.namewidth" style="width:60px" />
+                    Row Height: <input type="text" v-model="dataitem.config.itemheight" style="width:60px" />
+                    Font Size: <input type="text" v-model="dataitem.config.itemfontsize" style="width:60px" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./../../../js/funcconfig.js"></script>
+
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            dataitem:{
+                "comid":"1020",
+                "comname":"CAPTCHA",
+                "comtitle":"",
+                "needval":"true",
+                "config":{"apptype":"1","lan":"e","isview":"false","titlewidth":"15%","namewidth":"85%","fieldtitle":"","titleshow":true,"titlealign":"right","formshow":true,"fieldnoempty":true,"fieldnoemptylbl":"","itemheight":"36px","itemfontsize":"16px"},
+                "attrget":{"inputValue":"form_cpacha"},
+                "attrset":{"inputValue":"form_cpacha"},
+                "attrsubmit":{"value":""}
+            }
+        }
+    },
+    methods: 
+    {
+        getDataItem() 
+        {
+
+            if(this.dataitem.config.fieldnoempty)
+                this.dataitem.config.fieldnoemptylbl = "<span class=\"noempty\">*</span>";
+            else
+                this.dataitem.config.fieldnoemptylbl = "";
+
+            this.dataitem.comtitle="CAPTCHA";
+            this.dataitem.attrsubmit.value="form_cpacha";
+
+            if(this.dataitem.config.lan=="c")
+                this.dataitem.config.caption = "CAPTCHA";
+            else
+                this.dataitem.config.caption = "CAPTCHA";
+
+            let viewhtml = "";
+            let tshow = "display:none"
+            if(this.dataitem.config.titleshow)
+            {
+                tshow = "display:blcok";
+            }
+
+            viewhtml = viewhtml + "<div style=\"width:100%;float:left;margin-bottom:5px\">";
+            viewhtml = viewhtml + "<div style=\""+ tshow +";width:"+ this.dataitem.config.titlewidth +";font-size:"+ this.dataitem.config.itemfontsize +";line-height:"+ this.dataitem.config.itemheight +";padding-right:15px;text-align:"+ this.dataitem.config.titlealign +";font-weight: bold;float:left;box-sizing: border-box;\">CAPTCHA</div>";
+            viewhtml = viewhtml + "<div style=\"width:"+ this.dataitem.config.namewidth +";float:left;box-sizing: border-box;\">";
+            viewhtml = viewhtml + "<div style=\"width:200px;float:left;\"><input type=\"text\" style=\"border: 1px solid rgb(173, 170, 170);border-radius: 0.8em;font-size:"+ this.dataitem.config.itemfontsize +";height:"+ this.dataitem.config.itemheight +";width:100%;padding: 5px;padding-left: 15px;outline: none;box-sizing: border-box;\" /></div>";
+            viewhtml = viewhtml + "<div style=\"float:left;\"><img style=\"margin-left: 10px;folat:left\" height="+ this.dataitem.config.itemheight +" src=\"./../../user/getcpacha?vl=4&w=150&h=40&type=formCpacha\"/></div>";
+            viewhtml = viewhtml + "</div>";
+
+            this.dataitem.config.viewhtml=viewhtml;
+            this.dataitem.config.fieldtitle="CAPTCHA(Cpacha)";
+
+            let msg="";
+            if(msg!="")
+                alert(msg);
+            else
+                return this.dataitem;
+   
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+        },
+        setFormValue(fValue,codename) 
+        {
+            let c = this.dataitem['code'];
+            c[codename] = fValue;
+        },
+        getFormValue(codename) 
+        {
+            let c = this.dataitem['code'];
+            return c[codename];
+        }, 
+        getDataItemSub() 
+        {
+            return this.dataitem;
+        }
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.getDataItemSub = this.getDataItemSub;
+        window.setDataItem = this.setDataItem;
+        window.setFormValue = this.setFormValue;
+        window.getFormValue = this.getFormValue;
+
+        gInitConfig();
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+</script>
+
+</body>
+</html>

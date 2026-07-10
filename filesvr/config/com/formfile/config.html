@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Title</div>
+            <div class="right"><input type="text" v-model="dataitem.config.fieldtitle" /></div>
+        </div>
+        <div class="updWin-content-item" id="divDbField">
+            <div class="left">Field</div>
+            <div class="right">
+                <input type="text" v-model="dataitem.config.fieldname" style="width:200px"/>
+                <input class="btnOK" id="inpDbField" type="button"  onclick="selFieldGetDbFields(event)" value="+Existing Field" style="width:120px">
+                <div class="selDiv" style="display:none;" ><select class="varSelValue" style="margin-bottom: 10px;">
+                    <option></option></select><br/><input class="btnOK" type="button" value="Select" onclick="selFieldAdd(event)" /><input class="btnCancle" type="button" value="Cancel" onclick="selCloseAdd(event)" />
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">DB Field</div>
+            <div class="right">
+                <input type="radio" name="radiofif" value="" v-model="dataitem.config.fieldinfile" ><label>Yes</label>
+                <input type="radio" name="radiofif" value="1" v-model="dataitem.config.fieldinfile" ><label>No</label>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Style</div>
+            <div class="right"  style="line-height: 40px;">
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="1" v-model="dataitem.config.apptype" ><label>PC</label>
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="2" v-model="dataitem.config.apptype" ><label>Mobile</label><Br/>
+                <div style="float:left;width:100%">
+                    Title Visible: <input type="checkbox" v-model="dataitem.config.titleshow" style="width: 12%"/>
+                </div>
+                <div v-show="dataitem.config.titleshow" style="float:left;padding-left: 20px;">
+                    Title Width: <input type="text" v-model="dataitem.config.titlewidth" style="width:60px" />&nbsp;&nbsp;
+                    Align: <input type="radio" name="radioalign" value="right" v-model="dataitem.config.titlealign" ><label>Right</label>
+                    <input type="radio" name="radioalign" value="left" v-model="dataitem.config.titlealign" ><label>Left</label>
+                </div>
+                <div style="float:left">
+                    Content Width: <input type="text" v-model="dataitem.config.namewidth" style="width:60px" />
+                    Row Height: <input type="text" v-model="dataitem.config.itemheight" style="width:60px" />
+                    Font Size: <input type="text" v-model="dataitem.config.itemfontsize" style="width:60px" />
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Read Only</div>
+            <div class="right">
+                <input type="radio" name="radiosview" value="true" v-model="dataitem.config.isview" ><label>Yes</label>
+                <input type="radio" name="radiosview" value="false" v-model="dataitem.config.isview" ><label>No</label>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Type</div>
+            <div class="right"><input type="text" v-model="dataitem.config.filetypes" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Required</div>
+            <div class="right"><input type="checkbox" v-model="dataitem.config.fieldnoempty" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Call Mode</div>
+            <div class="right">
+                <input type="radio" name="radiostype"  value="" v-model="dataitem.config.pubtype" ><label>Internal</label>
+                <input type="radio" name="radiostype"  value="portal/" v-model="dataitem.config.pubtype" ><label>Public</label>&nbsp;&nbsp;
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Display</div>
+            <div class="right">
+                Form：<input type="checkbox" v-model="dataitem.config.formshow" style="width:5%" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Event</div>
+            <div class="right">
+                <span>On Value Change: </span>
+                <input type="button" class="btnOK"  value="Design Code" onclick="parent.openCodeValWin('onchange');" />
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./../../../js/funcconfig.js"></script>
+
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            dataitem:{
+                "comid":"1005",
+                "comname":"FileUpload",
+                "comtitle":"",
+                "needval":"true",
+                "code":{"onchange":{}},
+                "config":{"fieldinfile":"","pubtype":"","apptype":"1","lan":"e","isview":"false","fieldname":"","fieldtype":"nvarchar2","fieldlen":"350","titlewidth":"15%","namewidth":"85%","fieldtitle":"","filetypes":"gif,jpg,jpeg,png,pdf,doc,docx,xls,xlsx,csv,ppt,pptx","titleshow":true,"titlealign":"right","fieldshow":false,"formshow":true,"fieldnoempty":false,"fieldnoemptylbl":""},
+                "attrget":{"inputValue":""},
+                "attrset":{"inputValue":"","Display":"s#display","readonly":"s#isview"},
+                "attrtitle":{},
+                "attrsubmit":{"value":""}
+            }
+        }
+    },
+    methods: 
+    {
+        getDataItem() 
+        {
+            let fdnu=this.dataitem.config.fieldname;
+            this.dataitem.config.fieldname=fdnu.toUpperCase();
+            
+            if(this.dataitem.config.fieldnoempty)
+                this.dataitem.config.fieldnoemptylbl = "<span class=\"noempty\">*</span>";
+            else
+                this.dataitem.config.fieldnoemptylbl = "";
+
+            this.dataitem.comtitle=this.dataitem.config.fieldtitle;
+            this.dataitem.attrget.inputValue=this.dataitem.config.fieldname;
+            this.dataitem.attrset.inputValue=this.dataitem.config.fieldname;
+            this.dataitem.attrsubmit.value=this.dataitem.config.fieldname;
+
+            let oar={};
+            oar[this.dataitem.config.fieldname]=this.dataitem.config.fieldtitle;
+            if(this.dataitem.config.fieldshow)
+                this.dataitem.attrtitle=oar;
+            else
+                this.dataitem.attrtitle={};
+            
+            if(this.dataitem.config.lan=="c")
+            {
+                this.dataitem.config.caption = "Select file to upload";
+                this.dataitem.config.capdel = "Delete";
+                this.dataitem.config.filetypetitle = "Supported File Formats: ";
+            }
+            else
+            {
+                this.dataitem.config.caption = "Please select the file to upload";
+                this.dataitem.config.capdel = "Delete";
+                this.dataitem.config.filetypetitle = "File Type：";
+            }
+
+            let msg="";
+            msg = gCheckField(this.dataitem.config.fieldname,this.dataitem.config.fieldlen);
+
+            let viewhtml = "";
+            let tshow = "display:none"
+            if(this.dataitem.config.titleshow)
+            {
+                tshow = "display:blcok";
+            }
+
+            let noempty="";
+            if(this.dataitem.config.fieldnoempty)
+            {
+                noempty = "<font color=red>*</font>";
+            }
+
+            if(this.dataitem.config.apptype=="1")
+            {
+                this.dataitem.config.selbtnwidth="200px";
+            }
+            else
+            {
+                this.dataitem.config.selbtnwidth="70%"; 
+            }
+
+            viewhtml = viewhtml + "<div style=\"width:100%;float:left;margin-bottom:5px\">";
+            viewhtml = viewhtml + "<div style=\""+ tshow +";width:"+ this.dataitem.config.titlewidth +";font-size:"+ this.dataitem.config.itemfontsize +";line-height:"+ this.dataitem.config.itemheight +";padding-right:15px;text-align:"+ this.dataitem.config.titlealign +";font-weight: bold;float:left;box-sizing: border-box;\">"+ this.dataitem.config.fieldtitle + noempty +"</div>";
+            viewhtml = viewhtml + "<div style=\"width:"+ this.dataitem.config.namewidth +";line-height:"+ this.dataitem.config.itemheight +";float:left;box-sizing: border-box;margin-top:6px\">";
+            viewhtml = viewhtml + "<label style=\"font-size:"+ this.dataitem.config.itemfontsize +";overflow: hidden;position: relative;border-radius: 0.3em;background-color: rgb(206, 203, 200);color:#000;border: 1px solid rgb(107, 106, 106);float: left;padding-left: 10px;width:"+ this.dataitem.config.selbtnwidth +";height:"+ this.dataitem.config.itemheight +";line-height:"+ this.dataitem.config.itemheight +";text-align:center\">Select file to upload：</label>";
+            viewhtml = viewhtml + "</div>";
+            viewhtml = viewhtml + "</div>";
+
+            this.dataitem.config.viewhtml=viewhtml;
+
+            if(msg!="")
+                alert(msg);
+            else
+                return this.dataitem;
+   
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+        },
+        setFormValue(fValue,codename) 
+        {
+            let c = this.dataitem['code'];
+            c[codename] = fValue;
+        },
+        getFormValue(codename) 
+        {
+            let c = this.dataitem['code'];
+            return c[codename];
+        }, 
+        getDataItemSub() 
+        {
+            return this.dataitem;
+        }
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.getDataItemSub = this.getDataItemSub;
+        window.setDataItem = this.setDataItem;
+        window.setFormValue = this.setFormValue;
+        window.getFormValue = this.getFormValue;
+
+        gInitConfig();
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+</script>
+
+</body>
+</html>

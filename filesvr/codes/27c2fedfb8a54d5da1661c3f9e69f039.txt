@@ -1,0 +1,10 @@
+;var n = vNumber.toString();
+var i = n.indexOf('.0');
+if(i==n.length-2)
+{
+return n.substring(0,i)
+}
+else
+{
+return n;
+};;;

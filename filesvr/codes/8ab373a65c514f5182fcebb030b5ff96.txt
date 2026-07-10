@@ -1,0 +1,16 @@
+;if(Object.prototype.toString.call(vList) === '[object Array]')
+{
+vList.splice(vListIndex,1);
+return vList;
+}
+else if(Object.prototype.toString.call(vList) === '[object String]')
+{
+var o = JSON.parse(vList);
+o.splice(vListIndex,1);
+return JSON.stringify(o);
+}
+else
+{
+vList.remove(vListIndex);
+return vList;
+};;;

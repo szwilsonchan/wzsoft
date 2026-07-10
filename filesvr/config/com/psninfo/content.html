@@ -1,0 +1,210 @@
+<div class="content-tab[@configid@]" id="datalist[@configid@]" >
+    <div class="content-tab-title">
+        <span>[@fieldtitle@]</span>
+    </div>
+    <div class="content-info[@configid@]" id="content-info[@configid@]" style="display:none">
+        <div class="left" id="content-info-msg[@configid@]"></div>
+        <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+    </div>
+    <div id="updWin[@configid@]" class="updWin[@configid@]">
+        <div class="updWin-info" id="updWin-info[@configid@]" style="display:none">
+            <div class="left" id="updWin-info-msg[@configid@]"></div>
+            <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+        </div>
+        <div class="updWin-content" >
+            <div class="updWin-content-item" v-show="this.isupd">
+                <div class="left">ID</div>
+                <div class="right"><input type="text" readonly class="readonly" v-model="dataitem.PSNID"  /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmname@]</div>
+                <div class="right"><input type="text" v-model="dataitem.NAME"   /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@pwd@]</div>
+                <div class="right" style="line-height:40px">
+                    <input type="button" class="btnAddObj[@configid@]"  value="[@upd@][@pwd@]" onclick="openReqPwdWin[@configid@]()" />
+                </div>
+            </div>
+            <div class="updWin-content-item" >
+                <div class="left">[@frmorg@]</div>
+                <div class="right" style="line-height:40px">
+                    <template v-for="data in psnorgs" >
+                        {{data['ORGNAME']}}，{{data['DEPTNAME']}}<Br>
+                    </template>
+                    <input type="button" class="btnAddObj[@configid@]"  value="[@joinorg@]" onclick="openReqOrgWin[@configid@]()" />
+                </div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmno@]</div>
+                <div class="right"><input type="text" v-model="dataitem.EMPID"  /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmsex@]</div>
+                <div class="right" style="line-height: 40px;">
+                    <input type="radio" v-model="dataitem.GENDER" value='1' name="gender[@configid@]" ><label>&nbsp;[@frmsex1@]&nbsp;</label>
+                    <input type="radio" v-model="dataitem.GENDER" value="2" name="gender[@configid@]" ><label>&nbsp;[@frmsex2@]&nbsp;</label>
+                    <input type="radio" v-model="dataitem.GENDER" value="3" name="gender[@configid@]" ><label>&nbsp;[@frmsex3@]&nbsp;</label>
+                </div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmdob@]</div>
+                <div class="right"><input type="text" v-model="dataitem.BIRTHDAY" id="birthday[@configid@]" placeholder="eg：2000-10-1"/></div>
+            </div>
+            <div class="updWin-content-item" v-show="this.gAmode!='1'">
+                <div class="left">[@frmemail@]</div>
+                <div class="right"><input type="text" v-model="dataitem.EMAIL"  /></div>
+            </div>
+            <div class="updWin-content-item" v-show="this.gAmode=='1'">
+                <div class="left">[@frmemail@]</div>
+                <div class="right" style="line-height:40px">
+                    {{dataitem.EMAIL}} 
+                    <input type="button" class="btnAddObj[@configid@]"  value="[@upd@][@frmemail@]" onclick="openReqEmailWin[@configid@]()" />
+                </div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmtel@]</div>
+                <div class="right"><input type="text" v-model="dataitem.TEL"   /></div>
+            </div>
+            <div class="updWin-content-item" v-show="this.gAmode!='2'">
+                <div class="left">[@frmmobile@]</div>
+                <div class="right"><input type="text" v-model="dataitem.MOBILE"   /></div>
+            </div>
+            <div class="updWin-content-item" v-show="this.gAmode=='2'">
+                <div class="left">[@frmmobile@]</div>
+                <div class="right" style="line-height:40px">
+                    {{dataitem.MOBILE}}
+                    <input type="button" class="btnAddObj[@configid@]"  value="[@upd@][@frmmobile@]" onclick="openReqMobileWin[@configid@]()" />
+                </div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">&nbsp;</div>
+                <div class="right"><input type="button" class="btnOK"  value="[@btnsave@]" @click="updDatas" /></div>
+            </div>
+        </div>
+    </div>
+    <div id="reqPwdWin[@configid@]" class="updWinPop[@configid@]">
+        <div class="updWin-info" id="updWin-info-pwd[@configid@]" style="display:none">
+            <div class="left" id="updWin-info-pwd-msg[@configid@]"></div>
+            <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+        </div>
+        <div class="updWin-content" >
+            <div class="updWin-content-item" >
+                <div class="left" style="width:20%">[@pwd1@]</div>
+                <div class="right" style="width:80%"><input class="pwd" type="password" id="oldpassword[@configid@]" /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left" style="width:20%">[@pwd2@]</div>
+                <div class="right" style="width:80%"><input class="pwd" type="password" id="password[@configid@]" /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left" style="width:20%">[@pwd3@]</div>
+                <div class="right" style="width:80%"><input class="pwd" type="password" id="passwordconfirm[@configid@]" /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">&nbsp;</div>
+                <div class="right">
+                    <input type="button" class="btnOK"  value="[@btnsave@]" onclick="reqPwdSave[@configid@]()" />
+                    <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeReqPwdWin[@configid@]()" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="reqEmailWin[@configid@]" class="updWinPop[@configid@]">
+        <div class="updWin-info" id="updWin-info-email[@configid@]" style="display:none">
+            <div class="left" id="updWin-info-email-msg[@configid@]"></div>
+            <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+        </div>
+        <div class="updWin-content" >
+            <div class="updWin-content-item" >
+                <div class="left">[@frmemail@]</div>
+                <div class="right"><input type="text" id="reqemail[@configid@]" /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmcode@]</div>
+                <div class="right">
+                    <input type="text" id="reqemailkey[@configid@]"  style="width:160px" />
+                    <input type="button" class="btnAddObj[@configid@]"  value="[@frmcodeget@]" onclick="reqEmail[@configid@]()" /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">&nbsp;</div>
+                <div class="right">
+                    <input type="button" class="btnOK"  value="[@btnsave@]" onclick="reqEmailSave[@configid@]()" />
+                    <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeReqEmailWin[@configid@]()" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="reqMobileWin[@configid@]" class="updWinPop[@configid@]">
+        <div class="updWin-info" id="updWin-info-mobile[@configid@]" style="display:none">
+            <div class="left" id="updWin-info-mobile-msg[@configid@]"></div>
+            <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+        </div>
+        <div class="updWin-content" >
+            <div class="updWin-content-item" >
+                <div class="left">[@frmmobile@]</div>
+                <div class="right"><input type="text" id="reqmobile[@configid@]" /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmcode@]</div>
+                <div class="right">
+                    <input type="text" id="reqmobilekey[@configid@]"  style="width:160px" />
+                    <input type="button" class="btnAddObj[@configid@]"  value="[@frmcodeget@]" onclick="reqMobile[@configid@]()" /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">&nbsp;</div>
+                <div class="right">
+                    <input type="button" class="btnOK"  value="[@btnsave@]" onclick="reqMobileSave[@configid@]()" />
+                    <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeReqMobileWin[@configid@]()" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="reqOrgWin[@configid@]" class="updWinPop[@configid@]">
+        <div class="updWin-info" id="updWin-info-org[@configid@]" style="display:none">
+            <div class="left" id="updWin-info-org-msg[@configid@]"></div>
+            <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+        </div>
+        <div class="updWin-content" >
+            <div class="updWin-content-item" >
+                <div class="left">[@frmapporg@]</div>
+                <div class="right">
+                    <input type="text" id="inpSel[@configid@]" oninput="selItemSearch[@configid@](event)" placeholder="Enter Orgname to search"  onclick="selItemSearch[@configid@](event)" />
+                    <div class="dropcontent[@configid@]" id="divSelSearchs[@configid@]" style="display:block"></div>
+                    <div class="divSelItems[@configid@]" id="divSelItems[@configid@]" ></div>
+                </div>
+            </div>
+            <div class="updWin-content-item" >
+                <div class="left">[@frmappdept@]</div>
+                <div class="right" >
+                    <select  class="select[@configid@]" id="reqdeptid[@configid@]">
+                        <option></option>
+                        <template v-for="v in depts">
+                            <option  v-if="v['PID']!='0'"  :value="v['DEPTID']" >&nbsp;&nbsp;&nbsp;&nbsp;{{v['NAME']}}</option>
+                            <option  v-if="v['PID']=='0'"  :value="v['DEPTID']" >{{v['NAME']}}</option>
+                        </template>
+                    </select>
+                </div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmapporgnote@]</div>
+                <div class="right">
+                    <input type="text" id="reqorgnote[@configid@]"  />
+                </div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">&nbsp;</div>
+                <div class="right">
+                    <input type="button" class="btnOK"  value="[@btnsave@]" onclick="reqOrgSave[@configid@]()" />
+                    <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeReqOrgWin[@configid@]()" />
+                </div>
+            </div>
+            <div class="updWin-content-item" id="divReqOrg[@configid@]" Style="display:none">
+                <div class="left">&nbsp;</div>
+                <div class="right">
+                    <span id="spnReqOrg[@configid@]"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

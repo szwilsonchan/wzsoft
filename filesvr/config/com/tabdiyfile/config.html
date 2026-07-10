@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Display Name</div>
+            <div class="right"><input type="text" v-model="dataitem.config.fileTitle" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">File Source</div>
+            <div class="right"><input type="text" v-model="dataitem.config.fileContent"  placeholder="Value Source Field, e.g. data['FILE']"  />
+                <input class="btnAddVar" type="button"  onclick="selFieldDbShow(event)" value="+SelectField" >
+                <div class="selDiv" style="display:none" ><select class="varSelValue" onchange="selFieldDbFieldShow(event,'')" style="width:20%">
+                    <option></option>
+                    </select><select class="varSelValue" style="margin-left: 5px;width:150px">
+                    <option></option></select><br/><input class="btnAddVar" type="button" value="Add" onclick="selFieldAdd(event)" /><input class="btnCancleVar" type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Align</div>
+            <div class="right">
+
+                <input type="radio" name="radioalignname" value="left" v-model="dataitem.config.namealign" ><label>Left</label>
+                <input type="radio" name="radioalignname" value="center" v-model="dataitem.config.namealign" ><label>Center</label>
+                <input type="radio" name="radioalignname" value="right" v-model="dataitem.config.namealign" ><label>Right</label>
+
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">DisplayCondition</div>
+            <div class="right"><input type="text" v-model="dataitem.config.isview" /></div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+function closeAdd(e)
+{
+    let p = e.target;
+    p.parentElement.style.display="none"
+}
+function selFieldAdd(e)
+{
+    let p = e.target.parentElement;
+    let dNode = p.childNodes[1];
+    let v=dNode.options[dNode.selectedIndex].text;
+    let k=dNode.options[dNode.selectedIndex].value;
+    if(k=="")
+    {
+        alert("Please SelectField");
+        return;
+    }
+    window.setDataItemByK("fileContent","data['"+ k.toUpperCase() +"']");
+    closeAdd(e);
+}
+function selFieldDbShow(e,f)
+{
+    let p = e.target.parentElement;
+    for (let dNode of p.childNodes) 
+    {
+        if(dNode.className=="selDiv")
+        {
+            dNode.style.display="block";
+            let s = dNode.firstChild;
+            s.options.length=0
+            s.add(new Option("",""));
+            let seldb=parent.parent.selviewcode;
+            let fi=0;
+            for(let item of window.gDatalist)
+            {
+                s.add(new Option(item['NAME'],item['TABLENAME']));
+                if(seldb==item['TABLENAME'])
+                    s.selectedIndex=fi+1;
+                fi=fi+1;
+            }
+            if(seldb!="")
+            {
+                selFieldGetDbFields(dNode,seldb,f);
+            }
+
+            break;
+        }
+    }
+}
+function selFieldDbFieldShow(e,f)
+{
+    let p = e.target.parentElement;
+    let d = p.firstChild;
+    let dk = d.options[d.selectedIndex].value;
+    let dv = d.options[d.selectedIndex].text;
+
+    let seldb = dk;
+    if(seldb!="")
+    {
+        selFieldGetDbFields(p,seldb,f);
+    }
+
+}
+function selFieldGetDbFields(dNode,dbname,f)
+{
+
+    let paras = {};
+    paras['viewCode']="data_fields";
+    paras['filter_isinfile_equal']="0";
+    paras['filter_tablename_equal']=dbname;
+    paras['curPage']=1;
+    paras['pageItmes']=100;
+    axios.post("./../../../../api/datalist",paras).then(function(res){
+        dataTblFieldLists=Object.values(res.data)[0];
+        let s = dNode.childNodes[1];
+        s.options.length=0
+        s.add(new Option("",""));
+        for( let item of dataTblFieldLists)
+        {
+            s.add(new Option(item['FIELD_TITLE'],item['FIELD']));
+        }
+    }).catch(function (err) {
+    });
+}
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            dataitem:{
+                "comid":"7003",
+                "comname":"FileDownload",
+                "comtitle":"",
+                "code":{"onchange":{}},
+                "config":{"isview":"1==1","namealign":"left","namewidth":"100%","fieldtitle":"","fileTitle":"","fileContent":""},
+                "attrget":{"File":"filecontent"},
+                "attrset":{"File":"filecontent"}
+            },            
+            fileContent:{},
+			blnUpded:false
+        }
+    },
+    methods: 
+    {
+        getDatas() 
+        {
+            let paras = {};
+            paras['viewCode']="data";
+            paras['curPage']=1;
+            paras['pageItmes']=100;
+            paras['filter_open_equal']="1";
+            var that = this;
+            axios.post("./../../../../api/datalist",paras).then(function(res){
+            window.gDatalist=Object.values(res.data)[0];    
+            }).catch(function (err) {
+            });
+        },
+        getDataItem() 
+        {
+            this.dataitem.comtitle=this.dataitem.config.fieldtitle;
+
+            let viewhtml = "";
+            viewhtml = viewhtml + "<div style=\"width:100%;float:left;margin-bottom:5px\">";
+            viewhtml = viewhtml + "<div style=\"text-align:"+ this.dataitem.config.namealign +";width:100%;box-sizing: border-box;white-space: pre;float:left;\">";
+            viewhtml = viewhtml + "<a href=\"javascript:void(0)\"  style=\"text-decoration-line: none;font-size:1em\">"+ this.dataitem.config.fileTitle +"</a>";
+            viewhtml = viewhtml + "</div>";
+
+            this.dataitem.config.viewhtml=viewhtml;
+
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+            if(this.dataitem.config.fileContent!="")
+            {
+                this.fileContent=JSON.parse(this.dataitem.config.fileContent);    
+                this.blnUpded=true; 
+            }
+        },
+        setFormValue(fValue,codename) 
+        {
+            let c = this.dataitem['code'];
+            c[codename] = fValue;
+        },
+        getFormValue(codename) 
+        {
+            let c = this.dataitem['code'];
+            return c[codename];
+        },
+        setDataItemByK(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        },
+    },
+    mounted() 
+    {
+        this.getDatas();
+        window.getDataItem = this.getDataItem;
+        window.setDataItem = this.setDataItem;
+        window.setFormValue = this.setFormValue;
+        window.getFormValue = this.getFormValue;
+        window.setDataItemByK = this.setDataItemByK;
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+</script>
+
+</body>
+</html>

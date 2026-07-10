@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LoginPage</title>
+    <link rel="stylesheet" href="./css/login.css" type="text/css"  />
+    <script src="./js/axios.min.js"></script>
+</head>
+<body>
+<div id="loginWin" class="loginWin" style="display: none;">
+    <div class="logImg">
+            <img src="./../upload/logo.png" height="36px" />
+    </div>
+    <div id="loginWin-info" class="loginWin-info" style="display:none">
+        <div class="left" id="loginWin-info-msg"></div>
+    </div>
+    <div class="loginWin-content" >
+        <div class="loginWin-content-item">
+            <div class="left">Username</div>
+            <div class="right"><input type="text" id="username" /></div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">Password</div>
+            <div class="right">
+	            <input type="password" id="password">
+            </div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">CAPTCHA</div>
+            <div class="right">
+                <input type="text" class="cpachaInput" id="cpachacode"  />
+	            <img id="cpacha-img" class="cpachaImg" title="Click to switch CAPTCHA"  src="./../user/getcpacha?vl=4&w=150&h=40&type=loginCpacha" onclick="changeCpacha()">
+            </div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">&nbsp;</div>
+            <div class="right"><input type="button" class="btnOK"  value="Login" onclick="login()" /></div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">&nbsp;</div>
+            <div class="right">
+                <div id="divorg" class="divorg" > 
+                    <a href="./reg_org.html" >Organization Register</a>
+                </div>
+                <div id="divpsn" class="divpsn"  > 
+                    <a href="./reg_psn.html" >Personnel Register</a>
+                </div>
+                <div id="divpass"  class="divpass" style="width:200px"> 
+                    <a href="./reg_getpassword.html" >Forgot Password</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+
+    var regmode="";
+    init();
+
+    function login()
+    {
+        let paras = {};
+
+        var apptype="1";
+        if(ismobilefunc()){apptype=2;}
+
+        paras['userName']=document.getElementById("username").value;
+        paras['password']=document.getElementById("password").value;
+        paras['cpachacode']=document.getElementById("cpachacode").value;
+        paras['appType']=apptype;
+
+        axios.post("./../user/login",paras).then(function(res){
+            let mreturn = res.data
+            let msg = mreturn['msg'];   
+            let token = mreturn['token'];
+            let reurl = mreturn['reurl'];
+            if(msg!="")
+            {
+                document.getElementById("loginWin-info-msg").innerHTML=msg;
+                document.getElementById("loginWin-info").style.display="block";
+                changeCpacha();
+            }
+            else
+            {
+                document.location.href=reurl;
+            }
+        }).catch(function (err) {
+        });
+    }
+
+    function ismobilefunc()
+    {
+        var ua=navigator.userAgent.toLowerCase();
+        var ismobile = false;
+
+        if(contains(ua,"ipad")||(contains(ua,"rv:1.2.3.4"))||(contains(ua,"0.0.0.0"))||(contains(ua,"8.0.552.237"))){return false}
+        if((contains(ua,"android") && contains(ua,"mobile"))||(contains(ua,"android") && contains(ua,"mozilla")) ||(contains(ua,"android") && contains(ua,"opera"))
+        ||contains(ua,"ucweb7")||contains(ua,"iphone")){ismobile=true;}
+
+        return ismobile;
+    }
+
+    function contains(a, b)
+    {
+        if(a.indexOf(b)!=-1)
+            return true;
+        else
+            return false;
+    }
+
+    function init()
+    {
+
+        changeCpacha();
+        if(ismobilefunc())
+        {
+            document.getElementById("loginWin").className = "loginWinMobile";
+            document.getElementById("loginWin").style.display="block";
+        }
+        else
+        {
+            document.getElementById("loginWin").className = "loginWin";
+            document.getElementById("loginWin").style.display="block";
+        }
+
+        let paras = {};
+        axios.post("./../portal/api/configgetregmode",paras).then(function(res){
+            regmode = res.data;
+            if(regmode=="1")
+            {
+                document.getElementById("divorg").style.display="block";
+                document.getElementById("divpsn").style.display="block";
+            }
+            else if(regmode=="2")
+            {
+                document.getElementById("divorg").style.display="block";
+                document.getElementById("divpsn").style.display="none";
+            }
+            else if(regmode=="3")
+            {
+                document.getElementById("divorg").style.display="none";
+                document.getElementById("divpsn").style.display="block";
+            }
+            else
+            {
+                document.getElementById("divorg").style.display="none";
+                document.getElementById("divpsn").style.display="none";
+            }
+        }).catch(function (err) {
+        });
+    }
+
+    function changeCpacha(){
+        document.getElementById("cpacha-img").src='./../user/getcpacha?vl=4&w=150&h=40&type=loginCpacha&t=' + new Date().getTime();
+    }
+
+    </script>
+</body>
+</html>

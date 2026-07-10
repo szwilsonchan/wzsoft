@@ -1,0 +1,140 @@
+.updWin-content-item[@configid@]
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.updWin-content-item[@configid@] .left
+{ 
+    width:[@titlewidth@];
+    box-sizing: border-box;
+    font-size:[@itemfontsize@];
+    line-height:[@itemheight@];
+    padding-right:15px;
+    text-align:[@titlealign@];
+    font-weight: bold;
+    float:left;
+}
+.updWin-content-item[@configid@] .right
+{
+    width:[@namewidth@];
+    box-sizing: border-box;
+    text-align:left;
+    font-size:[@itemfontsize@];
+    line-height:[@itemheight@];
+    float:left;
+}
+.updWin-content-item[@configid@] input[type=text]:not(.readonly)
+{
+    border: 1px solid rgb(234, 237, 241);
+    border-radius: 0.8em;
+    font-size:[@itemfontsize@];
+    height:[@itemheight@];
+    width:70%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.updWin-content-item[@configid@] input[type=text]:focus:not(.readonly)
+{
+    border: 1px solid rgb(46, 162, 240);
+}
+.dropcontent[@configid@]
+{
+    display:none;
+    position: absolute;
+    height:fit-content;
+    z-index: 2100;
+    min-width:[@dropdivwidth@];
+    background-color:white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    text-align: left;
+}
+.dropcontent[@configid@] .selItemShow
+{
+  margin:1px;
+  padding: 5px;
+  cursor:pointer;
+  float:left;
+  height:fit-content;
+  min-width:160px;
+  width:100%;
+  font-size:[@itemfontsize@];
+  height:[@itemheight@];
+  background-color: rgb(234, 237, 241);
+}
+.dropcontent[@configid@] .selItemShow:hover
+{
+  background-color: rgb(104, 187, 241);
+}
+.divSelItems[@configid@]
+{
+  display:none;
+}
+
+.divSelItems[@configid@] .selItemDiv
+{
+  padding:0px;
+  margin:0px;
+  float:left;
+  height:[@itemheight@];
+  line-height:[@itemheight@];
+  min-width:[@selitemwidth@];
+  width:fit-content;
+  box-sizing: border-box;
+  border-radius: 0.8em;
+  border: 1px solid rgb(102, 183, 238);
+}
+
+.divSelItems[@configid@] .action-content a:link
+{
+    display: block;
+    color: #06b6d4;
+    background-color:#06b6d4;
+    border-radius: 0.4em;
+    font-size:[@itemfontsize@];
+    text-align: center;
+    padding-top:0px;
+    padding-right:1px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    float:left;
+}
+
+.divSelItems[@configid@] .action-content a:visited
+{
+    color: #06b6d4;
+}
+
+.divSelItems[@configid@] .action-content a.active
+{
+    background-color:#0891b2;
+}
+.divSelItems[@configid@] .action-content a:hover:not(.active)
+{
+    background-color:#0891b2;
+}
+.inpSearch[@configid@]:hover .dropcontent[@configid@]
+{
+    display:block;
+}
+.searchclose[@configid@]
+{
+    margin-left: 5px;
+    width:[@itemheight@];
+    display: block;
+    color: rgb(252, 249, 249);
+    background-color:rgb(30, 108, 211);
+    border-radius: 0.4em;
+    height:[@itemheight@];
+    font-size:[@itemfontsize@];
+    text-align: center;
+    padding-top:2px;
+    padding-right:1px;
+    box-sizing: border-box;
+    float:right;
+}

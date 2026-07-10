@@ -1,0 +1,83 @@
+<div id="container[@configid@]" style="padding-top:10px;height: [@statheight@];width:100%"></div>
+<script type="text/javascript" src="[@statjs@]"></script>
+<div id="shownum[@configid@]" onclick="onclicknum[@configid@]();" style="display:none;cursor: pointer;text-align:[@namealign@];color: [@fontcolor@]; line-height:[@lineheight@];font-size:[@fontsize@];font-weight:[@fontweight@];width:100%;height:fit-content;padding:5px;"></div>
+<div class="content-tab[@configid@]" id="datalist[@configid@]" style="display:[@statdatashow@]">
+    <div class="content-tab-title">
+        <span>[@fieldtitle@]</span>
+    </div>
+    <div class="content-info" id="content-info[@configid@]" style="display:none">
+        <div class="left" id="content-info-msg[@configid@]"></div>
+        <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+    </div>
+    <div class="content-tab-filter" >
+        <div class="pageselshow" style="[@seardiv1@]">
+            [@cappegenum1@]
+            <select class="sel" v-model="pageitems" @change="getDatasByFilters(1)">
+                <option selected>2</option>
+                <option>10</option>
+                <option>20</option>
+                <option>50</option>
+            </select>
+            [@cappegenum2@]
+        </div>
+        <div class="searchcombine" style="[@seardiv2@]" >
+            <input type="button" class="btnsub" style="text-align: center;"  value="[@btnsearch@]" @click="getDatasByFilters(1,'')" />
+            <input type="button" class="btn"  value="[@btnsearchsub@]" @click="openUpdWinVue('',getDatasByFilters,'')" />
+        </div>
+        <div class="searchcombine" style="[@seardiv2@]"  id="view_prp_filters[@configid@]">
+            <input type="text" class="text" name="filter_searchkey_like" value="" />
+        </div>
+    </div>
+    <div class="content-tab-con" >
+        <table class="tabdata" >
+            <tr>
+                <th v-show="this.checkboxshow"><input type="checkbox" :checked="selAll" @click="checkedAllId()"></th>
+                <th v-for="datalab in datalabs" v-html="Object.values(datalab)[0]" ></th>
+                [@btnmidhtmlth@]
+            </tr>
+            <tr v-for="data in datas">
+                <td v-show="this.checkboxshow" style="text-align: center;"><input type="checkbox" :checked="selIds.indexOf(data[pkey])>=0" name="checkboxinput" @click="checkedOneId(data[pkey])"></td>
+                <template v-for="item in datalabs">
+                    <td v-if="arrShowTitles.indexOf(Object.keys(item)[0])!=-1" v-html="data[Object.keys(item)[0]]"></td>
+                </template>
+                [@btnmidhtml@]
+            </tr>
+        </table> 
+    </div>
+    <div class="content-tab-pages">
+        <div class="itemsshow">
+            <span>{{totalitems}} [@cappegenum3@]  </span>
+        </div>
+        <div class="pagesshow" id="pagesshow" v-show="hasitmes">
+            <ul class="page-content">
+                <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage+1)">[@pagedown@]</a></li>
+                <li v-for="page in showpages">
+                    <a href="javascript:void(0)" v-if="page.i==this.curpage" @click="getDatasByFilters(page.i)" class="active">{{page.i}}</a>
+                    <a href="javascript:void(0)" v-if="page.i!=this.curpage" @click="getDatasByFilters(page.i)" >{{page.i}}</a>
+                </li>
+                <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage-1)">[@pageup@]</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="updWin[@configid@]" class="updWin[@configid@]">
+        <div class="updWin-info" id="updWin-info[@configid@]" style="display:none">
+            <div class="left" id="updWin-info-msg[@configid@]"></div>
+            <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+        </div>
+        <div class="updWin-content" id="searchDiv[@configid@]" >
+    
+        </div>
+        <div class="updWinBtn">
+            <input id="saveBtn" type="button" class="btnOK"  value="[@btnsearch@]"  @click="getDatasByFilters(1,'s')" />
+            <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeWin[@configid@]()" />
+        </div>
+    </div>
+</div>
+<div id="coverWin[@configid@]" class="coverWin[@configid@]"></div>
+<div id="modalWin[@configid@]" class="modalWin[@configid@]">
+    <div class="modalWinMsg"><span id="modalWinMsg[@configid@]"></span></div>
+    <div class="modalWinBtn">
+        <input type="button" class="btnOK"  value="[@btnok@]" onclick="openWinOK[@configid@]()" />
+        <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeWin[@configid@]()" />
+    </div>
+</div>

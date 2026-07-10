@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css?5465" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Title</div>
+            <div class="right"><input type="text" v-model="dataitem.config.fieldtitle" /></div>
+        </div>
+        <div class="updWin-content-item" id="divDbField">
+            <div class="left">Field</div>
+            <div class="right">
+                <input type="text" v-model="dataitem.config.fieldname" style="width:200px"/>
+                Max Length：<input type="text" style="width:20%" v-model="dataitem.config.fieldlen" placeholder="Enter StringMax Length" style="width: 20%"  />
+                <input class="btnOK" id="inpDbField" type="button"  onclick="selFieldGetDbFields(event)" value="+Existing Field" style="width:120px">
+                <div class="selDiv" style="display:none;" ><select class="varSelValue" style="margin-bottom: 10px;">
+                    <option></option></select><br/><input class="btnOK" type="button" value="Select" onclick="selFieldAdd(event)" /><input style="height: 40px;" class="btnCancle" type="button" value="Cancel" onclick="selCloseAdd(event)" />
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">DB Field</div>
+            <div class="right" style="line-height:40px">
+                <input type="radio" name="radiofif" value="" v-model="dataitem.config.fieldinfile" ><label>Yes</label>
+                <input type="radio" name="radiofif" value="1" v-model="dataitem.config.fieldinfile" ><label>No</label>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Style</div>
+            <div class="right" style="line-height:40px">
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="1" v-model="dataitem.config.apptype" ><label>PC</label>
+                <input onchange="gChangeStyles()" type="radio" name="radioapptype" value="2" v-model="dataitem.config.apptype" ><label>Mobile</label><Br/>
+                <div style="float:left;width:100%">
+                    Title Visible: <input type="checkbox" v-model="dataitem.config.titleshow" style="width: 12%"/>
+                </div>
+                <div v-show="dataitem.config.titleshow" style="float:left;padding-left: 20px;">
+                    Title Width: <input type="text" v-model="dataitem.config.titlewidth" style="width:60px" />&nbsp;&nbsp;
+                    Align: <input type="radio" name="radioalign" value="right" v-model="dataitem.config.titlealign" ><label>Right</label>
+                    <input type="radio" name="radioalign" value="left" v-model="dataitem.config.titlealign" ><label>Left</label>
+                </div>
+                <div style="float:left">
+                    Content Width: <input type="text" v-model="dataitem.config.namewidth" style="width:60px" />
+                    Row Height: <input type="text" v-model="dataitem.config.itemheight" style="width:60px" />
+                    Font Size: <input type="text" v-model="dataitem.config.itemfontsize" style="width:60px" />
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Read Only</div>
+            <div class="right" style="line-height:40px">
+                <input type="radio" name="radiosview" value="true" v-model="dataitem.config.isview" ><label>Yes</label>
+                <input type="radio" name="radiosview" value="false" v-model="dataitem.config.isview" ><label>No</label>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Data Source</div>
+            <div class="right" style="line-height:40px">
+                <input type="radio" name="radiosdata" value="1" v-model="dataitem.config.seldatatype" ><label>Custom</label>
+                <input type="radio" name="radiosdata" value="2" v-model="dataitem.config.seldatatype" ><label>Select</label>
+            </div>
+        </div>
+        <div class="updWin-content-item" v-show="dataitem.config.seldatatype=='1'">
+            <div class="left">OptionSettings</div>
+            <div class="right">
+                <div class="divBtnTopsAdd" >
+                    <input class="btnAddBtn" type="button"  onclick="addTitleShow(event)" value="+AddNewOption" >
+                    <div class="addBtnDiv" style="display:none" ><input style="width:25%" type="text" value="" placeholder="OptionTitle" /><input style="width:25%;margin-left:5px" type="text" placeholder="Optionvalue" /><input class="btnSave" type="button" value="Save" onclick="addTitleDo(event,'divShowTitle','a')" />
+                        <input class="btnCancle" type="button" value="Cancel" onclick="closeAdd(event)" />
+                    </div>
+                </div>
+                <div class="divShowTitle" id="divShowTitle"></div>
+                <div class="divItemUpd" id="divItemUpd">
+                    <div class="configItemUpdDiv" id="divItemUpdNode"><input style="width:25%" type="text" value="" placeholder="OptionTitle" /><input style="width:25%;margin-left:5px" type="text" placeholder="Optionvalue" /><input class="btnSave" type="button" value="Save" onclick="configItemUpdDo(event,'divShowTitle','u')" />
+                        <input class="btnCancle" type="button" value="Cancel" onclick="gConfigItemClose(event)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item"  v-show="dataitem.config.seldatatype=='2'">
+            <div class="left">Data</div>
+            <div class="right">
+                <select  v-model="dataitem.config.viewcode" @change="selDataItem" style="width:60%">
+                    <option></option>
+                    <option v-for="v in viewdatas"  name="viewcode" :value="v['TABLENAME']" >{{v['NAME']}}</option>
+                </select>
+                <input type="radio" name="radiopubtype"  value="" v-model="dataitem.config.pubtype" ><label>Internal</label>
+                <input type="radio" name="radiopubtype"  value="portal/" v-model="dataitem.config.pubtype" ><label>Public</label>&nbsp;&nbsp;
+            </div>
+        </div>
+        <div class="updWin-content-item"  v-show="dataitem.config.seldatatype=='2'">
+            <div class="left">Field</div>
+            <div class="right">
+                <input type="radio" name="radios" value="1" v-model="dataitem.config.seltype" ><label>Select</label>
+                <input type="radio" name="radios" value="2" v-model="dataitem.config.seltype" ><label>Input</label>
+                <div v-show="dataitem.config.seltype=='1'"> 
+                    Store：<select  style="width:15%" v-model="dataitem.config.big_valuefield" >
+                        <option></option>
+                        <option v-for="v in datafields"  name="viewcode" :value="v['FIELD'].toUpperCase()" >{{v['FIELD_TITLE']}}</option>
+                    </select>
+                    Display：<select  style="width:15%" v-model="dataitem.config.big_showfield" >
+                        <option></option>
+                        <option v-for="v in datafields"  name="viewcode" :value="v['FIELD'].toUpperCase()" >{{v['FIELD_TITLE']}}</option>
+                    </select>
+                    Sort：<select  style="width:15%" v-model="dataitem.config.orderone" >
+                        <option></option>
+                        <option v-for="v in datafields"  name="viewcode" :value="v['FIELD']" >{{v['FIELD_TITLE']}}</option>
+                    </select>&nbsp;
+                    <select  style="width:10%" v-model="dataitem.config.ordertwo" >
+                        <option value="asc">Asc</option>
+                        <option value="desc">Desc</option>
+                    </select>
+                </div>
+                <div v-show="dataitem.config.seltype=='2'"> 
+                    Store：<input type="text" style="width:20%" v-model="dataitem.config.big_valuefield" >
+                    Display：<input type="text" style="width:20%" v-model="dataitem.config.big_showfield" >
+                    Sort：<input type="text" style="width:20%" v-model="dataitem.config.orderfield" placeholder="e.g.:  name_asc">
+                </div>
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Required</div>
+            <div class="right" style="line-height:40px"><input type="checkbox" v-model="dataitem.config.fieldnoempty" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Display</div>
+            <div class="right" style="line-height:40px">
+                List：<input type="checkbox" v-model="dataitem.config.fieldshow" style="width:5%"/>
+                Form：<input type="checkbox" v-model="dataitem.config.formshow" style="width:5%" />
+            </div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">Event</div>
+            <div class="right">
+                <span>On Value Change: </span>
+                <input type="button" class="btnOK"  value="Design Code" onclick="parent.openCodeValWin('onchange');" />
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./../../../js/funcconfig.js"></script>
+
+<script>
+
+window.gItemForUpd=null;
+var dragborder="11";
+var dragobj=null;
+var gdivClassCode = ",selTitleDiv,";
+
+document.addEventListener('dragstart', (e) => {
+    dragborder = e.target.style.border
+    dragobj = e.target;
+}, false)
+
+document.addEventListener('drag', (e) => {
+    e.target.style.border = '1px dashed red'
+})
+
+document.addEventListener('dragend', (e) => {
+    e.target.style.border = dragborder;
+}, false)
+
+function dealDivDrag(dc)
+{
+    dc.draggable=true;
+    dc.addEventListener('dragenter', (e) => {
+    }, false)
+
+    dc.addEventListener('dragover', e => {
+        e.preventDefault()
+        let p = e.target.parentNode;
+        let targetElement = e.target;
+        if(gdivClassCode.indexOf("," +targetElement.className+ ",")>=0)
+        {
+            if(gdivClassCode.indexOf("," +dragobj.className+ ",")>=0)
+            {
+                if(dragobj.nextSibling===targetElement)
+                {
+                    if(targetElement.nextSibling==null)
+                        p.appendChild(dragobj);
+                    else
+                        p.insertBefore(dragobj,targetElement.nextSibling);
+                }
+                else
+                {
+                    p.insertBefore(dragobj,targetElement);
+                }
+            }
+        }
+
+    }, false)
+
+    dc.addEventListener('drop', e => {
+        e.preventDefault()
+    }, false)
+}
+
+function closeAdd(e)
+{
+    let p = e.target;
+    p.parentElement.style.display="none"
+}
+function addTitleShow(e)
+{
+    let p = e.target.parentElement;
+    for (let dNode of p.childNodes) 
+    {
+        if(dNode.className=="addBtnDiv")
+        {
+            dNode.style.display="block";
+            break;
+        }
+    }
+}
+function checkVarName(str,f)
+{
+    if(f=="a")
+    {
+        if(str.indexOf("'")>=0)
+            return false;
+        if(str.indexOf('"')>=0)
+            return false;
+    }
+    if(str.indexOf(',')>=0)
+        return false;
+    return true;
+}
+function addTitleDo(e,cl,m)
+{
+    let dc=configItemUpdFunc(e,cl,m,null);
+
+    let pp = e.target.parentElement.parentElement.parentElement;
+    for (let dNode of pp.childNodes) 
+    {
+        if(dNode.className==cl)
+        {
+            dNode.appendChild(dc);
+            dealDivDrag(dc);
+            genTitleContent(dNode,dc,'');
+            break;
+        }
+    }
+
+}
+
+function selTitleDel(e,cl)
+{
+    let p = e.target.parentElement.parentElement.parentElement;
+    if(p.parentElement.className==cl)
+    {
+        genTitleContent(p.parentElement,p,'d');
+    }
+}
+
+function gCofigItemInitSelPara()
+{
+
+}
+
+function gConfigItemShowEdit(e,d)
+{
+    gCofigItemInitSelPara();
+
+    let pd=document.getElementById(d);
+    pd.style.display="block";
+
+    let ps=document.getElementById('divItemUpdNode');
+    let pp=e.target.parentElement.parentElement.parentElement;
+
+    let fn = pp.childNodes[0].innerText;
+    let fr = pp.childNodes[1].innerText;
+
+    ps.childNodes[0].value=fn;
+    ps.childNodes[1].value=fr;
+
+    window.gItemForUpd=pp;
+
+    return;
+}
+
+function configItemUpdDo(e,cl,m)
+{
+    configItemUpdFunc(e,cl,m,window.gItemForUpd);
+    gConfigItemClose(e);
+}
+
+function configItemUpdFunc(e,cl,m,dc)
+{
+    let dn
+    let p = e.target.parentElement;
+    let pp = e.target.parentElement.parentElement.parentElement;
+
+    dn=p.childNodes[0].value;
+    df=p.childNodes[1].value;
+
+    let msg="";
+    if(!checkVarName(df,'a'))
+        msg = msg + "Optionvaluecannot contain quotes;\n";
+    
+    if(!checkVarName(dn,''))
+        msg = msg + "Title cannot contain commas;\n";
+    
+    if(msg!="")
+    {
+        alert(msg);
+        return;
+    }
+
+    if(!dc)
+    {
+        dc = document.createElement("div");
+        dc.className="selTitleDiv";
+    }
+
+    let str = "<span style=\"border:none;\"></span>";
+    str = str + "<span style=\"display:none;\"></span>";
+    str = str + "<span class=\"action-content\" style=\"float:right\" ><a href=\"javascript:void(0)\" onclick=\"gConfigItemShowEdit(event,'divItemUpd');\" ><img width=\"18\"  src=\"./../../../imgs/update.png\"></a><a href=\"javascript:void(0)\" onclick=\"selTitleDel(event,'"+ cl +"')\" ><img width=\"18\"  src=\"./../../../imgs/del.png\"></a></span>";
+    str = str + "<div class=\"showInfo\">"+ df +"</div>";
+    dc.innerHTML = str;
+    dc.childNodes[0].innerText = dn;
+    dc.childNodes[1].innerText = df;
+
+    if(m=="a")
+    {
+        p.style.display="none";
+    }
+    return dc;
+
+}
+
+function gConfigItemClose(e)
+{
+    let p = e.target;
+    p.parentElement.parentElement.style.display="none"
+}
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            viewdatas:null,
+            datafields:null,
+            dataitem:
+            {
+                "comid":"1003",
+                "comname":"Single SelectButton",
+                "comtitle":"",
+                "needval":"true",
+                "attrget":{"Selectvalue":"","selectText":"seltext"},
+                "attrset":{"Selectvalue":"","selectText":"seltext","Display":"s#display","readonly":"s#isview"},
+                "code":{"onchange":{}},
+                "attrtitle":{},
+                "attrsubmit":{"value":"","valuetxt":""},
+                "config":{"fieldinfile":"","apptype":"1","lan":"e","isview":"false","fieldselvalue":"","fieldtxt":"1","fieldname":"","fieldtype":"nvarchar2","fieldlen":"50","titlewidth":"15%","namewidth":"85%","fieldtitle":"","titleshow":true,"titlealign":"right","fieldshow":true,"formshow":true,"fieldnoempty":false,"fieldnoemptylbl":"","showtitlecontent":"","showtitlehtml":"","datas":"[]","viewcode":"","orderone":"","ordertwo":"asc","orderfield":"","big_valuefield":"","big_showfield":"","topitems":0,"seltype":"1","seldatatype":"1","pubtype":""}
+            }
+        }
+    },
+    methods: 
+    {
+        selDataItem() 
+        {
+            let paras = {};
+            paras['viewCode']="data_fields";
+            paras['curPage']=1;
+            paras['pageItmes']=100;
+            paras['filter_tablename_equal']=this.dataitem.config.viewcode;
+            var that = this;
+            axios.post("./../../../../api/datalist",paras).then(function(res){
+            that.datafields=Object.values(res.data)[0];    
+            }).catch(function (err) {
+            });
+        },
+        getDatas() 
+        {
+            let paras = {};
+            paras['viewCode']="data";
+            paras['curPage']=1;
+            paras['pageItmes']=100;
+            paras['filter_open_equal']="1";
+            var that = this;
+            axios.post("./../../../../api/datalist",paras).then(function(res){
+            that.viewdatas=Object.values(res.data)[0];     
+            }).catch(function (err) {
+            });
+        },
+        genTitleContent(pp,dNode,f)
+        {
+            if(f=='d')
+            {
+                pp.removeChild(dNode);
+            }
+            let shtml = "";
+            let sdata=[];
+            for (let dNodeSub of pp.childNodes) 
+            {
+                let fn = dNodeSub.childNodes[0].innerText;
+                let fr = dNodeSub.childNodes[1].innerText;
+                let sd = {};
+                sd['CODE']=fr;
+                sd['NAME']=fn;
+                sdata.push(sd);
+            }
+            this.dataitem['config']['showtitlecontent'] = pp.innerHTML;
+            this.dataitem['config']['showtitlehtml']=shtml;
+            this.dataitem['config']['datas']=JSON.stringify(sdata);
+        },
+        getDataItem() 
+        {
+            if(this.dataitem.config.fieldname)
+                this.dataitem.config.fieldname=this.dataitem.config.fieldname.toUpperCase();
+
+            if(this.dataitem.config.big_valuefield)
+                this.dataitem.config.big_valuefield = this.dataitem.config.big_valuefield.toUpperCase();
+            
+            if(this.dataitem.config.big_showfield)
+                this.dataitem.config.big_showfield = this.dataitem.config.big_showfield.toUpperCase();
+            
+            if(this.dataitem.config.fieldnoempty)
+                this.dataitem.config.fieldnoemptylbl = "<span class=\"noempty\">*</span>";
+            else
+                this.dataitem.config.fieldnoemptylbl = "";
+            this.dataitem.attrget.Selectvalue=this.dataitem.config.fieldname;
+            this.dataitem.attrset.Selectvalue=this.dataitem.config.fieldname;
+            this.dataitem.attrsubmit.value=this.dataitem.config.fieldname;
+            this.dataitem.attrsubmit.valuetxt=this.dataitem.config.fieldname+"STXT";
+            this.dataitem.comtitle = this.dataitem.config.fieldtitle;
+
+            let oar={};
+            oar[this.dataitem.attrsubmit.valuetxt]=this.dataitem.config.fieldtitle;
+            if(this.dataitem.config.fieldshow)
+                this.dataitem.attrtitle=oar;
+            else
+                this.dataitem.attrtitle={};
+
+            if(this.dataitem.config.seltype=="1")
+            {
+                if(this.dataitem.config.orderone!="")
+                    this.dataitem.config.orderfield = this.dataitem.config.orderone + "_" + this.dataitem.config.ordertwo;
+                else
+                    this.dataitem.config.orderfield="";
+            }
+
+            let fieldSelValue = {};
+            let fieldvalue = {};
+            fieldSelValue['type'] = "radio";
+            if(this.dataitem.config.seldatatype=="1")
+            {
+                this.dataitem.config.big_valuefield="CODE";
+                this.dataitem.config.big_showfield="NAME";
+                fieldSelValue['dbtype'] = "1";
+                fieldSelValue['value'] = JSON.parse(this.dataitem['config']['datas']);
+            }
+            else
+            {
+                fieldvalue['viewcode'] = this.dataitem.config.viewcode;
+                fieldvalue['orderfield'] = this.dataitem.config.orderfield;
+                fieldvalue['topitems'] = this.dataitem.config.topitems;
+                fieldvalue['valuefield'] = this.dataitem.config.big_valuefield;
+                fieldvalue['showfield'] = this.dataitem.config.big_showfield;
+                this.dataitem['config']['datas']="null";
+                fieldSelValue['dbtype'] = "2";
+                fieldSelValue['value'] = fieldvalue;
+            }
+            this.dataitem.config.fieldselvalue = fieldSelValue;
+
+            let viewhtml = "";
+            let tshow = "display:none"
+            if(this.dataitem.config.titleshow)
+            {
+                tshow = "display:blcok";
+            }
+            let noempty="";
+            if(this.dataitem.config.fieldnoempty)
+            {
+                noempty = "<font color=red>*</font>";
+            }
+
+            viewhtml = viewhtml + "<div style=\"width:100%;float:left;margin-bottom:5px\">";
+            viewhtml = viewhtml + "<div style=\""+ tshow +";width:"+ this.dataitem.config.titlewidth +";font-size:"+ this.dataitem.config.itemfontsize +";line-height:"+ this.dataitem.config.itemheight +";padding-right:15px;text-align:"+ this.dataitem.config.titlealign +";font-weight: bold;float:left;box-sizing: border-box;\">"+ this.dataitem.config.fieldtitle + noempty +"</div>";
+            viewhtml = viewhtml + "<div style=\"width:"+ this.dataitem.config.namewidth +";font-size:"+ this.dataitem.config.itemfontsize +";line-height:"+ this.dataitem.config.itemheight +";float:left;box-sizing: border-box;\">";
+            viewhtml = viewhtml + "<input type=\"radio\" ><label>Option 1&nbsp;&nbsp;</label><input type=\"radio\" ><label>Option 2</label>";
+            viewhtml = viewhtml + "</div>";
+            viewhtml = viewhtml + "</div>";
+
+            this.dataitem.config.viewhtml=viewhtml;
+
+            let msg="";
+            msg = gCheckField(this.dataitem.config.fieldname,this.dataitem.config.fieldlen);
+
+            if(msg!="")
+            {
+                alert(msg);
+            }
+            else
+            {
+                let pp=document.getElementById("divShowTitle");
+                this.genTitleContent(pp,null,"");
+
+                return this.dataitem;
+            }
+   
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+            let pp = document.getElementById("divShowTitle");
+            pp.innerHTML = this.dataitem['config']['showtitlecontent'];
+            let sdata=[];
+            for (let dNodeSub of pp.childNodes) 
+            {
+                let fn = dNodeSub.childNodes[0].innerText;
+                let fr = dNodeSub.childNodes[1].innerText;
+                let sd = {};
+                sd['CODE']=fr;
+                sd['NAME']=fn;
+                sdata.push(sd);
+            }
+            this.dataitem['config']['datas']=JSON.stringify(sdata);
+            this.selDataItem();
+            this.setDivDrag("divShowTitle");
+        },
+        setDivDrag(divid) 
+        {
+            let dmr = document.getElementById(divid);
+            for (let dNodeSub of dmr.childNodes) 
+            {
+                if(gdivClassCode.indexOf("," +dNodeSub.className+ ",")>=0)
+                {
+                    dealDivDrag(dNodeSub);
+                }
+            }
+        },
+        setFormValue(fValue,codename) 
+        {
+            let c = this.dataitem['code'];
+            c[codename] = fValue;
+        },
+        getFormValue(codename) 
+        {
+            let c = this.dataitem['code'];
+            return c[codename];
+        }, 
+        getDataItemSub() 
+        {
+            return this.dataitem;
+        }
+    },
+    mounted() 
+    {
+        this.getDatas();
+        window.getDataItem = this.getDataItem;
+        window.getDataItemSub = this.getDataItemSub;
+        window.setDataItem = this.setDataItem;
+        window.genTitleContent=this.genTitleContent;
+        window.setFormValue = this.setFormValue;
+        window.getFormValue = this.getFormValue;
+
+        gInitConfig();
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+</script>
+
+</body>
+</html>

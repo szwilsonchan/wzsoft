@@ -1,0 +1,102 @@
+<div class="content-tab[@configid@]" id="datalist[@configid@]" >
+    <div class="content-tab-title">
+        <span>[@fieldtitle@]</span>
+    </div>
+    <div class="content-info[@configid@]" id="content-info[@configid@]" style="display:none">
+        <div class="left" id="content-info-msg[@configid@]"></div>
+        <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+    </div>
+    <div class="content-tab-filter" >
+        <div class="pageselshow">
+            [@cappegenum1@]
+            <select class="sel" v-model="pageitems" @change="getDatasByFilters(1)">
+                <option selected>2</option>
+                <option>10</option>
+                <option>20</option>
+                <option>50</option>
+            </select>
+            [@cappegenum2@]
+        </div>
+        <div class="actionbtns">
+            [@btntophtml@]
+        </div>
+        <div class="searchcombine" >
+            <input type="button" class="btn"  value="[@btnsearch@]" @click="getDatasByFilters(1)" />
+        </div>
+        <div class="searchcombine" id="view_prp_filters[@configid@]">
+            <input type="text" class="text" name="filter_searchkey_like" value="" />
+        </div>
+    </div>
+    <div class="content-tab-con" >
+        <table class="tabdata" >
+            <tr>
+                <th v-show="this.checkboxshow"><input type="checkbox" :checked="selAll" @click="checkedAllId()"></th>
+                <th v-for="datalab in datalabs">{{showDataLbl(Object.values(datalab)[0])}}</th>
+                <th>[@capaction@]</th>
+            </tr>
+            <tr v-for="data in datas">
+                <td v-show="this.checkboxshow" style="text-align: center;"><input type="checkbox" :checked="selIds.indexOf(data[pkey])>=0" name="checkboxinput" @click="checkedOneId(data[pkey])"></td>
+                <template v-for="item in Object.keys(data)">
+                    <td v-if="arrShowTitles.indexOf(item)!=-1">{{data[item]}}</td>
+                </template>
+                <td>
+                    <ul class="action-content">
+                        <li v-if="this.showupdbtn"><a href="javascript:void(0)" @click="openUpdWinVue('',updDatas,data[pkey])"><img width="23"  src="./imgs/update.png"></a></li>
+                        [@btnmidhtml@]
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="content-tab-pages">
+        <div class="itemsshow">
+            <span>{{totalitems}} [@cappegenum3@]</span>
+        </div>
+        <div class="pagesshow" id="pagesshow" v-show="hasitmes">
+            <ul class="page-content">
+                <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage+1)">[@pagedown@]</a></li>
+                <li v-for="page in showpages">
+                    <a href="javascript:void(0)" v-if="page.i==this.curpage" @click="getDatasByFilters(page.i)" class="active">{{page.i}}</a>
+                    <a href="javascript:void(0)" v-if="page.i!=this.curpage" @click="getDatasByFilters(page.i)" >{{page.i}}</a>
+                </li>
+                <li><a href="javascript:void(0)" @click="getDatasByFilters(this.curpage-1)">[@pageup@]</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="updWin[@configid@]" class="updWin[@configid@]">
+        <div class="updWin-info" id="updWin-info[@configid@]" style="display:none">
+            <div class="left" id="updWin-info-msg[@configid@]"></div>
+            <div class="right" onclick="closeInfoMsg[@configid@](event)">&Chi;</div>
+        </div>
+        <div class="updWin-content" >
+            <div class="updWin-content-item" v-show="this.isupd">
+                <div class="left">ID</div>
+                <div class="right"><input type="text" readonly class="readonly" v-model="dataitem.ORGID"  /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmname@]</div>
+                <div class="right"><input type="text" v-model="dataitem.NAME" /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frmnamesub@]</div>
+                <div class="right"><input type="text" v-model="dataitem.ENAME" /></div>
+            </div>
+            <div class="updWin-content-item">
+                <div class="left">[@frminscode@]</div>
+                <div class="right"><input type="text" v-model="dataitem.ORGCODE"  /></div>
+            </div>
+        </div>
+        <div class="updWinBtn">
+            <input type="button" class="btnOK"  value="[@btnsave@]" onclick="openWinOK[@configid@]()" />
+            <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeWin[@configid@]()" />
+        </div>
+    </div>
+</div>
+<div id="coverWin[@configid@]" class="coverWin[@configid@]"></div>
+<div id="modalWin[@configid@]" class="modalWin[@configid@]">
+    <div class="modalWinMsg"><span id="modalWinMsg[@configid@]"></span></div>
+    <div class="modalWinBtn">
+        <input type="button" class="btnOK"  value="[@btnok@]" onclick="openWinOK[@configid@]()" />
+        <input type="button" class="btnCancle"  value="[@btncancle@]" onclick="closeWin[@configid@]()" />
+    </div>
+</div>

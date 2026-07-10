@@ -1,0 +1,14 @@
+;if(Object.prototype.toString.call(vList) === '[object Array]')
+{
+return vList.length;
+}
+else if(Object.prototype.toString.call(vList) === '[object String]')
+{
+var o = JSON.parse(vList);
+return o.length;
+}
+else
+{
+return vList.size();
+}
+;;;

@@ -1,0 +1,14 @@
+        <div class="updWin-content-item[@configid@]" id="input[@configid@]"  style="display:none">
+            <div class="left"  v-show="titleshow">[@fieldtitle@]：<span v-show="!this.isView">[@fieldnoemptylbl@]</span></div>
+            <div class="right">
+                <div v-show="!blnUpded&&!this.isView" id="uploadFileDiv[@configid@]">
+                    <label class="fileContainer[@configid@]">[@caption@]：<input id="file[@configid@]" ref="clearFile" type="file" @change="fileUpload()"></label>
+                    <span class="fileType[@configid@]">[@filetypes@]</span>
+                </div>
+                <div v-show="blnUpded">
+                    <div id="img[@configid@]"></div>
+                    <a href="javascript:void(0)" @click="fileDelete()" v-show="!this.isView" >[@capdel@]</a>
+                </div>
+                <span style="clear:both;color:red;display:none" id="valmsg[@configid@]" v-show="!this.isView" ></span>
+            </div>
+        </div>

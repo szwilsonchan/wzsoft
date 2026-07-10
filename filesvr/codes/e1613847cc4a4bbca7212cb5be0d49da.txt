@@ -1,0 +1,1 @@
+;function codedo(){ var 返回值='';;;return ''};mapPara['返回值']=codedo();

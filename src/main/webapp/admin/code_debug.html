@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/main.css" type="text/css"  />
+<script src="./../js/vue.global.js"></script>
+<script src="./../js/axios.min.js"></script>
+<script src="./js/funcadmin.js"></script>
+
+</head>
+<body>
+<div class="main-wrapper">
+    <div class="header">
+        <div class="logDiv">
+            <img src="./../upload/logo.png" height="36px" onclick="showmenuleftpc()" />
+        </div>
+        <div class="logoutDiv">
+            <input type="button" class="btnLogout"  value="Logout" onclick="document.location.href='./../logout'" />
+        </div>
+    </div>     
+    <div class="menu-left" >
+        <ul class="menu-content" id="menu-content">
+            <li v-for="data in datas" >
+                    <a href="javascript:void(0)" v-show="data.PID==null&&((showpid['S'+data.MENUID])||(data.LOCATION==this.curLocation))"  @click="setMenuSession(data.MENUID,data.LOCATION)" class="active">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID==null&&((!showpid['S'+data.MENUID])&&(data.LOCATION!=this.curLocation))"  @click="setMenuSession(data.MENUID,data.LOCATION)" class="menu">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID!=null&&showpid['S'+data.PID]&&data.LOCATION==this.curLocation&&this.curLocation!=null" @click="setMenuSession(null,data.LOCATION)" class="activesub">{{data.NAME}}</a>
+                    <a href="javascript:void(0)" v-show="data.PID!=null&&showpid['S'+data.PID]&&data.LOCATION!=this.curLocation" @click="setMenuSession(null,data.LOCATION)" class="menusub">{{data.NAME}}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="content" id="content">
+        <div class="content-title">
+            <span>Debug Log</span>
+        </div>
+        <div class="content-tab" id="datalist">
+            <div class="content-tab-title">
+                <span>Real-time Log List</span>
+            </div>
+            <div class="content-info" id="content-info" style="display:none">
+                <div class="left" id="content-info-msg"></div>
+                <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+            </div>
+            <div class="content-tab-filter" >
+                <div class="actionbtns">
+                    <input type="button" value="Clear" @click="clearDatas" />&nbsp;&nbsp;
+                    <input type="button" value="Back" onclick="document.location.href='./code.html'" />
+                </div>
+            </div>
+            <div class="content-tab-con" >
+                <table class="tabdata" >
+                    <tr>
+                        <th>Variable Name</th>
+                        <th>Variable Type</th>
+                        <th>Variable Content</th>
+                    </tr>
+                    <tr v-for="data in datas">
+                        <td>{{data['name']}}</td>
+                        <td>{{data['type']}}</td>
+                        <td>{{data['value']}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div> 
+    <div class="footer">
+        Copyright by WSoft
+    </div> 
+    <div id="coverWin" class="coverWin"></div>
+    <div id="modalWin" class="modalWin">
+        <div class="modalWinMsg"><span id="modalWinMsg"></span></div>
+        <div class="modalWinBtn">
+            <input type="button" class="btnOK"  value="OK" onclick="openWinOK()" />
+            <input type="button" class="btnCancle"  value="Cancel" onclick="closeWin()" />
+        </div>
+    </div>
+</div>
+
+<script>
+
+const DataListVue = 
+{
+    data() 
+    {
+        return {
+            datas:null
+        }
+    },
+    methods: 
+    {
+        clearDatas () 
+        {
+            let paras = {};
+            var that = this;
+            paras['clear']="1";
+            axios.post("./../api/codedebuglog",paras).then(function(res){
+            that.datas=res.data;    
+
+            }).catch(function (err) {
+            });
+        },
+        getDatas () 
+        {
+            let paras = {};
+            var that = this;
+            paras['clear']="";
+            axios.post("./../api/codedebuglog",paras).then(function(res){
+            that.datas=res.data;    
+
+            }).catch(function (err) {
+            });
+        }
+    },
+    mounted() 
+    {
+        this.getDatas();
+    }
+}
+
+Vue.createApp(DataListVue).mount('#datalist');
+
+</script>
+<script src="./js/menu.js"></script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+;CharString=CharString+'';
+Char=Char+'';
+return CharString.indexOf(Char);;;;

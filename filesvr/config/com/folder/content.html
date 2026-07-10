@@ -1,0 +1,14 @@
+<div class="content-tab[@configid@]" id="datalist[@configid@]">
+    <div class="content-tab-title" @click="showfolder()">
+        <div style="float:left">[@fieldtitle@]</div>
+        <div style="float:right"><img v-show="!this.isshow" src="./imgs/sortdesc.png"/></div>
+    </div>
+    <div class="content-tab-con" v-show="this.isshow" >
+        <table class="tabdata" >
+            <tr v-for="(data,index) in datas">
+                <td v-if="data['[@pkey@]']!=this.pkeyvalue" v-html="dealitem(data)" @click="itemclick(data)"></td>
+                <td v-if="data['[@pkey@]']==this.pkeyvalue" class="selitem" v-html="dealitem(data)" @click="itemclick(data)"></td>
+            </tr>
+        </table> 
+    </div>
+</div>

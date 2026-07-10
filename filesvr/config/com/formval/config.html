@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">VerifyTitle</div>
+            <div class="right"><input type="text" v-model="dataitem.config.valtitle" /></div>
+        </div>
+        <div class="updWin-content-item" >
+            <div class="left">VerifyCode</div>
+            <div class="right"><input type="button" class="btnOK"  value="Design Code" style="width:90px" onclick="parent.openCodeValWin('val');" /></div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            dataitem:
+            {
+                "comid":"1201",
+                "comname":"FormVerify",
+                "comtitle":"",
+                "attrset":{"Display":"s#display"},
+                "code":{"val":{}},
+                "config":{"onevent":"","valtitle":"","fieldtitle":""}
+            }
+        }
+    },
+    methods: 
+    {
+        getDataItem() 
+        {
+            this.dataitem.config.fieldtitle=this.dataitem.config.valtitle;
+            let viewhtml = "";
+
+            viewhtml = viewhtml + "<div style=\"width:100%;float:left;margin-bottom:5px;color: black;font-size:0.8em;background-color:rgb(241, 215, 180);border: 1px solid rgb(206, 133, 37);border-radius: 0.5em;padding: 10px;width:100%;box-sizing: border-box;overflow: auto;\">";
+            viewhtml = viewhtml + this.dataitem.config.valtitle +"</div>";
+
+            this.dataitem.config.viewhtml=viewhtml;
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+        },
+        setFormValue(fValue,codename) 
+        {
+            let c = this.dataitem['code'];
+            c[codename] = fValue;
+        },
+        getFormValue(codename) 
+        {
+            let c = this.dataitem['code'];
+            return c[codename];
+        }
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.setDataItem = this.setDataItem;
+        window.setFormValue = this.setFormValue;
+        window.getFormValue = this.getFormValue;
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+</script>
+
+</body>
+</html>

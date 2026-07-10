@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/blankform/main.css" type="text/css"  />	
+<script src="./js/vue.global.js"></script>
+<script src="./js/axios.min.js"></script>
+<script src="./js/func.js"></script>
+<script src="./../portal/js/funcsub.js"></script>
+<script src="./js/funcfront.js"></script>
+[@stylefile@]
+</head>
+<body scroll="no">
+<div class="main-wrapper" id="main-wrapper">
+    [@filecontent@]
+    <div id="formVue" style="display:none"></div>
+</div>
+<div id="coverWin" class="coverWin"></div>
+<div id="modalWin" class="modalWin">
+    <div class="modalWinMsg"><span id="modalWinMsg"></span></div>
+    <div class="modalWinBtn">
+        <div>
+            <input type="button" id="modalWinBtnOK" class="btnOK"  value="OK" />
+            <input type="button" id="modalWinBtnCancle" class="btnCancle"  value="Cancel" />
+        </div>
+    </div>
+</div>
+[@jsfile@]
+<script>
+    [@gfuncs@];
+    function saveForm(blnsubmit,wfmid,flag)
+    {
+        var valmsgglobal="";
+        var valn=1;
+        [@getsubmitvaluefromcom@]
+        [@valcodes@]
+        if((typeof(valmsgglobal) == "undefined"||valmsgglobal=="")&&valn==1)
+        {
+            window.saveDataItem(blnsubmit,wfmid,flag);
+        }
+        else
+        {
+            if(gFormChkMsg&&document.getElementById("form-action-info-msg"))
+            {
+                let msg = "";
+                for(let k in gFormChkMsg)
+                {
+                    if(gFormChkMsg[k]!="")
+                    {
+                        msg=msg+gFormChkMsg[k]+"<br>";
+                    }
+                }
+                document.getElementById("form-action-info-msg").innerHTML=msg + valmsgglobal;
+                document.getElementById("form-action-info").style.display="";
+            }
+        }
+    }
+
+    function getForm()
+    {
+        [@getvaluefromcom@]
+    
+    }
+    function initForm(isview)
+    {
+        [@setvaluetocom@]
+    }
+    function initFormDatasJS()
+    {
+        [@initformdatas@]
+    }
+    function closeSaveMsg() 
+    {
+        document.getElementById("form-action-info").style.display="none";
+    }
+
+    const FormVue = 
+    {
+        data() 
+        {
+            return {
+                viewcode:'[@dataformname@]',
+                itemid:'',
+                dguid:'',
+                dataitem:{},
+                pkey:null,
+                isupd:true,
+                returnmsg:''
+            }
+        },
+        methods: 
+        {
+            genPDF()
+            {
+                document.getElementById("form-action-info-msg").innerHTML=gMsgConstList['g_pdfgen_'+gLan];
+                document.getElementById("form-action-info").style.display="block";
+
+                let paras = {};
+                setPageParas(paras,mapPara);
+                paras['viewCode']=this.viewcode;
+                paras['itemIDs']=this.itemid;
+                paras['dguid']=this.dguid;
+                paras['formLocation'] = pageName()+"";
+                paras['pageParam_wfmWorklistId']=mapPara['pageParam_wfmWorklistId'];
+                if(this.itemid=='')
+                    return;
+                    
+                var that = this;
+                axios({
+                url: './../portal/api/datagenpdf',
+                method: 'POST',
+                data:paras,
+                responseType: 'blob', // important
+                }).then((response) => {
+
+                    let blob = response.data;
+                    let blobmsg="";
+                    blob.text().then((text) => {
+                        blobmsg=text; 
+
+                        if(blobmsg.indexOf("error:")==0)
+                        {
+                            blobmsg = blobmsg.substring(6);
+                            document.getElementById("form-action-info-msg").innerHTML=blobmsg;
+                            document.getElementById("form-action-info").style.display="block";
+                            return;
+                        }
+                        else
+                        {
+                            document.getElementById("form-action-info-msg").innerHTML="";
+                            document.getElementById("form-action-info").style.display="none";  
+
+                            const url = window.URL.createObjectURL(new Blob([response.data]));
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.setAttribute('download', this.viewcode+'$'+this.itemid+'.pdf');
+                            document.body.appendChild(link);
+                            link.click();
+                        }
+
+                    });
+                });
+            },
+            initFormDatas()
+            {
+                let paras = {};
+                setPageParas(paras,mapPara);
+                paras['viewCode']=this.viewcode;
+                paras['formLocation'] = pageName()+"";
+                paras['pageParam_wfmWorklistId']=mapPara['pageParam_wfmWorklistId'];
+
+                if(paras['pageParam_dguid'])
+                {
+                    this.dguid = paras['pageParam_dguid'];
+                    paras['dguid']=this.dguid;
+                }
+                var that = this;
+                axios.post("./../portal/api/datainit",paras).then(function(res){
+                    let redata = res.data; 
+                    if(redata!=null)
+                        getGlobalParas(redata,mapPara); 
+
+                    if(mapPara['globalParam_systemJs']!=null&&mapPara['globalParam_systemJs']!="")
+                    {
+                        eval(mapPara['globalParam_systemJs']);
+                    }
+
+                    if(mapPara['globalParam_dataId']!=null&&mapPara['globalParam_dataId']!="")
+                    {
+                        gItemID=mapPara['globalParam_dataId'];
+                    }
+                    if(gItemID!=""||that.dguid!="")
+                    {
+                        mapPara['globalParam_dataId'] = gItemID;
+                        that.itemid = gItemID;
+                        that.getDataItemFromDB();
+                    }
+                    else
+                    {
+                        mapPara['globalParam_dataId']="";
+                        initFormDatasJS();
+                    } 
+
+                }).catch(function (err) {
+                    alert("Init Error");
+                });
+            },
+            getDataItem(k) 
+            {
+                k=k.toUpperCase();
+                return this.dataitem[k];
+            },
+            setDataItem(k,v)
+            {
+                k=k.toUpperCase();
+                this.dataitem[k]=v;
+            },
+            getDataItemFromDB() 
+            {
+                let paras = {};
+                paras['viewCode']=this.viewcode;
+                paras['itemIDs']=this.itemid;
+                paras['formLocation'] = pageName()+"";
+                paras['dguid']=this.dguid;
+                paras['pageParam_wfmWorklistId']=mapPara['pageParam_wfmWorklistId'];
+                setPageParas(paras,mapPara);
+                paras['isdebug']=gFormSaveDebug;
+                
+                var that = this;
+                axios.post("./../portal/api/dataget",paras).then(function(res){
+                that.dataitem=Object.values(Object.values(res.data)[0])[0];
+                mapPara['globalParam_dataItems']=that.dataitem;  
+                that.itemid =  that.dataitem['ID']; 
+                if(that.dataitem['SYSSTATUS']=="0")
+                {
+                    initForm("noset");
+                    window.gFormCallBackDo('InitDb');
+                    that.setFormNote("");
+                }
+                else
+                {
+                    initForm(true);
+                    window.gSetSubmitComplate();
+                    that.setFormNote("s");
+                }
+                initFormDatasJS();
+                }).catch(function (err) {
+                    
+                });
+            },
+            setFormNote(f)
+            {
+                let lh = location.href;
+                let msg="";
+                if(lh.indexOf("dguid")<0)
+                {
+                    lh=lh+"?dguid="+this.dguid;
+                }
+
+                if(gLan=="e")
+                {
+                    if(f=="")
+                        msg = "Note: You can view or edit saved data at the following address:<br><a href='"+lh+"' style='font-size:16px'>"+ lh +"</a>";
+                    else
+                        msg = "<b>Your data has been submitted.</b><br/>Note: You can view the submitted data at the following address:<br><a href='"+lh+"' style='font-size:16px'>"+ lh +"</a>";
+                }
+                else
+                {
+                    if(f=="")
+                        msg = "Note: You can view or edit saved data at:<br><a href='"+lh+"' style='font-size:16px'>"+ lh +"</a>";
+                    else
+                        msg = "<b>Your Data has been submitted.</b><br/>Note: You can view submitted data at:<br><a href='"+lh+"' style='font-size:16px'>"+ lh +"</a>";
+                }
+
+                window.gSetFormNote(msg);
+            },
+            submitForm(wfmGuid,flag) 
+            {
+                let paras = {};
+                paras['viewCode']=this.viewcode;
+                paras['itemIDs']=this.itemid;
+                paras['formLocation'] = pageName()+"";
+                paras['dguid']=this.dguid;
+                paras['wfmGuid']=wfmGuid;
+                paras['lan']=gLan;
+                paras['genpdf']=gFormSubmitGenPdf;
+                paras['isdebug']=gFormSaveDebug;
+                
+                if(mapPara['pageParam_wfmWorklistId'])
+                {
+                    paras['pageParam_wfmWorklistId']=mapPara['pageParam_wfmWorklistId'];
+                    paras['rejectedNode']=mapPara['globalParam_rejectNode'];
+                    if(this.getDataItem('APPROVECOMMENT'))
+                        paras['field_APPROVECOMMENT']=this.getDataItem('APPROVECOMMENT');
+                    else
+                        paras['field_APPROVECOMMENT']="";
+                    paras['wfmflag']=flag;
+                }
+
+                var that = this;
+                axios.post("./../portal/api/datasubmit",paras).then(function(res)
+                {
+                    let mreturn = res.data;
+                    let msg = mreturn['msg'];   
+                    if(msg!="")
+                    {
+                        document.getElementById("form-action-info-msg").innerHTML=msg;
+                        document.getElementById("form-action-info").style.display="block";
+                    }
+                    else
+                    {
+                        document.getElementById("form-action-info-msg").innerHTML="SubmitSuccess！";
+                        document.getElementById("form-action-info").style.display="block";
+                        
+                        initForm(true);
+                        window.gFormCallBackDo('Submit');
+                        window.gSetSubmitComplate();
+                        that.setFormNote("s");
+                    }
+                      
+                }).catch(function (err) {
+                });
+            },
+            updDatas(blnsubmit,wfmid,flag) 
+            {
+                let paras = {};
+                paras['viewCode']=this.viewcode;
+                paras['itemIDs']=this.itemid;
+                paras['formLocation'] = pageName()+"";
+                paras['dguid']=this.dguid;
+                paras['pageParam_wfmWorklistId']=mapPara['pageParam_wfmWorklistId'];
+                paras['pageParam_wfmNodeId']=mapPara['pageParam_wfmNodeId'];
+                paras['pageParam_updWfmForm']=mapPara['pageParam_updWfmForm'];
+                paras['lan']=gLan;
+                paras['isdebug']=gFormSaveDebug;
+
+                this.pkey = this.viewcode+"id";
+                for (let v in this.dataitem) 
+                {
+                    if(v!=this.pkey.toUpperCase())
+                    {
+                        paras['field_'+v] = this.dataitem[v];
+                    }
+                }
+
+                let fileName = pageName();
+                fileName = fileName + ".html";
+                paras['field_FORM']=fileName;
+
+                if(blnsubmit)
+                {
+                    document.getElementById("form-action-info-msg").innerHTML=gMsgConstList['g_formsub_'+gLan];
+                    document.getElementById("form-action-info").style.display="block";  
+                }
+                
+                var that = this;
+                axios.post("./../portal/api/dataupd",paras).then(function(res)
+                {
+                    that.returnmsg=Object.values(Object.values(res.data)[0])[0];
+                    if(that.returnmsg!="")
+                    {
+                        document.getElementById("form-action-info-msg").innerHTML=that.returnmsg;
+                        document.getElementById("form-action-info").style.display="block";
+                    }
+                    else
+                    {
+                        if(blnsubmit)
+                        {
+                            that.submitForm(wfmid,flag);
+                        }
+                        else
+                        {
+                            if(flag=="pdf")
+                            {
+                            	that.genPDF();
+                            }
+                            else
+                            {
+                                let msg="SuccessSaveRecord！";
+                                if(gLan=="e")
+                                    msg="Successfully saved";
+                            	document.getElementById("form-action-info-msg").innerHTML=msg;
+                            	document.getElementById("form-action-info").style.display="block"; 
+                            }
+                            that.setFormNote("");
+                        }
+                    }
+                    setTimeout(closeSaveMsg,3000);
+                }).catch(function (err) {
+                });
+    
+            },
+            addDatas(blnsubmit,wfmid,flag) 
+            {
+                if(this.itemid!="")
+                {
+                    this.updDatas(blnsubmit,wfmid,flag);
+                    return;
+                }
+                let paras = {};
+                paras['viewCode']=this.viewcode;
+                paras['itemIDs']=this.itemid;
+                paras['formLocation'] = pageName()+"";
+                paras['pageParam_wfmWorklistId']=mapPara['pageParam_wfmWorklistId'];        
+                paras['pageParam_wfmNodeId']=mapPara['pageParam_wfmNodeId'];  
+                paras['lan']=gLan;
+                paras['isdebug']=gFormSaveDebug;
+                
+                for (let v in this.dataitem) 
+                {
+                    paras['field_'+v] = this.dataitem[v];
+                }
+
+                let fileName = pageName();
+                fileName = fileName + ".html";
+                paras['field_FORM']=fileName;
+
+                if(gFormSaving)
+                    return;
+                gFormSaving=true;
+
+                var that = this;
+                axios.post("./../portal/api/dataadd",paras).then(function(res){
+                    gFormSaving=false;
+                    that.returnmsg=Object.values(Object.values(res.data)[0])[0];
+                    that.dguid=Object.values(Object.values(res.data)[0])[1];
+                    that.itemid=Object.values(Object.values(res.data)[0])[2];
+                    mapPara['globalParam_dataId']=that.itemid;
+                    if(that.returnmsg!="")
+                    {
+                        window.gFormCallBackDo('AddErr');
+                        document.getElementById("form-action-info-msg").innerHTML=that.returnmsg;
+                        document.getElementById("form-action-info").style.display="block";
+                    }
+                    else
+                    {
+                        window.gFormCallBackDo('Added');
+
+                        if(blnsubmit)
+                        {
+                            that.submitForm(wfmid,flag);
+                        }
+                        else
+                        {
+                            if(flag=="pdf")
+                            {
+                            	that.genPDF();
+                            }
+                            else
+                            {
+                                let msg="SuccessSaveRecord！";
+                                if(gLan=="e")
+                                    msg="Successfully saved";
+                            	document.getElementById("form-action-info-msg").innerHTML=msg;
+                            	document.getElementById("form-action-info").style.display="block"; 
+                            }
+                            that.setFormNote("");
+                        }
+
+                    }
+                    setTimeout(closeSaveMsg,3000);
+                }).catch(function (err) {
+                });
+            }
+        },
+        mounted() 
+        {
+            this.initFormDatas();
+            window.getDataItem = this.getDataItem;
+            window.setDataItem = this.setDataItem;
+            window.saveDataItem = this.addDatas;
+            window.genPDF=this.genPDF;
+        }
+    }
+    
+    Vue.createApp(FormVue).mount('#formVue');
+    
+    </script>
+
+</body>
+</html>

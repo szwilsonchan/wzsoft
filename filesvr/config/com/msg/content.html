@@ -1,0 +1,24 @@
+<div class="updWin-content-item[@configid@]" id="input[@configid@]" v-show="!this.isView" >
+    <div class="left"  v-show="titleshow">[@fieldtitle@][@fieldnoemptylbl@]</div>
+    <div class="right" >
+        <input type="text" class="msgtitle" v-model="this.msgObj.title"  placeholder="Enter template title"  />
+        <div class="divTag[@configid@]" id="divFile[@configid@]">
+            <input class="btnAddVar[@configid@]" type="button"  onclick="varSelShowFile[@configid@](event)" value="+Upload File" >
+            <div class="selDiv" style="display:none;line-height: 40px;" >
+                <div v-show="!blnUpded" >
+                    <label class="fileContainer[@configid@]">Select file to upload:<input id="file[@configid@]" ref="clearFile" type="file" @change="fileUpload()"></label>
+                </div>
+                <div v-show="blnUpded">
+                    <img height="20" src="./imgs/file.png"><a href="javascript:void(0)" @click="fileDownload()"  style="text-decoration-line: none;">{{fileContent['fileName']}}</a>&nbsp;&nbsp;
+                    <a href="javascript:void(0)" @click="fileDelete()" >删除</a>
+                </div>
+                <input class="btnAddVar[@configid@]"  type="button" value="Insert File" onclick="fileAdd[@configid@](event)" />
+                <input class="btnAddVar[@configid@]"  type="button" value="Insert Image" onclick="imgAdd[@configid@](event)" />
+                <input class="btnCancleVar[@configid@]"  type="button" value="取消" onclick="closeAdd[@configid@](event)" />
+            </div>
+        </div>
+      
+        <iframe id="editorIframe[@configid@]" frameborder="no"  class="editorIframe[@configid@]" marginwidth="0" marginheight="0" src="editor.html?height=[@styleheight@]" ></iframe>              
+        <span style="color:red;display:none" id="valmsg[@configid@]"></span>
+    </div>
+</div>

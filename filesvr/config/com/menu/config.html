@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+<script src="selColor.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content-item" style="line-height: 40px;">
+        <div class="left">MenuType</div>
+        <div class="right">
+            <input type="radio" name="apptype" value="1" v-model="dataitem.config.apptype" ><label>PC</label>
+            <input type="radio" name="apptype" value="2" v-model="dataitem.config.apptype" ><label>Mobile</label>
+        </div>
+    </div>
+    <div class="updWin-content-item" style="line-height: 40px;">
+        <div class="left">Data Source</div>
+        <div class="right">
+            <input type="radio" name="radiosmenu" value="1" v-model="dataitem.config.menumode" ><label>ManagementApplication</label>
+            <input type="radio" name="radiosmenu" value="2" v-model="dataitem.config.menumode" ><label>PublicApplication</label>
+        </div>
+    </div>
+</div>
+
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            viewdatas:null,
+            dataitem:{"comid":"4","comname":"Menu","comtitle":"","config":{"apptype":"1","menumode":"1","menubgcolor":"#06b6d4"}}
+        }
+    },
+    methods: 
+    {
+        getDataItem() 
+        {
+            let viewhtml = "";
+
+            viewhtml = viewhtml + "<div  style=\"width:100%;float:left;box-sizing: border-box;\">";
+            viewhtml = viewhtml + "<ul style=\"padding: 10px;box-sizing: border-box;\">";
+            viewhtml = viewhtml + "<li style=\"list-style: none;float:left;margin-right:5px;box-sizing: border-box;\">";
+            viewhtml = viewhtml + "<a style=\"min-width:150px;box-sizing: border-box;margin-bottom: 5px;display: block;color: rgb(234, 237, 241);background-color:"+ this.dataitem.config.menubgcolor +";border-radius: 3em;height:40px;line-height: 40px;text-align: center;text-decoration: none;\" href=\"javascript:void(0)\" >Menu Level 1</a>";
+            viewhtml = viewhtml + "<a style=\"min-width:150px;box-sizing: border-box;margin-bottom: 5px;display: block;color: rgb(234, 237, 241);background-color:"+ this.dataitem.config.menubgcolor +";border-radius: 3em;height:40px;line-height: 40px;text-align: center;text-decoration: none;\" href=\"javascript:void(0)\" >Menu Level 2</a>";
+            viewhtml = viewhtml + "</li>";
+            viewhtml = viewhtml + "</ul>";
+            viewhtml = viewhtml + "</div>";
+
+            this.dataitem.config.viewhtml=viewhtml;
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+        },
+        setDataItemByK(k,v) 
+        {
+            this.dataitem.config[k]=v;
+        }
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.setDataItem = this.setDataItem;
+        window.setDataItemByK = this.setDataItemByK;
+
+        if(parent.gIsMobilePage)
+        {
+            this.dataitem.config.apptype="2";
+        }
+        else
+        {
+            this.dataitem.config.apptype="1"; 
+        }
+
+        if(parent.gIsPortalRight)
+        {
+            this.dataitem.config.menumode="2";
+        }
+        else
+        {
+            this.dataitem.config.menumode="1";
+        }
+
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+Colorpicker.create({
+el: "color-picker-conbgcolor", 
+color: "", 
+change: function (elem, hex) {
+    elem.style.borderColor = hex;
+    window.setDataItemByK('menubgcolor',hex);
+}
+});
+
+</script>
+
+</body>
+</html>

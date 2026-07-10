@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/com.css" type="text/css"  />
+<script src="./../../../../js/vue.global.js"></script>
+<script src="./../../../../js/axios.min.js"></script>
+</head>
+<body>
+
+<div id="updWin" class="updWin" >
+    <div class="updWin-info" id="updWin-info" style="display:none">
+        <div class="left" id="updWin-info-msg"></div>
+        <div class="right" onclick="closeInfoMsg(event)">&Chi;</div>
+    </div>
+    <div class="updWin-content" >
+        <div class="updWin-content-item" >
+            <div class="left">Footer Text</div>
+            <div class="right"><input type="text" v-model="dataitem.config.footcontent" /></div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+const ComConfigVue = 
+{
+    data() 
+    {
+        return {
+            comdatas:null,
+            dataitem:{"comid":"3","comname":"Footer","comtitle":"","config":{"footcontent":""}}
+        }
+    },
+    methods: 
+    {
+        getDataItem() 
+        {
+            this.updDatas();
+            let viewhtml = "";
+
+            viewhtml = viewhtml + this.dataitem.config.footcontent;
+
+            this.dataitem.config.viewhtml=viewhtml;
+            return this.dataitem;
+        },
+        setDataItem(dataitem) 
+        {
+            this.dataitem=dataitem;
+        },
+        getDatas() 
+        {
+            let paras = {};
+            paras['viewCode']="com";
+            paras['itemIDs']="4";
+            var that = this;
+            axios.post("./../../../../api/dataget",paras).then(function(res){
+            that.comdatas=Object.values(Object.values(res.data)[0])[0];
+            if(that.comdatas["PARA"]!=null)
+            {
+                if(that.comdatas["PARA"].trim()!="")
+                {
+                    let para=JSON.parse(that.comdatas["PARA"]);
+	                if(that.dataitem.config.footcontent=="");
+                    	that.dataitem.config.footcontent=para.footcontent;
+                }
+            }
+            }).catch(function (err) {
+            });
+        },
+        updDatas() 
+        {
+            let paras = {};
+            paras['viewCode']="com";
+            paras['itemIDs']="3";
+            paras['field_para'] = "{\"footcontent\":\"" + this.dataitem.config.footcontent +"\"}";
+            
+            var that = this;
+            axios.post("./../../../../api/dataupd",paras).then(function(res)
+            {
+                
+            }).catch(function (err) {
+            });
+    
+        }
+    },
+    mounted() 
+    {
+        window.getDataItem = this.getDataItem;
+        window.setDataItem = this.setDataItem;
+        this.getDatas();
+    }
+}
+
+Vue.createApp(ComConfigVue).mount('#updWin');
+
+</script>
+
+</body>
+</html>

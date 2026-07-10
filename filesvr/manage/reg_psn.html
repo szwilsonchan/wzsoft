@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Personnel Register</title>
+    <link rel="stylesheet" href="./css/login.css" type="text/css"  />
+    <script src="./js/axios.min.js"></script>
+    <script src="./js/funclogin.js"></script>
+</head>
+<body>
+<div id="sendRequest" class="loginWin" style="height:500px">
+    <div class="logImg">
+            <img src="./../upload/logo.png" height="36px" />
+    </div>
+    <div class="loginWin-info" id="updWin-info-sendrequest" style="display:none">
+        <div class="left" id="updWin-info-sendrequest-msg"></div>
+    </div>
+    <div class="loginWin-content" >
+        <div class="loginWin-content-item">
+            <div class="left">Name</div>
+            <div class="right"><input type="text" id="psnname" /></div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">Email</div>
+            <div class="right"><input type="text" id="psnemail" /></div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">Phone</div>
+            <div class="right">
+                <input type="text" id="psnmobile" /><br/>
+            </div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">CAPTCHA</div>
+            <div class="right">
+                <input type="text" class="cpachaInput" id="cpachacode"  />
+	            <img id="cpacha-img" class="cpachaImg" title="Click to switch CAPTCHA"  src="./../user/getcpacha?vl=4&w=150&h=40&type=loginCpacha" onclick="changeCpacha()">
+            </div>
+        </div>
+        <div class="loginWin-content-item">
+            <div class="left">&nbsp;</div>
+            <div class="right" style="line-height:50px"><input type="button" class="btnOK"  value="Register" onclick="regpsn()" /></div>
+        </div>
+        <div class="content-info" id="content-info-sendrequest" style="display:none">
+            <div id="content-info-sendrequest-msg"></div>
+        </div>
+    </div>
+</div>
+<script>
+
+    var gAmode="";
+    init();
+
+    function regpsn()
+    {
+        let paras = {};
+        paras['psnname']=document.getElementById("psnname").value.trim();
+        paras['email']=document.getElementById("psnemail").value.trim();
+        paras['mobile']=document.getElementById("psnmobile").value.trim();
+        paras['cpacha']=document.getElementById("cpachacode").value;
+
+        let msg="";
+
+        if(!gCheckValueNull(paras['psnname']))
+        {
+            msg = msg + "Please enter Name.<br/>";
+        }
+        if(!gCheckValueLen(paras['name'],50))
+        {
+            msg = msg+"Name length cannot exceed 50 characters.<br/>";
+        }
+        if(gAmode=="")
+        {
+            alert("System Configuration error.");
+            return;
+        }
+        else if(gAmode=="1")
+        {
+            if(!gCheckValueNull(paras['email']))
+            {
+                msg = msg + "Email Cannot be Null.<br/>";
+            }
+        }
+        else if(gAmode=="2")
+        {
+            if(!gCheckValueNull(paras['mobile']))
+            {
+                msg = msg + "Phone Cannot be Null.<br/>";
+            }
+        }
+        if(!gCheckEmail(paras['email']))
+        {
+            msg = msg + "Email Invalid address format.<br/>";
+        }
+        if(!gCheckValueLen(paras['email'],200))
+        {
+            msg = msg+"Email length cannot exceed 200 characters.<br/>";
+        }
+        if(!gCheckMobile(paras['mobile']))
+        {
+            msg = msg + "Phone Invalid format.<br/>";
+        }
+        if(!gCheckValueLen(paras['mobile'],20))
+        {
+            msg = msg+"Phone length cannot exceed 20 characters.<br/>";
+        }
+        if(msg!="")
+        {
+            document.getElementById("updWin-info-sendrequest-msg").innerHTML=msg;
+            document.getElementById("updWin-info-sendrequest").style.display="block";
+            return;
+        }
+
+        axios.post("./../user/regpsn",paras).then(function(res){
+            let mreturn = res.data;
+            let msg = mreturn['msg'];
+            if(msg!="")
+            {
+                document.getElementById("updWin-info-sendrequest-msg").innerHTML=msg;
+                document.getElementById("updWin-info-sendrequest").style.display="block";
+                changeCpacha();
+            }
+            else
+            {
+                document.getElementById("content-info-sendrequest-msg").innerHTML="Registration successful. Please check for the activation link.";
+                document.getElementById("content-info-sendrequest").style.display="block";
+            }
+        }).catch(function (err) {
+        });
+    }
+
+    function ismobilefunc()
+    {
+        var ua=navigator.userAgent.toLowerCase();
+        var ismobile = false;
+
+        if(contains(ua,"ipad")||(contains(ua,"rv:1.2.3.4"))||(contains(ua,"0.0.0.0"))||(contains(ua,"8.0.552.237"))){return false}
+        if((contains(ua,"android") && contains(ua,"mobile"))||(contains(ua,"android") && contains(ua,"mozilla")) ||(contains(ua,"android") && contains(ua,"opera"))
+        ||contains(ua,"ucweb7")||contains(ua,"iphone")){ismobile=true;}
+
+        return ismobile;
+    }
+
+    function contains(a, b)
+    {
+        if(a.indexOf(b)!=-1)
+            return true;
+        else
+            return false;
+    }
+
+    function init()
+    {
+        if(ismobilefunc())
+        {
+            document.getElementById("sendRequest").className = "loginWinMobile";
+            document.getElementById("sendRequest").style.display="block";
+        }
+        else
+        {
+            document.getElementById("sendRequest").className = "loginWin";
+            document.getElementById("sendRequest").style.display="block";
+        }
+
+        let paras = {};
+        axios.post("./../portal/api/configgetamode",paras).then(function(res){
+            gAmode = res.data;
+        }).catch(function (err) {
+        });
+    }
+
+    function changeCpacha(){
+        document.getElementById("cpacha-img").src='./../user/getcpacha?vl=4&w=150&h=40&type=loginCpacha&t=' + new Date().getTime();
+    }
+
+    </script>
+</body>
+</html>

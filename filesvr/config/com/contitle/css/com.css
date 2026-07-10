@@ -1,0 +1,162 @@
+html
+{
+    overflow-x:hidden;
+}
+:root {
+    --color-primary: #06b6d4;
+    --color-primary-hover: #0891b2;
+    --color-primary-light: #cffafe;
+    --color-success: #34d399;
+    --color-success-hover: #10b981;
+    --color-warning: #fbbf24;
+    --color-danger: #fb7185;
+    --color-border: #e2e8f0;
+    --color-border-hover: #94a3b8;
+    --color-text: #1e293b;
+    --color-text-secondary: #64748b;
+    --color-text-light: #94a3b8;
+    --color-bg: #f8fafc;
+    --color-canvas: #ffffff;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.1);
+    --radius-sm: 8px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --transition: 0.2s ease;
+}
+body
+{
+    margin: 0px;
+    padding: 0px;
+}
+
+.updWin 
+{ 
+    width:100%;
+    background-color:#fff;
+    padding:20px;
+}
+.updWin .updWin-content
+{ 
+    width:100%;
+    box-sizing: border-box;
+    padding:20px;
+}
+.updWin-content .updWin-content-item
+{ 
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom:10px;
+    float:left;
+}
+.updWin-content-item .left
+{ 
+    width:25%;
+    box-sizing: border-box;
+    font-size:1em;
+    line-height:40px;
+    padding-right:15px;
+    text-align:right;
+    font-weight: bold;
+    float:left;
+}
+.updWin-content-item .right
+{
+    width:75%;
+    box-sizing: border-box;
+    text-align:left;
+    float:left;
+}
+.updWin-content-item input[type=text]:not(.readonly)
+{
+    border: 1px solid var(--color-bg);
+    border-radius: var(--radius-md);
+    height:40px;
+    width:80%;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+.updWin-content-item .readonly
+{
+    border:none;
+    height:40px;
+    padding: 5px;
+    padding-left: 15px;
+    outline: none;
+    box-sizing: border-box;
+}
+.updWin-content-item input[type=text]:focus:not(.readonly)
+{
+    border: 1px solid var(--color-primary);
+}
+.updWin-content-item select
+{
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg);
+    padding: 5px;
+    width:80%;
+    height:40px;
+}
+.updWin .btnOK
+{
+    border-style: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-primary);
+    color:#fff;
+    height:40px;
+    width:80px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.updWin .btnOK:hover
+{
+    background-color: var(--color-primary-hover);
+}
+.updWin .btnCancle
+{
+    border-style: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-border);
+    color:#fff;
+    height:40px;
+    width:60px;
+    cursor: pointer;
+    margin-left: 10px;
+    outline:none;
+    box-sizing: border-box;
+}
+.updWin .btnCancle:hover
+{
+    background-color: var(--color-primary-hover);
+}
+.updWin-info
+{
+    color: black;
+    font-size:0.8em;
+    background-color:var(--color-primary-light);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    padding: 10px;
+    width:100%;
+    box-sizing: border-box;
+    overflow: auto;
+}
+.updWin-info .left
+{
+    float:left;
+    width:90%;
+    box-sizing: border-box;
+}
+.updWin-info .right
+{
+    float:right;
+    color:grey;
+    cursor: pointer;
+    box-sizing: border-box;
+}

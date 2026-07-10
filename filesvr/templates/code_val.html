@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>WSoft</title>
+<link rel="stylesheet" href="./css/template.css?111" type="text/css"  />	
+<script src="./../../../js/vue.global.js"></script>
+<script src="./../../../js/axios.min.js"></script>
+<style>
+
+</style>
+</head>
+<body scroll="no">
+<div class="main-wrapper" id="main-wrapper" style="border:1px solid coral">
+    <div class="codeval-action" id="codeval-action" >
+        <input type="button" class="btnOK" value="Save" onclick="saveTemplate('save')" />
+        <input type="button" class="btnCancle" value="Back" onclick="parent.closeCodeValWin()" />
+        <div class="main-wrapper-info" id="main-wrapper-info" style="display:none">
+            <div class="left" id="main-wrapper-info-msg"></div>
+            <div class="right" ></div>
+        </div>
+    </div>
+    <div class="contentcodeval" id="CodeVal">
+        <div class="template-action dropitem" style="width:200px" >
+            <input type="button" value="+AddCode" />
+            <div class="dropcontent" >
+                <ul class="menu-content" >
+                    <li><a href="#" onclick="addCode('assign',event)">Assignment Statement</a></li>
+                    <li><a href="#" onclick="addCode('if',event)">Conditional Statement</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="varDivTemp" class="varDiv" style="margin:10px;width:98%;min-height:88px;border: 1px solid cornflowerblue;padding: 5px;" >
+            <div style="border:none;padding:1px;float:left;width:98%;height:fit-content">
+                <span style="border:none" onclick="varAddShow(event)" >+Add</span>
+                <div class="varAdddiv" style="display:none">
+                    <input type="text" class="varAddValue" value="" />
+                    <input type="button" value="Save" onclick="varAdd(event)" />
+                    <input type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div> 
+            </div>
+            <div class="varValueDiv" style="padding:1px;margin:3px;float:left;height:30px;min-width:100px;width:fit-content;border:1px solid rgb(106, 109, 114)">
+                <span style="border:none">VerifyBackInfo</span><span onclick="varDel(event)" style="float:right" ></span>
+            </div>
+        </div>
+        <div style="clear: both;"></div> 
+    </div>
+    <div id="assignDivTemp" class="assignDiv" style="display:none;margin:10px;width:98%;height:88px;border: 1px solid rgb(230, 180, 71);padding: 5px;" >
+        <div class="assignLeftDiv" style="border:none;padding:3px;float:left;width:10%;height:88px;">
+            <div style="border:none;padding:3px;float:left;width:100%;height:fit-content;">
+                <span style="border:none" onclick="varSelShow('l',event)" >+Select L-value</span>
+                <div class="varSeldiv" style="display:none" >
+                    <select class="varSelValue" onchange="varSelAdd(event)">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div style="padding:10px;float:left;width:20px;height:88px;">
+            =
+        </div>
+        <div class="assignRightDiv"  style="border:none;padding:3px;float:left;width:80%;height:88px;">
+            <div style="border:none;padding:3px;float:left;width:100%;height:fit-content;">
+                <span style="border:none" onclick="varSelShow('r',event)" >+Variable    </span>
+                <span style="border:none" onclick="varConAddShow(event)" >+Constant    </span>
+                <span style="border:none" onclick="varOpAddShow(event)" >+Actionator</span>
+                <div class="varSeldiv" style="display:none" >
+                    <select class="varSelValue" onchange="varSelAdd(event)">
+                        <option></option>
+                    </select>
+                    <input type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+
+                <div class="varConAdddiv" style="display:none" >
+                    <input type="text" class="varConAddValue" value="" />
+                    <input type="button" value="Save" onclick="varConAdd(event)" />
+                    <input type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+                <div class="varOpAdddiv" style="display:none" >
+                    <select class="varOpAddValue" onchange="varOpAdd(event)">
+                        <option></option>
+                        <option>+</option>
+                        <option>-</option>
+                        <option>*</option>
+                        <option>/</option>
+                    </select>
+                    <input type="button" value="Cancel" onclick="closeAdd(event)" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ifDivTemp" class="ifDiv" style="display:none;margin:10px;width:98%;min-height:88px;height:fit-content;border: 2px solid rgb(84, 230, 71);padding: 5px;;overflow:auto" >
+        <div style="margin:10px;width:98%;min-height:30px;height:fit-content;border: 1px solid rgb(54, 34, 238);padding: 5px;overflow:auto" >
+            Condition Check：
+        </div> 
+        <div class="ifConDiv" style="margin:10px;width:98%;height:88px;border: 1px solid rgb(54, 34, 238);padding: 5px;height:fit-content;overflow:auto" >
+            <div class="ifConLeftDiv" style="border:none;padding:3px;float:left;width:10%;height:32px;">
+                <div style="border:none;padding:3px;float:left;width:100%;height:fit-content;">
+                    <span style="border:none" onclick="varSelShow('l',event)" >+Select L-value</span>
+                    <div class="varSeldiv" style="display:none" >
+                        <select class="varSelValue" onchange="varSelAdd(event)">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="ifConMidDiv" style="padding:20px;float:left;width:80px;height:32px;">
+                <select class="ifConMidValue">
+                    <option value="=" >Equals</option>
+                    <option value=">" >Greater Than</option>
+                    <option value="&lt;" >Less Than</option>
+                    <option value=">=" >Greater ThanEquals</option>
+                    <option value="&lt;=" >Less ThanEquals</option>
+                </select>
+            </div>
+            <div class="ifConRightDiv" style="border:none;padding:3px;float:left;width:80%;height:32px;">
+                <div style="border:none;padding:3px;float:left;width:100%;height:fit-content;">
+                    <span style="border:none" onclick="varSelShow('r',event)" >+Select R-value</span>
+                    <div class="varSeldiv" style="display:none" >
+                        <select class="varSelValue" onchange="varSelAdd(event)">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="margin:10px;width:98%;min-height:30px;height:fit-content;border: 1px solid rgb(15, 243, 53);padding: 5px;overflow:auto" >
+            If conditions above are met, execute:
+        </div> 
+        <div class="ifConSucdiv" style="margin:10px;margin-left:200px;float:left;width:80%;height:fit-content;border: 1px solid rgb(34, 238, 143);padding: 5px;overflow:auto" >
+            <div class="assignLeftDiv" style="border:none;padding:3px;float:left;width:10%;height:88px;">
+                <div style="border:none;padding:3px;float:left;width:100%;height:fit-content;">
+                    <span style="border:none" onclick="varSelShow('l',event)" >+Select L-value</span>
+                    <div class="varSeldiv" style="display:none" >
+                        <select class="varSelValue" onchange="varSelAdd(event)">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div style="padding:10px;float:left;width:20px;height:88px;">
+                =
+            </div>
+            <div class="assignRightDiv"  style="border:none;padding:3px;float:left;width:80%;height:88px;">
+                <div style="border:none;padding:3px;float:left;width:100%;height:fit-content;">
+                    <span style="border:none" onclick="varSelShow('r',event)" >+Variable    </span>
+                    <span style="border:none" onclick="varConAddShow(event)" >+Constant    </span>
+                    <span style="border:none" onclick="varOpAddShow(event)" >+Actionator</span>
+                    <div class="varSeldiv" style="display:none" >
+                        <select class="varSelValue" onchange="varSelAdd(event)">
+                            <option></option>
+                            <option v-for="(value,key) in datasright" :value="key">{{value}}</option>
+                        </select>
+                        <input type="button" value="Cancel" onclick="closeAdd(event)" />
+                    </div>
+                    <div class="varConAdddiv" style="display:none" >
+                        <input type="text" class="varConAddValue" value="" />
+                        <input type="button" value="Save" onclick="varConAdd(event)" />
+                        <input type="button" value="Cancel" onclick="closeAdd(event)" />
+                    </div>
+                    <div class="varOpAdddiv" style="display:none" >
+                        <select class="varOpAddValue" onchange="varSelAdd(event)">
+                            <option></option>
+                            <option>+</option>
+                            <option>-</option>
+                            <option>*</option>
+                            <option>/</option>
+                        </select>
+                        <input type="button" value="Cancel" onclick="closeAdd(event)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="display:none;margin:10px;width:98%;min-height:30px;height:fit-content;border: 1px solid rgb(238, 156, 34);padding: 5px;overflow:auto" >
+            Else execute:
+        </div>  
+        <div class="ifConFaidiv" style="display:none;margin:10px;margin-left:200px;float:left;width:80%;height:fit-content;border: 1px solid rgb(238, 156, 34);padding: 5px;overflow:auto" >
+            <div class="assignLeftDiv" style="border:none;padding:3px;float:left;width:10%;height:88px;">
+                <div style="border:none;padding:3px;float:left;width:100%;height:fit-content;">
+                    <span style="border:none" onclick="varSelShow('l',event)" >+Select L-value</span>
+                    <div class="varSeldiv" style="display:none" >
+                        <select class="varSelValue" onchange="varSelAdd(event)">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div style="padding:10px;float:left;width:20px;height:88px;">
+                =
+            </div>
+            <div class="assignRightDiv"  style="border:none;padding:3px;float:left;width:80%;height:88px;">
+                <div style="border:none;padding:3px;float:left;width:100%;height:fit-content;">
+                    <span style="border:none" onclick="varSelShow('r',event)" >+Variable    </span>
+                    <span style="border:none" onclick="varConAddShow(event)" >+Constant    </span>
+                    <span style="border:none" onclick="varOpAddShow(event)" >+Actionator</span>
+                    <div class="varSeldiv" style="display:none" >
+                        <select class="varSelValue" onchange="varSelAdd(event)">
+                            <option></option>
+                            <option v-for="(value,key) in datasright" :value="key">{{value}}</option>
+                        </select>
+                        <input type="button" value="Cancel" onclick="closeAdd(event)" />
+                    </div>
+                    <div class="varConAdddiv" style="display:none" >
+                        <input type="text" class="varConAddValue" value="" />
+                        <input type="button" value="Save" onclick="varConAdd(event)" />
+                        <input type="button" value="Cancel" onclick="closeAdd(event)" />
+                    </div>
+                    <div class="varOpAdddiv" style="display:none" >
+                        <select class="varOpAddValue" onchange="varSelAdd(event)">
+                            <option></option>
+                            <option>+</option>
+                            <option>-</option>
+                            <option>*</option>
+                            <option>/</option>
+                        </select>
+                        <input type="button" value="Cancel" onclick="closeAdd(event)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+<div id="coverWin" class="coverWin"></div>
+<div id="modalWin" class="modalWin">
+    <div class="modalWinMsg"><span id="modalWinMsg"></span></div>
+    <div class="modalWinBtn">
+        <input type="button" class="btnOK"  value="OK" onclick="openWinOK()" />
+        <input type="button" class="btnCancle"  value="Cancel" onclick="closeWin()" />
+    </div>
+</div>
+<div id="template-action" class="template-action" style="display:none" >
+    <input type="button" value="Delete" onclick="openWin('OKDeleteStatement？',delContainer,event)" />
+</div>
+<script>
+
+window.callback=null;
+window.callbackpara=null;
+var dragborder="11";
+var dragobj=null;
+var comconfigPara=null;
+var paracomSetAttrs=[];
+var paracomGetAttrs=[];
+
+function openWin(msg,callback,callbackpara) 
+{
+    document.getElementById("coverWin").style.display="block";
+    document.getElementById("modalWin").style.display="block";
+    document.getElementById("modalWinMsg").innerText=msg;
+    window.callback=callback;
+    window.callbackpara=callbackpara;
+}
+function openWinOK() 
+{
+    window.callback(window.callbackpara); 
+}
+
+function closeWin() 
+{
+    document.getElementById("coverWin").style.display="none";
+    document.getElementById("modalWin").style.display="none";
+    document.getElementById("updWin").style.display="none";
+}
+function varDel(e)
+{
+    let p = e.target;
+    p.parentElement.remove(p);
+}
+function closeAdd(e)
+{
+    let p = e.target;
+    p.parentElement.style.display="none"
+}
+
+function varAddShow(e)
+{
+    let p = e.target.parentElement;
+    for (let dNode of p.childNodes) 
+    {
+        if(dNode.className=="varAdddiv")
+        {
+            dNode.style.display="block";
+            break;
+        }
+    }
+}
+
+function varAdd(e)
+{
+    let v;
+    let p = e.target.parentElement;
+    for (let dNode of p.childNodes) 
+    {
+        if(dNode.className=="varAddValue")
+        {
+            v=dNode.value;
+        }
+    }
+
+    let ep = e.target.parentElement;
+    let dc = document.createElement("div");
+    dc.className="varValueDiv";
+    dc.style.padding="1px";
+    dc.style.margin="3px";
+    dc.style.float = "left";
+    dc.style.width="fit-content";
+    dc.style.minWidth="100px";
+    dc.style.height="30px";
+    dc.style.border="1px solid rgb(106, 109, 114)";
+
+    dc.innerHTML = "<span style=\"border:none\">"+ v +"</span><span onclick=\"varDel(event)\" style=\"float:right\" >  &Chi;</span>";
+    ep.parentElement.parentElement.appendChild(dc);
+    p.style.display="none";
+
+}
+function varSelAdd(e)
+{
+    let k,v;
+    let p = e.target.parentElement;
+    for (let dNode of p.childNodes) 
+    {
+        if(dNode.className=="varSelValue")
+        {
+            v=dNode.options[dNode.selectedIndex].text;
+            k=dNode.options[dNode.selectedIndex].value;
+        }
+    }
+
+    let dc = document.createElement("div");
+    dc.className="varSelDiv";
+    dc.style.padding="1px";
+    dc.style.margin="3px";
+    dc.style.float = "left";
+    dc.style.width="fit-content";
+    dc.style.minWidth="100px";
+    dc.style.height="30px";
+    dc.style.border="1px solid rgb(106, 109, 114)";
+
+    str = "<span style=\"border:none;color:blue\">"+ v +"</span>";
+    str = str + "<input type='hidden' value='"+ k +"'/>";
+    str = str + "<span onclick=\"varDel(event)\" style=\"float:right\" >  &Chi;</span>";
+    dc.innerHTML = str;
+    
+    p.parentElement.parentElement.appendChild(dc);
+    p.style.display="none";
+}
+function varSelShow(c,e)
+{
+    let dmr = document.getElementById("CodeVal");
+    let varLists=[];
+    for (let dNodeSub of dmr.childNodes) 
+    {
+        if(dNodeSub.className=="varDiv")
+        {
+            for (let dNodeSubSub of dNodeSub.childNodes) 
+            {
+                if(dNodeSubSub.className=="varValueDiv")
+                {
+                    varLists.push(dNodeSubSub.firstChild.innerText);
+                }
+            }
+        }
+    }
+
+    let p = e.target.parentElement;
+    for (let dNode of p.childNodes) 
+    {
+        if(dNode.className=="varSeldiv")
+        {
+            dNode.style.display="block";
+            let s = dNode.firstChild;
+            s.options.length=0
+            initComattr(s,varLists,c);
+            break;
+        }
+    }
+}
+function initComattr(obj,varlist,c)
+{
+    obj.add(new Option("",""));
+    for(var i=0;i<varlist.length;i++)
+    {
+        obj.add(new Option(varlist[i],varlist[i]));
+    }
+
+    if(c=="l")
+    {
+        for (let k in paracomSetAttrs) 
+        {
+            let sAttr = paracomSetAttrs[k];
+            for(var i = 0; i < sAttr.length; i++)
+            {
+                obj.add(new Option(Object.values(sAttr[i])[0],Object.keys(sAttr[i])[0])); 
+            }
+        }
+    }
+    else
+    {
+        for (let k in paracomGetAttrs) 
+        {
+            let sAttr = paracomGetAttrs[k];
+            for(var i = 0; i < sAttr.length; i++)
+            {
+                obj.add(new Option(Object.values(sAttr[i])[0],Object.keys(sAttr[i])[0])); 
+            }
+        }
+    }
+}
+function varOpAdd(e)
+{
+    let v;
+    let p = e.target.parentElement;
+    for (let dNode of p.childNodes) 
+    {
+        if(dNode.className=="varOpAddValue")
+        {
+            v=dNode.value;
+        }
+    }
+
+    let dc = document.createElement("div");
+    dc.className="varOpDiv";
+    dc.style.padding="1px";
+    dc.style.margin="3px";
+    dc.style.float = "left";
+    dc.style.width="fit-content";
+    dc.style.minWidth="100px";
+    dc.style.height="30px";
+    dc.style.border="1px solid rgb(106, 109, 114)";
+
+    dc.innerHTML = "<span style=\"border:none;color:blue\">"+ v +"</span><span onclick=\"varDel(event)\" style=\"float:right\" >  &Chi;</span>";
+    p.parentElement.parentElement.appendChild(dc);
+    p.style.display="none";
+}
+function varOpAddShow(e)
+{
+    let p = e.target.parentElement;
+    for (let dNode of p.childNodes) 
+    {
+        if(dNode.className=="varOpAdddiv")
+        {
+            dNode.style.display="block";
+            break;
+        }
+    }
+    
+}
+function varConAdd(e)
+{
+    let v;
+    let p = e.target.parentElement;
+    for (let dNode of p.childNodes) 
+    {
+        if(dNode.className=="varConAddValue")
+        {
+            v=dNode.value;
+        }
+    }
+
+    let dc = document.createElement("div");
+    dc.className="varConDiv";
+    dc.style.padding="1px";
+    dc.style.margin="3px";
+    dc.style.float = "left";
+    dc.style.width="fit-content";
+    dc.style.minWidth="100px";
+    dc.style.height="30px";
+    dc.style.border="1px solid rgb(106, 109, 114)";
+
+    dc.innerHTML = "<span style=\"border:none;color:blue\">"+ v +"</span><span onclick=\"varDel(event)\" >  &Chi;</span>";
+    p.parentElement.parentElement.appendChild(dc);
+    p.style.display="none";
+}
+function varConAddShow(e)
+{
+    let p = e.target.parentElement;
+    for (let dNode of p.childNodes) 
+    {
+        if(dNode.className=="varConAdddiv")
+        {
+            dNode.style.display="block";
+            break;
+        }
+    }
+}
+const VarListVue = 
+{
+    data() 
+    {
+        return {
+            datasleft:{},
+            datasright:{}
+        }
+    },
+    methods: 
+    {
+        addDatas(k,v,c)
+        {
+            if(c=="l")
+            {
+                this.datasleft[k]=v;
+            }
+            else
+            {
+                this.datasright[k]=v;
+            }
+        }
+    },
+    mounted() 
+    {
+        this.addDatas('VerifyBackInfo','VerifyBackInfo',"l");
+        this.addDatas('VerifyBackInfo','VerifyBackInfo',"r");
+        window.addVarDatas=this.addDatas;
+    }
+}
+
+Vue.createApp(VarListVue).mount('#main-wrapper')
+
+function initTemplate(fValue,comSetAttrs,comGetAttrs)
+{
+    paracomSetAttrs = comSetAttrs;
+    paracomGetAttrs = comGetAttrs;
+    let dmr = document.getElementById("CodeVal");
+    if(Object.keys(fValue).length === 0)
+        return;
+
+    dmr.innerHTML = fValue["tempcontent"];
+    for (let dNodeSub of dmr.childNodes) 
+    {
+        if(dNodeSub.className=="assignDiv"||dNodeSub.className=="ifDiv")
+        {
+            dNodeSub.addEventListener('dragenter', (e) => {
+            }, false)
+
+            dNodeSub.addEventListener('dragover', e => {
+                e.preventDefault()
+                let p = e.target.parentNode;
+                let targetElement = e.target;
+                if(targetElement.className=="assignDiv"||targetElement.className=="ifDiv")
+                {
+                    if(dragobj.nextSibling===targetElement)
+                    {
+                        if(targetElement.nextSibling==null)
+                            p.appendChild(dragobj);
+                        else
+                            p.insertBefore(dragobj,targetElement.nextSibling);
+                    }
+                    else
+                    {
+                        p.insertBefore(dragobj,targetElement);
+                    }
+                }
+
+            }, false)
+
+            dNodeSub.addEventListener('drop', e => {
+                e.preventDefault()
+            }, false)
+        }
+    }
+
+}
+
+String.prototype.replaceAll=function(str,replace,ingore){
+				ingore = ingore || false;
+				var reg;
+				if(!ingore){
+					reg = new RegExp(str,"g");
+				}else{
+					reg = new RegExp(str,"gi");
+				}
+				return this.replace(reg,replace);
+}
+
+function saveTemplate(sAction)
+{
+
+    let savePara = {};
+    savePara["codelist"] = [];
+    let dmr = document.getElementById("CodeVal");
+    for (let dNodeSub of dmr.childNodes) 
+    {
+        if(dNodeSub.className=="varDiv")
+        {
+            let varLists=[];
+            for (let dNodeSubSub of dNodeSub.childNodes) 
+            {
+                if(dNodeSubSub.className=="varValueDiv")
+                {
+                    varLists.push(dNodeSubSub.firstChild.innerText);
+                }
+            }
+            let codeOjb = {};
+            codeOjb["type"]="def";
+            codeOjb["para"]=varLists;
+            savePara["codelist"].push(codeOjb);
+        }
+        else if(dNodeSub.className=="assignDiv")
+        {
+            let codeOjb = {};
+            codeOjb["type"]="assign";
+            codeOjb["para"]=getAssignCode(dNodeSub);
+            savePara["codelist"].push(codeOjb);
+            
+        }
+        else if(dNodeSub.className=="ifDiv")
+        {
+            let codeOjb = {};
+            codeOjb["type"]="if";
+            codeOjb["para"]=getIfCode(dNodeSub);
+            savePara["codelist"].push(codeOjb);
+        }
+    }
+
+    v = dmr.innerHTML;
+    savePara["tempcontent"] = v;
+    //alert(JSON.stringify(savePara));
+    parent.setCodeValValue(savePara);
+    parent.closeCodeValWin();
+}
+
+function getAssignCode(dNode)
+{
+    let assignPara = {};
+    assignPara["codetype"]="assign";
+    for (let dNodeSub of dNode.childNodes) 
+    {
+        if(dNodeSub.className=="assignLeftDiv")
+        {
+            let dtmp = selChildByClass(dNodeSub,"varSelDiv");
+            if(dtmp!=null)
+                assignPara["left"]=dtmp.childNodes[1].value;
+        }
+        else if(dNodeSub.className=="assignRightDiv")
+        {
+            let assignRight=[];
+            for (let dNodeVar of dNodeSub.childNodes) 
+            {
+                if(dNodeVar.className=="varSelDiv")
+                {
+                    let v = {};
+                    v["v"]=dNodeVar.childNodes[1].value;
+                    assignRight.push(v);
+                }
+                else if(dNodeVar.className=="varOpDiv")
+                {
+                    let v = {};
+                    v["o"]=dNodeVar.firstChild.innerText;
+                    assignRight.push(v);
+                }
+                else if(dNodeVar.className=="varConDiv")
+                {
+                    let v = {};
+                    v["c"]=dNodeVar.firstChild.innerText;
+                    assignRight.push(v);
+                }  
+            }
+            assignPara["right"]=assignRight;
+        }
+    }
+    return assignPara;
+}
+
+function getIfCode(dNode)
+{
+    let ifPara = {};
+    ifPara["codetype"]="if";
+    for (let dNodeSub of dNode.childNodes) 
+    {
+        if(dNodeSub.className=="ifConDiv")
+        {
+            let ifCon = {};
+            for (let dNodeCon of dNodeSub.childNodes) 
+            {
+                if(dNodeCon.className=="ifConLeftDiv")
+                {
+                    let dtmp = selChildByClass(dNodeCon,"varSelDiv");
+                    if(dtmp!=null)
+                        ifCon["left"]=dtmp.childNodes[1].value
+                }
+                else if(dNodeCon.className=="ifConMidDiv")
+                {
+                    let dtmp = selChildByClass(dNodeCon,"ifConMidValue");
+                    if(dtmp!=null)
+                        ifCon["mid"]=dtmp.value;
+                }
+                else if(dNodeCon.className=="ifConRightDiv")
+                {
+                    let dtmp = selChildByClass(dNodeCon,"varSelDiv");
+                    if(dtmp!=null)
+                        ifCon["right"]=dtmp.childNodes[1].value
+                }
+            }
+            ifPara["con"]=ifCon;
+        }
+        else if(dNodeSub.className=="ifConSucdiv")
+        {
+            let codeOjb = {};
+            codeOjb["type"]="assign";
+            codeOjb["para"]=getAssignCode(dNodeSub);
+            ifPara["suc"]=codeOjb;
+        }
+        else if(dNodeSub.className=="ifConFaidiv")
+        {
+            let codeOjb = {};
+            codeOjb["type"]="assign";
+            //codeOjb["para"]=getAssignCode(dNodeSub);
+            ifPara["fai"]=codeOjb;
+        }
+    }
+    return ifPara;
+}
+
+function selChildByClass(e,cls)
+{
+    for (let dNode of e.childNodes) 
+    {
+        if(dNode.className==cls)
+        {
+            return dNode;
+        }
+    } 
+    return null;
+}
+
+document.addEventListener('dragstart', (e) => {
+    dragborder = e.target.style.border
+    dragobj = e.target;
+}, false)
+
+document.addEventListener('drag', (e) => {
+    e.target.style.border = '1px dashed red'
+})
+
+document.addEventListener('dragend', (e) => {
+    e.target.style.border = dragborder;
+}, false)
+
+
+function addCode(codetype,e) 
+{
+
+    let dc;
+    if(codetype=="assign")
+    {
+        let d = document.getElementById("assignDivTemp")
+        dc = d.cloneNode(true);
+    }
+    if(codetype=="if")
+    {
+        let d = document.getElementById("ifDivTemp")
+        dc = d.cloneNode(true);
+    }
+    dc.id="";
+    dc.style.display="block";
+    dc.style.position="relative";
+    dc.draggable=true;
+    dc.addEventListener('dragenter', (e) => {
+    }, false)
+
+    dc.addEventListener('dragover', e => {
+        e.preventDefault()
+        let p = e.target.parentNode;
+        let targetElement = e.target;
+        if(targetElement.className=="assignDiv"||targetElement.className=="ifDiv")
+        {
+            if(dragobj.nextSibling===targetElement)
+            {
+                if(targetElement.nextSibling==null)
+                    p.appendChild(dragobj);
+                else
+                    p.insertBefore(dragobj,targetElement.nextSibling);
+            }
+            else
+            {
+                p.insertBefore(dragobj,targetElement);
+            }
+        }
+
+    }, false)
+
+    dc.addEventListener('drop', e => {
+        e.preventDefault()
+    }, false)
+
+    let da = document.createElement("div");
+    da.innerHTML = document.getElementById("template-action").innerHTML;
+    da.className = "template-action";
+    dc.appendChild(da);
+
+    e.srcElement.parentElement.parentElement.parentElement.parentElement.parentElement.appendChild(dc);
+
+}
+
+function delContainer(e) 
+{
+    let d = e.srcElement.parentElement.parentElement;
+    let p = d.parentElement;
+    p.removeChild(d);
+    closeWin();
+}
+
+</script>
+
+
+</body>
+</html>

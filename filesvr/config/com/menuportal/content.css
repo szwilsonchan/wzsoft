@@ -1,0 +1,101 @@
+
+.dropitem[@configid@]
+{
+    padding: 0px;
+    position: relative;
+}
+.dropbtn[@configid@]
+{
+    margin-left:[@btnmarginleft@];
+    padding: [@btnpadding@];
+    background-color: [@btnbg@];
+    border-radius: [@btnradius@];
+    border-color: [@btnbordercolor@];
+    border-style: [@btnborderstyle@];
+    border-width: [@btnborder@];
+    width:[@btnwidth@];
+    height:[@btnheight@];
+    line-height:[@lineheight@];
+    text-align: center;
+    box-sizing: border-box;
+    font-size:[@fontsize@];
+    color:[@fontcolor@];
+    font-family:[@fontfamily@];
+    font-weight:[@fontweight@];
+    font-style:[@fontstyle@];
+    cursor:pointer;
+}
+.dropbtn[@configid@]:hover
+{
+    background-color: [@btnbghover@];
+}
+.dropbtnsel[@configid@]
+{
+    margin-left:[@btnmarginleft@];
+    padding: [@btnpadding@];
+    background-color: [@btnbghover@];
+    border-radius: [@btnradius@];
+    border-color: [@btnbordercolor@];
+    border-style: [@btnborderstyle@];
+    border-width: [@btnborder@];
+    width:[@btnwidth@];
+    height:[@btnheight@];
+    line-height:[@lineheight@];
+    text-align: center;
+    box-sizing: border-box;
+    font-size:[@fontsize@];
+    color:[@fontcolor@];
+    font-family:[@fontfamily@];
+    font-weight:[@fontweight@];
+    font-style:[@fontstyle@];
+    cursor:pointer;
+}
+.dropcontent[@configid@]
+{
+    display:none;
+    position: absolute;
+    z-index: 900;
+    min-width:150px;
+    width:fit-content;
+    height: fit-content;
+    background-color:white;
+    padding: 0px;
+    box-sizing: border-box;
+    margin-left: 5px;
+    margin-top: 0px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+.dropitem[@configid@]:hover .dropcontent[@configid@] 
+{
+    display:block;
+}
+.menu-content[@configid@]
+{
+    padding: 0px;
+    margin: 0px;
+}
+.menu-content[@configid@] li
+{
+    list-style: none;
+}
+.menu-content[@configid@] a:link,a:visited
+{
+    display: block;
+    color: rgb(80, 79, 79);
+    background-color:rgb(234, 237, 241);
+    height:[@btnheight@];
+    line-height:[@lineheight@];
+    text-align: center;
+    margin-bottom: 1px;
+    text-decoration: none;
+}
+.menu-content[@configid@] a:hover,a:active
+{
+    display: block;
+    color: rgb(80, 79, 79);
+    height:[@btnheight@];
+    line-height:[@lineheight@];
+    background-color: [@btnbghover@];
+    text-align: center;
+    text-decoration: none;
+}

@@ -1,0 +1,26 @@
+<div class="form-action" id="form-action[@configid@]"  style="display: none;">
+     <input type="button"  v-show="!this.hiddeReturn" class="btnCancle" value="[@titlereturn@]" onclick="backForm()" />
+     <input v-show="this.isView&&dataitem.pdffile!=null" type="button" class="btnBlue" value="[@titlepdfsub@]" @click="fileDownload(dataitem.pdffile)" />
+     <select v-show="!this.isView&&dataitem.showreject" id="selRejectNode1[@configid@]" class="selReject"></select>
+     <input v-show="!this.isView&&dataitem.showreject" type="button" class="btnReturn"  value="[@titlereject@]" @click="submitForm()" />
+     <input v-show="!this.isView&&dataitem.showsubmit" type="button" class="btnApp"  value="[@titlesubmit@]" onclick="if('[@submitfunc@]'=='1'){onsubmit[@configid@]();return;};gFormSaveDebug ='[@isdebug@]';gFormSaveChk =true;gFormSubmitGenPdf = [@submitgenpdf@];saveForm(true,'[@submitwfm@]',1)" />
+     <input v-show="!this.isView&&dataitem.showpdf" type="button" class="btnBlue" value="[@titlepdf@]" onclick="gFormSaveDebug ='[@isdebug@]';gFormSaveChk =true;saveForm(false,'','pdf')" />
+     <input v-show="!this.isView&&this.showSave" type="button" class="btnBlue" value="[@titlesave@]" onclick="gFormSaveDebug ='[@isdebug@]';gFormSaveChk = [@savechk@];saveForm(false,'','');if('[@savedfunc@]'=='1'){addFunc[@configid@]();return;};" />
+ </div>
+ <div class="form-actionMobile" id="form-actionMobile[@configid@]" style="display: none;">
+   <input v-show="!this.isView&&this.showSave" type="button" class="btnBlue" value="[@titlesave@]" onclick="gFormSaveDebug ='[@isdebug@]';gFormSaveChk = [@savechk@];saveForm(false,'','');if('[@savedfunc@]'=='1'){addFunc[@configid@];return;};" />
+   <input v-show="!this.isView&&dataitem.showpdf" type="button" class="btnBlue" value="[@titlepdf@]" onclick="gFormSaveDebug ='[@isdebug@]';gFormSaveChk =true;saveForm(false,'','pdf')" />
+   <input v-show="!this.isView&&dataitem.showsubmit" type="button" class="btnApp"  value="[@titlesubmit@]" onclick="if('[@submitfunc@]'=='1'){onsubmit[@configid@]();return;};gFormSaveChk =true;gFormSaveDebug ='[@isdebug@]';gFormSubmitGenPdf = [@submitgenpdf@];saveForm(true,'[@submitwfm@]',1)" />
+   <input v-show="!this.isView&&dataitem.showreject" type="button" class="btnReturn"  value="[@titlereject@]" @click="submitForm()" />
+   <select v-show="!this.isView&&dataitem.showreject" id="selRejectNode2[@configid@]" class="selReject"></select>
+   <input v-show="this.isView&&dataitem.pdffile!=null" type="button" class="btnBlue" value="[@titlepdfsub@]" @click="fileDownload(dataitem.pdffile)" />
+   <input type="button"  v-show="!this.hiddeReturn" class="btnCancle" value="[@titlereturn@]" onclick="backForm()" />
+</div>
+<div class="form-action-info" id="form-action-info" style="display:none">
+   <div class="left" id="form-action-info-msg"></div>
+   <div class="right" ></div>
+</div>
+<div class="form-action-note" id="form-action-note" style="display:none">
+   <div class="left" id="form-action-note-msg"></div>
+   <div class="right" ></div>
+</div>
