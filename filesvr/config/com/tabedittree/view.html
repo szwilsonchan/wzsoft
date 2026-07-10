@@ -16,18 +16,18 @@
     <script>
         var list = [{
                 "ID": "1",
-                "NAME": "一级目录",
+                "NAME": "Level 1",
                 "PID": "0",
             },
             {
                 "ID": "2",
-                "NAME": "二级目录",
+                "NAME": "Level 2",
                 "PID": "1"
             }
         ];
 
         function MyTree(list, rootId) {
-            // 简单的深拷贝
+            // Simple deep copy
             this.list = JSON.parse(JSON.stringify(list));
             this.rootId = rootId;
             this.nodesMap = {};
@@ -42,7 +42,7 @@
                 }
             },
 
-            // 将数组初始化为树结构
+            // Initialize array into tree structure
             initTreeData: function (arr) {
                 for (let i = 0; i < arr.length; i++) this.nodesMap[arr[i].ID] = arr[i];
                 let reArr = [];
@@ -58,11 +58,11 @@
                 return reArr;
             },
 
-            // 根据数组渲染树
+            // Render tree from array
             createDom: function (data) {
                 let self = this;
                 let fatherDom = document.getElementById(`${this.rootId}-my-tree-${data.PID}`);
-                // 虚拟根节点
+                // Virtual root node
                 if (!fatherDom) fatherDom = document.getElementById(this.rootId);
                 let dom = document.createElement("div");
         dom.id = `${this.rootId}-my-tree-${data.ID}`;
@@ -84,7 +84,7 @@
                 iconDom.onclick = function () {
                     self.iconClickHandler(iconDom);
                 };
-                // 递归渲染子树
+                // Recursively render subtree
                 if (data.childs && data.childs.length > 0) {
                     for (let i = 0; i < data.childs.length; i++) this.createDom(data.childs[i]);
                 }
@@ -106,7 +106,7 @@
                 }
             },
 
-            // 隐藏子树
+            // Hide subtree
             hideHandler: function (dom) {
                 if (!dom || !dom.id) return;
                 let id = dom.id;
@@ -126,7 +126,7 @@
                 }
             },
 
-            // 渲染子树
+            // Render subtree
             showHandler: function (dom) {
                 if (!dom || !dom.id) return;
                 let id = dom.id;
@@ -144,7 +144,7 @@
                     let childIconDom = document.getElementById(`${this.rootId}-my-tree-icon-${childs[i].ID}`);
                     let childNode = this.nodesMap[childs[i].ID];
                     childIconDom.innerHTML = "+";
-                    // 递归渲染子树
+                    // Recursively render subtree
                     this.hideHandler(childIconDom);
                 }
             }

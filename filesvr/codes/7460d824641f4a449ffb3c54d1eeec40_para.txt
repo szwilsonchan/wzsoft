@@ -1,1 +1,1 @@
-{"para":[{"name":"访问人ID","ptype":"sys","type":"str","key":"访问人ID"},{"name":"访问人角色","ptype":"sys","type":"str","key":"访问人角色"},{"name":"访问人部门ID","ptype":"sys","type":"str","key":"访问人部门ID"}],"type":"def"}
+{"para":[{"name":"visitorId","ptype":"sys","type":"str","key":"visitorId"},{"name":"visitorRoles","ptype":"sys","type":"str","key":"visitorRoles"},{"name":"visitorDeptId","ptype":"sys","type":"str","key":"visitorDeptId"}],"type":"def"}

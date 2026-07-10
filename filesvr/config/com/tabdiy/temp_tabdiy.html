@@ -17,19 +17,19 @@ var gTempform=true;
 <body scroll="no">
 <div class="tmp-action" id="tmp-action" >
     <div class="tmp-action-add  dropitem" style="margin-right:5px">
-        <input type="button" value="+新增/编辑容器" onclick="addConParentWin()" style="margin-right:30px" />
+        <input type="button" value="+Add/Edit Container" onclick="addConParentWin()" style="margin-right:30px" />
         <div class="dropcontent" id="divContainersUpd" style="padding-top:10px"></div>
     </div>
     <div class="tmp-action-add" >
-        <input type="button" value="+新增组件" onclick="showComList()" />
+        <input type="button" value="+Add Component" onclick="showComList()" />
         <div class="dropcontent" >
             <ul class="menu-content" id="divContainers" ></ul>
-        </div>&nbsp;&nbsp;<input type="button" style="width:80px;background-color: #ccc;" value="粘贴" onclick="pasteCom()" />
+        </div>&nbsp;&nbsp;<input type="button" style="width:80px;background-color: #ccc;" value="Paste" onclick="pasteCom()" />
     </div>
     <div class="tmp-action-save">
-        <input type="button" class="btnOK" value="提交" onclick="saveTemplateList('save')" />
-        <input type="button" class="btnOK" value="初始代码" onclick="openCodeValWin('initformdatas')" />
-        <input type="button" class="btnCancle" value="返回" onclick="parent.closeTempFormWin()" />
+        <input type="button" class="btnOK" value="Submit" onclick="saveTemplateList('save')" />
+        <input type="button" class="btnOK" value="Init Code" onclick="openCodeValWin('initformdatas')" />
+        <input type="button" class="btnCancle" value="Back" onclick="parent.closeTempFormWin()" />
         <div class="main-wrapper-info" id="main-wrapper-info" style="display:none">
             <div class="left" id="main-wrapper-info-msg"></div>
             <div class="right" ></div>
@@ -39,8 +39,8 @@ var gTempform=true;
 <div id="comlist" class="comlist" style="display:none">
     <div class="select-tab" >
         <ul>
-            <li id="selpage" style="width:20%" class="selected" onclick="selComTab(event)" >页面</li>
-            <li id="selform" style="width:20%" onclick="selComTab(event)" >表单</li>
+            <li id="selpage" style="width:20%" class="selected" onclick="selComTab(event)" >Page</li>
+            <li id="selform" style="width:20%" onclick="selComTab(event)" >Form</li>
             <li style="width:58%" >&nbsp;</li>
         </ul>
     </div>
@@ -51,7 +51,7 @@ var gTempform=true;
 </div>
 <div class="main-wrapper" id="main-wrapper" style="border:1px solid coral">
     <input type="hidden" value="" id="Inputinitformdatas" />
-    <div class="conParentList" id="conParentList" name="表单">
+    <div class="conParentList" id="conParentList" name="Form">
         <div style="clear: both;"></div> 
     </div>
 </div>
@@ -59,25 +59,25 @@ var gTempform=true;
 <div id="modalWin" class="modalWin">
     <div class="modalWinMsg"><span id="modalWinMsg"></span></div>
     <div class="modalWinBtn">
-        <input type="button" class="btnOK"  value="确定" onclick="openWinOK()" />
-        <input type="button" class="btnCancle"  value="取消" onclick="closeWin()" />
+        <input type="button" class="btnOK"  value="OK" onclick="openWinOK()" />
+        <input type="button" class="btnCancle"  value="Cancel" onclick="closeWin()" />
     </div>
 </div>
 <div id="updWin" class="updWin"></div> 
 <div id="template-action" class="template-action" style="display:none" >
-    <input type="button" value="前" onclick="moveUp(event)" />
-    <input type="button" value="后" onclick="moveDown(event)" />
-    <input type="button" value="复" onclick="copyCom(event)" />
-    <input type="button" value="改" onclick="openUpdWin('',updContainer,event)" />
-    <input type="button" value="删" onclick="openWin('确定要删除组件吗？',delContainer,event)" />
+    <input type="button" value="Up" onclick="moveUp(event)" />
+    <input type="button" value="Down" onclick="moveDown(event)" />
+    <input type="button" value="Copy" onclick="copyCom(event)" />
+    <input type="button" value="Edit" onclick="openUpdWin('',updContainer,event)" />
+    <input type="button" value="Del" onclick="openWin('Delete this component?',delContainer,event)" />
 </div>
 <div id="template-action-con" class="template-action-con" style="display:none" >
-    <input type="button" value="前" onclick="moveUp(event)" />
-    <input type="button" value="后" onclick="moveDown(event)" />
-    <input type="button" value="复" onclick="copyCom(event)" />
-    <input type="button" value="贴" onclick="pasteComSub(event)" />
-    <input type="button" value="改" onclick="openUpdWin('',updContainer,event)" />
-    <input type="button" value="删" onclick="openWin('确定要删除容器吗？',delContainer,event)" />
+    <input type="button" value="Up" onclick="moveUp(event)" />
+    <input type="button" value="Down" onclick="moveDown(event)" />
+    <input type="button" value="Copy" onclick="copyCom(event)" />
+    <input type="button" value="Pst" onclick="pasteComSub(event)" />
+    <input type="button" value="Edit" onclick="openUpdWin('',updContainer,event)" />
+    <input type="button" value="Del" onclick="openWin('Delete this container?',delContainer,event)" />
 </div>
 <div class="tempForm" id="tempForm" style="display:none">
     <iframe id="tempformiframe" frameborder="no" marginwidth="0" marginheight="0" ></iframe>

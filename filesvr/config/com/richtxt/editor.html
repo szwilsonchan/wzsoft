@@ -207,26 +207,26 @@ var Editer = new Class({
         height: 500,
         facebg: [],
         fontsizedata: {
-            fontSize: ["字号1", "字号2", "字号3", "字号4", "字号5", "字号6", "字号7"],
-            fontname: ["宋体", "黑体", "楷体", "隶书", "幼圆", "Arial", "Georgia", "Verdana", "Helvetica"]
+            fontSize: ["Size 1", "Size 2", "Size 3", "Size 4", "Size 5", "Size 6", "Size 7"],
+            fontname: ["SimSun", "SimHei", "KaiTi", "LiSu", "YouYuan", "Arial", "Georgia", "Verdana", "Helvetica"]
         },
         oninit: function() {}
     },
     initialize: function(container, data, b, options) {
         this.container = container;
         this._body = create("div", container);
-        this.toolbar = create("div", this._body); //工具栏 
-        this.iframe = create("iframe", this._body); //编辑区 
-        this.textarea = create("textarea", this._body); //显示源代码的框框 
-        this.bottom = create("div", this._body); //底部 
-        this.lightbox = b; //lightbox 
-        this.original = create("input"); //显示源代码的按纽 
+        this.toolbar = create("div", this._body); // Toolbar
+        this.iframe = create("iframe", this._body); // Editor area
+        this.textarea = create("textarea", this._body); // Source code textarea
+        this.bottom = create("div", this._body); // Bottom
+        this.lightbox = b; // Lightbox
+        this.original = create("input"); // Show source code button 
         this.ed = null;
         this.isfocus = false;
         this.option = {};
         Extend(this.option, this.options);
         Extend(this.option, options);
-        this.rang = null; //选中区 
+        this.rang = null; // Selection range 
         this.Fpop = null;
         this.option.oninit();
         this.toolbar.className = "ebar";
@@ -259,7 +259,7 @@ var Editer = new Class({
         this.ed.write("<html><head><style>body{margin:5px;font-size:16px;word-wrap:break-word}</style></head><body id='my_body'>" + div + "</body></html>");
         this.ed.close();
         this.ed.contentEditable = true;
-        this.ed.designMode = "on"; //设置编辑区为可编辑 
+        this.ed.designMode = "on"; // Set editor to editable mode 
         for (var i = 0, l = data.length; i < l; i++) {
             var o = create("span", this.toolbar);
             Attr(o, {
@@ -272,7 +272,7 @@ var Editer = new Class({
             addListener(o, "mouseout", Bind(this, this.Changebgcolor, o, data[i].Class));
             addListener(o, "click", Bind(this, this[data[i].action], o, data[i].args));
         }
-        //生成工具栏 
+        // Generate toolbar 
         addListener(this.iframe.contentWindow, "focus", Bind(this,
         function() {
             this.isfocus = true;
@@ -283,8 +283,8 @@ var Editer = new Class({
         }));
         addListener(this.ed, 'mousedown', Bind(this, this.Show));
         addListener(this.ed, 'mouseup', Bind(this, this.Show));
-        //这2个事件是来判断光标所在位置是否别编辑 
-        addListener(this.original, 'click', Bind(this, this.Showoriginal, this.original)); //显示源代码 
+        // These 2 events check if cursor position is in editor 
+        addListener(this.original, 'click', Bind(this, this.Showoriginal, this.original)); // Show source code 
     },
     Changebgcolor: function(o, name, p) {
         if (o.active) return;
@@ -350,7 +350,7 @@ var Editer = new Class({
         if (!this.fontcolorpopup) {
             var color = new popoup({
                 width: "210px",
-                title: "颜色选择"
+                title: "Color Picker"
             });
             this.fontcolorpopup = color.container;
             var pos = Getpos(o);
@@ -391,7 +391,7 @@ var Editer = new Class({
         if (!this.facebgpopup) {
             var expr = new popoup({
                 width: "190px",
-                title: "插入表情"
+                title: "Insert Emoticon"
             });
             this.facebgpopup = expr.container;
             var pos = Getpos(o);
@@ -438,7 +438,7 @@ var Editer = new Class({
         if (!this.fontsizepopup) {
             var size = new popoup({
                 width: "210px",
-                title: "字号"
+                title: "Font Size"
             }),
             a;
             this.fontsizepopup = size.container;
@@ -464,7 +464,7 @@ var Editer = new Class({
         if (!this.fontnamepopup) {
             var name = new popoup({
                 width: "200px",
-                title: "字体"
+                title: "Font"
             }),
             a;
             this.fontnamepopup = name.container;
@@ -494,7 +494,7 @@ var Editer = new Class({
                 title: t
             });
             this[n].pos();
-            $$(this[n].container, "div")[1].innerHTML = "<div style=' margin-top:6px; margin-left:10px'><span >链接地址</span>　<input style='width:200px;' type='text' /></div><div style='text-align:center; padding-top:15px;'><img src='./../../../imgs/btnok.png'>　<img src='./../../../imgs/btncancle.png'></div>"
+            $$(this[n].container, "div")[1].innerHTML = "<div style=' margin-top:6px; margin-left:10px'><span >Link URL</span> <input style='width:200px;' type='text' /></div><div style='text-align:center; padding-top:15px;'><img src='./../../../imgs/btnok.png'> <img src='./../../../imgs/btncancle.png'></div>"
             this[n].elm = [$$(this[n].container, "input")[0], $$(this[n].container, "img")[0], $$(this[n].container, "img")[1]];
             this[n].elm[0].focus()
             addListener(this[n].elm[1], 'click', Bind(this, this.Execa, null, f));
@@ -521,10 +521,10 @@ var Editer = new Class({
             var self = this;
             this.tablepopup = new popoup({
                 width: "300px",
-                title: "插入表格"
+                title: "Insert Table"
             });
             this.tablepopup.pos();
-            $$(this.tablepopup.container, "div")[1].innerHTML = "<div style='margin-left:30px; margin-top:7px;'>行数：<input style='width:50px; height:13px' type='text' />　列数：<input style='width:50px;height:13px' type='text' /></div><div style=' margin-left:30px; margin-top:7px;'>表格的宽度：<input style='width:50px; height:13px' type='text' /> px</div><div style=' margin-left:30px; margin-top:7px;'>表行的高度：<input style='width:50px; height:13px' type='text' /> px<div style='text-align:center; margin-left:30px; margin-top:7px;'><img src='./../../../imgs/btnok.png'>　<img src='./../../../imgs/btncancle.png'></div>"
+            $$(this.tablepopup.container, "div")[1].innerHTML = "<div style='margin-left:30px; margin-top:7px;'>Rows: <input style='width:50px; height:13px' type='text' /> Columns: <input style='width:50px;height:13px' type='text' /></div><div style=' margin-left:30px; margin-top:7px;'>Table width: <input style='width:50px; height:13px' type='text' /> px</div><div style=' margin-left:30px; margin-top:7px;'>Row height: <input style='width:50px; height:13px' type='text' /> px<div style='text-align:center; margin-left:30px; margin-top:7px;'><img src='./../../../imgs/btnok.png'>　<img src='./../../../imgs/btncancle.png'></div>"
             var o = $$(this.tablepopup.container, "input");
             this.tablepopup.elm = [o[0], o[1], o[2], o[3], $$(this.tablepopup.container, "img")[0], $$(this.tablepopup.container, "img")[1]];
             addListener(this.tablepopup.elm[4], 'click', Bind(this, this.Execa, null, "CreateTable"));
@@ -641,7 +641,7 @@ var Editer = new Class({
 var popoup = new Class({
     options: {
         width: "200px",
-        title: "标题"
+        title: "Title"
     },
     initialize: function(options) {
         this.container = create("div", document.body);

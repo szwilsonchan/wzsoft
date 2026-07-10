@@ -1,1 +1,1 @@
-datalistService.codeDebugLog(变量名称,变量);;
+datalistService.codeDebugLog(varName,var);;
